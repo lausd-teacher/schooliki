@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Desk</title>
+<style>
+   div.ui-rotatable-handle {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+    background-image: url(rotate.png);
+    background-size: 100%;
+    top:-16px;
+    left:2px;
+    position:relative;
+}
+div.desk.doubledesk{
+	width:8em;
+	height:4em;
+	background-image:url('img/doubleDesk.png');
+	background-size:100%;
+	background-repeat:no-repeat;
+}
+.floorplan-hover{
+		background-color:Teal;
+}
+.deskDeleter{
+	background-color:Red;
+	border:1px solid White;
+	border-radius:100%;
+	box-shadow:1px 1px 2px Black;
+	float:right;
+	color:White;
+	text-align:center;
+	padding:1px;
+	width:20px;
+	height:20px;
+}
+</style>
+</head>
+<body>
+<div class='desk doubledesk'><span class='deskDeleter'>x</span><table style='width:100%;height:100%'><tr>
+<td><div class='seat pos1'></div></td><td><div class='seat pos2'></div></td></tr>
+</table></div>
+<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="loader.js"></script>
+<script>
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+		<m:MaterialPanel><!--  -->
+		<g:HTMLPanel>
+			<div> 
+				<m:MaterialImage ui:field="studentImg" width="64px" height="64px"/>
+			</div>
+			<div> 
+				<m:MaterialLabel ui:field="firstName" />
+				<m:MaterialLabel ui:field="lastName" />
+			</div>
+			</g:HTMLPanel>
+		</m:MaterialPanel>
+</ui:UiBinder> 

@@ -1,0 +1,52 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialModal>
+			<m:MaterialModalContent>
+			<m:MaterialRow>
+			<m:MaterialColumn>
+				<m:MaterialImage />
+			</m:MaterialColumn>
+			<m:MaterialColumn>
+				<m:MaterialTitle></m:MaterialTitle>
+			</m:MaterialColumn>
+			</m:MaterialRow>
+				<m:html.Hr/>
+				<m:MaterialRow>
+				<m:MaterialTab>
+					<m:MaterialTabItem href=".posIncidentGrid"><m:MaterialAnchorButton /></m:MaterialTabItem>
+					<m:MaterialTabItem href=".negIncidentGrid"><m:MaterialAnchorButton /></m:MaterialTabItem>
+				</m:MaterialTab>
+				</m:MaterialRow>
+				<m:MaterialRow>
+					<m:MaterialPanel ui:field="posIncidentGrid" addStyleNames="posIncidentGrid">
+						<m:MaterialRow>
+							<m:MaterialColumn grid="s6 m4 l2"></m:MaterialColumn>
+						</m:MaterialRow>
+					</m:MaterialPanel>
+					<m:MaterialPanel ui:field="negIncidentGrid" addStyleNames="negIncidentGrid">
+						<m:MaterialRow>
+							<m:MaterialColumn grid="s6 m4 l2"></m:MaterialColumn>
+						</m:MaterialRow>
+					</m:MaterialPanel>
+				</m:MaterialRow>
+			</m:MaterialModalContent>
+			<m:MaterialModalFooter>
+				<m:MaterialTitle title="Quick Links" />
+				<m:MaterialRow>
+					<m:MaterialColumn grid="s1 m1 l1">
+						<m:MaterialIcon />
+						<m:MaterialIcon />
+						<m:MaterialIcon />
+						<m:MaterialIcon />
+					</m:MaterialColumn>
+				</m:MaterialRow>
+			</m:MaterialModalFooter>
+		</m:MaterialModal>
+	</g:HTMLPanel>
+</ui:UiBinder> 

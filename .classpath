@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="test-classes" path="test"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/freemarker-gae-2.3.23.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.5.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-5.1.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-validator-1.5.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-appsforyourdomain-1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-contacts-3.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-core-1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-media-1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-client-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-client-appengine-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-client-gson-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-client-java6-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-client-servlet-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-services-books-v1-rev78-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-services-calendar-v3-rev160-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-services-tasks-v1-rev42-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-http-client-1.20.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-http-client-appengine-1.20.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-http-client-gson-1.20.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-appengine-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-java6-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-servlet-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/httpclient-4.0.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jsoup-1.8.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/httpcore-4.0.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-18.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://google.github.io/guava/releases/18.0/api/docs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-services-drive-v3-rev6-1.21.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/google-api-services-sheets-v4-rev5-1.22.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/LAUSD/Documents/JavaJars/sheets/google-api-services-sheets-v4-rev5-1.22.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GQuery"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GuavaGwt"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GWT-OAuth2"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtCharts"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtMaterial"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GWT-Ajax"/>
+	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/gwt-codeserver.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/gwt-dev.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/validation-api-1.0.0.GA.jar" sourcepath="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MGwt"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hammer"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MouseTrap"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>

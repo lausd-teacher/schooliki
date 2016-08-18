@@ -1,0 +1,2 @@
+# Module gwtquery.plugins.UI
+# RPC service class, partial path of RPC policy file

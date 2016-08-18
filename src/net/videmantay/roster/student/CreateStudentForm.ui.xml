@@ -1,0 +1,50 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:p="urn:import:com.floreysoft.gwt.picker.client.domain">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+	<m:MaterialModal ui:field="modal">
+		<m:MaterialModalContent ui:field="modalContent">
+		<g:FormPanel ui:field="form">
+			<g:HTMLPanel>
+			<m:MaterialRow>
+				<m:MaterialColumn>
+					<m:MaterialImage ui:field="studentImg" type="CIRCLE"/>
+					<m:html.Br/>
+					<m:MaterialLabel ui:field="imgUrl" />
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+					<m:MaterialButton ui:field="pickerButton" text="Upload"/>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+				<m:MaterialRow>
+					<m:MaterialTextBox ui:field="schoolEmail" placeholder="school email"></m:MaterialTextBox>
+				</m:MaterialRow>
+				<m:MaterialRow>
+					<m:MaterialTextBox ui:field="firstName" placeholder="First Name"></m:MaterialTextBox>
+				</m:MaterialRow>
+				<m:MaterialRow>
+					<m:MaterialTextBox ui:field="lastName" placeholder="Last Name"></m:MaterialTextBox>
+				</m:MaterialRow>
+				<m:MaterialRow>
+					<m:MaterialTextBox ui:field="extName" placeholder ="Extended Name"></m:MaterialTextBox>
+				</m:MaterialRow>
+				<m:MaterialRow>
+					<m:MaterialDatePicker ui:field="DOB" placeholder="D.O.B"></m:MaterialDatePicker>
+				</m:MaterialRow>
+				</g:HTMLPanel>
+			</g:FormPanel>
+		</m:MaterialModalContent>
+		<m:MaterialFooter>
+			<m:MaterialRow>
+				<m:MaterialColumn><m:MaterialButton ui:field="okBtn" text="Ok" /></m:MaterialColumn>
+				<m:MaterialColumn><m:MaterialButton ui:field="cancelBtn" text="Cancel"/></m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialFooter>
+	</m:MaterialModal>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,2 @@
+# Module gwt.material.design.fullcalendar.Fullcalendar
+# RPC service class, partial path of RPC policy file

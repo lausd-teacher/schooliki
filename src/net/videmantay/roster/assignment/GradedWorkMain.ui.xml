@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel ui:field="wrapper">
+		<m:MaterialHeader> 
+			<m:MaterialRow>
+				<m:MaterialColumn textAlign="LEFT" grid="s6 m4 l3"> 
+				<g:HTMLPanel>
+				<table>
+					<tr>
+						<td><m:MaterialLabel text="List" /></td>
+						<td><m:MaterialSwitch ui:field="gradebookSwitch" /></td>
+						<td><m:MaterialLabel text="Gradebook" /></td>
+					</tr>
+				</table>	
+				</g:HTMLPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn float="RIGHT" textAlign="RIGHT" grid="s6 m4 l3"> 
+					<m:MaterialSearch ui:field="assignmentSearch"/>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+			</m:MaterialHeader>
+		<m:MaterialPanel><!--  -->
+			<m:html.Div ui:field="gradedWorkViz">
+			
+			</m:html.Div>
+			<m:html.Div ui:field="gradedWorkPager">
+			
+			</m:html.Div>
+		</m:MaterialPanel>
+		<m:MaterialFooter></m:MaterialFooter>
+		<m:MaterialFAB>
+			<m:MaterialAnchorButton  size="LARGE" type="FLOATING" ui:field="fab" iconType="ADD"/>
+		</m:MaterialFAB>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,35 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+		.leftCol{
+			border-right:1px solid Silver;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialCard hoverable="true" width="450" height="300">
+			<m:MaterialCardContent>
+			<m:MaterialAnchorButton iconType="DELETE" type="FLAT" float="RIGHT" hoverable="true" padding="1" textColor="red darken-2"/>
+			<m:MaterialAnchorButton iconType="EDIT" float="RIGHT" type="FLAT" hoverable="true" padding="1" textColor="deep-orange darken-1"/>
+			<m:MaterialCardTitle ui:field="title"/>
+			
+		
+			<m:MaterialLabel ui:field="description"></m:MaterialLabel>
+			
+			</m:MaterialCardContent>
+			<m:MaterialCardAction padding="0">
+			<m:MaterialRow><!--  -->
+				<m:MaterialColumn addStyleNames="{style.leftCol}" waves="YELLOW" grid="s6" height="3em">
+					<m:html.Label ui:field="groupNum" textColor="orange"/>
+					<m:MaterialAnchorButton ui:field="groupBtn" type="FLAT" text="Groups" iconType="GROUP" iconPosition="RIGHT"/>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s6" waves="ORANGE" height="3em">
+					<m:html.Label ui:field="procedureNum" textColor="deep-orange"/>
+					<m:MaterialAnchorButton ui:field="procedBtn" type="FLAT" text="Procedures" iconType="LIST" iconPosition="RIGHT"/>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+			</m:MaterialCardAction>
+		</m:MaterialCard>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:v="urn:import:net.videmantay.roster.student">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+	<m:MaterialTab>
+		<m:MaterialTabItem> <m:MaterialLink text="Students" href="#stuHomeTab" /></m:MaterialTabItem>
+		<m:MaterialTabItem> <m:MaterialLink text="Calendar" href="#stuCalTab" /></m:MaterialTabItem>
+		<m:MaterialTabItem> <m:MaterialLink text="Reports" href="#stuReportTab" /></m:MaterialTabItem>	
+	</m:MaterialTab>
+	<div id="stuHomeTab">
+			<v:RosterStudentCollection ui:field="studentCollection" />
+	</div>
+	<div id="stuCalTab"></div>
+	<div id="stuReportTab"></div>
+		<!-- FAB -->
+		<m:MaterialFAB>
+			<m:MaterialTooltip text="New Student" position="LEFT">
+				<m:MaterialButton ui:field="fab" type="FLOATING" iconType="ADD" size="LARGE" />
+			</m:MaterialTooltip>
+		</m:MaterialFAB>
+		<v:CreateStudentForm ui:field="stuForm"></v:CreateStudentForm>
+	</g:HTMLPanel>
+</ui:UiBinder> 
