@@ -6,21 +6,21 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-		<m:MaterialModal>
+		<m:MaterialModal ui:field="modal">
 			<m:MaterialModalContent>
 			<m:MaterialRow>
 			<m:MaterialColumn>
-				<m:MaterialImage />
+				<m:MaterialImage ui:field="image" />
 			</m:MaterialColumn>
 			<m:MaterialColumn>
-				<m:MaterialTitle></m:MaterialTitle>
+				<m:MaterialTitle ui:field="studentsTitle"></m:MaterialTitle>
 			</m:MaterialColumn>
 			</m:MaterialRow>
 				<m:html.Hr/>
 				<m:MaterialRow>
 				<m:MaterialTab>
-					<m:MaterialTabItem href=".posIncidentGrid"><m:MaterialAnchorButton /></m:MaterialTabItem>
-					<m:MaterialTabItem href=".negIncidentGrid"><m:MaterialAnchorButton /></m:MaterialTabItem>
+					<m:MaterialTabItem href=".posIncidentGrid"><m:MaterialAnchorButton text="Superb Decision"/></m:MaterialTabItem>
+					<m:MaterialTabItem href=".negIncidentGrid"><m:MaterialAnchorButton text="Poor Judgement" /></m:MaterialTabItem>
 				</m:MaterialTab>
 				</m:MaterialRow>
 				<m:MaterialRow>
@@ -36,16 +36,8 @@
 					</m:MaterialPanel>
 				</m:MaterialRow>
 			</m:MaterialModalContent>
-			<m:MaterialModalFooter>
-				<m:MaterialTitle title="Quick Links" />
-				<m:MaterialRow>
-					<m:MaterialColumn grid="s1 m1 l1">
-						<m:MaterialIcon />
-						<m:MaterialIcon />
-						<m:MaterialIcon />
-						<m:MaterialIcon />
-					</m:MaterialColumn>
-				</m:MaterialRow>
+			<m:MaterialModalFooter ui:field="footer">
+				<m:MaterialAnchorButton  ui:field="studentInfo" type="FLAT" text="see more info..."  iconType="INFO" iconPosition="RIGHT"/>
 			</m:MaterialModalFooter>
 		</m:MaterialModal>
 	</g:HTMLPanel>

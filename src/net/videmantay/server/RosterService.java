@@ -298,7 +298,6 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				Incident incident;
 					//1. H.W. returned
 				incident = new Incident();
-				incident.
 					//participation
 					//helping others
 					//staying on tasks

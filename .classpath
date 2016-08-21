@@ -47,31 +47,11 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/LAUSD/Documents/JavaJars/sheets/google-api-services-sheets-v4-rev5-1.22.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GQuery"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GuavaGwt"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GWT-OAuth2"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtCharts"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtAjax"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtGuava"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtMaterial"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GWT-Ajax"/>
-	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/gwt-user.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/gwt-codeserver.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/gwt-dev.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/validation-api-1.0.0.GA.jar" sourcepath="C:/Users/LAUSD/Documents/GWT/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MGwt"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hammer"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MouseTrap"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtObjectify"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtQuery"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
