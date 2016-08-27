@@ -12,8 +12,11 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialModal;
 import net.videmantay.roster.json.IncidentJson;
+import net.videmantay.roster.json.IncidentReportJson;
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterStudentJson;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -59,6 +62,11 @@ public class StudentActionModal extends Composite {
 	@UiField
 	MaterialModal modal;
 	
+	@UiField
+	MaterialColumn posIncidentCol;
+	
+	final RosterJson roster = window.getPropertyJSO("roster").cast();
+	
 	public StudentActionModal() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -89,6 +97,9 @@ public class StudentActionModal extends Composite {
 	@Override
 	public void onLoad(){
 		$(body).on("incidentPicked", onIncidentPicked);
+		for(int i = 0; i < roster.getIncidents().length(); i++){
+			posIncidentCol.add(new IncidentItem(roster.getIncidents().get(i)));
+		}
 	}
 
 }

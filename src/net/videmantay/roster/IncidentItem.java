@@ -11,6 +11,11 @@ import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import org.vectomatic.dom.svg.OMSVGElement;
+import org.vectomatic.dom.svg.OMSVGUseElement;
+import org.vectomatic.dom.svg.impl.SVGSVGElement;
+import org.vectomatic.dom.svg.ui.SVGImage;
+
 import gwt.material.design.client.ui.MaterialBadge;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
@@ -24,7 +29,7 @@ public class IncidentItem extends Composite{
 	}
 	
 	@UiField
-	MaterialImage icon;
+	SVGImage svg;
 	
 	@UiField
 	MaterialLabel name;
@@ -34,6 +39,8 @@ public class IncidentItem extends Composite{
 
 	public IncidentItem() {
 		initWidget(uiBinder.createAndBindUi(this));
+
+		
 	}
 	
 	public IncidentItem(IncidentJson incident){
@@ -53,7 +60,7 @@ public class IncidentItem extends Composite{
 	}
 	
 	public void draw(){
-		icon.setUrl(incident.getIconUrl());
+		
 		name.setText(incident.getName());
 		if(incident.getValue() < 0){
 			//badge color red;
@@ -63,6 +70,11 @@ public class IncidentItem extends Composite{
 		
 		value.setText(""+ incident.getValue());
 		///set up the badge size and center the text
+		
+		OMSVGElement img = svg.getSvgElement();
+		OMSVGUseElement use = new OMSVGUseElement();
+		use.getHref().setBaseVal(incident.getIconUrl());
+		img.appendChild(use);
 	}
 	
 	@Override

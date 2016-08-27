@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.GenericUrl;
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.model.*;
 import com.google.api.services.calendar.model.Event.ExtendedProperties;
@@ -42,6 +44,9 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.Permission;
+import com.google.appengine.api.channel.ChannelMessage;
+import com.google.appengine.api.channel.ChannelService;
+import com.google.appengine.api.channel.ChannelServiceFactory;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -174,6 +179,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		System.out.println("User id didn't equal no oauth then");
 			//res.sendRedirect("/somewhere else");
 		}
+		//setup channel
+		ChannelService chanSer = ChannelServiceFactory.getChannelService();
+		String token = chanSer.createChannel(acct.getUserId());
+		
 		
 		//get roster list
 		List<RosterDetail> rosters = db().load().type(RosterDetail.class).filter("ownerId", acct.getEmail() ).list();
@@ -182,6 +191,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		String rosterList = gson.toJson(rosters);
 		data.put("loginInfo", loginInfo);
 		data.put("rosterList", rosterList);
+		data.put("connection", token);
 		Template teacherPage = TemplateGen.getTeacherPage();
 		teacherPage.process(data, res.getWriter());
 		}else{
@@ -295,12 +305,31 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			
 			//setup default incidents///////
 				//POSITIVE
-				Incident incident;
-					//1. H.W. returned
-				incident = new Incident();
-					//participation
-					//helping others
-					//staying on tasks
+			Incident incident;
+			
+			incident = new Incident();
+			incident.name = "Helping Others";
+			incident.value = 5;
+			incident.iconUrl = "../img/allIcons.svg#happyRainbowCloud";
+			roster.incidents.add(incident);
+			
+			incident = new Incident();
+			incident.name = "Finished Work";
+			incident.value = 1;
+			incident.iconUrl = "../img/allIcons.svg#brightSun";
+			roster.incidents.add(incident);
+			
+			incident = new Incident();
+			incident.name = "Finished Work";
+			incident.value = 1;
+			incident.iconUrl = "../img/allIcons.svg#scientist";
+			roster.incidents.add(incident);
+			
+			incident = new Incident();
+			incident.name = "Finished Work";
+			incident.value = 1;
+			incident.iconUrl = "../img/allIcons.svg#happyBoy";
+			roster.incidents.add(incident);
 					
 			
 				//NEGATIVE
@@ -923,24 +952,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		public void listIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 	
 		}
+		
 	////////////////////////	
 	///STUDENT INCIDENT CRUD
-	private void updateStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
-		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
-		StudentIncident dbCheck;
-		try{
-			dbCheck = db().load().type(StudentIncident.class).id(incident.getId()).now();
-			Preconditions.checkNotNull(dbCheck);
-			if(!dbCheck.getSummary().equals(incident.getSummary())){
-				//update the event
-			}
-		}catch(NullPointerException e){
-			e.printStackTrace();
-		}
-		
-		
-	}
+
 	private void deleteStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		Calendar cal;
 		Credential cred = this.getCredential();
@@ -951,7 +966,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
 		StudentIncident dbCheck = null;
 	try{
-		dbCheck = db().load().type(StudentIncident.class).id(incident.getId()).now();
+		dbCheck = db().load().type(StudentIncident.class).id(incident.id).now();
 		Preconditions.checkNotNull(dbCheck);	
 	}catch(NullPointerException e){
 		
@@ -960,26 +975,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		db().delete().entity(dbCheck);
 		
 	}
-	private void saveStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
-		String studentCheck = Preconditions.checkNotNull("student");
-		String eventCheck = Preconditions.checkNotNull("event");
-		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
-		RosterStudent student = gson.fromJson(studentCheck, RosterStudent.class);
-		Event event = gson.fromJson(eventCheck , Event.class);
-		
-		incident.setId(new Date().getTime());
-		Credential cred = this.getCredential();
-		Calendar calendar = calendar(cred);
-		ExtendedProperties ext = new ExtendedProperties();
-		Map<String, String> incidentMap = new HashMap<String, String>();
-		incidentMap.put("incident", incident.getId().toString());
-		ext.setPrivate(incidentMap);
-		event.setExtendedProperties(ext);
-		db().save().entity(incident);
-		
-		//give the incident back;
-	}
+
 	private void searchStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void listStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		//list by fifty in date order
@@ -994,7 +990,56 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	}
 	private void getStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 		
+	///REPORT INCIDENT////////
+	private void reportIncident(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException{
+		
+		final HashSet<RosterStudent> students = new HashSet<>();
+		Incident incident ;
 	
+		
+		String rpCheck = Preconditions.checkNotNull(req.getParameter("incidentReprt"));
+		IncidentReport report = gson.fromJson(rpCheck, IncidentReport.class);
+		//check for valid roster
+		if(AppValid.rosterCheck(report.rosterId)){
+			//set up keys for loading
+			Key<Roster> rosKey = Key.create(Roster.class, report.rosterId);
+			final ArrayList<Key<RosterStudent>> stuKeys = new ArrayList<Key<RosterStudent>>();
+			for(Long l: report.studentIds){
+				Key<RosterStudent> key = Key.create(rosKey, RosterStudent.class, l);
+				stuKeys.add(key);
+			}
+			//TODO:load incident from db
+			//try catch incident may not exist
+			incident = db().load().key(Key.create(Incident.class,report.incidentId)).now();
+			
+		//load from students from db	
+		//TODO:try catch here students may not exist //
+		students.addAll(db().load().keys(stuKeys).values());
+			
+		//Array list to bulk upload
+		ArrayList<StudentIncident> stuIncidents = new ArrayList<>();
+		for(RosterStudent rs:students){
+			StudentIncident si = new StudentIncident();
+			//DateFormat the string
+			si.date = new DateTime(new Date()).toString();
+			si.incidentId = incident.id;
+			si.studentId = rs.id;
+		stuIncidents.add(si);
+			rs.points.add(incident.value);
+		}
+		
+		//update students and studentIncidents
+		db().save().entities(students);
+		db().save().entities(stuIncidents);
+		
+		User user = UserServiceFactory.getUserService().getCurrentUser();
+		ChannelService chanServ = ChannelServiceFactory.getChannelService();
+		
+		
+		chanServ.sendMessage(new ChannelMessage(user.getUserId(), rpCheck));
+	
+		}//end if
+	}
 	
 	
 }

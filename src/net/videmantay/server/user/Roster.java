@@ -92,10 +92,7 @@ public class Roster extends DBObj implements Serializable{
 	
 	@Serialize
 	public ArrayList<ClassTime> classTimes = new ArrayList<>();
-	
-	@Serialize
-	public ArrayList<StudentGroup> studentGroups = new ArrayList<>();
-	
+		
 	@Serialize
 	public ArrayList<Incident> incidents = new ArrayList<Incident>();
 	
@@ -105,12 +102,17 @@ public class Roster extends DBObj implements Serializable{
 	
 	public String studentFolderId = "";
 		
-
+	/*
+	 * used to set a reference date for when to query
+	 * incidents (student points) clears everything before it.
+	 * think classdojo clear point from here.
+	 */
+	public transient String incidentQueryDate = "";
 	
 	///Constructors
 	
 	public Roster(){
-	
+		
 	}
 	
 	public Set<Key<RosterStudent>> getStudentKeys() {
@@ -191,14 +193,6 @@ public class Roster extends DBObj implements Serializable{
 
 	public void setTeacherInfo(TeacherInfo teacherInfo) {
 		this.teacherInfo = teacherInfo;
-	}
-
-	public ArrayList<StudentGroup> getStudentGroups() {
-		return studentGroups;
-	}
-
-	public void setStudentGroups(ArrayList<StudentGroup> studentGroups) {
-		this.studentGroups = studentGroups;
 	}
 	
 	public GradeLevel getGradeLevel(){
@@ -289,6 +283,14 @@ public class Roster extends DBObj implements Serializable{
 	
 	public ArrayList<ClassTime> getClassTimes(){
 		return this.classTimes;
+	}
+	
+	public String getInicidentQueryDate(){
+		return this.incidentQueryDate;
+	}
+	
+	public void setIncidentQueryDate(String date){
+		this.incidentQueryDate = date;
 	}
 
 	public RosterDetail createDetail(){

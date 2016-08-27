@@ -22,7 +22,6 @@ import gwt.material.design.client.ui.MaterialSideNav;
 import net.videmantay.roster.assignment.GradedWorkMain;
 import net.videmantay.roster.classtime.ClassTimeMain;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.student.RosterStudentMain;
 import net.videmantay.roster.student.StudentInfoMain;
 import net.videmantay.shared.UserProfilePanel;
 
@@ -53,8 +52,6 @@ public class ClassroomMain extends Composite{
 	@UiField
 	MaterialSideNav sideNav;
 	//side nav links here ///////
-	@UiField
-	MaterialLink studentLink;
 	
 	@UiField
 	MaterialLink dashboardLink;
@@ -109,19 +106,6 @@ public class ClassroomMain extends Composite{
 				}
 				
 			});
-			studentLink.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				History.newItem("roster/" + classRoster.getId() +"/students");
-				new Timer(){
-
-					@Override
-					public void run() {
-						sideNav.hide();
-					}}.schedule(250); 
-			}});
 			
 			assignmentLink.addClickHandler( new ClickHandler(){
 
@@ -241,8 +225,6 @@ public class ClassroomMain extends Composite{
 				
 				
 				switch(path.size()){
-				
-				case 1: mainPanel.clear();mainPanel.add(new RosterStudentMain()); rosterTitle.setText("Students");break;
 				
 				//rosterStudent main must handle the view of students
 				case 2: mainPanel.clear();

@@ -170,6 +170,15 @@ public class RosterJson extends JavaScriptObject {
 		this.gradeBook = gradeBook;
 		return this;
 	}-*/;
+	
+	public final native  JsArray<IncidentJson> getIncidents()/*-{
+		return this.incidents;
+	}-*/;
+	
+	public final native RosterJson setIncident(JsArray<IncidentJson> json)/*-{
+		this.incidents = json;
+		return this;
+	}-*/;
 
 	public final native String getBehaviorReport()/*-{
 		return this.behaviorReport;

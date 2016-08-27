@@ -12,7 +12,7 @@
 		<m:MaterialImage ui:field="image" />
 		</m:MaterialColumn>
 		<m:MaterialColumn>
-			<m:MaterialLabel ui:Field="summary" />
+			<m:MaterialLabel ui:field="summary" />
 		</m:MaterialColumn>
 	</m:MaterialRow>
 	</g:HTMLPanel>

@@ -23,10 +23,10 @@
 					<m:MaterialTabItem href=".negIncidentGrid"><m:MaterialAnchorButton text="Poor Judgement" /></m:MaterialTabItem>
 				</m:MaterialTab>
 				</m:MaterialRow>
-				<m:MaterialRow>
+				<m:MaterialRow ui:field="incidentGirdPanel">
 					<m:MaterialPanel ui:field="posIncidentGrid" addStyleNames="posIncidentGrid">
 						<m:MaterialRow>
-							<m:MaterialColumn grid="s6 m4 l2"></m:MaterialColumn>
+							<m:MaterialColumn ui:field="posIncidentCol" grid="s6 m4 l2"></m:MaterialColumn>
 						</m:MaterialRow>
 					</m:MaterialPanel>
 					<m:MaterialPanel ui:field="negIncidentGrid" addStyleNames="negIncidentGrid">
@@ -37,7 +37,28 @@
 				</m:MaterialRow>
 			</m:MaterialModalContent>
 			<m:MaterialModalFooter ui:field="footer">
-				<m:MaterialAnchorButton  ui:field="studentInfo" type="FLAT" text="see more info..."  iconType="INFO" iconPosition="RIGHT"/>
+				<m:MaterialRow> 
+					<m:MaterialColumn>
+					<!-- Quick Assignment (All)-->
+						<m:MaterialAnchorButton ui:field="assignmentQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn>
+					<!-- Quick Goal (All)-->
+						<m:MaterialAnchorButton ui:field="goalQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn>
+					<!-- Quick Form  (single/multi??)-->
+						<m:MaterialAnchorButton ui:field="formQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn>
+					<!-- Quick Book  (single/multi???)-->
+						<m:MaterialAnchorButton ui:field="bookQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn>
+					<!-- Show More (This only for single) -->
+						<m:MaterialAnchorButton ui:field="showMoreQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+				</m:MaterialRow>
 			</m:MaterialModalFooter>
 		</m:MaterialModal>
 	</g:HTMLPanel>

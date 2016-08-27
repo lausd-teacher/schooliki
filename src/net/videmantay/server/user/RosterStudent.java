@@ -1,15 +1,10 @@
 package net.videmantay.server.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -43,7 +38,7 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	@Index
 	public String acctId;
 	
-	public int[] points; 
+	public ArrayList<Integer> points;
 	
 	@Serialize
 	public Set<Goal> goals;

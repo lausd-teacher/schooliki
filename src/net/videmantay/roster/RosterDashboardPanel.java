@@ -270,7 +270,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 			public void onClick(ClickEvent event) {
 				display.pickRandom();
 				state = State.RANDOM;
-				showDoneBar();
+				
 			}});
 		multipleIcon.addClickHandler(new ClickHandler(){
 
@@ -278,7 +278,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 			public void onClick(ClickEvent event) {
 				display.multipleSelect();
 				state = State.MULTIPLE_SELECT;
-				showDoneBar();
+			
 			}});
 		////////////
 		doneBtn.addClickHandler(new ClickHandler(){

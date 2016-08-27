@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
+import net.videmantay.roster.json.IncidentReportJson;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class IncidentToastContent extends Composite {
@@ -38,8 +39,8 @@ public class IncidentToastContent extends Composite {
 		String msg = "" ;
 		
 		switch(type){
-		case SINGLE: RosterStudentJson student = report.getStudent().get(0); msg = student.getFirstName() + " " + student.getLastName();break;
-		case MULTI:msg = report.getStudent().length() + " students ";break;
+		case SINGLE: RosterStudentJson student = report.getStudents().get(0); msg = student.getFirstName() + " " + student.getLastName();break;
+		case MULTI:msg = report.getStudents().length() + " students ";break;
 		case WHOLE:msg = "The Class ";break;
 		}
 		
