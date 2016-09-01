@@ -18,6 +18,8 @@ public interface HasRosterDashboardView extends IsWidget {
 	
 	public void home();
 	
+	public void unHome();
+	
 	public void arrangeFurniture();
 	
 	public void arrangeStudents();

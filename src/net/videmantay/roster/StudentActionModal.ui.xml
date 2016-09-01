@@ -2,11 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<ui:style>
-	
-	</ui:style>
 	<g:HTMLPanel>
-		<m:MaterialModal ui:field="modal">
+		<m:MaterialModal ui:field="modal" type="FIXED_FOOTER">
 			<m:MaterialModalContent>
 			<m:MaterialRow>
 			<m:MaterialColumn>
@@ -19,44 +16,42 @@
 				<m:html.Hr/>
 				<m:MaterialRow>
 				<m:MaterialTab>
-					<m:MaterialTabItem href=".posIncidentGrid"><m:MaterialAnchorButton text="Superb Decision"/></m:MaterialTabItem>
-					<m:MaterialTabItem href=".negIncidentGrid"><m:MaterialAnchorButton text="Poor Judgement" /></m:MaterialTabItem>
+					<m:MaterialTabItem ><m:MaterialAnchorButton text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
+					<m:MaterialTabItem><m:MaterialAnchorButton text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
 				</m:MaterialTab>
 				</m:MaterialRow>
 				<m:MaterialRow ui:field="incidentGirdPanel">
-					<m:MaterialPanel ui:field="posIncidentGrid" addStyleNames="posIncidentGrid">
-						<m:MaterialRow>
-							<m:MaterialColumn ui:field="posIncidentCol" grid="s6 m4 l2"></m:MaterialColumn>
+					<m:MaterialPanel ui:field="posIncidentGrid" addStyleNames="posIncidentGrid" m:id="posIncidentGrid">
+						<m:MaterialRow ui:field="posIncidentRow">
 						</m:MaterialRow>
 					</m:MaterialPanel>
-					<m:MaterialPanel ui:field="negIncidentGrid" addStyleNames="negIncidentGrid">
-						<m:MaterialRow>
-							<m:MaterialColumn grid="s6 m4 l2"></m:MaterialColumn>
+					<m:MaterialPanel ui:field="negIncidentGrid" addStyleNames="negIncidentGrid" m:id="negIncidentGrid">
+						<m:MaterialRow ui:field="negIncidentRow">
 						</m:MaterialRow>
 					</m:MaterialPanel>
 				</m:MaterialRow>
 			</m:MaterialModalContent>
 			<m:MaterialModalFooter ui:field="footer">
-				<m:MaterialRow> 
-					<m:MaterialColumn>
+				<m:MaterialRow marginBottom="0"> 
+					<m:MaterialColumn grid="s2 m2 l2">
 					<!-- Quick Assignment (All)-->
-						<m:MaterialAnchorButton ui:field="assignmentQuickLink"></m:MaterialAnchorButton>
+						<m:MaterialAnchorButton type="FLAT" textColor="orange darken-4" iconType="ASSIGNMENT"  ui:field="assignmentQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
-					<m:MaterialColumn>
+					<m:MaterialColumn grid="s2 m2 l2">
 					<!-- Quick Goal (All)-->
-						<m:MaterialAnchorButton ui:field="goalQuickLink"></m:MaterialAnchorButton>
+						<m:MaterialAnchorButton type="FLAT" textColor="amber darken-4" iconType="MOOD"  ui:field="goalQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
-					<m:MaterialColumn>
+					<m:MaterialColumn grid="s2 m2 l2">
 					<!-- Quick Form  (single/multi??)-->
-						<m:MaterialAnchorButton ui:field="formQuickLink"></m:MaterialAnchorButton>
+						<m:MaterialAnchorButton type="FLAT" textColor="deep-orange darken-4" iconType="INBOX" ui:field="formQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
-					<m:MaterialColumn>
+					<m:MaterialColumn grid="s2 m2 l2">
 					<!-- Quick Book  (single/multi???)-->
-						<m:MaterialAnchorButton ui:field="bookQuickLink"></m:MaterialAnchorButton>
+						<m:MaterialAnchorButton type="FLAT" textColor="red darken-4" iconType="LOCAL_LIBRARY" ui:field="bookQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
-					<m:MaterialColumn>
+					<m:MaterialColumn grid="s2 m2 l2">
 					<!-- Show More (This only for single) -->
-						<m:MaterialAnchorButton ui:field="showMoreQuickLink"></m:MaterialAnchorButton>
+						<m:MaterialAnchorButton type="FLAT" textColor="red darken-2" iconType="MORE_VERT" ui:field="showMoreQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 				</m:MaterialRow>
 			</m:MaterialModalFooter>

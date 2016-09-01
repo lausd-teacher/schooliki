@@ -22,10 +22,13 @@
 				<m:MaterialLink ui:field="goalLink" text="Goals" textColor="amber darken-4" iconType="MOOD" />
 				<m:MaterialLink ui:field="jobLink" text="Jobs" textColor="orange darken-4" iconType="BUSINESS_CENTER" />
 				<m:MaterialLink ui:field="classTimeLink" text="Class Time" textColor="red darken-4" iconType="SCHEDULE" />
+				<m:MaterialLink ui:field="formLink" text="Forms" textColor="deep-orange darken-4" iconType="INBOX" />
+				<m:MaterialLink ui:field="bookLink" text="Books" textColor="red darken-2" iconType="INBOX" />
 				<m:MaterialLink ui:field="logoutLink" text="Logout" iconType="INPUT" />
 				<m:MaterialLink></m:MaterialLink>
 			</m:MaterialSideNav>
 		<m:MaterialContainer  ui:field="mainPanel" width="100%" height="100%" >
 		</m:MaterialContainer>
+		<vr:StudentActionFeedback ui:field="studentFeedbak" />
 	</g:HTMLPanel>
 </ui:UiBinder> 

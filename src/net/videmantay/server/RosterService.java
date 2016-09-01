@@ -129,6 +129,9 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 		case RosterUrl.CREATE_ASSIGNMENT:saveGradedWork(req,res);break;
 		
+		//route incidents
+		case RosterUrl.REPORT_INCIDENT:reportIncident(req,res);break;
+		
 		case RosterUrl.GET_CLASSTIME:getClassTime(req,res);break;
 		case RosterUrl.CREATE_CLASSTIME:createClassTime(req,res);break;
 		case RosterUrl.UPDATE_CLASSTIME:updateClassTime(req,res);break;
@@ -306,29 +309,34 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			//setup default incidents///////
 				//POSITIVE
 			Incident incident;
+			//how to assign unique ids
 			
 			incident = new Incident();
+			incident.id = 1;
 			incident.name = "Helping Others";
 			incident.value = 5;
-			incident.iconUrl = "../img/allIcons.svg#happyRainbowCloud";
+			incident.iconUrl = "happyRainbowCloud";
 			roster.incidents.add(incident);
 			
 			incident = new Incident();
+			incident.id = 2;
 			incident.name = "Finished Work";
 			incident.value = 1;
-			incident.iconUrl = "../img/allIcons.svg#brightSun";
+			incident.iconUrl = "rocket";
 			roster.incidents.add(incident);
 			
 			incident = new Incident();
+			incident.id = 3;
 			incident.name = "Finished Work";
 			incident.value = 1;
-			incident.iconUrl = "../img/allIcons.svg#scientist";
+			incident.iconUrl = "scientist";
 			roster.incidents.add(incident);
 			
 			incident = new Incident();
+			incident.id = 5;
 			incident.name = "Finished Work";
 			incident.value = 1;
-			incident.iconUrl = "../img/allIcons.svg#happyBoy";
+			incident.iconUrl = "happyBoy";
 			roster.incidents.add(incident);
 					
 			
@@ -436,10 +444,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		UserService us =UserServiceFactory.getUserService();
 		User user = us.getCurrentUser();
 		if(UserServiceFactory.getUserService().isUserLoggedIn()){
-		cred = authFlow(user.getUserId()).loadCredential(user.getUserId());
-		if(cred.getExpiresInSeconds() <= 1800){
-			cred.refreshToken();
-		}
+			cred = authFlow(user.getUserId()).loadCredential(user.getUserId());
+			if(cred.getExpiresInSeconds() < 1800){
+				cred.refreshToken();
+			}
 		}else{
 			res.sendRedirect(us.createLoginURL("/teacher"));
 		}
@@ -997,7 +1005,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		Incident incident ;
 	
 		
-		String rpCheck = Preconditions.checkNotNull(req.getParameter("incidentReprt"));
+		String rpCheck = Preconditions.checkNotNull(req.getParameter("incidentReport"));
 		IncidentReport report = gson.fromJson(rpCheck, IncidentReport.class);
 		//check for valid roster
 		if(AppValid.rosterCheck(report.rosterId)){
@@ -1034,9 +1042,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 		User user = UserServiceFactory.getUserService().getCurrentUser();
 		ChannelService chanServ = ChannelServiceFactory.getChannelService();
-		
-		
-		chanServ.sendMessage(new ChannelMessage(user.getUserId(), rpCheck));
+		ChannelData data = new ChannelData();
+		data.type = "incidentReport";
+		data.data = rpCheck;
+		chanServ.sendMessage(new ChannelMessage(user.getUserId(), gson.toJson(data)));
 	
 		}//end if
 	}

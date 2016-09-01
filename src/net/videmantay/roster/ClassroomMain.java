@@ -2,6 +2,7 @@ package net.videmantay.roster;
 
 import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,12 +16,17 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import goog.appengine.channel.client.Channel;
+import goog.appengine.channel.client.Data;
+import goog.appengine.channel.client.Socket;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
+import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.assignment.GradedWorkMain;
 import net.videmantay.roster.classtime.ClassTimeMain;
+import net.videmantay.roster.json.IncidentReportJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.student.StudentInfoMain;
 import net.videmantay.shared.UserProfilePanel;
@@ -136,7 +142,8 @@ public class ClassroomMain extends Composite{
 				}});
 		// End set up Side nav Links///////////////////
 			
-	}
+			
+	}//end constructor
 	
 
 	
@@ -184,6 +191,7 @@ public class ClassroomMain extends Composite{
 					 setView(path);
 					}else{dashboardView();}
 						}// end else roster will be here
+		
 	}
 	
 	private void setView(List<String> path){
@@ -209,6 +217,7 @@ public class ClassroomMain extends Composite{
 		mainPanel.add(new RosterDashboardPanel());
 		rosterTitle.setText(classRoster.getTitle());
 		sideNav.hide();
+		console.log(classRoster);
 	}
 	private void studentView(final List<String>path){
 		
@@ -290,6 +299,38 @@ public class ClassroomMain extends Composite{
 		}
 			return classRoster.getId();
 			
+		
+	}
+	
+	@Override
+	public void onLoad(){
+		Socket socket = Channel.open();
+		socket.onOpen(new Function(){
+			@Override
+			public void f(){
+				console.log("socket is open");
+			}
+		});
+		
+		socket.onMessage(new Function(){
+			@Override
+			public Object f(Object...o){
+				Data data = (Data)o[0];
+				//check the data type for lesson or incident, etc..
+				switch(data.type()){
+				case "incidentReport":
+					IncidentReportJson report = JsonUtils.safeEval(data.getData()).cast();
+					///IncidentReportToast that taks incidentReportJson as argument
+					IncidentToastContent itc = new IncidentToastContent();
+					itc.init(report);
+					new MaterialToast(itc).toast(null,2500);
+					break;
+				case "lessonPoints":break;
+				}
+				return Boolean.TRUE;
+			}
+		});
+		
 		
 	}
 }

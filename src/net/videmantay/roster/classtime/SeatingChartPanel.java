@@ -285,6 +285,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		}
 	}
 	
+	@Override
 	public void unHome(){
 		$(".rosterStudent").off("click");
 		$(studentTools).hide();

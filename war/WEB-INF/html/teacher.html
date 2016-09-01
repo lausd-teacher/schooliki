@@ -329,7 +329,6 @@ div.item-student.ui-selecting { background: #FECA40;
 		var loginInfo = ${loginInfo};
 		
 		var rosterList = ${rosterList};
-	
 	</script>
   <body>
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
@@ -346,5 +345,12 @@ div.item-student.ui-selecting { background: #FECA40;
     <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/fullcalendar.min.js"></script>
+  	<script src='/_ah/channel/jsapi'></script>
+  	<script>
+  		var conn = '${connection}';
+  		var channel
+  		= new goog.appengine.Channel(conn);
+  		
+  	</script>
   </body>
 </html>

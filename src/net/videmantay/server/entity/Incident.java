@@ -7,11 +7,9 @@ import com.googlecode.objectify.annotation.Id;
 
 import net.videmantay.shared.BehaviorType;
 
-@Entity
+
 public class Incident implements Serializable {
-	
-	@Id
-	public Long id;
+	public int id;
 	public String name;
 	public String iconUrl;
 	public Integer value;

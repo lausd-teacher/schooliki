@@ -1,15 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:s="urn:import:org.vectomatic.dom.svg.ui">
-		<m:MaterialPanel> 
-			<g:HTMLPanel>
-				<s:SVGImage ui:field="svg">
-					<svg ></svg>
-				</s:SVGImage>
-			</g:HTMLPanel>
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+		<m:MaterialPanel width=" 200xp" height="250px"> 
+			<g:HTMLPanel ui:field="svgImage"/>
 			<m:MaterialLabel ui:field="name" />
-			<m:MaterialBadge ui:field="value" />
+			<m:MaterialChip ui:field="value" />
 		</m:MaterialPanel>
 </ui:UiBinder> 

@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+	xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab" textColor="red" indicatorColor="red accent-4" height="2.5em" >
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Dashboard"  waves="RED"/></m:MaterialTabItem>
@@ -147,7 +148,9 @@
 			<m:MaterialFAB ui:field="classEventFAB" visible="false"><m:MaterialAnchorButton  ui:field="classEventAddBtn" type="FLOATING" iconType="ADD" size="LARGE"/></m:MaterialFAB>
 		</g:HTMLPanel>
 		<div  id="tab3">
-			<h2>TAB 3</h2>
+			<svg viewBox="0 0 150 200" style="width:200px; height:300px;">
+				<use xlink:href="../img/allIcons.svg#rocket" />
+			</svg>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -14,5 +14,8 @@ public class IncidentReport {
 	public ArrayList<RosterStudent> students;
 	public Incident incident;
 	public Event event;
+	
+	//Whole, Multi, Single
+	public String actionType;
 
 }

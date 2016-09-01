@@ -6,6 +6,7 @@ import com.google.gwt.media.client.Audio;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialImage;
@@ -28,34 +29,46 @@ public class IncidentToastContent extends Composite {
 	AudioElement audio;
 	
 	@UiField
-	MaterialImage image;
+	MaterialImage studentImage;
+	
+	@UiField
+	HTMLPanel incidentImage;
 	
 	@UiField
 	MaterialLabel summary;
 	
 	
 	
-	public void init(final IncidentReportJson report, StudentActionModal.ActionType type){
+	public void init(final IncidentReportJson report){
 		String msg = "" ;
 		
-		switch(type){
-		case SINGLE: RosterStudentJson student = report.getStudents().get(0); msg = student.getFirstName() + " " + student.getLastName();break;
-		case MULTI:msg = report.getStudents().length() + " students ";break;
-		case WHOLE:msg = "The Class ";break;
+		switch(report.getActionType()){
+		case "Single": RosterStudentJson student = report.getStudents().get(0);
+				msg = student.getFirstName() + " " + student.getLastName();
+				studentImage.setUrl(student.getThumbnails().get(2).getUrl());
+				break;
+		case "Multi":msg = report.getStudents().length() + " students ";
+					studentImage.setUrl("toMultiStudentPic");
+					break;
+		case "Whole":msg = "The Class ";
+					studentImage.setUrl("WholeClassPic");break;
 		}
 		
 		msg += " earned " + report.getIncident().getValue() + " for " + report.getIncident().getName();
 		summary.setText(msg);
 		
+		String html = "<svg class='incidentToastPic' viewBox='150 200'>"
+				+ "<use xlink:href='/img/allIcons.svg#"
+				+ report.getIncident().getIconUrl()
+				+"/></svg>";
+		
 		if(report.getIncident().getValue() < 0){
 			//sad owl audio
-			audio.setSrc("");
-			//set sad owl image
-			image.setUrl("");
+			audio.setSrc("/audio/badNews.mp3");
 		}else{
 			//happy owl audio
-			audio.setSrc("");
-			image.setUrl("");
+			audio.setSrc("/audio/HooHooHoo2.mp3");
+			
 		}
 		
 		

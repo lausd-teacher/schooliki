@@ -20,6 +20,7 @@ public class RosterUrl {
 	public final static String LIST_STUDENTS ="/teacher/liststudents";
 	public final static String GET_STUDENT = "/teacher/getstudent";
 	
+	public final static String REPORT_INCIDENT = "/teacher/reportincident";
 	
 	public final static String CREATE_GOAL = "/teacher/creategoal";
 	public final static String DELETE_GOAL ="/teacher/deletegoal";

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialModal;
+import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentReportJson;
 import net.videmantay.roster.json.RosterJson;
@@ -32,28 +33,32 @@ public class StudentActionModal extends Composite {
 	private IncidentJson incident;
 	private IncidentReportJson incidentReport = JavaScriptObject.createObject().cast();
 	
-	public enum ActionType{SINGLE, MULTI, WHOLE};
+	public enum ActionType{SINGLE("Single"), MULTI("Multi"), WHOLE("Whole");
+		final String type;           
+		ActionType(String type){
+			this.type = type;
+		};
+		@Override
+		public String toString(){
+			return type;
+		}
+		           }
 	
 	private ActionType actionType = ActionType.SINGLE;
 	
-	private Function incidentRecorded = new Function(){
-		@Override
-		public void f(){
-			//get the student //and incident send it to toast
-			IncidentReportJson inr = JsonUtils.safeEval((String)this.arguments(0)).cast();
-			$(body).trigger("incidentrecorded", inr, actionType);
-		}
-	};
+	
 	private Function onIncidentPicked = new Function(){
 		@Override
 		public boolean f(Event e, Object...in){
 			//rpc to update student behavior
 			incident = (IncidentJson)in[0];
-			incidentReport.setIncicdent(incident).setStudents(students);
+			console.log("The incident return by on Incident Picked");
+			console.log(incident);
+			incidentReport.setIncicdent(incident).setStudents(students)
+			.setRosterId(roster.getId()).setActionType(actionType.toString());
 			
 			//then send message to body when complete
-			Ajax.post("/teacher/saveincidents", $$("incidentReport:" + incidentReport) )
-			.done(incidentRecorded);
+			Ajax.post(RosterUrl.REPORT_INCIDENT, $$("incidentReport:" + JsonUtils.stringify(incidentReport)) );
 			modal.closeModal();
 			return true;
 		}
@@ -63,7 +68,7 @@ public class StudentActionModal extends Composite {
 	MaterialModal modal;
 	
 	@UiField
-	MaterialColumn posIncidentCol;
+	MaterialRow posIncidentRow;
 	
 	final RosterJson roster = window.getPropertyJSO("roster").cast();
 	
@@ -94,11 +99,21 @@ public class StudentActionModal extends Composite {
 		
 	}
 	
+	public void show(){
+		modal.openModal();
+	}
+	public void hide(){
+		modal.closeModal();
+	}
+	
 	@Override
 	public void onLoad(){
 		$(body).on("incidentPicked", onIncidentPicked);
 		for(int i = 0; i < roster.getIncidents().length(); i++){
-			posIncidentCol.add(new IncidentItem(roster.getIncidents().get(i)));
+			MaterialColumn col = new MaterialColumn();
+			col.setGrid("s6 m3 l3");
+			col.add(new IncidentItem(roster.getIncidents().get(i)));
+			posIncidentRow.add(col);
 		}
 	}
 

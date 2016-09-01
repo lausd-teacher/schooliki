@@ -7,16 +7,14 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
 
-import org.vectomatic.dom.svg.OMSVGElement;
-import org.vectomatic.dom.svg.OMSVGUseElement;
-import org.vectomatic.dom.svg.impl.SVGSVGElement;
-import org.vectomatic.dom.svg.ui.SVGImage;
-
 import gwt.material.design.client.ui.MaterialBadge;
+import gwt.material.design.client.ui.MaterialChip;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
 import net.videmantay.roster.json.IncidentJson;
@@ -29,13 +27,13 @@ public class IncidentItem extends Composite{
 	}
 	
 	@UiField
-	SVGImage svg;
+	HTMLPanel svgImage;
 	
 	@UiField
 	MaterialLabel name;
 	
 	@UiField
-	MaterialBadge value;
+	MaterialChip value;
 
 	public IncidentItem() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -45,18 +43,19 @@ public class IncidentItem extends Composite{
 	
 	public IncidentItem(IncidentJson incident){
 		this();
-		this.incident = incident;
+		this.setIncident(incident);
 	}
 	
 	private IncidentJson incident;
 	
 	public void setIncident(IncidentJson incident){
 		this.incident = incident;
-		draw();
+		console.log(incident);
 	}
 	
 	public IncidentJson getIncident(){
 		return this.incident;
+		
 	}
 	
 	public void draw(){
@@ -71,14 +70,17 @@ public class IncidentItem extends Composite{
 		value.setText(""+ incident.getValue());
 		///set up the badge size and center the text
 		
-		OMSVGElement img = svg.getSvgElement();
-		OMSVGUseElement use = new OMSVGUseElement();
-		use.getHref().setBaseVal(incident.getIconUrl());
-		img.appendChild(use);
+		//set up the html
+		String html = "<svg viewBox='0 0 150 200' class='incidentIcon'>"
+				+"<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#" 
+				+ incident.getIconUrl() 
+				+"' /></svg>";
+		svgImage.add(new HTML(html));
 	}
 	
 	@Override
 	public void onLoad(){
+		draw();
 		$(this.getElement()).click(new Function(){
 			@Override
 			public void f(){

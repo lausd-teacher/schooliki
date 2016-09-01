@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<g:HTMLPanel ui:field="imgPanel" />
+		<m:MaterialDropDown>
+			<m:MaterialRow> 
+				<m:MaterialColumn grid="s6 m4 l2"> 
+					<g:HTMLPanel ui:field="?Icon">
+						<svg>
+							<use xmlns:xlink="www.w3.org/1999/xlink" xlink:href="../img/allIcons.svg#" />
+						</svg>
+					</g:HTMLPanel>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialDropDown>
+		<m:MaterialLabel ui:field="nameLabel" />
+		<m:MaterialTextBox ui:field="nameInput" />
+		<m:MaterialChip ui:field="valueLabel" />
+		<m:MaterialNumberBox ui:field="valueInput" />
+	</g:HTMLPanel>
+</ui:UiBinder> 

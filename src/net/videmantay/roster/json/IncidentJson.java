@@ -6,7 +6,7 @@ public class IncidentJson extends JavaScriptObject {
 
 	protected IncidentJson(){}
 	
-	public final native Integer getValue()/*-{
+	public final native int getValue()/*-{
 		return this.value;
 	}-*/;
 	
@@ -18,7 +18,7 @@ public class IncidentJson extends JavaScriptObject {
 	return this.name;
 	}-*/;
 	
-	public final native void setValue(Integer value)/*-{
+	public final native void setValue(int value)/*-{
 		this.value = value;
 	}-*/;
 	

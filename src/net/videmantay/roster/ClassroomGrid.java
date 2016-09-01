@@ -39,6 +39,7 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 	private final RosterJson roster = window.getPropertyJSO("roster").cast();
 	private final JsArray<RosterStudentJson> students = roster.getRosterStudents();
 	private final ArrayList<RosterStudentJson> studentList = new ArrayList<RosterStudentJson>();
+	private final StudentActionModal stuModal = new StudentActionModal();
 	private boolean sortByFirst=true;
 	private MaterialFAB fab = new MaterialFAB();
 	private MaterialAnchorButton addButton = new MaterialAnchorButton(ButtonType.FLOATING);
@@ -68,11 +69,13 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		fab.add(addButton);
 		mainPanel.add(fab);
 		mainPanel.add(createStuForm);
+		mainPanel.add(stuModal);
+		
 	}
 	
 	@Override
 	public void onLoad(){
-		
+		home();
 	}
 	
 	public void showEmpty(){
@@ -178,8 +181,26 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 
 	@Override
 	public void home() {
-		// TODO Auto-generated method stub
+		//right now home is for clicking on students
+		//and generating a dialog for behavior management or
+		// seeing more info on that student will calll it management dialog
+		$(".rosterStudent").click(new Function(){
+			@Override
+			public void f(){
+				// get the student id and populate the 
+				//dialog
+				//$(body).trigger("manageStudentDialog", $(this).id());
+				//stuModal should be triggered from classMain
+				//right now lets test
+				stuModal.show();
+			}
+		});
 		
+	}
+	
+	@Override
+	public void unHome(){
+		$(".rosterStudent").off("click");
 	}
 
 	@Override

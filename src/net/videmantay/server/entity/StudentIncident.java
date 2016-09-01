@@ -25,7 +25,7 @@ public class StudentIncident implements Serializable {
 	public Long studentId;
 	@Index
 	public String date;
-	public Long incidentId;
+	public int incidentId;
 	@Ignore
 	public Incident incident;
 	

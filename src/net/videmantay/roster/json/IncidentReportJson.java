@@ -46,6 +46,7 @@ return this.incidentId;
 
 public final native IncidentReportJson setIncicdent(IncidentJson incident)/*-{
 	this.incidentId = incident;
+	return this;
 }-*/;
 
 	public final native Long getRosterId()/*-{
@@ -66,4 +67,14 @@ public final native IncidentReportJson setIncicdent(IncidentJson incident)/*-{
 		this.event = event;
 		return this;
 	}-*/;
+	
+	public final native String getActionType()/*-{
+			return this.actionType;
+	}-*/;
+	
+	public final native IncidentReportJson setActionType(String actionType)/*-{
+			this.actionType = actionType;
+			return this;
+	}-*/;
+	
 }
