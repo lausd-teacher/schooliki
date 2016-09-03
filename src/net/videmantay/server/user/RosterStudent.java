@@ -42,9 +42,6 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	
 	@Serialize
 	public Set<Goal> goals;
-
-	@Parent
-	public transient Key<Roster> rosterKey;
 	
 	@Ignore
 	public RosterDetail rosterDetail;
@@ -131,12 +128,6 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 		return id;
 	}
 	
-	public Key<Roster> getRosterKey() {
-		return rosterKey;
-	}
-	public void setRosterKey(Key<Roster> rosterKey) {
-		this.rosterKey = rosterKey;
-	}
 	public RosterDetail getRosterDetail(){
 		return this.rosterDetail;
 	}

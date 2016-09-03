@@ -2,7 +2,6 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<g:HTMLPanel>
 		<m:MaterialModal ui:field="modal" type="FIXED_FOOTER">
 			<m:MaterialModalContent>
 			<m:MaterialRow>
@@ -56,5 +55,4 @@
 				</m:MaterialRow>
 			</m:MaterialModalFooter>
 		</m:MaterialModal>
-	</g:HTMLPanel>
 </ui:UiBinder> 

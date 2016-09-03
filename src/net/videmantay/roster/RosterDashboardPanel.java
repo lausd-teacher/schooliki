@@ -6,8 +6,6 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -18,7 +16,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -40,7 +37,8 @@ import net.videmantay.roster.classtime.SeatingChartPanel;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
 
-public class RosterDashboardPanel extends Composite implements ClassroomMain.HasUpdateClassTime {
+public class RosterDashboardPanel extends Composite //implements ClassroomMain.HasUpdateClassTime
+{
 
 	private static RosterDashboardPanelUiBinder uiBinder = GWT.create(RosterDashboardPanelUiBinder.class);
 
@@ -126,19 +124,18 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 	
 	@UiField
 	MaterialAnchorButton classEventAddBtn;
-	
 	private final RosterJson roster =window.getPropertyJSO("roster").cast();
 	private final Function resizeFunc = new Function(){
 		@Override
 		public boolean f(Event e){
 			console.log("window resized, Body size: " + body.getClientWidth() + " and view state is " + view.name());
 			if(body.getClientWidth() < 768 && view == View.CHART){
-				showDisplay();
+				//showDisplay();
 			}
 			
 			if(body.getClientWidth() > 767 && view == View.CHART){
 				console.log("window is greater 767 and view is chart");
-				showChart();
+			//	showChart();
 			}
 			return true;
 		}
@@ -156,7 +153,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 				ClassTimeJson classTime = roster.getClassTimes().get(index);
 				window.setPropertyJSO("classtime", classTime);
 				classtimeBtn.setText(classTime.getTitle());
-				updateClassTime();
+				//updateClassTime();
 			}	
 		}};
 	
@@ -186,11 +183,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 	
 	public RosterDashboardPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		switch(view){
-		case GRID: showDisplay();break;
-		case CHART: showChart();break;
 		
-		}
 		
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		
@@ -374,7 +367,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 		seatingChartEditIcon.setVisible(false);
 	}
 
-	@Override
+	/*@Override
 	public void updateClassTime() {
 		switch(state){
 		//most likely case is dashboard so should be default
@@ -385,11 +378,15 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 		default: display.home(); break;
 		}
 		
-	}
+	}*/
 	
 	@Override
 	public void onLoad(){
-		//load the classTimedrop
+		switch(view){
+		case GRID: showDisplay();break;
+		case CHART: showChart();break;
+		
+		}
 		
 		JsArray<ClassTimeJson> classTimes = roster.getClassTimes();
 		

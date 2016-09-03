@@ -2,9 +2,12 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
+	
 		<m:MaterialPanel width=" 200xp" height="250px"> 
-			<g:HTMLPanel ui:field="svgImage"/>
+			<g:HTMLPanel>
+			<div ui:field="svgImage" />
 			<m:MaterialLabel ui:field="name" />
 			<m:MaterialChip ui:field="value" />
+			</g:HTMLPanel>
 		</m:MaterialPanel>
 </ui:UiBinder> 

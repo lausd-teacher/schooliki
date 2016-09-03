@@ -11,23 +11,15 @@ import net.videmantay.student.json.RosterStudentJson;
 public class IncidentReportJson extends JavaScriptObject {
 
 	protected IncidentReportJson(){};
-	
-	public final native JsArrayNumber getStudentIds()/*-{
+	//Array dont make it across , Wierd
+	public final native String getStudentIds()/*-{
 			return this.studentIds;
 	}-*/;
 	
-	public final native IncidentReportJson setStudentIds(JsArrayNumber students)/*-{
+	public final native IncidentReportJson setStudentIds(String students)/*-{
 			this.studentIds = students;
 			return this;
 	
-	}-*/;
-	
-	public final native Long getIncidentId()/*-{
-		return this.incidentId;
-	}-*/;
-	
-	public final native IncidentReportJson setIncicdentId(Long incident)/*-{
-			this.incidentId = incident;
 	}-*/;
 	
 	public final native JsArray<RosterStudentJson> getStudents()/*-{
@@ -41,11 +33,11 @@ public final native IncidentReportJson setStudents(JsArray<RosterStudentJson> st
 }-*/;
 
 public final native IncidentJson getIncident()/*-{
-return this.incidentId;
+return this["incident"];
 }-*/;
 
 public final native IncidentReportJson setIncicdent(IncidentJson incident)/*-{
-	this.incidentId = incident;
+	this.incident = incident;
 	return this;
 }-*/;
 

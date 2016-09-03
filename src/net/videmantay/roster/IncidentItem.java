@@ -1,6 +1,7 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
@@ -27,7 +28,7 @@ public class IncidentItem extends Composite{
 	}
 	
 	@UiField
-	HTMLPanel svgImage;
+	DivElement svgImage;
 	
 	@UiField
 	MaterialLabel name;
@@ -36,14 +37,7 @@ public class IncidentItem extends Composite{
 	MaterialChip value;
 
 	public IncidentItem() {
-		initWidget(uiBinder.createAndBindUi(this));
-
-		
-	}
-	
-	public IncidentItem(IncidentJson incident){
-		this();
-		this.setIncident(incident);
+		initWidget(uiBinder.createAndBindUi(this));	
 	}
 	
 	private IncidentJson incident;
@@ -51,6 +45,7 @@ public class IncidentItem extends Composite{
 	public void setIncident(IncidentJson incident){
 		this.incident = incident;
 		console.log(incident);
+		draw();
 	}
 	
 	public IncidentJson getIncident(){
@@ -58,7 +53,7 @@ public class IncidentItem extends Composite{
 		
 	}
 	
-	public void draw(){
+	private void draw(){
 		
 		name.setText(incident.getName());
 		if(incident.getValue() < 0){
@@ -75,12 +70,11 @@ public class IncidentItem extends Composite{
 				+"<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#" 
 				+ incident.getIconUrl() 
 				+"' /></svg>";
-		svgImage.add(new HTML(html));
+		svgImage.setInnerHTML(html);
 	}
 	
 	@Override
 	public void onLoad(){
-		draw();
 		$(this.getElement()).click(new Function(){
 			@Override
 			public void f(){

@@ -13,11 +13,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.AttachDetachException;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import goog.appengine.channel.client.Channel;
-import goog.appengine.channel.client.Data;
+import goog.appengine.channel.client.ChannelDataJson;
 import goog.appengine.channel.client.Socket;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
@@ -83,7 +84,6 @@ public class ClassroomMain extends Composite{
 	//end side nav links/////////
 		
 	private  RosterJson classRoster;
-	
 	
 	
 	public ClassroomMain() {
@@ -209,7 +209,7 @@ public class ClassroomMain extends Composite{
 	
 	private void dashboardView(){
 		console.log("classmain dashboard called");
-		if(mainPanel.getWidgetCount() > 1 && mainPanel.getWidget(0) instanceof RosterDashboardPanel){
+		if(mainPanel.getWidgetCount() >= 1 && mainPanel.getWidget(0) instanceof RosterDashboardPanel){
 			console.log("Main panel had instance of roster dashboard already");
 			return;
 		}
@@ -237,6 +237,7 @@ public class ClassroomMain extends Composite{
 				
 				//rosterStudent main must handle the view of students
 				case 2: mainPanel.clear();
+				mainPanel.getElement().removeAllChildren();
 				mainPanel.add(new StudentInfoMain().setStudent(Longs.tryParse(path.get(1))));
 				rosterTitle.setText("Student Info");
 				break;
@@ -304,7 +305,7 @@ public class ClassroomMain extends Composite{
 	
 	@Override
 	public void onLoad(){
-		Socket socket = Channel.open();
+	Socket socket = Channel.open();
 		socket.onOpen(new Function(){
 			@Override
 			public void f(){
@@ -315,18 +316,17 @@ public class ClassroomMain extends Composite{
 		socket.onMessage(new Function(){
 			@Override
 			public Object f(Object...o){
-				Data data = (Data)o[0];
+				
 				//check the data type for lesson or incident, etc..
-				switch(data.type()){
-				case "incidentReport":
-					IncidentReportJson report = JsonUtils.safeEval(data.getData()).cast();
+				console.log((ChannelDataJson)o[0]);
+				ChannelDataJson data = (ChannelDataJson)o[0];
+				console.log(data.getData());
+					IncidentReportJson report = JsonUtils.unsafeEval(data.getData().toString()).cast();
+				console.log(report);
 					///IncidentReportToast that taks incidentReportJson as argument
 					IncidentToastContent itc = new IncidentToastContent();
 					itc.init(report);
-					new MaterialToast(itc).toast(null,2500);
-					break;
-				case "lessonPoints":break;
-				}
+					MaterialToast.fireToast(itc.toString(), 5000);
 				return Boolean.TRUE;
 			}
 		});

@@ -8,4 +8,5 @@
 	<source path="admin" />
 	<source path="shared" />
 	<entry-point class="net.videmantay.admin.Admin"></entry-point>
+	<set-property name="user.agent" value="safari"/>
 </module>

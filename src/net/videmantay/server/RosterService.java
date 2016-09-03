@@ -1,7 +1,6 @@
 package net.videmantay.server;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +37,6 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.model.*;
-import com.google.api.services.calendar.model.Event.ExtendedProperties;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
@@ -51,6 +48,7 @@ import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.labs.repackaged.com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Longs;
@@ -59,8 +57,6 @@ import com.google.gson.Gson;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
-import com.googlecode.objectify.ObjectifyService;
-
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -998,42 +994,44 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	}
 	private void getStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 		
+	
 	///REPORT INCIDENT////////
 	private void reportIncident(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException{
-		
+		log.log(Level.INFO, "report incident called");
 		final HashSet<RosterStudent> students = new HashSet<>();
-		Incident incident ;
-	
 		
 		String rpCheck = Preconditions.checkNotNull(req.getParameter("incidentReport"));
+		log.log(Level.INFO, "this is the json report: \n " + rpCheck);
 		IncidentReport report = gson.fromJson(rpCheck, IncidentReport.class);
 		//check for valid roster
 		if(AppValid.rosterCheck(report.rosterId)){
 			//set up keys for loading
-			Key<Roster> rosKey = Key.create(Roster.class, report.rosterId);
+			
 			final ArrayList<Key<RosterStudent>> stuKeys = new ArrayList<Key<RosterStudent>>();
-			for(Long l: report.studentIds){
-				Key<RosterStudent> key = Key.create(rosKey, RosterStudent.class, l);
+			List<String>stuIds = Splitter.on(',').splitToList(report.studentIds);
+			for(String l: stuIds){
+				Key<RosterStudent> key = Key.create(RosterStudent.class, Longs.tryParse(l));
 				stuKeys.add(key);
 			}
-			//TODO:load incident from db
-			//try catch incident may not exist
-			incident = db().load().key(Key.create(Incident.class,report.incidentId)).now();
 			
+			log.log(Level.INFO, "Student keys in json form is " + gson.toJson(stuKeys));
 		//load from students from db	
 		//TODO:try catch here students may not exist //
-		students.addAll(db().load().keys(stuKeys).values());
-			
+			students.addAll(db().load().keys(stuKeys).values());
+			log.log(Level.INFO, "Incident report gathered students " + students.size() + " from db");
 		//Array list to bulk upload
 		ArrayList<StudentIncident> stuIncidents = new ArrayList<>();
 		for(RosterStudent rs:students){
 			StudentIncident si = new StudentIncident();
 			//DateFormat the string
 			si.date = new DateTime(new Date()).toString();
-			si.incidentId = incident.id;
+			si.incidentId = report.incident.id;
 			si.studentId = rs.id;
 		stuIncidents.add(si);
-			rs.points.add(incident.value);
+			if(rs.points == null){
+				rs.points = new ArrayList<Integer>();
+			}
+			rs.points.add(report.incident.value);
 		}
 		
 		//update students and studentIncidents
@@ -1042,11 +1040,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 		User user = UserServiceFactory.getUserService().getCurrentUser();
 		ChannelService chanServ = ChannelServiceFactory.getChannelService();
-		ChannelData data = new ChannelData();
-		data.type = "incidentReport";
-		data.data = rpCheck;
-		chanServ.sendMessage(new ChannelMessage(user.getUserId(), gson.toJson(data)));
-	
+		
+		chanServ.sendMessage(new ChannelMessage(user.getUserId(), gson.toJson(report)));
+		
+		log.log(Level.INFO, "channel should have sent message");
 		}//end if
 	}
 	

@@ -9,11 +9,8 @@ import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialFAB;
-import gwt.material.design.client.ui.MaterialIcon;
-import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialRow;
-import gwt.material.design.client.ui.MaterialSideNav;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.student.CreateStudentForm;
 import net.videmantay.roster.student.FistNameCompare;
@@ -24,12 +21,13 @@ import static com.google.gwt.query.client.GQuery.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.uibinder.client.UiField;
 
 
 public class ClassroomGrid extends Composite implements HasRosterDashboardView{
@@ -183,15 +181,23 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 	public void home() {
 		//right now home is for clicking on students
 		//and generating a dialog for behavior management or
-		// seeing more info on that student will calll it management dialog
+		// seeing more info on that student will calll it student action dialog
 		$(".rosterStudent").click(new Function(){
 			@Override
 			public void f(){
-				// get the student id and populate the 
-				//dialog
-				//$(body).trigger("manageStudentDialog", $(this).id());
-				//stuModal should be triggered from classMain
-				//right now lets test
+				
+				Long studentId = Longs.tryParse($(this).id());
+				RosterStudentJson student = null;
+				for(int i = 0; i < roster.getRosterStudents().length(); i++){
+					if(studentId == roster.getRosterStudents().get(i).getId()){
+						student = roster.getRosterStudents().get(i);
+						break;
+					}
+				}
+				
+				JsArray<RosterStudentJson> students = JsArray.createArray().cast();
+				students.push(student);
+				stuModal.loadData(ActionType.SINGLE	, students);
 				stuModal.show();
 			}
 		});

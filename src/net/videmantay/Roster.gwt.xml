@@ -9,6 +9,7 @@
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeRed" />
 	<inherits name="gwt.material.design.addins.GwtMaterialAddins"/>
 	<inherits name="goog.appengine.channel.Channel" />
+	<inherits name="com.google.gwt.json.JSON" />
 	<source path="roster" />
 	<source path="student" />
 	<source path="shared" />

@@ -9,8 +9,9 @@ import net.videmantay.server.user.RosterStudent;
 
 public class IncidentReport {
 	public Long rosterId;
-	public Long incidentId;
-	public Set<Long> studentIds;
+	//for some reason array not making it across wire
+	//csv then
+	public String studentIds;
 	public ArrayList<RosterStudent> students;
 	public Incident incident;
 	public Event event;

@@ -28,7 +28,7 @@
 				</m:MaterialNavSection>
 			</m:MaterialNavBar>
 			<!-- SideNav -->
-			<m:MaterialSideNav type="CLIP" m:id="sideNav"
+			<m:MaterialSideNav type="PUSH" m:id="sideNav"
 				closeOnClick="true">
 				<h:Div m:id="profile" styleName="{style.profile}">
 					<h:Span>Tanilo ViDemantay</h:Span>

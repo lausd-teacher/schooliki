@@ -39,7 +39,7 @@
 							<m:MaterialLink ui:field="manageStationsLink" text="Manage Stations" />
 						</m:MaterialDropDown>
 					</m:MaterialColumn>
-				</m:MaterialRow><!--  -->
+				</m:MaterialRow>
 				</m:MaterialColumn>
 			<m:MaterialColumn grid="s12 m6 l6">
 				<m:MaterialColumn grid="s2 m2 l2">
@@ -66,7 +66,7 @@
 				</m:MaterialPanel>
 				</m:MaterialColumn >
 				<m:MaterialColumn grid="s1 m1 l1">
-					<m:MaterialPanel  paddingTop="12"><!--  -->
+					<m:MaterialPanel  paddingTop="12">
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Groups">
 							<m:MaterialIcon  ui:field="groupsIcon" iconType="GROUP_WORK" iconSize="SMALL"/>
@@ -74,14 +74,14 @@
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
-				<!-- This starts selects tools -->
+				<!--This starts selects tools -->
 				<m:MaterialColumn grid="s2 m2 l2">
 					<m:MaterialPanel paddingTop="12" marginLeft="10">
 						<m:MaterialLabel text="Select: " textColor="deep-orange darken-3"/>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
 				<m:MaterialColumn grid="s1 m1 l1" marginRight="10">
-					<m:MaterialPanel paddingTop="12"><!--  -->
+					<m:MaterialPanel paddingTop="12">
 						<g:HTMLPanel>
 						<m:MaterialTooltip text="Multiple">
 							<m:MaterialIcon ui:field="multipleIcon" iconType="GROUP_ADD" iconSize="SMALL" textColor="deep-orange darken-3"/>
@@ -90,7 +90,7 @@
 					</m:MaterialPanel>
 				</m:MaterialColumn>
 				<m:MaterialColumn grid="s1 m1 l1" marginRight="10">
-					<m:MaterialPanel paddingTop="12" ><!--  -->
+					<m:MaterialPanel paddingTop="12" >
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Random">
 							<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE" iconSize="SMALL" textColor="deep-orange darken-3"/>
@@ -99,7 +99,7 @@
 					</m:MaterialPanel>
 			</m:MaterialColumn>
 				<m:MaterialColumn grid="s1 m1 l1">
-					<m:MaterialPanel paddingTop="12"><!--  -->
+					<m:MaterialPanel paddingTop="12">
 						<g:HTMLPanel>
 						<m:MaterialTooltip text="Select All">
 							<m:MaterialIcon ui:field="selectAllIcon" iconType="SELECT_ALL" iconSize="SMALL" textColor="deep-orange darken-3"/>
@@ -143,7 +143,7 @@
 			</g:HTMLPanel>
 		</div>
 		<g:HTMLPanel ui:field="tab2">
-			<g:Frame ui:field="calFrame" url="../cal.html" width="100%"   addStyleNames="calFrame" visible="false" />
+			  <g:Frame ui:field="calFrame" url="../cal.html" width="100%"   addStyleNames="calFrame" visible="false" /> 
 			<br/>
 			<m:MaterialFAB ui:field="classEventFAB" visible="false"><m:MaterialAnchorButton  ui:field="classEventAddBtn" type="FLOATING" iconType="ADD" size="LARGE"/></m:MaterialFAB>
 		</g:HTMLPanel>

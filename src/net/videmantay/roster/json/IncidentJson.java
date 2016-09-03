@@ -18,15 +18,28 @@ public class IncidentJson extends JavaScriptObject {
 	return this.name;
 	}-*/;
 	
-	public final native void setValue(int value)/*-{
+	public final native int getId()/*-{
+	return this.id;
+}-*/;
+	
+	public final native IncidentJson setValue(int value)/*-{
 		this.value = value;
+		return this;
 	}-*/;
 	
-	public final native void setName(String name)/*-{
+	public final native IncidentJson setName(String name)/*-{
 			this.name = name;
+			return this;
 	}-*/;
 	
-	public final native void setIconUrl(String iconUrl)/*-{
+	public final native IncidentJson setIconUrl(String iconUrl)/*-{
 		this.iconUrl = iconUrl;
+		return this;
 	}-*/;
+	
+	public final native IncidentJson setId(int id)/*-{
+		this.id = id;
+		return this;
+	}-*/;
+	
 }
