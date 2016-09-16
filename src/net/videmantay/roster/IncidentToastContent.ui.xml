@@ -7,18 +7,19 @@
 		.toastContent{
 			margin-left:auto;
 			margin-right:auto;
-			margin-top:20%;
+
 	}
 	</ui:style>
 	<g:HTMLPanel ui:field="toastContent" addStyleNames="{style.toastContent}">
+	<m:MaterialImage float="LEFT" left="-10" ui:field="owlImage" />
 	<m:MaterialRow>
-		<m:MaterialColumn grid="s12 m4 l4">
-		<m:MaterialImage ui:field="studentImage" />
+		<m:MaterialColumn grid="s12 m3 l2" textAlign="CENTER">
+		<m:MaterialImage ui:field="studentImage"  width="128px" height="128px"/>
 		</m:MaterialColumn>
-		<m:MaterialColumn grid="s12 m4 l4">
-			<m:MaterialLabel ui:field="summary" />
+		<m:MaterialColumn grid="s12 m3 l2"  textAlign="CENTER">
+			<m:MaterialLabel ui:field="summary" fontSize="2em" fontWeight="BOLD" />
 		</m:MaterialColumn>
-		<m:MaterialColumn grid="s12 m4 l4">
+		<m:MaterialColumn grid="s12 m3 l2" textAlign="CENTER">
 		<g:HTMLPanel ui:field="incidentImage" />
 		</m:MaterialColumn>
 	</m:MaterialRow>

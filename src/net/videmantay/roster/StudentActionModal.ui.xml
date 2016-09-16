@@ -4,19 +4,22 @@
 	xmlns:m="urn:import:gwt.material.design.client.ui">
 		<m:MaterialModal ui:field="modal" type="FIXED_FOOTER">
 			<m:MaterialModalContent>
-			<m:MaterialRow>
-			<m:MaterialColumn>
-				<m:MaterialImage ui:field="image" />
+			<m:MaterialRow paddingLeft="10" paddingRight="10">
+			<m:MaterialColumn grid="s5 m5 l5">
+				<m:MaterialImage ui:field="image"  width="7em" height="7em"/>
 			</m:MaterialColumn>
-			<m:MaterialColumn>
-				<m:MaterialTitle ui:field="studentsTitle"></m:MaterialTitle>
+			<m:MaterialColumn grid="s5 m5 l5">
+				<m:MaterialTitle ui:field="studentsTitle" ></m:MaterialTitle>
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s2 m2 l2">
+			<m:MaterialAnchorButton type="FLAT" iconType="LAUNCH" top="30" iconSize="LARGE" iconFontSize="3em" iconColor="grey darken-3" ui:field="showMoreQuickLink"></m:MaterialAnchorButton>
 			</m:MaterialColumn>
 			</m:MaterialRow>
 				<m:html.Hr/>
 				<m:MaterialRow>
-				<m:MaterialTab>
-					<m:MaterialTabItem ><m:MaterialAnchorButton text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
-					<m:MaterialTabItem><m:MaterialAnchorButton text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
+				<m:MaterialTab ui:field="tab" indicatorColor="green">
+					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton ui:field="posTab" type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
+					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton ui:field="negTab" type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
 				</m:MaterialTab>
 				</m:MaterialRow>
 				<m:MaterialRow ui:field="incidentGirdPanel">
@@ -31,7 +34,7 @@
 				</m:MaterialRow>
 			</m:MaterialModalContent>
 			<m:MaterialModalFooter ui:field="footer">
-				<m:MaterialRow marginBottom="0"> 
+				<m:MaterialRow marginBottom="0"  paddingLeft="50"> 
 					<m:MaterialColumn grid="s2 m2 l2">
 					<!-- Quick Assignment (All)-->
 						<m:MaterialAnchorButton type="FLAT" textColor="orange darken-4" iconType="ASSIGNMENT"  ui:field="assignmentQuickLink"></m:MaterialAnchorButton>
@@ -49,9 +52,14 @@
 						<m:MaterialAnchorButton type="FLAT" textColor="red darken-4" iconType="LOCAL_LIBRARY" ui:field="bookQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s2 m2 l2">
-					<!-- Show More (This only for single) -->
-						<m:MaterialAnchorButton type="FLAT" textColor="red darken-2" iconType="MORE_VERT" ui:field="showMoreQuickLink"></m:MaterialAnchorButton>
+					<!-- Teacher's Note (This only for single) -->
+						<m:MaterialAnchorButton type="FLAT" textColor="deep-orange darken-2" iconType="NOTE" ui:field="noteQuickLink" />
 					</m:MaterialColumn>
+					<m:MaterialColumn grid="s2 m2 l2">
+					<!-- Show More (This only for single) -->
+						<m:MaterialAnchorButton type="FLAT" textColor="red darken-2"  text="CANCEL" ui:field="cancelStudentActionBtn"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					
 				</m:MaterialRow>
 			</m:MaterialModalFooter>
 		</m:MaterialModal>

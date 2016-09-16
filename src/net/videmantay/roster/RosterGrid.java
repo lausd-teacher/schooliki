@@ -20,7 +20,7 @@ public class RosterGrid extends MaterialContainer{
 	@Override
 	public void onLoad(){
 		
-		drawGrid();
+	drawGrid();	
 	}
 	
 	public void drawGrid(){

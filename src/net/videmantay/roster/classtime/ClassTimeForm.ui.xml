@@ -30,9 +30,10 @@
 			<m:MaterialTextArea ui:field="description" placeholder="description" />
 			<m:MaterialCheckBox  ui:field="isDefault" text="Default" />
 		</g:HTMLPanel>
-		<g:HTMLPanel m:id="procedureEditor" ui:field="procedureEditor">
+		<m:MaterialPanel m:id="procedureEditor" ui:field="procedureEditor">
+			<m:MaterialTitle title="Procedures" />
 			<m:MaterialCollection ui:field="procedureCollection"></m:MaterialCollection>
-		</g:HTMLPanel>
+		</m:MaterialPanel>
 		<g:HTMLPanel m:id="groupsEditor" ui:field="groupsEditor">
 		</g:HTMLPanel>
 	</g:HTMLPanel>

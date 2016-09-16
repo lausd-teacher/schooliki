@@ -326,7 +326,8 @@ public class ClassroomMain extends Composite{
 					///IncidentReportToast that taks incidentReportJson as argument
 					IncidentToastContent itc = new IncidentToastContent();
 					itc.init(report);
-					MaterialToast.fireToast(itc.toString(), 5000);
+					MaterialToast.fireToast(itc.toString(), 3000);
+					itc.audio.play();
 				return Boolean.TRUE;
 			}
 		});

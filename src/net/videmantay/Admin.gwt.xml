@@ -6,6 +6,8 @@
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeGreen" />
 	<inherits name="com.google.common.base.Base" />
 	<source path="admin" />
+	<source path="roster" />
+	<source path="student" />
 	<source path="shared" />
 	<entry-point class="net.videmantay.admin.Admin"></entry-point>
 	<set-property name="user.agent" value="safari"/>

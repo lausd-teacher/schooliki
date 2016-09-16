@@ -58,15 +58,17 @@ public class IncidentItem extends Composite{
 		name.setText(incident.getName());
 		if(incident.getValue() < 0){
 			//badge color red;
+			value.setBackgroundColor("red");
 		}else{
 			//badge color green
+			value.setBackgroundColor("green");
 		}
 		
 		value.setText(""+ incident.getValue());
 		///set up the badge size and center the text
 		
 		//set up the html
-		String html = "<svg viewBox='0 0 150 200' class='incidentIcon'>"
+		String html = "<svg viewBox='0 0 150 200' class='incidentIcon' style='width:7em; height:8em'>"
 				+"<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#" 
 				+ incident.getIconUrl() 
 				+"' /></svg>";

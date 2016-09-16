@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:v="urn:import:net.videmantay.roster.incident">
+	<ui:style>
+	
+	</ui:style>
+	<m:MaterialModal>
+	<m:MaterialModalContent>
+	<g:HTMLPanel>
+		<m:MaterialInput ui:field="iconUrl" type="TEXT" visible="false" />
+		<g:HTMLPanel ui:field="imgPanel" activates="iconList"/>
+		<m:MaterialDropDown activator="iconList">
+			<v:IncidentIconGrid />
+		</m:MaterialDropDown>
+		<m:MaterialLabel ui:field="nameLabel" text="Name:"/>
+		<m:MaterialTextBox ui:field="nameInput" />
+		<m:MaterialChip ui:field="valueLabel" text="Points:"/>
+		<m:MaterialNumberBox ui:field="valueInput" />
+		<m:MaterialLabel text="Type:" />
+		<m:MaterialListBox ui:field="typeListBox"></m:MaterialListBox>
+	</g:HTMLPanel>
+	</m:MaterialModalContent>
+	<m:MaterialModalFooter>
+		<m:MaterialRow ui:field="deleteEditRow">
+			<m:MaterialColumn>
+				<m:MaterialIcon  ui:field="deleteBtn" iconType="DELETE" />
+			</m:MaterialColumn>
+			<m:MaterialColumn>
+				<m:MaterialIcon ui:field="editBtn"  iconType="EDIT" />
+			</m:MaterialColumn>
+		</m:MaterialRow>
+		<m:MaterialRow ui:field="doneCancelRow">
+			<m:MaterialColumn>
+				<m:MaterialIcon ui:field="doneBtn"  iconType="DONE" />
+			</m:MaterialColumn>
+			<m:MaterialColumn>
+				<m:MaterialIcon ui:field="cancelBtn"  iconType="CANCEL" />
+			</m:MaterialColumn>
+		</m:MaterialRow>
+	</m:MaterialModalFooter>
+	</m:MaterialModal>
+	
+</ui:UiBinder> 

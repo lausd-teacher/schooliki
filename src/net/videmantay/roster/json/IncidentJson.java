@@ -42,4 +42,13 @@ public class IncidentJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	
+	public final native String getBehaviorType()/*-{
+			return this.type;
+	}-*/;
+	
+	public final native IncidentJson setBehaviorType(String type)/*-{
+			this.type = type;
+			return this;
+	}-*/;
+	
 }

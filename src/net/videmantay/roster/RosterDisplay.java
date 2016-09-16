@@ -49,6 +49,8 @@ public class RosterDisplay extends Composite{
 	Function rosterRedraw = new Function(){
 		@Override
 		public boolean f(Event e, Object...o){
+			e.stopPropagation();
+			e.preventDefault();
 			RosterDetailJson rd = JsonUtils.safeEval((String)o[0]).cast();
 			console.log("roster ajax finished here is the server response");
 			console.log(rd);

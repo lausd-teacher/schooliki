@@ -34,9 +34,17 @@
 					<m:MaterialColumn>
 						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT" activates="seatingChartEdit" marginLeft="5.5"/>
 						<m:MaterialDropDown activator="seatingChartEdit">
-							<m:MaterialLink ui:field="manageFurnitureLink" text="Manage Furntirue"/>
 							<m:MaterialLink ui:field="arrangeStudentsLink" text="Arrange Students" />
+							<m:MaterialLink ui:field="manageFurnitureLink" text="Manage Furntirue"/>
 							<m:MaterialLink ui:field="manageStationsLink" text="Manage Stations" />
+							<m:MaterialLink ui:field="manageGroupsLink" text="Manage Groups" />
+							<m:MaterialLink ui:field="manageSeatingChart" text="Manage Chart" activates="manageSeating"/>
+								<m:MaterialDropDown activator="manageSeating">
+									<m:MaterialLink ui:field="newLink" text="New" />
+									<m:MaterialLink ui:field="copyLink" text="Copy" />
+									<m:MaterialLink ui:field="deleteLink" text="Delete" />
+								</m:MaterialDropDown>
+							
 						</m:MaterialDropDown>
 					</m:MaterialColumn>
 				</m:MaterialRow>

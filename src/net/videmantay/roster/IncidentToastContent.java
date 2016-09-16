@@ -65,7 +65,11 @@ public class IncidentToastContent extends Composite {
 		switch(report.getActionType()){
 		case "Single": RosterStudentJson student = students.get(0);
 				msg = student.getFirstName() + " " + student.getLastName();
+				if(student.getThumbnails() != null){
 				studentImage.setUrl(student.getThumbnails().get(2).getUrl());
+				}else{
+					studentImage.setUrl("../img/user.svg");
+				}
 				break;
 		case "Multi":msg = students.size() + " students ";
 					studentImage.setUrl("toMultiStudentPic");
@@ -74,10 +78,10 @@ public class IncidentToastContent extends Composite {
 					studentImage.setUrl("WholeClassPic");break;
 		}
 		
-		msg += " earned " + report.getIncident().getValue() + " for " + report.getIncident().getName();
+		msg += "<br/>earned&nbsp;" + report.getIncident().getValue() + "&nbsp;for<br/>" + report.getIncident().getName();
 		summary.setText(msg);
 		
-		String html = "<svg class='incidentToastPic' viewBox='0 0 150 200'>"
+		String html = "<svg class='incidentToastPic' viewBox='0 0 150 200' style='width:150px;height:200px'>"
 				+ "<use xlink:href='/img/allIcons.svg#"
 				+ report.getIncident().getIconUrl()
 				+"'/></svg>";
@@ -91,10 +95,8 @@ public class IncidentToastContent extends Composite {
 			audio.setSrc("/audio/HooHooHoo2.mp3");
 			
 		}
-		audio.setAutoplay(true);
+		//audio.setAutoplay(true);
 		
 	}
-	
-	
 
 }

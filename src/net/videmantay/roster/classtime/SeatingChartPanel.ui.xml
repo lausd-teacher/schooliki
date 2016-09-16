@@ -29,6 +29,9 @@
 					</m:MaterialCollectionItem>
 				</m:MaterialCollection>
 			</m:MaterialPanel>
+			<m:MaterialPanel ui:field="sectionTools" >
+			<!-- circle, square, carpet, kidney table -->
+			</m:MaterialPanel>
 		</h:Div>
 		<h:Div ui:field="floorPlan" addStyleNames="floorPlan">
 		</h:Div>

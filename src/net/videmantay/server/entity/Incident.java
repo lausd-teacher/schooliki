@@ -9,6 +9,8 @@ import net.videmantay.shared.BehaviorType;
 
 
 public class Incident implements Serializable {
+	
+	private static final long serialVersionUID = -2538747210938445430L;
 	public int id;
 	public String name;
 	public String iconUrl;
