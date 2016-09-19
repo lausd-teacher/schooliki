@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:v="urn:import:net.videmantay.roster.incident">
 	<ui:style>
 	
 	</ui:style>
@@ -29,5 +30,7 @@
 		<m:MaterialFAB>
 			<m:MaterialAnchorButton  type="RAISED" iconType="ADD"/>
 		</m:MaterialFAB>
+		<v:IncidentForm ui:field="incidentForm" />
+	  <v:DeleteIncidentModal ui:field="deleteModal" />
 	</g:HTMLPanel>
 </ui:UiBinder> 

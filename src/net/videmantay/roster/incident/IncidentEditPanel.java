@@ -6,9 +6,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
+import static com.google.gwt.query.client.GQuery.*;
+
 import gwt.material.design.client.ui.MaterialIcon;
+import gwt.material.design.client.ui.MaterialPanel;
+import net.videmantay.roster.json.IncidentJson;
 
 public class IncidentEditPanel extends Composite {
 
@@ -17,8 +22,4 @@ public class IncidentEditPanel extends Composite {
 	interface IncidentEditPanelUiBinder extends UiBinder<Widget, IncidentEditPanel> {
 	}
 	
-	public IncidentEditPanel(){
-		uiBinder.createAndBindUi(this);
-		
-	}
 }

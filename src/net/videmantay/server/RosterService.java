@@ -136,6 +136,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		case RosterUrl.UPDATE_SEATINGCHART:updateSeatingChart(req,res);break;
 		case RosterUrl.DELETE_SEATINGCHART:deleteSeatingChart(req,res);break;
 		
+		case RosterUrl.SAVE_INCIDENTS:saveIncident(req, res);break;
+		
 		
 		}
 		
@@ -966,6 +968,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		//CRUD INCIDENTS////
 		
 		public void saveIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+			//no need to send anything across wire 
+			//here we just validate 
 			
 		}
 		

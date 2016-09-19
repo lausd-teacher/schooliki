@@ -1,6 +1,6 @@
 package net.videmantay.roster;
 
-public class RosterUrl {
+ public class  RosterUrl {
 
 	public final static String CREATE_ROSTER ="/teacher/createroster";
 	public final static String DELETE_ROSTER ="/teacher/deleteroster";
@@ -45,7 +45,6 @@ public class RosterUrl {
 	public final static String UPDATE_SEATINGCHART="/teacher/updatesseatingchart";
 	public final static String DELETE_SEATINGCHART="/teacher/deleteseatingchart";
 	
-	
-	
+	public final static String SAVE_INCIDENTS = "/teacher/saveincident";
 	
 }

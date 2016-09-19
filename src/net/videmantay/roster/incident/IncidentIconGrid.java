@@ -1,47 +1,40 @@
 package net.videmantay.roster.incident;
 
-import java.util.List;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 
-import com.google.appengine.labs.repackaged.com.google.common.collect.ImmutableList;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import static com.google.gwt.query.client.GQuery.*;
+
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialRow;
 
-public class IncidentIconGrid  extends Composite implements ClickHandler{
+public class IncidentIconGrid  extends Composite{
 
-	 HTMLPanel setIconPanel ;
 	
-	List<String> iconList = ImmutableList.<String>builder()
-			.add("doctoer").add("scientist").add("pharmasist")
-			.add("")
-			.build();
+	private String[] iconList = {"doctor", "happyGirl", "rocket","happyBoy","warningCone","warningSign","scientist","pharmasist"};
 	
-	final MaterialRow grid = new MaterialRow();
+	public  MaterialRow grid = new MaterialRow();
+	private Function clickFunction = new Function(){
+		@Override
+		public boolean f(Event e){
+			e.stopPropagation();
+			e.preventDefault();
+			
+			
+			GQuery el = $(e).closest("svg");
+			GQuery iconPanel = $("#iconFormIconPanel");
+			iconPanel.html(el.html());
+			iconPanel.data("icon", el.id());
+			return true;
+		}
+	};
 	
 	public IncidentIconGrid(){
-		
-	}
-	
-	@Override
-	public void onClick(ClickEvent event) {
-		event.stopPropagation();
-		event.preventDefault();
-		
-		setIconPanel.clear();
-		setIconPanel.getElement().setInnerHTML($(event).closest("svg").html());
-		
-	}
-	
-	public void init(HTMLPanel panel){
-		this.setIconPanel = panel;
-	
+		this.initWidget(grid);
 		for(String s: iconList){
 			MaterialColumn c = new MaterialColumn();
 			c.setGrid("s6 m4 l2");
@@ -56,5 +49,11 @@ public class IncidentIconGrid  extends Composite implements ClickHandler{
 		}
 	}
 	
-
+	@Override
+	public void onLoad(){
+		$(this).click(clickFunction);
+	}
+	
+	
+	
 }

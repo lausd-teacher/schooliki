@@ -6,20 +6,7 @@
 	<ui:style>
 	
 	</ui:style>
-	<m:MaterialCard>
-		<m:MaterialCardAction>
-			<m:MaterialRow>
-				<m:MaterialColumn ui:field="deleteBtn" grid="s6 m6 l6">
-					<m:MaterialIcon iconType="DELETE" />
-				</m:MaterialColumn>
-				<m:MaterialColumn ui:field="editBtn" grid="s6 m6 l6">
-					<m:MaterialIcon  iconType="EDIT"/>
-				</m:MaterialColumn>
-			</m:MaterialRow>
-		</m:MaterialCardAction>
-		<m:MaterialCardContent >
-		<m:MaterialPanel ui:field="iconPanel">
-		</m:MaterialPanel>
-		</m:MaterialCardContent>
-	</m:MaterialCard>
+	<g:HTMLPanel>
+	
+	</g:HTMLPanel>
 </ui:UiBinder> 

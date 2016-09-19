@@ -27,6 +27,7 @@ import gwt.material.design.client.ui.MaterialSideNav;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.assignment.GradedWorkMain;
 import net.videmantay.roster.classtime.ClassTimeMain;
+import net.videmantay.roster.incident.IncidentMain;
 import net.videmantay.roster.json.IncidentReportJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.student.StudentInfoMain;
@@ -127,6 +128,20 @@ public class ClassroomMain extends Composite{
 					
 				}});
 			
+			incidentLink.addClickHandler( new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					History.newItem("roster/" + classRoster.getId() +"/incidents");
+					new Timer(){
+
+						@Override
+						public void run() {
+							sideNav.hide();
+						}}.schedule(250); 
+					
+				}});
+			
 			classTimeLink.addClickHandler(new ClickHandler(){
 
 				@Override
@@ -200,7 +215,7 @@ public class ClassroomMain extends Composite{
 		case "students":studentView(path); break;
 		case "classtime": classTimeView(path);break;
 		case "assignments":assignmentView(path); break;
-		case "behaviors":behaviorView(path); break;
+		case "incidents":incidentView(path); break;
 		case "jobs": jobView(path);break;
 		case "goals":goalView(path); break;
 		default: dashboardView();
@@ -285,8 +300,22 @@ public class ClassroomMain extends Composite{
 		
 	}
 	
-	private void behaviorView(List<String> path){
-		
+	private void incidentView(List<String> path){
+		GWT.runAsync(new RunAsyncCallback(){
+
+			@Override
+			public void onFailure(Throwable reason) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess() {
+				mainPanel.clear();
+				mainPanel.add(new IncidentMain());
+				rosterTitle.setText("Incidents");
+				
+			}});
 }
 	private void jobView(List<String> path){
 		
