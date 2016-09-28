@@ -53,5 +53,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtMaterial"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtObjectify"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtQuery"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtCharts"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

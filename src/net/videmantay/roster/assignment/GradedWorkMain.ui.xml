@@ -1,40 +1,29 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<ui:style>
-	
-	</ui:style>
-	<g:HTMLPanel ui:field="wrapper">
-		<m:MaterialHeader> 
-			<m:MaterialRow>
-				<m:MaterialColumn textAlign="LEFT" grid="s6 m4 l3"> 
-				<g:HTMLPanel>
-				<table>
-					<tr>
-						<td><m:MaterialLabel text="List" /></td>
-						<td><m:MaterialSwitch ui:field="gradebookSwitch" /></td>
-						<td><m:MaterialLabel text="Gradebook" /></td>
-					</tr>
-				</table>	
-				</g:HTMLPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn float="RIGHT" textAlign="RIGHT" grid="s6 m4 l3"> 
-					<m:MaterialSearch ui:field="assignmentSearch"/>
-				</m:MaterialColumn>
-			</m:MaterialRow>
-			</m:MaterialHeader>
-		<m:MaterialPanel><!--  -->
-			<m:html.Div ui:field="gradedWorkViz">
-			
-			</m:html.Div>
-			<m:html.Div ui:field="gradedWorkPager">
-			
-			</m:html.Div>
-		</m:MaterialPanel>
-		<m:MaterialFooter></m:MaterialFooter>
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+	<g:HTMLPanel>
+		 <m:MaterialTab>
+			<m:MaterialTabItem>
+				<m:MaterialLink text="Assignments"  href="#assignmentMain"/>
+			</m:MaterialTabItem>
+			<m:MaterialTabItem>
+				<m:MaterialLink  text="Calendar"  href="#assignmentCal"/>
+			</m:MaterialTabItem>
+			<m:MaterialTabItem>
+				<m:MaterialLink  text="Reports"  href="#assignmentReport"/>
+			</m:MaterialTabItem>
+		</m:MaterialTab>
+		<!-- Put panels here -->
+	<h:Div ui:field="assignmentTab" m:id="assignmentMain" >
+			<h:Div ui:field="gradedWorkViz" />
+			<h:Div ui:field="gradedWorkPager" />
 		<m:MaterialFAB>
 			<m:MaterialAnchorButton  size="LARGE" type="FLOATING" ui:field="fab" iconType="ADD"/>
 		</m:MaterialFAB>
+	</h:Div> 
+	<h:Div ui:field="calendarTab"  m:id="assignmentCal"/>
+	<h:Div ui:field="reportTab"  m:id="assignmentReport"/> 
 	</g:HTMLPanel>
 </ui:UiBinder> 

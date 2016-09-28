@@ -3,6 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:v="urn:import:net.videmantay.roster"
 	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab" textColor="red" indicatorColor="red accent-4" height="2.5em" >
@@ -150,15 +151,13 @@
 			<g:HTMLPanel ui:field="tab1Main">
 			</g:HTMLPanel>
 		</div>
-		<g:HTMLPanel ui:field="tab2">
+		<g:HTMLPanel  ui:field="tab2">
 			  <g:Frame ui:field="calFrame" url="../cal.html" width="100%"   addStyleNames="calFrame" visible="false" /> 
 			<br/>
 			<m:MaterialFAB ui:field="classEventFAB" visible="false"><m:MaterialAnchorButton  ui:field="classEventAddBtn" type="FLOATING" iconType="ADD" size="LARGE"/></m:MaterialFAB>
 		</g:HTMLPanel>
-		<div  id="tab3">
-			<svg viewBox="0 0 150 200" style="width:200px; height:300px;">
-				<use xlink:href="../img/allIcons.svg#rocket" />
-			</svg>
-		</div>
+		<m:MaterialPanel  m:id="tab3" ui:field="tab3" >
+			<v:ClassReportPanel width="100%" height="100%" />
+		</m:MaterialPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

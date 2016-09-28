@@ -1,34 +1,33 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<m:MaterialModal ui:field="modal">
-	<m:MaterialModalContent>
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:v="urn:import:net.videmantay.roster.incident">
+	<m:MaterialModal ui:field="modal" width="70%" height="100%">
+	<m:MaterialModalContent >
 	<g:FormPanel ui:field="form">
 	<g:HTMLPanel>
-		<m:MaterialInput ui:field="iconUrl" type="TEXT" visible="false" addStyleNames="valign-wrapper"/>
+		<m:MaterialInput ui:field="iconUrl" type="TEXT" visible="false" />
+		<m:MaterialPanel ui:field="iconPanel"  m:id="iconFormIconPanel" waves="LIGHT" marginLeft="100" backgroundColor="blue-grey lighten-3"/>
 		<m:html.Div>
-		<m:MaterialPanel ui:field="iconPanel"  m:id="iconFormIconPanel"/>
-		<m:MaterialIcon iconPosition="RIGHT" iconType="ARROW_DROP_DOWN"  iconSize="TINY" activates="iconList" addStyleNames="valign bottom"/>
+		<v:IncidentIconGrid  ui:field="iconGrid" visible="false"/>
 		</m:html.Div>
-		<m:MaterialDropDown ui:field="dropDown" activator="iconList">
-		</m:MaterialDropDown>
-		<m:MaterialLabel ui:field="nameLabel" text="Name:"/>
-		<m:MaterialTextBox ui:field="nameInput" />
-		<m:MaterialChip ui:field="valueLabel" text="Points:"/>
-		<m:MaterialNumberBox ui:field="valueInput" />
-		<m:MaterialLabel text="Type:" />
-		<m:MaterialListBox ui:field="typeListBox"></m:MaterialListBox>
+		<m:MaterialLabel text="Type:" fontSize="1.5em"/>
+		<m:MaterialListBox ui:field="typeListBox" fontSize="1.5em" ></m:MaterialListBox>
+		<m:MaterialLabel ui:field="nameLabel" text="Name:" fontSize="1.5em" />
+		<m:MaterialTextBox ui:field="nameInput" fontSize="1.5em"/>
+		<m:MaterialLabel ui:field="valueLabel" text="Points: (values under zero are considered 'Poor Judgement')" fontSize="1.5em" />
+		<m:MaterialNumberBox ui:field="valueInput" width="50px" iconFontSize="1.5em"/>
 	</g:HTMLPanel>
 	</g:FormPanel>
 	</m:MaterialModalContent>
 	<m:MaterialModalFooter>
 		<m:MaterialRow ui:field="doneCancelRow">
-			<m:MaterialColumn>
-				<m:MaterialIcon ui:field="doneBtn"  iconType="DONE" />
+			<m:MaterialColumn grid="s6 m6 l6">
+				<m:MaterialAnchorButton type="RAISED" backgroundColor="deep-orange" ui:field="doneBtn" textColor="white" text="Done" iconType="DONE" />
 			</m:MaterialColumn>
-			<m:MaterialColumn>
-				<m:MaterialIcon ui:field="cancelBtn"  iconType="CANCEL" />
+			<m:MaterialColumn grid="s6 m6 l6">
+				<m:MaterialAnchorButton type="RAISED" backgroundColor="red darken-2"  textColor="white" text="Cancel" ui:field="cancelBtn"  iconType="CANCEL" />
 			</m:MaterialColumn>
 		</m:MaterialRow>
 	</m:MaterialModalFooter>

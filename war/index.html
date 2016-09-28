@@ -4,7 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
   <title>Dr. Sammy Lee Medical and Science Magnet School App</title>
-
+	<!-- favicon -->
+	<link rel="shortcut icon" sizes="16x16 32x32 64x64 128X128 256X256" href="/favicon.ico">
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
@@ -59,14 +60,58 @@
       <div class="row center">
       <hr/>
 	<br/>
-      	<h3 class="text-red" style="text-shadow:2px 2px 2px DimGray">Ready!</h3>
-        <a href="/login" id="download-button" class="btn-large waves-effect waves-light orange">School Login</a>
+      	<h3  id="readyText" class="text-red" style="text-shadow:2px 2px 2px DimGray">Ready!</h3>
+        <a href="/login" id="download-button" class="btn-large waves-effect waves-light orange"><span id="loginBtnText">School Login</span></a>
+        <div id="showLoader" style="position:relative; z-index:10; background-color:rgba(255,255,255, 0.8); height:90%;">
+         <div class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+        </div>
+     
       </div>
       <br><br>
 
     </div>
   </div>
-
+	
   <div class="container">
     <div class="section">
 
@@ -142,13 +187,18 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   <script>
+  $("#showLoader").hide();
   (function($){
 	  $(function(){
-
 	    $('.button-collapse').sideNav();
-
 	  }); // end of document ready
 	})(jQuery); // end of jQuery name space
+	
+	$("#download-button").click(function(){
+		$(showLoader).show();
+		$(this).hide();
+		$('h3#readyText').text("Let's do this!");
+	});
   </script>
   </body>
 </html>

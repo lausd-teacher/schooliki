@@ -23,6 +23,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
+import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.html.Div;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.GradedWorkJson;
@@ -66,7 +67,7 @@ public class GradedWorkMain extends Composite {
 	private final GradedWorkForm form = new GradedWorkForm();
 	
 	@UiField
-	HTMLPanel wrapper;
+	Div assignmentTab;
 	
 	
 	@UiField
@@ -83,7 +84,7 @@ public class GradedWorkMain extends Composite {
 		pager.setDisplay(assignmentGrid);
 		gradedWorkViz.add(assignmentGrid);
 		gradedWorkPager.add(pager);
-		wrapper.add(form);
+		assignmentTab.add(form);
 		
 		//do fab
 		fab.addClickHandler(new ClickHandler(){
@@ -99,10 +100,11 @@ public class GradedWorkMain extends Composite {
 		gradedWorkViz.setSize("100%", "35em");
 		assignmentGrid.setSize("100%","100%");
 		assignmentGrid.setRowCount(0);
-		$(body).on("", new Function(){
+		$(body).on("updateGradedWork", new Function(){
 			@Override
 			public boolean f(Event e, Object...o){
-				
+				//how to show updated or new gradedwork
+				//think of how the pagination would work
 				
 				return true;
 			}

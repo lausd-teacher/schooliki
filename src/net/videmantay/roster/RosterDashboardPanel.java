@@ -405,8 +405,7 @@ public class RosterDashboardPanel extends Composite //implements ClassroomMain.H
 			if(classTimes.get(i).getIsDefault()){
 			classtimeBtn.setText(classTimes.get(i).getTitle());
 			window.setPropertyJSO("classtime", classTimes.get(i));
-			console.log("... window called from rosterdassh bord panel for classtime is .... ");
-			console.log(window.getPropertyJSO("classtime"));
+			
 			}
 		}//end for
 		MaterialLink manageLink2 = new MaterialLink();
@@ -420,8 +419,7 @@ public class RosterDashboardPanel extends Composite //implements ClassroomMain.H
 			if(classTimes.get(i).getIsDefault()){
 			classtimeBtn.setText(classTimes.get(i).getTitle());
 			window.setPropertyJSO("classtime", classTimes.get(i));
-			console.log("... window called from rosterdassh bord panel for classtime is .... ");
-			console.log(window.getPropertyJSO("classtime"));
+			
 			}
 		}//end for
 		

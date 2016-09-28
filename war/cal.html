@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/fullcalendar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css">
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <title>calendar</title>
    <style>
@@ -75,13 +75,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
      
  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
    <script>
-   		$('#cal').fullCalendar({defaultView:'agendaWeek',height:520,firstDay:0,
+   		$('#cal').fullCalendar({defaultView:'month',height:520,firstDay:0,
    			minTime:"05:00:00",maxTime:"21:00:00",
    			scrollTime:"07:30:00",
-   			header:{center:'title', left:'today prev,next', right:"month,agendaWeek,agendaDay"}, 
+   			header:{center:'title', left:'today prev,next', right:"month,agendaWeek,agendaDay,listWeek"}, 
    			businessHours:{start:"07:30", end:"15:30", dow:[1,2,3,4,5]}});
+   		
+   		
    	
    </script>
   </body>

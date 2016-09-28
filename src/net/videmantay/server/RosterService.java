@@ -971,18 +971,21 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			//no need to send anything across wire 
 			//here we just validate 
 			
+			Long rosterId = Longs.tryParse(req.getParameter("roster"));
+			log.log(Level.INFO, req.getParameter("incidents"));
+			Incident[] incidents = gson.fromJson(req.getParameter("incidents"), Incident[].class);
+			//validate incidents here
+			AppValid.rosterCheck(rosterId);
+			Roster roster = db().load().type(Roster.class).id(rosterId).now();
+			roster.incidents.clear();
+			roster.incidents.addAll(Arrays.asList(incidents));
+			
+				db().save().entity(roster);
+			
+			res.getWriter().write("Incident Saved");
 		}
 		
-		public void deleteIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-			
-		}
-		public void updateIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-	
-		}
-
-		public void listIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-	
-		}
+		
 		
 	////////////////////////	
 	///STUDENT INCIDENT CRUD
@@ -993,7 +996,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		cal = calendar(cred);
 		
 		String calId = Preconditions.checkNotNull(req.getParameter("calId"));
-		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
+		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incidents"));
 		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
 		StudentIncident dbCheck = null;
 	try{
