@@ -31,6 +31,6 @@
 			<m:MaterialAnchorButton  type="RAISED" iconType="ADD"/>
 		</m:MaterialFAB>
 		<v:IncidentForm ui:field="incidentForm" />
-	  <v:DeleteIncidentModal ui:field="deleteModal" />
+	  <!-- <v:DeleteIncidentModal ui:field="deleteModal" /> -->
 	</g:HTMLPanel>
 </ui:UiBinder> 

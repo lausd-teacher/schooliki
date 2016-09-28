@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.SafeHtml;
+
 import net.videmantay.server.user.DBObj;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.shared.SubjectType;
@@ -19,6 +21,7 @@ public class Assignment implements Serializable {
 	@Id
 	public String id;
 	
+	@SafeHtml
 	public String title;
 	
 	public Long rosterId;
@@ -27,8 +30,10 @@ public class Assignment implements Serializable {
 	
 	public Set<GradeLevel> gradeLevels;
 	
+	@SafeHtml
 	public String mediaUrl;
 	
+	@SafeHtml
 	public String description;
 	
 	public SubjectType subject;

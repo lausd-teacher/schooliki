@@ -3,6 +3,7 @@ package net.videmantay.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,12 +11,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
+import net.videmantay.server.validation.ValidatorUtil;
 import net.videmantay.shared.UserRoles;
 
 import static net.videmantay.admin.AdminUrl.*;
@@ -133,6 +136,18 @@ public class AdminService  extends HttpServlet {
 						return;
 					}
 					
+					  //If the user accId check pass then the user fields needs to be validated
+					  Set<ConstraintViolation<AppUser>> constraintViolations =
+							ValidatorUtil.getValidator().validate( acct );
+				
+					   //If validation rules are violated then log error messages and return 
+						if(constraintViolations.size() > 0){
+							for(ConstraintViolation<AppUser> violation: constraintViolations){
+								log.log(Level.WARNING, violation.getMessage());
+								
+							}
+				      return;
+				   }
 					//assign main drive folder
 				ofy().transact(new VoidWork(){
 

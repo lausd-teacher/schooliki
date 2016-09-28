@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -15,6 +21,8 @@ import com.googlecode.objectify.annotation.Serialize;
 
 import net.videmantay.server.entity.Goal;
 import net.videmantay.server.entity.StudentJob;
+import net.videmantay.server.validation.ValidDateOfBirth;
+import net.videmantay.server.validation.ValidationMessages;
 
 
 @Entity
@@ -24,11 +32,22 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public Long id;
 	///Key to roster detail not parent roster
 	//why not set actual key???
+	
+	@NotNull
+	@NotBlank
 	public Long roster;
+	
+	@NotNull
+	@NotBlank
 	public String firstName;
+	
+	@NotNull
+	@NotBlank
 	public String lastName;
 	public String extName;
 	public Thumbnail[] thumbnails;
+	
+	@ValidDateOfBirth
 	public Date DOB;
 	public Boolean glasses;
 	public String eldLevel;
@@ -36,6 +55,7 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public boolean inactive = false;
 	
 	@Index
+	@Email(message=ValidationMessages.EMAIL_INVALID)
 	public String acctId;
 	
 	public ArrayList<Integer> points;

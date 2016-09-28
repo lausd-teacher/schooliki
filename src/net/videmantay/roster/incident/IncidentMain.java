@@ -26,8 +26,8 @@ public class IncidentMain extends Composite {
 	@UiField
 	MaterialRow negIncidentRow;
 	
-	@UiField
-	DeleteIncidentModal deleteModal;
+//	@UiField
+//	DeleteIncidentModal deleteModal;
 	
 	@UiField
 	IncidentForm incidentForm;
@@ -42,7 +42,7 @@ public class IncidentMain extends Composite {
 	Function openDeleteModal = new Function(){
 		@Override
 		public void f(){
-			deleteModal.show();
+			//deleteModal.show();
 		}
 	};
 	
@@ -56,8 +56,8 @@ public class IncidentMain extends Composite {
 		RosterJson roster = window.getPropertyJSO("roster").cast();
 		for(int i = 0; i < roster.getIncidents().length(); i++){
 			IncidentJson incident = roster.getIncidents().get(i);
-			EditIncidentPanel ip = new EditIncidentPanel().setIncident(incident);
-			console.log(ip);
+			//EditIncidentPanel ip = new EditIncidentPanel().setIncident(incident);
+			//console.log(ip);
 			MaterialColumn col = new MaterialColumn();
 			col.setGrid("s2 m4 l2");
 			if(incident.getValue() < 0){
@@ -66,7 +66,7 @@ public class IncidentMain extends Composite {
 				posIncidentRow.add(col);
 			}//end else
 			
-			col.add(ip);
+			//col.add(ip);
 		}//end for
 		
 		$(body).on("editIncident", openForm);

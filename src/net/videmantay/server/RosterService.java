@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
 
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.server.entity.*;
@@ -24,6 +26,7 @@ import net.videmantay.server.user.DB;
 import net.videmantay.server.user.Roster;
 import net.videmantay.server.user.RosterDetail;
 import net.videmantay.server.user.RosterStudent;
+import net.videmantay.server.validation.ValidatorUtil;
 import net.videmantay.shared.StuffType;
 import net.videmantay.shared.UserRoles;
 import static net.videmantay.server.GoogleUtils.*;
@@ -201,7 +204,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	}
 	
 	//ROSTER CRUD
-	private void saveRoster(final HttpServletRequest req, final HttpServletResponse res)throws IOException,ServletException, GeneralSecurityException, ServiceException{
+	private void saveRoster(final HttpServletRequest req, final HttpServletResponse res) throws IOException,ServletException, GeneralSecurityException, ServiceException{
 		if(!AppValid.roleCheck(UserRoles.TEACHER)){
 			//send to login
 			res.sendRedirect("/login");
@@ -241,6 +244,19 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			log.log(Level.WARNING, "Null reference to roster sent check client for errors");
 			return;
 		}
+		
+		//Before Doing anything validate roster fields
+		Set<ConstraintViolation<Roster>> constraintViolations =
+				ValidatorUtil.getValidator().validate( roster );
+	
+		   //If validation rules are violated then log error messages and return 
+			if(constraintViolations.size() > 0){
+				for(ConstraintViolation<Roster> violation: constraintViolations){
+					log.log(Level.WARNING, violation.getMessage());
+					
+				}
+	           return;
+	         }
 		
 		//if roster has an id then it's an update else look
 		//so update it 
@@ -484,6 +500,19 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			log.log(Level.INFO, "Roster is null");
 		}
 		
+		
+		Set<ConstraintViolation<RosterStudent>> constraintViolations =
+				ValidatorUtil.getValidator().validate( student );
+	
+		   //If validation rules are violated then log error messages and return 
+			if(constraintViolations.size() > 0){
+				for(ConstraintViolation<RosterStudent> violation: constraintViolations){
+					log.log(Level.WARNING, violation.getMessage());
+					
+				}
+			      return;
+			   }
+		
 			//first save access to rosterDetail
 			Key<Roster> rKey = Key.create(Roster.class, roster.getId());
 			Key<RosterDetail> rdKey = Key.create(rKey, RosterDetail.class, roster.getId());
@@ -560,6 +589,21 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		if(dbCheck == null){
 			//throw exception
 		}
+		
+		//Before updating validate again
+		
+		Set<ConstraintViolation<RosterStudent>> constraintViolations =
+				ValidatorUtil.getValidator().validate(student);
+	
+		   //If validation rules are violated then log error messages and return 
+			if(constraintViolations.size() > 0){
+				for(ConstraintViolation<RosterStudent> violation: constraintViolations){
+					log.log(Level.WARNING, violation.getMessage());
+					
+				}
+		      return;
+		   }
+		
 		if(!student.getAcctId().equals(dbCheck.getAcctId())){
 		drive = drive(cred);
 		File folder = drive.files().get(student.getStudentFolderId()).execute();
@@ -637,6 +681,19 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		if(!AppValid.rosterCheck(gradedWork.rosterId)){
 			//TODO:throw an error
 		}
+		
+		//Before Doing anything validate roster fields
+				Set<ConstraintViolation<GradedWork>> constraintViolations =
+						ValidatorUtil.getValidator().validate( gradedWork );
+			
+				   //If validation rules are violated then log error messages and return 
+					if(constraintViolations.size() > 0){
+						for(ConstraintViolation<GradedWork> violation: constraintViolations){
+							log.log(Level.WARNING, violation.getMessage());
+							
+						}
+			           return;
+			         }
 		
 		Event event = new Event();
 		//if the id is null or zero then this is a first save/////

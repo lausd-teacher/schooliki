@@ -14,5 +14,5 @@
 	<source path="student" />
 	<source path="shared" />
 	<entry-point class="net.videmantay.roster.Roster"></entry-point>
-	<set-property name="user.agent" value="safari"/>
+	<set-property name="user.agent" value="gecko1_8"/>
 </module>

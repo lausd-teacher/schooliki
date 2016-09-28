@@ -7,6 +7,9 @@ import java.util.Set;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Email;
 
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
@@ -14,12 +17,16 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Serialize;
 
+import net.videmantay.server.validation.ValidRoles;
+import net.videmantay.server.validation.ValidStringWithNoSpecialCharacters;
+import net.videmantay.server.validation.ValidationMessages;
 import net.videmantay.shared.UserRoles;
 import net.videmantay.shared.UserStatus;
 
 
 @Entity
 @Cache
+@ValidRoles
 public  class AppUser extends DBObj implements Serializable{
 
 
@@ -32,26 +39,41 @@ public  class AppUser extends DBObj implements Serializable{
 	public Long id;
 	
 	@Index
+	@Email(message=ValidationMessages.EMAIL_INVALID)
 	public String acctId;//Google Id may be different than email 
 							// in cases where teacher want to use their email
 							//and not a videmantay.net acct
 							//acct id will reflect videmantay.net
-	
+	@Email(message=ValidationMessages.EMAIL_INVALID)
 	public String email;
 	
+	@ValidStringWithNoSpecialCharacters
 	public String firstName;
+	
+	@ValidStringWithNoSpecialCharacters
 	public String lastName;
+	
+	@ValidStringWithNoSpecialCharacters
 	public String middleName;
+	
+	@ValidStringWithNoSpecialCharacters
 	public String extendedName;
+	
+
 	public UserTitle title;
 
+	@ValidStringWithNoSpecialCharacters
 	public String picUrl;
+	
+	@ValidStringWithNoSpecialCharacters
 	public String authToken;
 	public boolean loggedIn;
 
 	public  UserStatus userStatus;
 	public  Integer loginTimes;
 	public  Boolean isFirstLogin;
+	
+	@ValidStringWithNoSpecialCharacters
 	public String mainDriveFolder;
 	
 	public  Set<UserRoles> roles = new  HashSet<UserRoles>();

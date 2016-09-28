@@ -7,6 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.SafeHtml;
+
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Goal;
 import net.videmantay.server.entity.GoogleService;
@@ -15,6 +19,8 @@ import net.videmantay.server.entity.SeatingChart;
 import net.videmantay.server.entity.StudentGroup;
 import net.videmantay.server.entity.StudentJob;
 import net.videmantay.server.entity.TeacherInfo;
+import net.videmantay.server.validation.ValidDateFormat;
+import net.videmantay.server.validation.ValidDateRange;
 import net.videmantay.shared.GradeLevel;
 
 import com.googlecode.objectify.Key;
@@ -28,6 +34,7 @@ import com.googlecode.objectify.annotation.Serialize;
 
 @Cache
 @Entity
+@ValidDateRange
 public class Roster extends DBObj implements Serializable{
 	
 	/**
@@ -47,27 +54,37 @@ public class Roster extends DBObj implements Serializable{
 	public Long id;
 	
 	@Index
+	@NotNull
 	public transient String ownerId;
 	
+	@NotNull
+	@SafeHtml
 	public String title;
 	
+	@SafeHtml
 	public String description;
 	
+	@SafeHtml
 	public String roomNum;
 
+	@NotNull
 	@Serialize
 	public TeacherInfo teacherInfo;
 	
 	public GradeLevel gradeLevel;
 	
+	@NotNull
 	public Date startDate;
 	
-	
+	@NotNull
 	public Date endDate;
 	
 	//all map to a spreadsheet
+	@SafeHtml
 	public String rollBook;
+	@SafeHtml
 	public String gradeBook;
+	@SafeHtml
 	public String behaviorReport;
 
 	
@@ -97,9 +114,10 @@ public class Roster extends DBObj implements Serializable{
 	public ArrayList<Incident> incidents = new ArrayList<Incident>();
 	
 	//folders for roster and place for student folders
-	
+	@SafeHtml
 	public  String rosterFolderId = "";
 	
+	@SafeHtml
 	public String studentFolderId = "";
 		
 	/*
@@ -107,6 +125,8 @@ public class Roster extends DBObj implements Serializable{
 	 * incidents (student points) clears everything before it.
 	 * think classdojo clear point from here.
 	 */
+	
+	@ValidDateFormat
 	public transient String incidentQueryDate = "";
 	
 	///Constructors
