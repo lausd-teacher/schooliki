@@ -46,9 +46,10 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/LAUSD/Documents/JavaJars/sheets/google-api-services-sheets-v4-rev5-1.22.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-5.3.0.CR1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jsoup-1.9.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.9.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jsoup-1.9.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-5.3.0.CR1.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtAjax"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtGuava"/>

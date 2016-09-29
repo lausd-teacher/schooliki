@@ -54,7 +54,8 @@ public class Roster extends DBObj implements Serializable{
 	public Long id;
 	
 	@Index
-	@NotNull
+	//@NotNull -when creating a new one this isn't set
+	//i think of it as a security risk but maybe it isn't
 	public transient String ownerId;
 	
 	@NotNull
@@ -67,7 +68,7 @@ public class Roster extends DBObj implements Serializable{
 	@SafeHtml
 	public String roomNum;
 
-	@NotNull
+	//@NotNull
 	@Serialize
 	public TeacherInfo teacherInfo;
 	
