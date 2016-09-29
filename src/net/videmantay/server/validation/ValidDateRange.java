@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Documented
 public @interface ValidDateRange {
 
-	String message() default "Date Range is not valid";
+	String message() default ValidationMessages.INVALID_DATE_PERIOD;
 	Class<?> [] groups() default {};
 	Class<? extends Payload>[] payload() default {};
 	
