@@ -33,7 +33,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-java6-1.21.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/google-oauth-client-servlet-1.21.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/httpclient-4.0.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jsoup-1.8.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/httpcore-4.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-18.0.jar">
@@ -47,11 +46,15 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/LAUSD/Documents/JavaJars/sheets/google-api-services-sheets-v4-rev5-1.22.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-5.3.0.CR1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jsoup-1.9.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.9.4.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtAjax"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtGuava"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtMaterial"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtObjectify"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtQuery"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GwtCharts"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

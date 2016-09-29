@@ -1,6 +1,8 @@
 package net.videmantay.student.json;
 
-public class TeacherInfoJson {
+import com.google.gwt.core.client.JavaScriptObject;
+
+public class TeacherInfoJson extends JavaScriptObject{
 
 	protected TeacherInfoJson(){}
 	

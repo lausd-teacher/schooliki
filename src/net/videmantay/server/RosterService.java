@@ -252,7 +252,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		   //If validation rules are violated then log error messages and return 
 			if(constraintViolations.size() > 0){
 				for(ConstraintViolation<Roster> violation: constraintViolations){
-					log.log(Level.WARNING, violation.getMessage());
+					log.log(Level.WARNING, violation.getMessage() + "\n the json is " + rosterCheck);
 					
 				}
 	           return;

@@ -22,6 +22,9 @@ import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialLoader;
 import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.shared.LoginInfo;
+import net.videmantay.student.json.TeacherInfoJson;
+
 import static com.google.gwt.query.client.GQuery.*;
 
 import java.text.ParseException;
@@ -106,6 +109,19 @@ public class RosterForm extends Composite{
 		
 		startDate.setDate(df.parse(data.getStartDate()));
 		endDate.setDate(df.parse(data.getEndDate()));	
+		
+		//teacher info check for null
+		if(data.getTeacherInfo() == null){
+			TeacherInfoJson teacherInfo = TeacherInfoJson.createObject().cast();
+			console.log("this is the loginInfo from window");
+			console.log(window.getPropertyJSO("loginInfo"));
+			LoginInfo loginInfo = window.getPropertyJSO("loginInfo").cast();
+			teacherInfo.setTitle(loginInfo.getTitle());
+			teacherInfo.setLastName(loginInfo.getLastName());
+			teacherInfo.setPicUrl(loginInfo.getPicUrl());
+			
+			data.setTeacherInfo(teacherInfo);
+		}
 	}
 	
 	public boolean hasErrors(){
