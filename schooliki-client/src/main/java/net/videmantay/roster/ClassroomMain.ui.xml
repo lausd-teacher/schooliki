@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:v="urn:import:net.videmantay.shared"
+	xmlns:vr="urn:import:net.videmantay.roster">
+	<g:HTMLPanel styleName="classroom" ui:field="classroom">
+			<m:MaterialNavBar activates="sideNav" backgroundColor="red darken-4" addStyleNames="classroomNav">
+			
+			<m:MaterialNavBrand  ui:field="rosterTitle" textAlign="CENTER"/>
+			</m:MaterialNavBar>
+
+			<m:MaterialSideNav type="PUSH" m:id="sideNav" ui:field="sideNav" closeOnClick="true">
+				<v:UserProfilePanel ui:field="profilePanel"></v:UserProfilePanel>
+				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" textColor="red darken-4"/>
+				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange darken-4" iconType="ASSIGNMENT" />
+				<m:MaterialLink ui:field="lessonPlanLink" text="Lesson Plans" textColor="amber darken-3"
+					iconType="LIBRARY_BOOKS" />
+				<m:MaterialLink ui:field="incidentLink" text="Incidents" textColor="deep-orange darken-2"
+					iconType="FEEDBACK" />
+				<m:MaterialLink ui:field="goalLink" text="Goals" textColor="amber darken-4" iconType="MOOD" />
+				<m:MaterialLink ui:field="jobLink" text="Jobs" textColor="orange darken-4" iconType="BUSINESS_CENTER" />
+				<m:MaterialLink ui:field="bookLink" text="Books" textColor="red darken-2" iconType="LOCAL_LIBRARY" />
+				<m:MaterialLink ui:field="classTimeLink" text="Class Time" textColor="red darken-4" iconType="SCHEDULE" />
+				<m:MaterialLink ui:field="formLink" text="Forms" textColor="deep-orange darken-4" iconType="INBOX" />
+				<m:MaterialLink ui:field="logoutLink" text="Logout" iconType="INPUT" />
+				<m:MaterialLink></m:MaterialLink>
+			</m:MaterialSideNav>
+		<m:MaterialContainer  ui:field="mainPanel" width="100%" height="100%" >
+		</m:MaterialContainer>
+	</g:HTMLPanel>
+</ui:UiBinder> 

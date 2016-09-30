@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui" xmlns:u="urn:import:org.objectweb.asm.util">
+	<g:HTMLPanel>
+	<div ui:field="classformTipPanel">
+	<table>
+		<tr colspan="5">
+			<td>
+		<p>Class Time is a protocol for helping student transition from one task to the next.<br/>
+		<i>'Carpet Time' or 'I.W.T'.</i> </p>
+		<p>This is where you would setup groups and stations as well.</p>
+		</td>
+		<td> 
+			<i class="material-icons">lightbulb_outline</i>
+		</td>
+		</tr>
+		</table>
+		</div>
+		<m:MaterialTitle title="Class Time" />
+	<g:FormPanel ui:field="classtimeForm">
+	<g:HTMLPanel>
+	<m:MaterialTab>
+		<m:MaterialTabItem ><m:MaterialLabel href="#infoEditor" text="info"/></m:MaterialTabItem>
+		<m:MaterialTabItem ><m:MaterialLabel href="#procedureEditor" text="procedures"/></m:MaterialTabItem>
+		<m:MaterialTabItem ><m:MaterialLabel href="#groupsEditor" text="groups"/></m:MaterialTabItem>
+	</m:MaterialTab>
+	<g:HTMLPanel m:id="infoEditor" ui:field="infoEditor">
+			<m:MaterialTextBox ui:field="title" placeholder="Title" />
+			<m:MaterialTextArea ui:field="description" placeholder="description" />
+			<m:MaterialCheckBox  ui:field="isDefault" text="Default" />
+		</g:HTMLPanel>
+		<m:MaterialPanel m:id="procedureEditor" ui:field="procedureEditor">
+			<m:MaterialTitle title="Procedures" />
+			<m:MaterialCollection ui:field="procedureCollection"></m:MaterialCollection>
+		</m:MaterialPanel>
+		<g:HTMLPanel m:id="groupsEditor" ui:field="groupsEditor">
+		</g:HTMLPanel>
+	</g:HTMLPanel>
+	</g:FormPanel>
+		<m:MaterialButton ui:field="submitBtn" text="Submit" /> <m:MaterialButton ui:field="cancelBtn" text="Cancel" />
+	</g:HTMLPanel>
+</ui:UiBinder> 

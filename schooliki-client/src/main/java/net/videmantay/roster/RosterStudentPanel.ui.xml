@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<g:HTMLPanel ui:field="rosterStudentPanel" styleName="rosterStudent">
+			<div class="studentHead"><!-- Student Image Row -->
+					<div  ui:field="studentImg" class="counterRotate">
+					</div>
+			</div><!-- end student head -->
+			<div class="studentBody"><!-- Body of studentPane including name panel and behavior tool bar -->
+				<div class="counterRotate"><!-- wrapped around a div for rotatable -->
+				<section class="studentInfoTable">
+					<m:html.Div ui:field="studentName" addStyleNames="studentName">
+						<m:html.Span ui:field="firstName" addStyleNames="first"/><m:html.Br />
+						<m:html.Span ui:field="lastName" addStyleNames="last" />
+					</m:html.Div>
+					<m:html.Div ui:field="studentCheckBox" addStyleNames="studentCheckbox"></m:html.Div>
+				<div class="studentPanelToolbox">
+				<m:MaterialLink ui:field="noteBtn" addStyleNames="noteBtn"/>
+				<m:MaterialLink ui:field="seeMoreBtn" addStyleNames="seeMoreBtn"/>
+				</div>
+			</section><!--  -->
+			</div>
+			</div><!-- end student body -->
+	</g:HTMLPanel>
+</ui:UiBinder> 

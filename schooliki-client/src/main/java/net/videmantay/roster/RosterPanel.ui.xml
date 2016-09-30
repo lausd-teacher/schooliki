@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<m:MaterialCard ui:field="card" backgroundColor="red darken-3">
+		<m:MaterialCardTitle padding="5.0" textAlign="LEFT" ui:field="cardTitle" textColor="white" />
+		<m:MaterialCardContent ui:field="cardContent" backgroundColor="white" textColor="red darken-3">
+			<m:MaterialLabel ui:field="cardDescript"></m:MaterialLabel>
+		</m:MaterialCardContent>
+	</m:MaterialCard>
+</ui:UiBinder> 

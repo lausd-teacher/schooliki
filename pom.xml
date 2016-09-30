@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.videmantay</groupId>
+  <artifactId>schooliki</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+
+  <prerequisites>
+    <maven>${mavenVersion}</maven>
+  </prerequisites>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     <gwtVersion>2.7.0</gwtVersion>
+    <mavenVersion>3.0</mavenVersion>
+  </properties>
+
+   <dependencies>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwtVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwtVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <modules>
+   <module>schooliki-client</module>
+   <module>schooliki-server</module>
+   <module>schooliki-shared</module>
+   <module>gwtquery-ui-plugin</module>
+   <module>picker</module>
+   <module>channel</module>
+</modules>
+</project>
