@@ -2,7 +2,7 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	 xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html"
-	xmlns:v="urn:import:net.videmantay.shared">
+	xmlns:v="urn:import:net.videmantay.roster">
 
 
 	<ui:style>

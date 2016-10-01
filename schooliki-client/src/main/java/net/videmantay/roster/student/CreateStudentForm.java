@@ -36,7 +36,7 @@ import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialTextBox;
 import net.videmantay.roster.RosterEvent;
-import net.videmantay.roster.RosterUrl;
+import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;

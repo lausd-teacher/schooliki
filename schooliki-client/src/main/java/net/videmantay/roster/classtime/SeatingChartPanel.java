@@ -36,7 +36,7 @@ import java.util.Stack;
 import static gwtquery.plugins.ui.Ui.Ui;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.RosterStudentPanel;
-import net.videmantay.roster.RosterUrl;
+import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.classtime.json.FurnitureJson;
 import net.videmantay.roster.classtime.json.SeatingChartJson;

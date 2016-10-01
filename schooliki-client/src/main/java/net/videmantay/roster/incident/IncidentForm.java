@@ -22,7 +22,7 @@ import gwt.material.design.client.ui.MaterialNumberBox;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialTextBox;
 import gwt.material.design.client.ui.MaterialToast;
-import net.videmantay.roster.RosterUrl;
+import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.RosterJson;
 

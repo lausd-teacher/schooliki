@@ -29,6 +29,7 @@ import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentReportJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterStudentJson;
+import net.videmantay.shared.url.RosterUrl;
 
 import static com.google.gwt.query.client.GQuery.*;
 

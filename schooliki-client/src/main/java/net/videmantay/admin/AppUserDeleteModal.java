@@ -18,6 +18,7 @@ import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.admin.json.AppUserJson;
+import net.videmantay.shared.url.AdminUrl;
 
 public class AppUserDeleteModal extends Composite {
 

@@ -15,6 +15,7 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.query.client.Function;
 
 import net.videmantay.admin.json.AppUserJson;
+import net.videmantay.shared.url.AdminUrl;
 
 public class AppUserAsyncDataProvider extends AsyncDataProvider<AppUserJson> {
 	private final ArrayList<AppUserJson> list = new ArrayList<AppUserJson>();

@@ -12,7 +12,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.floreysoft</groupId>
 	<artifactId>picker</artifactId>
-	<packaging>jar</packaging>
+	<packaging>gwt-lib</packaging>
 	<version>1.0</version>
 	<name>picker</name>
 
@@ -32,6 +32,12 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>net.ltgt.gwt.maven</groupId>

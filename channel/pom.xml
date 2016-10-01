@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-<parent>
-    <artifactId>schooliki</artifactId>
-    <groupId>net.videmantay</groupId>
-    <version>1.0</version>
-  </parent>
-  
+	<parent>
+		<artifactId>schooliki</artifactId>
+		<groupId>net.videmantay</groupId>
+		<version>1.0</version>
+	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>goog.appengine</groupId>
 	<artifactId>channel</artifactId>
-	<packaging>jar</packaging>
+	<packaging>gwt-lib</packaging>
 	<version>1.0</version>
 	<name>Google App Engine Channel</name>
 
@@ -34,6 +34,12 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>net.ltgt.gwt.maven</groupId>

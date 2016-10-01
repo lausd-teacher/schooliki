@@ -1,4 +1,4 @@
-package net.videmantay.roster;
+package net.videmantay.shared.url;
 
  public class  RosterUrl {
 

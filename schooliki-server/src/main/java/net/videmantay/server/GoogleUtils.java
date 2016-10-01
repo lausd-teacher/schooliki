@@ -94,7 +94,8 @@ public class GoogleUtils {
 	
 	public static ContactsService contacts(Credential cred){
 		ContactsService contacts = new ContactsService(applicationName);
-		contacts.setOAuth2Credentials(cred);
+		//contacts.setOAuth2Credentials(cred);
+		//contacts.setOAuthCredentials(parameters, signer);
 		return contacts;
 	}
 	

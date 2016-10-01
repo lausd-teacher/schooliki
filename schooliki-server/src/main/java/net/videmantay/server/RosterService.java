@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 
-import net.videmantay.roster.RosterUrl;
+import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.server.entity.*;
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;

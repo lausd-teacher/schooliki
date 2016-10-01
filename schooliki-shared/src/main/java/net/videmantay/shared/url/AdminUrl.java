@@ -1,4 +1,4 @@
-package net.videmantay.admin;
+package net.videmantay.shared.url;
 
 public class AdminUrl {
 

@@ -29,7 +29,7 @@ import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTextArea;
 import gwt.material.design.client.ui.MaterialTextBox;
-import net.videmantay.roster.RosterUrl;
+import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.roster.json.GradedWorkJson;
 import net.videmantay.roster.json.RosterJson;
 

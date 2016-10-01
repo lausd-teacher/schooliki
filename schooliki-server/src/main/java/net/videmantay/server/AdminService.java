@@ -21,7 +21,7 @@ import net.videmantay.server.user.DB;
 import net.videmantay.server.validation.ValidatorUtil;
 import net.videmantay.shared.UserRoles;
 
-import static net.videmantay.admin.AdminUrl.*;
+import static net.videmantay.shared.url.AdminUrl.*;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.CharMatcher;

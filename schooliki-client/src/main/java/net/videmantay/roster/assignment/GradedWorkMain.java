@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import static com.google.gwt.query.client.GQuery.*;
+import net.videmantay.shared.url.RosterUrl;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,6 @@ import com.google.gwt.view.client.HasData;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.html.Div;
-import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.GradedWorkJson;
 
 public class GradedWorkMain extends Composite {

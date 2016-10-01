@@ -30,6 +30,7 @@ import static com.google.gwt.query.client.GQuery.*;
 import java.text.ParseException;
 import java.util.Date;
 
+import net.videmantay.shared.url.RosterUrl;
 import com.google.common.base.Preconditions;
 import com.google.gwt.query.client.*;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
