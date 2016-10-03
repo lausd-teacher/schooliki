@@ -11,66 +11,26 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>schooliki-client</artifactId>
 	<packaging>war</packaging>
-	<name>Schooliki client side module</name>
+	<name>schooliki-client</name>
 
 	<properties>
-		<gwtMaterialVersion>1.6.2</gwtMaterialVersion>
-		<gwtGuavaVersion>19.0</gwtGuavaVersion>
-		<gwtMaterialThemesVersion>1.6.0</gwtMaterialThemesVersion>
-		<gwtMaterialAddinsVersion>1.6.0</gwtMaterialAddinsVersion>
-		<gwtQueryVersion>1.4.3</gwtQueryVersion>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
-	<dependencies>	
-		<dependency>
-			<groupId>com.github.gwtmaterialdesign</groupId>
-			<artifactId>gwt-material</artifactId>
-			<version>${gwtMaterialVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.gwtmaterialdesign</groupId>
-			<artifactId>gwt-material-themes</artifactId>
-			<version>${gwtMaterialThemesVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.gwtmaterialdesign</groupId>
-			<artifactId>gwt-material-addins</artifactId>
-			<version>${gwtMaterialAddinsVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava-gwt</artifactId>
-			<version>${gwtGuavaVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.gwtquery</groupId>
-			<artifactId>gwtquery</artifactId>
-			<version>${gwtQueryVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt.google-apis</groupId>
-			<artifactId>gwt-ajaxloader</artifactId>
-			<version>1.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.gwt-charts</groupId>
-			<artifactId>gwt-charts</artifactId>
-			<version>0.9.10</version>
-		</dependency>
-		<dependency>
+	
+	<dependencies>
+	<dependency>
 			<groupId>net.videmantay</groupId>
 			<artifactId>schooliki-shared</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>goog.appengine</groupId>
 			<artifactId>channel</artifactId>
 			<version>1.0</version>
-			
+
 		</dependency>
 		<dependency>
 			<groupId>gwtquery.plugins</groupId>
@@ -82,17 +42,11 @@
 			<artifactId>picker</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
-		
-		
-		
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
+	
+	
 	</dependencies>
+
+	
 
 	<build>
 		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
@@ -140,6 +94,28 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<copy todir="../schooliki-server/target/schooliki-server-1.0/">
+									<fileset dir="${project.build.directory}/${project.build.finalName}/">
+										<exclude name="WEB-INF/" />
+										<exclude name="META-INF" />
+									</fileset>
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

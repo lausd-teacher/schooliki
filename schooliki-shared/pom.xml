@@ -11,9 +11,8 @@
 	</parent>
 
 	<artifactId>schooliki-shared</artifactId>
-	<version>1.0</version>
 	<packaging>gwt-lib</packaging>
-	<name>Shared classes between client and server</name>
+	<name>schooliki-shared</name>
 
 	<properties>
 		<gwtVersion>2.7.0</gwtVersion>

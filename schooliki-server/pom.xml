@@ -23,7 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-		<maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<archiveClasses>true</archiveClasses>
 	</properties>
 
@@ -43,6 +43,9 @@
 			<artifactId>appengine-api-labs</artifactId>
 			<version>${appengine.version}</version>
 		</dependency>
+
+
+
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -173,6 +176,23 @@
 			<artifactId>commons-validator</artifactId>
 			<version>1.5.0</version>
 		</dependency>
+		<dependency>
+			<groupId>goog.appengine</groupId>
+			<artifactId>channel</artifactId>
+			<version>1.0</version>
+
+		</dependency>
+		<dependency>
+			<groupId>gwtquery.plugins</groupId>
+			<artifactId>gwtquery-ui-plugin</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.floreysoft</groupId>
+			<artifactId>picker</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 
 
 
@@ -200,8 +220,6 @@
 		<!-- for hot reload of the web application -->
 		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 		<plugins>
-
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -209,7 +227,6 @@
 				<configuration>
 					<archiveClasses>true</archiveClasses>
 					<webResources>
-						<!-- in order to interpolate version from pom into appengine-web.xml -->
 						<resource>
 							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
 							<filtering>true</filtering>
@@ -228,8 +245,6 @@
 					<version>${app.version}</version>
 					<address>0.0.0.0</address>
 					<port>9997</port>
-					<!-- Comment in the below snippet to enable local debugging with a remote 
-						debugger like those included with Eclipse or IntelliJ -->
 					<jvmFlags>
 						<jvmFlag>-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50
 							-Xmx512m</jvmFlag>
@@ -238,6 +253,61 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>devmode</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<configuration>
+									<target name="dev-mode">
+										<property name="compile_classpath" refid="maven.compile.classpath" />
+										<property name="agent.location"
+											value="${basedir}\..\schooliki-client\appengine-agent.jar" />
+										<java classname="com.google.gwt.dev.DevMode" fork="true">
+
+
+											<classpath>
+												<pathelement path="${compile_classpath}" />
+												<pathelement
+													path="${user.home}\.m2\repository\com\google\appengine\appengine-java-sdk\1.9.40\appengine-java-sdk\appengine-java-sdk-1.9.40\lib\appengine-tools-api.jar" />
+												<pathelement path="${basedir}\..\schooliki-client\src\main\java" />
+												<pathelement
+													path="${basedir}\..\schooliki-client\src\main\resources" />
+												<pathelement
+													path="${basedir}\..\schooliki-client\target\schooliki-client-1.0\WEB-INF\classes\" />
+												<pathelement
+													path="${basedir}\..\schooliki-client\target\generated-sources\gwt" />
+												<pathelement
+													path="${basedir}\..\schooliki-client\target\generated-sources\annotations" />
+											</classpath>
+
+											<jvmarg value="-javaagent:${agent.location}" />
+											<jvmarg
+												value="-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50" />
+												<jvmarg
+												value="-D--disable_update_check" />
+											<arg
+												line="-gen ${project.build.directory}\.generated -war ${project.build.directory}/${project.build.finalName} -logLevel INFO -server com.google.appengine.tools.development.gwt.AppEngineLauncher -port 8888 -codeServerPort 9997 -startupUrl index.html -sourceLevel 1.7 net.videmantay.Roster net.videmantay.Admin" />
+										</java>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
