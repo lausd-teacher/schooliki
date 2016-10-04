@@ -22,8 +22,10 @@
 					<h:Label ui:field="roomNumError" styleName="errorLabel" text="This field is required" textColor="red lighten-1"/>
 					<m:MaterialDatePicker ui:field="startDate"
 						placeholder="start date" />
+					<label id="errorEndDateLabel" class="red-text text-lighten-1">end date cannot be empty or be before start date</label>
 					<m:MaterialDatePicker ui:field="endDate"
 						placeholder="end date" />
+					<label id="errorEndDateLabel" class="red-text text-lighten-1">end date cannot be empty or be before start date</label>
 				</g:HTMLPanel>
 			</g:FormPanel>
 		</m:MaterialCardContent>

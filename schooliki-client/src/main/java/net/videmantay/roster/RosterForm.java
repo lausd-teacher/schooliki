@@ -6,6 +6,8 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -95,7 +97,59 @@ public class RosterForm extends Composite{
 	
 	@Override
 	public void onLoad(){
-	
+		$("#rosterForm input").blur(getValidationFunction());
+		
+		
+		//Special event for handling dates
+		
+		startDate.addCloseHandler(new CloseHandler<MaterialDatePicker>(){
+			@Override
+			public void onClose(CloseEvent<MaterialDatePicker> event) {
+				// TODO Auto-generated method stub
+				if(endDate.getDate() != null && startDate.getDate() != null){
+					 
+					 Date endDateValue = endDate.getValue();
+					 if(endDateValue.before(startDate.getDate())){
+						 $("#errorStartDateLabel").show();
+						 GWT.log("end date before start date");
+						 //$(this).next(".errorLabel").show();
+						 //$(this).addClass("inputError");
+						 startDate.getElement().addClassName("inputError");
+						 return;
+					 }
+				 }
+				
+				 startDate.getElement().removeClassName("inputError");
+				
+			    	
+			}
+		});
+		
+		endDate.addCloseHandler(new CloseHandler<MaterialDatePicker>(){
+			@Override
+			public void onClose(CloseEvent<MaterialDatePicker> event) {
+			    if(startDate.getDate() != null && endDate.getDate() != null){
+					 Date endDateValue = endDate.getValue();
+					 if(endDateValue.before(startDate.getDate())){
+						 $("#errorEndDateLabel").show();
+						 endDate.getElement().addClassName("inputError");
+					 }else{
+						 $("#errorEndDateLabel").hide();
+						 endDate.getElement().removeClassName("inputError");
+					 }
+				 }else if(endDate.getDate() != null){
+					 $("#errorEndDateLabel").show();
+				 }
+			}
+		});
+		
+		
+		
+		
+		$(".errorLabel").hide();
+		$("#errorEndDateLabel").hide();
+		$("#errorStartDateLabel").hide();
+		
 	}
 	
 	public void edit(RosterJson r){
@@ -164,6 +218,23 @@ public class RosterForm extends Composite{
 		$(this).hide();
 		//look inot RosterDisplay to handle or Roster???
 		$(body).trigger("rostercancel");
+	}
+	
+private  Function getValidationFunction(){
+		
+		return new Function(){
+			@Override
+			public void f(){
+				GWT.log("event" + $(this).id());
+				if($(this).is(":invalid")){
+					$(this).next(".errorLabel").show();
+					$(this).addClass("inputError");
+				} else{
+					$(this).next(".errorLabel").hide();
+				}
+			}
+		};
+		
 	}
 
 }
