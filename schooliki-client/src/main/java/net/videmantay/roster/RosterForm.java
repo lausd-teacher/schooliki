@@ -2,29 +2,27 @@ package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.editor.client.Editor;
-import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
-import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.constants.ShowOn;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialLoader;
-import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.LoginInfo;
+import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.student.json.TeacherInfoJson;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -32,7 +30,6 @@ import static com.google.gwt.query.client.GQuery.*;
 import java.text.ParseException;
 import java.util.Date;
 
-import net.videmantay.shared.url.RosterUrl;
 import com.google.common.base.Preconditions;
 import com.google.gwt.query.client.*;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
@@ -67,11 +64,15 @@ public class RosterForm extends Composite{
 	@UiField
 	MaterialDatePicker endDate;
 	
+	
 	@UiField
 	MaterialAnchorButton submitBtn;
 	
 	@UiField
 	MaterialAnchorButton cancelBtn;
+	
+	@UiField
+	HTMLPanel formContainer;
 	
 	private final RosterForm $this;
 	
@@ -80,6 +81,11 @@ public class RosterForm extends Composite{
 	public RosterForm() {
 		initWidget(uiBinder.createAndBindUi(this));
 		$this = this;
+		form.getElement().setId("rosterForm");
+
+		
+		
+		
 		submitBtn.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -93,6 +99,8 @@ public class RosterForm extends Composite{
 				$this.canel();
 				
 			}});
+		
+		
 	}
 	
 	@Override
@@ -111,15 +119,11 @@ public class RosterForm extends Composite{
 					 Date endDateValue = endDate.getValue();
 					 if(endDateValue.before(startDate.getDate())){
 						 $("#errorStartDateLabel").show();
-						 GWT.log("end date before start date");
-						 //$(this).next(".errorLabel").show();
-						 //$(this).addClass("inputError");
-						 startDate.getElement().addClassName("inputError");
-						 return;
+						
 					 }
 				 }
 				
-				 startDate.getElement().removeClassName("inputError");
+				 
 				
 			    	
 			}
@@ -132,10 +136,11 @@ public class RosterForm extends Composite{
 					 Date endDateValue = endDate.getValue();
 					 if(endDateValue.before(startDate.getDate())){
 						 $("#errorEndDateLabel").show();
-						 endDate.getElement().addClassName("inputError");
+						
 					 }else{
 						 $("#errorEndDateLabel").hide();
-						 endDate.getElement().removeClassName("inputError");
+						 $("#errorStartDateLabel").hide();
+						
 					 }
 				 }else if(endDate.getDate() != null){
 					 $("#errorEndDateLabel").show();
@@ -220,7 +225,7 @@ public class RosterForm extends Composite{
 		$(body).trigger("rostercancel");
 	}
 	
-private  Function getValidationFunction(){
+	private  Function getValidationFunction(){
 		
 		return new Function(){
 			@Override
@@ -236,5 +241,8 @@ private  Function getValidationFunction(){
 		};
 		
 	}
+	
+
+
 
 }

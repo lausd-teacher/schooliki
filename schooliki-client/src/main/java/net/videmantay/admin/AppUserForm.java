@@ -10,10 +10,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.query.client.Function;
 
+import gwt.material.design.client.base.validator.HasValidators;
+import gwt.material.design.client.base.validator.ValidationChangedEvent.ValidationChangedHandler;
+import gwt.material.design.client.base.validator.Validator;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialCheckBox;
@@ -28,7 +32,7 @@ import net.videmantay.shared.UserStatus;
 import java.util.HashSet;
 
 
-public class AppUserForm extends Composite {
+public class AppUserForm extends Composite implements HasValidators {
 
 	private static AppUserFormUiBinder uiBinder = GWT.create(AppUserFormUiBinder.class);
 
@@ -382,4 +386,6 @@ public class AppUserForm extends Composite {
 			return retrieve;
 			
 		}
+
+
 }

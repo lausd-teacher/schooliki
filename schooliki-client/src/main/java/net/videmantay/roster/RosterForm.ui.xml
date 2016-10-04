@@ -10,7 +10,7 @@
 			<m:MaterialCardTitle text="Roster" iconType="CLASS"
 				iconPosition="LEFT" textColor="black" />
 			<g:FormPanel ui:field="form">
-				<g:HTMLPanel>
+				<g:HTMLPanel ui:field="formContainer">
 					<m:MaterialInput ui:field="title" type="TEXT"
 						required="true" placeholder="Title" />
 					<h:Label ui:field="titleError" styleName="errorLabel" text="You must include a title" textColor="red lighten-1"/>
@@ -22,10 +22,11 @@
 					<h:Label ui:field="roomNumError" styleName="errorLabel" text="This field is required" textColor="red lighten-1"/>
 					<m:MaterialDatePicker ui:field="startDate"
 						placeholder="start date" />
-					<label id="errorEndDateLabel" class="red-text text-lighten-1">end date cannot be empty or be before start date</label>
+					<label id="errorStartDateLabel" class="red-text text-lighten-1">start date cannot empty or after start date</label>
 					<m:MaterialDatePicker ui:field="endDate"
 						placeholder="end date" />
-					<label id="errorEndDateLabel" class="red-text text-lighten-1">end date cannot be empty or be before start date</label>
+					<label id="errorEndDateLabel" class="red-text text-lighten-1">end date cannot empty or be before start date</label>
+					
 				</g:HTMLPanel>
 			</g:FormPanel>
 		</m:MaterialCardContent>
