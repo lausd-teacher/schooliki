@@ -32,7 +32,7 @@ import net.videmantay.shared.UserStatus;
 import java.util.HashSet;
 
 
-public class AppUserForm extends Composite implements HasValidators {
+public class AppUserForm extends Composite  {
 
 	private static AppUserFormUiBinder uiBinder = GWT.create(AppUserFormUiBinder.class);
 
