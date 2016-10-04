@@ -269,23 +269,23 @@
 									<target name="dev-mode">
 										<property name="compile_classpath" refid="maven.compile.classpath" />
 										<property name="agent.location"
-											value="${basedir}\..\schooliki-client\appengine-agent.jar" />
+											value="${basedir}/../schooliki-client/appengine-agent.jar" />
 										<java classname="com.google.gwt.dev.DevMode" fork="true">
 
 
 											<classpath>
 												<pathelement path="${compile_classpath}" />
 												<pathelement
-													path="${user.home}\.m2\repository\com\google\appengine\appengine-java-sdk\1.9.40\appengine-java-sdk\appengine-java-sdk-1.9.40\lib\appengine-tools-api.jar" />
-												<pathelement path="${basedir}\..\schooliki-client\src\main\java" />
+													path="${user.home}/.m2/repository/com/google/appengine/appengine-java-sdk/1.9.40/appengine-java-sdk/appengine-java-sdk-1.9.40/lib/appengine-tools-api.jar" />
+												<pathelement path="${basedir}/../schooliki-client/src/main/java" />
 												<pathelement
-													path="${basedir}\..\schooliki-client\src\main\resources" />
+													path="${basedir}/../schooliki-client/src/main/resources" />
 												<pathelement
-													path="${basedir}\..\schooliki-client\target\schooliki-client-1.0\WEB-INF\classes\" />
+													path="${basedir}/../schooliki-client/target/schooliki-client-1.0/WEB-INF/classes/" />
 												<pathelement
-													path="${basedir}\..\schooliki-client\target\generated-sources\gwt" />
+													path="${basedir}/../schooliki-client/target/generated-sources/gwt" />
 												<pathelement
-													path="${basedir}\..\schooliki-client\target\generated-sources\annotations" />
+													path="${basedir}/../schooliki-client/target/generated-sources/annotations" />
 											</classpath>
 
 											<jvmarg value="-javaagent:${agent.location}" />
@@ -294,7 +294,7 @@
 												<jvmarg
 												value="-D--disable_update_check" />
 											<arg
-												line="-gen ${project.build.directory}\.generated -war ${project.build.directory}/${project.build.finalName} -logLevel INFO -server com.google.appengine.tools.development.gwt.AppEngineLauncher -port 8888 -codeServerPort 9997 -startupUrl index.html -sourceLevel 1.7 net.videmantay.Roster net.videmantay.Admin" />
+												line="-gen ${project.build.directory}/.generated -war ${project.build.directory}/${project.build.finalName} -logLevel INFO -server com.google.appengine.tools.development.gwt.AppEngineLauncher -port 8888 -codeServerPort 9997 -startupUrl index.html -sourceLevel 1.7 net.videmantay.Roster net.videmantay.Admin" />
 										</java>
 									</target>
 								</configuration>
