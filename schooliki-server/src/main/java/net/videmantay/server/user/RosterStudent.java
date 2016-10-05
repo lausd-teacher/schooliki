@@ -34,7 +34,6 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	//why not set actual key???
 	
 	@NotNull
-	@NotBlank
 	public Long roster;
 	
 	@NotNull
