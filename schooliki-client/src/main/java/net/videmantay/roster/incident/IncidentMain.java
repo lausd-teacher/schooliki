@@ -1,36 +1,89 @@
-<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:v="urn:import:net.videmantay.roster.incident">
-	<ui:style>
+package net.videmantay.roster.incident;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
+
+import gwt.material.design.client.ui.MaterialColumn;
+import gwt.material.design.client.ui.MaterialFAB;
+import gwt.material.design.client.ui.MaterialRow;
+import net.videmantay.roster.json.IncidentJson;
+import net.videmantay.roster.json.RosterJson;
+import static com.google.gwt.query.client.GQuery.*;
+
+public class IncidentMain extends Composite {
+
+	private static IncidentMainUiBinder uiBinder = GWT.create(IncidentMainUiBinder.class);
+
+	interface IncidentMainUiBinder extends UiBinder<Widget, IncidentMain> {
+	}
+
+	@UiField
+	MaterialRow posIncidentRow;
 	
-	</ui:style>
-	<g:HTMLPanel>
-		<m:MaterialTitle title="Manage  classroom expectations by creating positive and negative incidents" description="Incidents are events you want to encourage like 'Turned in Homework', 'Shared with a friend'" />
-		<!-- Show the same grid as the dashboard  sorted alphabetically-->
-		<m:MaterialCard>
-			<m:MaterialCardContent>
-				<m:MaterialTab ui:field="tab" indicatorColor="green">
-					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton ui:field="posTab" type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
-					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton ui:field="negTab" type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
-				</m:MaterialTab>
-				<m:MaterialRow ui:field="incidentGirdPanel">
-					<m:MaterialPanel ui:field="posIncidentGrid" addStyleNames="posIncidentGrid" m:id="posIncidentGrid">
-						<m:MaterialRow ui:field="posIncidentRow">
-						</m:MaterialRow>
-					</m:MaterialPanel>
-					<m:MaterialPanel ui:field="negIncidentGrid" addStyleNames="negIncidentGrid" m:id="negIncidentGrid">
-						<m:MaterialRow ui:field="negIncidentRow">
-						</m:MaterialRow>
-					</m:MaterialPanel>
-				</m:MaterialRow>
-			</m:MaterialCardContent>
-		</m:MaterialCard>
-		<m:MaterialFAB ui:field="addIncidentFAB">
-			<m:MaterialAnchorButton type="RAISED" iconType="ADD"/>
-		</m:MaterialFAB>
-		<v:IncidentForm ui:field="incidentForm" />
-	  <!-- <v:DeleteIncidentModal ui:field="deleteModal" /> -->
-	</g:HTMLPanel>
-</ui:UiBinder> 
+	@UiField
+	MaterialRow negIncidentRow;
+	
+//	@UiField
+//	DeleteIncidentModal deleteModal;
+	
+	@UiField
+	IncidentForm incidentForm;
+	
+	@UiField
+	MaterialFAB addIncidentFAB;
+	
+	Function openForm = new Function(){
+		@Override
+		public void f(){
+			incidentForm.show();
+		}
+	};
+	
+	Function openDeleteModal = new Function(){
+		@Override
+		public void f(){
+			//deleteModal.show();
+		}
+	};
+	
+	
+	public IncidentMain() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}//end constr.
+	
+	@Override
+	public void onLoad(){
+		RosterJson roster = window.getPropertyJSO("roster").cast();
+		for(int i = 0; i < roster.getIncidents().length(); i++){
+			IncidentJson incident = roster.getIncidents().get(i);
+			//EditIncidentPanel ip = new EditIncidentPanel().setIncident(incident);
+			//console.log(ip);
+			MaterialColumn col = new MaterialColumn();
+			col.setGrid("s2 m4 l2");
+			if(incident.getValue() < 0){
+				negIncidentRow.add(col);
+			}else{
+				posIncidentRow.add(col);
+			}//end else
+			
+			//col.add(ip);
+		}//end for
+		
+		//$(body).on("editIncident", openForm);
+		//$(body).on("deleteIncident", openDeleteModal);
+		
+		addIncidentFAB.addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				incidentForm.show();
+			}
+		});
+	}
+
+}
