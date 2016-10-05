@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:p="urn:import:com.floreysoft.gwt.picker.client.domain">
+	xmlns:p="urn:import:com.floreysoft.gwt.picker.client.domain"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html" >
 	<ui:style>
 	
 	</ui:style>
@@ -21,21 +22,21 @@
 					<m:MaterialButton ui:field="pickerButton" text="Upload"/>
 				</m:MaterialColumn>
 			</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="schoolEmail" placeholder="school email"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="firstName" placeholder="First Name"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="lastName" placeholder="Last Name"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="extName" placeholder ="Extended Name"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
+				
+					<m:MaterialInput ui:field="schoolEmail" required="true" type="EMAIL" placeholder="School email"></m:MaterialInput>
+					<h:Label styleName="errorLabel" text="You must include a valid e-mail" textColor="red lighten-1"/>
+			
+					<m:MaterialInput ui:field="firstName" required="true" type="TEXT" placeholder="First Name"></m:MaterialInput>
+					<h:Label styleName="errorLabel" text="You must include a first name" textColor="red lighten-1"/>
+				
+					<m:MaterialInput ui:field="lastName" required="true" type="TEXT" placeholder="Last Name"></m:MaterialInput>
+					<h:Label styleName="errorLabel" text="You must include a last name" textColor="red lighten-1"/>
+				
+					<m:MaterialInput ui:field="extName" required="false" type="TEXT" placeholder ="Extended Name"></m:MaterialInput>
+				
 					<m:MaterialDatePicker ui:field="DOB" placeholder="D.O.B"></m:MaterialDatePicker>
-				</m:MaterialRow>
+					<label id="errorDateOfBirthLabel" class="red-text text-lighten-1">date of birth cannot be empty</label>
+				
 				</g:HTMLPanel>
 			</g:FormPanel>
 		</m:MaterialModalContent>

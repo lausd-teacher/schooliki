@@ -13,6 +13,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
@@ -25,18 +27,21 @@ import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import java.util.Date;
+
 import gwt.material.design.client.constants.Display;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialImage;
+import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialTextBox;
 import net.videmantay.roster.RosterEvent;
-import net.videmantay.shared.url.RosterUrl;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;
@@ -69,16 +74,16 @@ public class CreateStudentForm extends Composite{
 	FormPanel form;
 	
 	@UiField
-	MaterialTextBox schoolEmail;
+	MaterialInput schoolEmail;
 	
 	@UiField
-	MaterialTextBox firstName;
+	MaterialInput firstName;
 	
 	@UiField
-	MaterialTextBox lastName;
+	MaterialInput lastName;
 	
 	@UiField
-	MaterialTextBox extName;
+	MaterialInput extName;
 	
 	@UiField
 	MaterialDatePicker DOB;
@@ -165,6 +170,8 @@ public class CreateStudentForm extends Composite{
 ///Constructor Here , Almost lost it//////////////////////////////////////////////
 	public CreateStudentForm() {
 		initWidget(uiBinder.createAndBindUi(this));
+		form.getElement().setId("createStudentForm");
+		
 		console.log("info to string authToken" + info.getAuthToken());
 		//give form a size
 		//set up the picker
@@ -207,13 +214,48 @@ public class CreateStudentForm extends Composite{
 	
 	@Override
 	public void onLoad(){
-						
-				//picker button clickHandler
+			
+		$("#createStudentForm input").blur(getValidationFunction());
 				pickerButton.addClickHandler(handler);
 				okBtn.addClickHandler(okHandler);
 				cancelBtn.addClickHandler(cancelHandler);
 				student = RosterStudentJson.createObject().cast();
 				
+				$(".errorLabel").hide();
+				$("#errorDateOfBirthLabel").hide();
+				
+				
+		DOB.addCloseHandler(new CloseHandler<MaterialDatePicker>(){
+			@Override
+			public void onClose(CloseEvent<MaterialDatePicker> event) {
+			      if(DOB.getDate() == null){
+			    	  $("#errorDateOfBirthLabel").show();
+			      }else{
+			    	  $("#errorDateOfBirthLabel").hide();
+			      }
+			      
+			      
+			}
+		});
+			
+	}
+	
+	
+private  Function getValidationFunction(){
+		
+		return new Function(){
+			@Override
+			public void f(){
+				GWT.log("event" + $(this).id());
+				if($(this).is(":invalid")){
+					$(this).next(".errorLabel").show();
+					$(this).addClass("inputError");
+				} else{
+					$(this).next(".errorLabel").hide();
+				}
+			}
+		};
+		
 	}
 	
 
