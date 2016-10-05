@@ -14,7 +14,8 @@
 		<m:MaterialDropDown ui:field="dropDown" activator="iconList">
 		</m:MaterialDropDown>
 		<m:MaterialLabel ui:field="nameLabel" text="Name:"/>
-		<m:MaterialTextBox ui:field="nameInput" />
+		<m:MaterialInput ui:field="nameInput" type="TEXT" required="true"/>
+		<m:html.Label styleName="errorLabel" text="You must include a name" textColor="red lighten-1"/>
 		<m:MaterialChip ui:field="valueLabel" text="Points:"/>
 		<m:MaterialNumberBox ui:field="valueInput" />
 		<m:MaterialLabel text="Type:" />

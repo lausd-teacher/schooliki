@@ -16,13 +16,14 @@ import static com.google.gwt.query.client.GQuery.*;
 
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
+import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialNumberBox;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialTextBox;
 import gwt.material.design.client.ui.MaterialToast;
-import net.videmantay.shared.url.RosterUrl;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.RosterJson;
 
@@ -34,37 +35,37 @@ public class IncidentForm extends Composite {
 	}
 
 	private IncidentJson incident;
-	
+
 	@UiField
 	MaterialModal modal;
-	
+
 	@UiField
 	FormPanel form;
-	
+
 	@UiField
-	MaterialTextBox nameInput;
-	
+	MaterialInput nameInput;
+
 	@UiField
-	MaterialNumberBox <Integer>valueInput;
-	
+	MaterialNumberBox<Integer> valueInput;
+
 	@UiField
 	MaterialListBox typeListBox;
-	
+
 	@UiField
 	MaterialPanel iconPanel;
-	
+
 	@UiField
 	MaterialIcon doneBtn;
-	
+
 	@UiField
 	MaterialIcon cancelBtn;
-	
+
 	@UiField
 	MaterialDropDown dropDown;
 
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
-	
-	final ClickHandler doneHandler = new ClickHandler(){
+
+	final ClickHandler doneHandler = new ClickHandler() {
 
 		@Override
 		public void onClick(ClickEvent event) {
@@ -73,43 +74,52 @@ public class IncidentForm extends Composite {
 			incident.setValue(valueInput.getValue());
 			incident.setBehaviorType(typeListBox.getValue());
 			RosterJson roster = window.getPropertyJSO("roster").cast();
-			Ajax.post(RosterUrl.SAVE_INCIDENTS, $$("roster:" + JsonUtils.stringify(roster)))
-			.done(new Function(){
+			Ajax.post(RosterUrl.SAVE_INCIDENTS, $$("roster:" + JsonUtils.stringify(roster))).done(new Function() {
 				@Override
-				public void f(){
+				public void f() {
 					MaterialToast.fireToast("Incident saved");
 				}
 			});
 			form.reset();
 			incident = null;
 			modal.closeModal();
-			
-		}};
-				
-		final ClickHandler cancelHandler = new ClickHandler(){
 
-					@Override
-					public void onClick(ClickEvent event) {
-						form.reset();
-						incident = null;
-						modal.closeModal();
-						
-					}};	
-	
+		}
+	};
+
+	final ClickHandler cancelHandler = new ClickHandler() {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			form.reset();
+			incident = null;
+			modal.closeModal();
+
+		}
+	};
 
 	public IncidentForm() {
-		
+
 		initWidget(uiBinder.createAndBindUi(this));
-		
+
 		doneBtn.addClickHandler(doneHandler);
-		
-		cancelBtn.addClickHandler( cancelHandler);
-		
-		//dropDown.add(iconGrid);
+
+		cancelBtn.addClickHandler(cancelHandler);
+
+		form.getElement().setId("incidentFrom");
+
 	}
-	
-	public void setIncident(IncidentJson incident){
-		if(incident == null){
+
+	@Override
+	public void onLoad() {
+		$("#incidentFrom input").blur(getValidationFunction());
+
+		$(".errorLabel").hide();
+
+	}
+
+	public void setIncident(IncidentJson incident) {
+		if (incident == null) {
 			incident = IncidentJson.createObject().cast();
 		}
 		this.incident = incident;
@@ -117,17 +127,33 @@ public class IncidentForm extends Composite {
 		valueInput.setValue(incident.getValue());
 		typeListBox.setValueSelected(incident.getBehaviorType(), true);
 		iconPanel.clear();
-		
-		//need to fix this so it's in one place
+
+		// need to fix this so it's in one place
 		String html = "<svg viewBox='0 0 150 200' class='incidentIcon' style='width:7em; height:8em' id='"
-				+incident.getIconUrl()+"'>"
-				+"<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#" 
-				+ incident.getIconUrl()
-				+"' /></svg>";
+				+ incident.getIconUrl() + "'>"
+				+ "<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#"
+				+ incident.getIconUrl() + "' /></svg>";
 		iconPanel.add(new HTML(html));
 	}
-	
-	public void show(){
+
+	public void show() {
 		modal.openModal();
+	}
+
+	private Function getValidationFunction() {
+
+		return new Function() {
+			@Override
+			public void f() {
+				GWT.log("event" + $(this).id());
+				if ($(this).is(":invalid")) {
+					$(this).next(".errorLabel").show();
+					$(this).addClass("inputError");
+				} else {
+					$(this).next(".errorLabel").hide();
+				}
+			}
+		};
+
 	}
 }

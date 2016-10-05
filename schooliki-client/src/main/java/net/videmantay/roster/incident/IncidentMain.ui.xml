@@ -27,8 +27,8 @@
 				</m:MaterialRow>
 			</m:MaterialCardContent>
 		</m:MaterialCard>
-		<m:MaterialFAB>
-			<m:MaterialAnchorButton  type="RAISED" iconType="ADD"/>
+		<m:MaterialFAB ui:field="addIncidentFAB">
+			<m:MaterialAnchorButton type="RAISED" iconType="ADD"/>
 		</m:MaterialFAB>
 		<v:IncidentForm ui:field="incidentForm" />
 	  <!-- <v:DeleteIncidentModal ui:field="deleteModal" /> -->
