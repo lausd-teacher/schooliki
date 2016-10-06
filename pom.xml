@@ -1,51 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.videmantay</groupId>
-  <artifactId>schooliki</artifactId>
-  <version>1.0</version>
-  <packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.videmantay</groupId>
+	<artifactId>schooliki</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
 
-  <prerequisites>
-    <maven>${mavenVersion}</maven>
-  </prerequisites>
+	<prerequisites>
+		<maven>${mavenVersion}</maven>
+	</prerequisites>
 
-  <properties>
-     <gwtVersion>2.7.0</gwtVersion>
-    <mavenVersion>3.0</mavenVersion>
+	<properties>
+		<gwtVersion>2.7.0</gwtVersion>
+		<mavenVersion>3.0</mavenVersion>
 		<gwtMaterialVersion>1.6.2</gwtMaterialVersion>
-		<gwtGuavaVersion>19.0</gwtGuavaVersion>
+		<gwtGuavaVersion>18.0</gwtGuavaVersion>
 		<gwtMaterialThemesVersion>1.6.0</gwtMaterialThemesVersion>
 		<gwtMaterialAddinsVersion>1.6.0</gwtMaterialAddinsVersion>
 		<gwtQueryVersion>1.4.3</gwtQueryVersion>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<agent.location>${basedir}/appengine-agent.jar</agent.location>
+		<appengine.version>1.9.40</appengine.version>
 	</properties>
 
-  
 
-   <dependencies>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-user</artifactId>
-      <version>${gwtVersion}</version>
-      <scope>provided</scope>
-        <exclusions>
-        	 <exclusion>
-        	 	<groupId>javax.validation</groupId>
-        	 	 <artifactId>validation-api</artifactId>
-        	 </exclusion>
-        </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-dev</artifactId>
-      <version>${gwtVersion}</version>
-      <scope>provided</scope>
-    </dependency>
-   
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwtVersion}</version>
+
+			<exclusions>
+				<exclusion>
+					<groupId>javax.validation</groupId>
+					<artifactId>validation-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwtVersion}</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<version>${appengine.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-labs</artifactId>
+			<version>${appengine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-tools-sdk</artifactId>
+			<version>1.9.40</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>com.github.gwtmaterialdesign</groupId>
 			<artifactId>gwt-material</artifactId>
@@ -81,9 +101,6 @@
 			<artifactId>gwt-charts</artifactId>
 			<version>0.9.10</version>
 		</dependency>
-		
-
-
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -91,15 +108,55 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-	
-  </dependencies>
 
-  <modules>
-   <module>schooliki-client</module>
-   <module>schooliki-server</module>
-   <module>schooliki-shared</module>
-   <module>gwtquery-ui-plugin</module>
-   <module>picker</module>
-   <module>channel</module>
-</modules>
+	</dependencies>
+	<profiles>
+		<profile>
+			<id>local</id>
+			<build>
+
+				<plugins>
+					<plugin>
+						<groupId>net.ltgt.gwt.maven</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<version>1.0-rc-6</version>
+						<extensions>true</extensions>
+						<configuration>
+							<modules>net.videmantay.Admin,net.videmantay.Roster</modules>
+							<projects>schooliki-client-admin,schooliki-client-roster</projects>
+							<startupUrls>
+								<startupUrl>index.html</startupUrl>
+								<startupUrl>admin.html</startupUrl>
+							</startupUrls>
+							<warDir>${basedir}/schooliki-server/target/schooliki-server-${project.version}</warDir>
+							<devmodeWorkDir>${basedir}/schooliki-server/target/schooliki-server-${project.version}</devmodeWorkDir>
+							<webappDirectory>${basedir}/schooliki-server/target/schooliki-server-${project.version}</webappDirectory>
+							<devmodeArgs>
+								<arg>-server</arg>
+								<arg>com.google.appengine.tools.development.gwt.AppEngineLauncher</arg>
+							</devmodeArgs>
+							<jvmArgs>
+								<jvmArg>-Dappengine.sdk.root=${user.home}/.m2/repository/com/google/appengine/appengine-java-sdk/1.9.40/appengine-java-sdk/appengine-java-sdk-1.9.40</jvmArg>
+								<jvmArg>-javaagent:${agent.location}</jvmArg>
+								<jvmArg>-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50</jvmArg>
+								<jvmArg>-D--disable_update_check</jvmArg>
+							</jvmArgs>
+							<localWorkers>4</localWorkers>
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<modules>
+		<module>schooliki-client-roster</module>
+		<module>schooliki-client-admin</module>
+		<module>schooliki-server</module>
+		<module>schooliki-shared</module>
+		<module>gwtquery-ui-plugin</module>
+		<module>picker</module>
+		<module>channel</module>
+	</modules>
 </project>

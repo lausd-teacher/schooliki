@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>schooliki</artifactId>
+		<groupId>net.videmantay</groupId>
+		<version>1.0</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>schooliki-client-admin</artifactId>
+	<packaging>gwt-app</packaging>
+	<name>schooliki-client-admin</name>
+
+	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.videmantay</groupId>
+			<artifactId>schooliki-shared</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>goog.appengine</groupId>
+			<artifactId>channel</artifactId>
+			<version>1.0</version>
+
+		</dependency>
+		<dependency>
+			<groupId>gwtquery.plugins</groupId>
+			<artifactId>gwtquery-ui-plugin</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.floreysoft</groupId>
+			<artifactId>picker</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+
+	</dependencies>
+
+
+
+	<build>
+		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>net.ltgt.gwt.maven</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.0-rc-6</version>
+				<extensions>true</extensions>
+				<configuration>
+					<moduleName>net.videmantay.Admin</moduleName>
+					<localWorkers>4</localWorkers>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

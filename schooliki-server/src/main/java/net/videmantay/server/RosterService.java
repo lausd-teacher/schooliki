@@ -60,6 +60,9 @@ import com.google.gson.Gson;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
+
+import freemarker.cache.WebappTemplateLoader;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -196,6 +199,14 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		data.put("loginInfo", loginInfo);
 		data.put("rosterList", rosterList);
 		data.put("connection", token);
+				//set webTemplateLoader here
+		Configuration cfg = TemplateGen.config();
+		 	
+		 WebappTemplateLoader templateLoader = new WebappTemplateLoader(getServletContext(), "WEB-INF/html");
+		 templateLoader.setURLConnectionUsesCaches(false);
+		 templateLoader.setAttemptFileAccess(false);
+		 cfg.setTemplateLoader(templateLoader);
+		 		
 		Template teacherPage = TemplateGen.getTeacherPage();
 		teacherPage.process(data, res.getWriter());
 		}else{

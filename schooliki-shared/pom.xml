@@ -27,6 +27,7 @@
 			<artifactId>guava-gwt</artifactId>
 			<version>19.0</version>
 		</dependency>
+		
 	</dependencies>
 
 	<build>

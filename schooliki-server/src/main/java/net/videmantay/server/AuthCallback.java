@@ -51,6 +51,8 @@ public class AuthCallback extends
 	    resp.getWriter().print("<h3>" + nickname + ", why don't you want to play with me?</h1>");
 	    resp.setStatus(200);
 	    resp.addHeader("Content-Type", "text/html");
+	    
+	    resp.sendRedirect("/teacher");
 	  }
 	
 	
