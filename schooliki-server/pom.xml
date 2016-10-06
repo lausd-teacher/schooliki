@@ -77,7 +77,7 @@
 
 		<dependency>
 			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
+			<artifactId>freemarker-gae</artifactId>
 			<version>2.3.23</version>
 		</dependency>
 		<dependency>
@@ -164,7 +164,13 @@
 			<artifactId>gdata-client</artifactId>
 			<version>1.0</version>
 		</dependency>
-
+	
+		<dependency>
+   			 <groupId>org.jsoup</groupId>
+   			 <artifactId>jsoup</artifactId>
+   			 <version>1.8.3</version>
+		</dependency>
+	
 
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -246,8 +252,8 @@
 					<address>0.0.0.0</address>
 					<port>9997</port>
 					<jvmFlags>
-						<jvmFlag>-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50
-							-Xmx512m</jvmFlag>
+						<jvmFlag>
+							-Xmx1024m</jvmFlag>
 					</jvmFlags>
 				</configuration>
 			</plugin>

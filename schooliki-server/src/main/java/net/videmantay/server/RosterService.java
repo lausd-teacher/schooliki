@@ -66,7 +66,8 @@ import freemarker.template.TemplateException;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
-
+import freemarker.template.Configuration;
+import freemarker.cache.WebappTemplateLoader;
 
 @SuppressWarnings("serial")
 public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
@@ -196,6 +197,14 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		data.put("loginInfo", loginInfo);
 		data.put("rosterList", rosterList);
 		data.put("connection", token);
+		//set webTemplateLoader here
+		Configuration cfg = TemplateGen.config();
+		
+		WebappTemplateLoader templateLoader = new WebappTemplateLoader(getServletContext(), "WEB-INF/html");
+		templateLoader.setURLConnectionUsesCaches(false);
+		templateLoader.setAttemptFileAccess(false);
+		cfg.setTemplateLoader(templateLoader);
+		
 		Template teacherPage = TemplateGen.getTeacherPage();
 		teacherPage.process(data, res.getWriter());
 		}else{
