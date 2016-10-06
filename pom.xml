@@ -15,7 +15,7 @@
      <gwtVersion>2.7.0</gwtVersion>
     <mavenVersion>3.0</mavenVersion>
 		<gwtMaterialVersion>1.6.2</gwtMaterialVersion>
-		<gwtGuavaVersion>19.0</gwtGuavaVersion>
+		<gwtGuavaVersion>18.0</gwtGuavaVersion>
 		<gwtMaterialThemesVersion>1.6.0</gwtMaterialThemesVersion>
 		<gwtMaterialAddinsVersion>1.6.0</gwtMaterialAddinsVersion>
 		<gwtQueryVersion>1.4.3</gwtQueryVersion>
