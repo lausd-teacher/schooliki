@@ -57,8 +57,9 @@
 				<version>1.0-rc-6</version>
 				<extensions>true</extensions>
 				<configuration>
-				<moduleName>net.videmantay.Roster</moduleName>
-				<localWorkers>4</localWorkers>
+				    <classpathScope>compile</classpathScope>
+					<moduleName>net.videmantay.Roster</moduleName>
+					<localWorkers>4</localWorkers>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -34,19 +34,19 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwtVersion}</version>
-
 			<exclusions>
 				<exclusion>
 					<groupId>javax.validation</groupId>
 					<artifactId>validation-api</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
 			<version>${gwtVersion}</version>
-
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.appengine</groupId>
@@ -70,36 +70,43 @@
 			<groupId>com.github.gwtmaterialdesign</groupId>
 			<artifactId>gwt-material</artifactId>
 			<version>${gwtMaterialVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.gwtmaterialdesign</groupId>
 			<artifactId>gwt-material-themes</artifactId>
 			<version>${gwtMaterialThemesVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.gwtmaterialdesign</groupId>
 			<artifactId>gwt-material-addins</artifactId>
 			<version>${gwtMaterialAddinsVersion}</version>
+			 <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava-gwt</artifactId>
 			<version>${gwtGuavaVersion}</version>
+			 <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.gwtquery</groupId>
 			<artifactId>gwtquery</artifactId>
 			<version>${gwtQueryVersion}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt.google-apis</groupId>
 			<artifactId>gwt-ajaxloader</artifactId>
 			<version>1.1.0</version>
+			 <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.gwt-charts</groupId>
 			<artifactId>gwt-charts</artifactId>
 			<version>0.9.10</version>
+			 <scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -128,6 +135,7 @@
 								<startupUrl>index.html</startupUrl>
 								<startupUrl>admin.html</startupUrl>
 							</startupUrls>
+							<classpathScope>compile+runtime</classpathScope>
 							<warDir>${basedir}/schooliki-server/target/schooliki-server-${project.version}</warDir>
 							<devmodeWorkDir>${basedir}/schooliki-server/target/schooliki-server-${project.version}</devmodeWorkDir>
 							<webappDirectory>${basedir}/schooliki-server/target/schooliki-server-${project.version}</webappDirectory>
