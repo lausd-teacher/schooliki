@@ -209,6 +209,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		 		
 		Template teacherPage = TemplateGen.getTeacherPage();
 		teacherPage.process(data, res.getWriter());
+		
 		}else{
 			res.sendRedirect("/login");
 		}

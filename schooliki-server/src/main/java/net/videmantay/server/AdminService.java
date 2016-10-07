@@ -161,6 +161,7 @@ public class AdminService  extends HttpServlet {
 						//set the pic url here
 						//get user key and list as arg for userAcct
 						acct.setId(appUserDB.save(acct).getId());
+						log.log(Level.INFO, "user id" + acct.getId());
 							
 					}});
 				

@@ -39,6 +39,11 @@ public  class AppUser extends DBObj implements Serializable{
 	public Long id;
 	
 	@Index
+	public Long idBis;
+	
+	
+
+	@Index
 	@Email(message=ValidationMessages.EMAIL_INVALID)
 	public String acctId;//Google Id may be different than email 
 							// in cases where teacher want to use their email
@@ -87,6 +92,7 @@ public  class AppUser extends DBObj implements Serializable{
 	public AppUser(Long id, String email){
 		this.setId(id);
 		this.setEmail(email);
+		
 	}
 	
 	public Long getId() {
@@ -95,6 +101,7 @@ public  class AppUser extends DBObj implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+		this.idBis = id;
 	}
 
 	public String getAcctId() {
@@ -248,6 +255,14 @@ public  class AppUser extends DBObj implements Serializable{
 
 	public void setMainDriveFolder(String mainDriveFolder) {
 		this.mainDriveFolder = mainDriveFolder;
+	}
+	
+	public Long getIdBis() {
+		return this.id;
+	}
+
+	public void setIdBis(Long idBis) {
+		this.idBis = id;
 	}
 	public enum UserTitle{MR, MS, MRS}
 	@Override
