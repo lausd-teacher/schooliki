@@ -344,28 +344,28 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			incident.name = "Helping Others";
 			incident.value = 5;
 			incident.iconUrl = "trophyRedStar";
-			roster.incidents.add(incident);
+			//roster.incidents.add(incident);
 			
 			incident = new Incident();
 			incident.id = 2;
 			incident.name = "Finished Work";
 			incident.value = 1;
 			incident.iconUrl = "rocket";
-			roster.incidents.add(incident);
+			//roster.incidents.add(incident);
 			
 			incident = new Incident();
 			incident.id = 3;
 			incident.name = "Participation";
 			incident.value = 1;
 			incident.iconUrl = "scientist";
-			roster.incidents.add(incident);
+		//	roster.incidents.add(incident);
 			
 			incident = new Incident();
 			incident.id = 5;
 			incident.name = "Clean Environment";
 			incident.value = 1;
 			incident.iconUrl = "olympicRingsLong3D";
-			roster.incidents.add(incident);
+		//	roster.incidents.add(incident);
 					
 			
 				//NEGATIVE
@@ -375,28 +375,28 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			incident.name = "Out of Seat";
 			incident.value = -1;
 			incident.iconUrl = "notAllowed";
-			roster.incidents.add(incident);
+		//	roster.incidents.add(incident);
 					//interruption
 			incident = new Incident();
 			incident.id = 7;
 			incident.name = "Interruption";
 			incident.value = -1;
 			incident.iconUrl = "warningSign";
-			roster.incidents.add(incident);
+			//roster.incidents.add(incident);
 					//touching without permission
 			incident = new Incident();
 			incident.id = 8;
 			incident.name = "Touching Other's Things";
 			incident.value = -2;
 			incident.iconUrl = "sadRainCloud";
-			roster.incidents.add(incident);
+			//roster.incidents.add(incident);
 					//fighting
 			incident = new Incident();
 			incident.id = 9;
 			incident.name = "Fighting";
 			incident.value = -10;
 			incident.iconUrl = "warningCone";
-			roster.incidents.add(incident);
+			//roster.incidents.add(incident);
 			//setup default jobs ////////
 			
 				//1. prez

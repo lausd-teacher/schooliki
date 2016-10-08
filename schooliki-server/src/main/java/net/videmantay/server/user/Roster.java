@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 
+import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Goal;
 import net.videmantay.server.entity.GoogleService;
@@ -100,9 +101,9 @@ public class Roster extends DBObj implements Serializable{
 
 	
 	//maybe a sorted set by last name???
-	public transient Set<Key<RosterStudent>>studentKeys = new HashSet<Key<RosterStudent>>();
+	public transient Set<Key<RosterStudent>> studentKeys = new HashSet<Key<RosterStudent>>();
 	
-	@Ignore
+	@Serialize
 	public Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
 		
 	@Serialize
@@ -111,8 +112,8 @@ public class Roster extends DBObj implements Serializable{
 	@Serialize
 	public ArrayList<ClassTime> classTimes = new ArrayList<>();
 		
-	@Serialize
-	public ArrayList<Incident> incidents = new ArrayList<Incident>();
+//
+//	public ArrayList<Incident> incidents = new ArrayList<Incident>();
 	
 	//folders for roster and place for student folders
 	@SafeHtml
@@ -338,6 +339,33 @@ public class Roster extends DBObj implements Serializable{
 		//load students from keys
 		this.getRosterStudents().addAll(DB.db().load().keys(this.getStudentKeys()).values());
 	}
+	
+	public static Roster createFromDTO(RosterDTO dto){
+		
+		Roster roster = new Roster();
+		
+		roster.id = dto.id;
+		roster.ownerId = dto.ownerId;
+		roster.title = dto.title;
+		roster.description = dto.description;
+		roster.roomNum = dto.roomNum;
+		roster.teacherInfo = dto.teacherInfo;
+		roster.gradeLevel = dto.gradeLevel;
+		roster.startDate = dto.startDate;
+		roster.endDate = dto.endDate;
+		roster.rollBook = dto.rollBook;
+		roster.gradeBook = dto.gradeBook;
+		roster.behaviorReport = dto.behaviorReport;
+		roster.googleCalendars = dto.googleCalendars;
+		roster.googleTasks = dto.googleTasks;
+		roster.googleFolders = dto.googleFolders;
+		roster.rosterFolderId = dto.rosterFolderId;
+		roster.studentFolderId = dto.studentFolderId;
+		roster.incidentQueryDate = dto.incidentQueryDate;
+		
+		 return roster;
+	}
+
 
 	
 }

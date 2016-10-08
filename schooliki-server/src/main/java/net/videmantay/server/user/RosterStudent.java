@@ -19,6 +19,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Serialize;
 
+import net.videmantay.rest.dto.RosterStudentDTO;
 import net.videmantay.server.entity.Goal;
 import net.videmantay.server.entity.StudentJob;
 import net.videmantay.server.validation.ValidDateOfBirth;
@@ -34,7 +35,8 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	//why not set actual key???
 	
 	@NotNull
-	public Long roster;
+	@Index
+	public Long parentRosterId;
 	
 	@NotNull
 	@NotBlank
@@ -73,11 +75,13 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public RosterStudent(){
 		
 	}
+	
+	
 	public Long getRoster() {
-		return roster;
+		return parentRosterId;
 	}
 	public void setRoster(Long roster) {
-		this.roster = roster;
+		this.parentRosterId = roster;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -200,7 +204,7 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result
 				+ ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((roster == null) ? 0 : roster.hashCode());
+		result = prime * result + ((parentRosterId == null) ? 0 : parentRosterId.hashCode());
 		result = prime * result
 				+ ((acctId == null) ? 0 : acctId.hashCode());
 		return result;
@@ -234,10 +238,10 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (roster == null) {
-			if (other.roster != null)
+		if (parentRosterId == null) {
+			if (other.parentRosterId != null)
 				return false;
-		} else if (!roster.equals(other.roster))
+		} else if (!parentRosterId.equals(other.parentRosterId))
 			return false;
 		if (acctId == null) {
 			if (other.acctId != null)
@@ -294,7 +298,58 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+	public RosterStudent(Long id, Long parentRosterId, String firstName, String lastName, String extName,
+			Thumbnail[] thumbnails, Date dOB, Boolean glasses, String eldLevel, Set<StudentJob> jobs, boolean inactive,
+			String acctId, ArrayList<Integer> points, Set<Goal> goals, String studentFolderId, String studentCalId,
+			String recordUrl, String studentTasksId) {
+		super();
+		this.id = id;
+		this.parentRosterId = parentRosterId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.extName = extName;
+		this.thumbnails = thumbnails;
+		DOB = dOB;
+		this.glasses = glasses;
+		this.eldLevel = eldLevel;
+		this.jobs = jobs;
+		this.inactive = inactive;
+		this.acctId = acctId;
+		this.points = points;
+		this.goals = goals;
+		this.studentFolderId = studentFolderId;
+		this.studentCalId = studentCalId;
+		this.recordUrl = recordUrl;
+		this.studentTasksId = studentTasksId;
+	}
 	
+	
+	public static RosterStudent createFromDTO(RosterStudentDTO dto){
+		
+		RosterStudent student = new RosterStudent();
+		student.id = dto.id;
+		student.parentRosterId = dto.parentRosterId;
+		student.firstName = dto.firstName;
+		student.lastName = dto.lastName;
+		student.extName = dto.extName;
+		student.thumbnails = dto.thumbnails;
+		student.DOB = dto.DOB;
+		student.glasses = dto.glasses;
+		student.eldLevel = dto.eldLevel;
+		student.jobs = dto.jobs;
+		student.inactive = dto.inactive;
+		student.acctId = dto.acctId;
+		student.points = dto.points;
+		student.goals = dto.goals;
+		student.studentFolderId = dto.studentFolderId;
+		student.studentCalId = dto.studentCalId;
+		student.recordUrl = dto.recordUrl;
+		student.studentTasksId = dto.studentTasksId;
+		
+		return student;
+	}
 	
 	
 }

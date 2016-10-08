@@ -11,11 +11,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
+import com.google.appengine.api.datastore.Entity;
 
 import static net.videmantay.server.user.DB.*;
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -29,24 +31,25 @@ public class AppUserService {
 
 	private final Logger log = Logger.getLogger("Admin Service");
 
+	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
+
 	static {
+
 		DB.start();
 	}
-
-	final DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUser(@PathParam("id") Long id) {
 
-		AppUser acct = db().load().type(AppUser.class).filter("idBis", id).first().now();
+		AppUser result = ofy().load().key(Key.create(AppUser.class, id)).now(); 
+																				
+																	
+		log.log(Level.INFO, "get user is called " + id);
 
-		log.log(Level.INFO, "get user is called" + id);
-
-		if (acct != null) {
-
-			Response.ok().entity(acct).build();
+		if (result != null) {
+			return Response.ok().entity(result).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
@@ -77,11 +80,10 @@ public class AppUserService {
 			@Override
 			public void vrun() {
 				toBeCreated.setId(appUserDB.save(toBeCreated).getId());
-				toBeCreated.setId(appUserDB.save(toBeCreated).getId());
 
 			}
 		});
-		return Response.status(Status.CREATED).entity(toBeCreated).build();
+		return Response.status(Status.CREATED).build();
 	}
 
 	@POST
@@ -90,10 +92,9 @@ public class AppUserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modifyUser(@PathParam("id") Long id, AppUser newProperties) {
 
+		AppUser result = ofy().load().key(Key.create(AppUser.class, id)).now();
 
-		AppUser toBeModified = db().load().type(AppUser.class).filter("idBis", id).first().now();
-
-		if (toBeModified != null) {
+		if (result != null) {
 			newProperties.setId(id);
 
 			appUserDB.save(newProperties);
@@ -109,13 +110,11 @@ public class AppUserService {
 	@Path("/{id}")
 	public Response deleteUser(@PathParam("id") Long id) {
 
-		Key<AppUser> key = Key.create(AppUser.class, id);
+		AppUser result = ofy().load().key(Key.create(AppUser.class, id)).now();
 
-		AppUser toBeDeteleted = db().load().type(AppUser.class).filter("idBis", id).first().now();
+		if (result != null) {
 
-		if (toBeDeteleted != null) {
-
-			appUserDB.delete(toBeDeteleted);
+			appUserDB.delete(result);
 
 			return Response.ok().build();
 
