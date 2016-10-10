@@ -32,9 +32,9 @@ public class RosterDTO implements Serializable {
 
 	public GradeLevel gradeLevel;
 
-	public Date startDate;
+	public String startDate;
 
-	public Date endDate;
+	public String endDate;
 
 	public String rollBook;
 
@@ -61,7 +61,7 @@ public class RosterDTO implements Serializable {
 	}
 
 	public RosterDTO(Roster roster) {
-		super();
+		
 		this.id = roster.id;
 		this.ownerId = roster.ownerId;
 		this.title = roster.title;
@@ -69,8 +69,8 @@ public class RosterDTO implements Serializable {
 		this.roomNum = roster.roomNum;
 		this.teacherInfo = roster.teacherInfo;
 		this.gradeLevel = roster.gradeLevel;
-		this.startDate = roster.startDate;
-		this.endDate = roster.endDate;
+		this.startDate = roster.startDate.toString();
+		this.endDate = roster.endDate.toString();
 		this.rollBook = roster.rollBook;
 		this.gradeBook = roster.gradeBook;
 		this.behaviorReport = roster.behaviorReport;
@@ -94,19 +94,19 @@ public class RosterDTO implements Serializable {
 		this.ownerId = ownerId;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 

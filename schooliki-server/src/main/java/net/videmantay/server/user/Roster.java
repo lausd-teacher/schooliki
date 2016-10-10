@@ -1,6 +1,8 @@
 package net.videmantay.server.user;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -340,7 +342,9 @@ public class Roster extends DBObj implements Serializable{
 		this.getRosterStudents().addAll(DB.db().load().keys(this.getStudentKeys()).values());
 	}
 	
-	public static Roster createFromDTO(RosterDTO dto){
+	public static Roster createFromDTO(RosterDTO dto) throws ParseException{
+		
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("YYYY-mm-dd");
 		
 		Roster roster = new Roster();
 		
@@ -351,8 +355,8 @@ public class Roster extends DBObj implements Serializable{
 		roster.roomNum = dto.roomNum;
 		roster.teacherInfo = dto.teacherInfo;
 		roster.gradeLevel = dto.gradeLevel;
-		roster.startDate = dto.startDate;
-		roster.endDate = dto.endDate;
+		roster.startDate = sDateFormat.parse(dto.startDate);
+		roster.endDate = sDateFormat.parse(dto.endDate);
 		roster.rollBook = dto.rollBook;
 		roster.gradeBook = dto.gradeBook;
 		roster.behaviorReport = dto.behaviorReport;

@@ -19,11 +19,12 @@ import com.googlecode.objectify.annotation.Index;
 public class Assignment implements Serializable {
 	
 	@Id
-	public String id;
+	public Long id;
 	
 	@SafeHtml
 	public String title;
 	
+	@Index
 	public Long rosterId;
 	
 	public Set<String>standards = new HashSet<String>();
@@ -40,12 +41,13 @@ public class Assignment implements Serializable {
 	
 	private Set<EducationalLink> links;
 	
+	
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.videmantay.rest.dto.GradedWorkDTO;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
 
@@ -20,49 +21,22 @@ import com.googlecode.objectify.annotation.Index;
 public class GradedWork extends Assignment implements Serializable{
 	
 	
-	public String eventId = "";
-	 			
 	public GradedWorkType type = GradedWorkType.HOMEWORK;
 	
 	public Language lang = Language.ENGLISH;
 	
 	public Double pointsPossible = 0.0;
 	
-	public String assignedDate = new DateTime(new Date()).toString();
+	public String assignedDate;
 	
 	@Index
-	public String dueDate = new DateTime(new Date()).toString();
+	public String dueDate;
 	
 	public Boolean finishedGrading = false;
 	
 	public Long rubric;
 	
-	@Ignore
-	public Event event = null;
 	
-	@Ignore 
-	public List<StudentWork> studentWorks;
-	
-	public transient Set<Key<StudentWork>> studentWorkKeys;
-	
-	
-	/*list of students the assignemt is assigned to */
-	/* key word 'ALL' case insensitive for all */
-	/*otherwise csv of students remove [] */
-	/*consider moving to assignment */
-	public Set<Long> assignedTo =new HashSet<Long>();
-	
-	
-	public String getEventId() {
-		return eventId;
-	}
-
-
-	public void setEventId(String googleCalEventId) {
-		this.eventId = googleCalEventId;
-	}
-
-
 	public GradedWorkType getGradedWorkType() {
 		return type;
 	}
@@ -115,25 +89,7 @@ public class GradedWork extends Assignment implements Serializable{
 	}
 
 
-	public Event getEvent() {
-		return event;
-	}
 
-
-	public void setEvent(Event event) {
-		this.event = event;
-	}
-
-
-	public Set<Long> getAssignedTo() {
-		return assignedTo;
-	}
-
-
-	public void setAssignedTo(Set<Long> assignedTo) {
-		this.assignedTo = assignedTo;
-	}
-	
 	public Long getRubric(){
 		return this.rubric;
 	}
@@ -142,18 +98,35 @@ public class GradedWork extends Assignment implements Serializable{
 		this.rubric = rubric;
 	}
 	
-	public void setStudentWorkKeys(Set<Key<StudentWork>> studentWorks){
-		this.studentWorkKeys = studentWorks;
-	}
-	
-	public Set<Key<StudentWork>> getStudentWorkKeys(){
-		return this.studentWorkKeys;
-	}
 	
 	public String getGradedbookCol(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getTitle() + "\n" + this.getSubject() + "\n" + this.getId());
 		return sb.toString();
+	}
+	
+	public static GradedWork createFromDTO(GradedWorkDTO gradedWorkDTO){
+		GradedWork gradedWork = new GradedWork();
+		
+		gradedWork.id = gradedWorkDTO.id;
+		gradedWork.title = gradedWorkDTO.title;
+		gradedWork.rosterId = gradedWorkDTO.rosterId;
+		gradedWork.standards = gradedWorkDTO.standards;
+		gradedWork.gradeLevels = gradedWorkDTO.gradeLevels;
+		gradedWork.mediaUrl = gradedWorkDTO.mediaUrl;
+		gradedWork.description = gradedWorkDTO.description;
+		gradedWork.subject = gradedWorkDTO.subject;
+		gradedWork.setLinks(gradedWorkDTO.getLinks());
+		gradedWork.type = gradedWorkDTO.type;
+		gradedWork.lang = gradedWorkDTO.lang;
+		gradedWork.pointsPossible = gradedWorkDTO.pointsPossible;
+		gradedWork.assignedDate = gradedWorkDTO.assignedDate;
+		gradedWork.dueDate = gradedWorkDTO.dueDate;
+		gradedWork.finishedGrading = gradedWorkDTO.finishedGrading;
+		gradedWork.rubric = gradedWorkDTO.rubric;
+		
+		
+		return gradedWork;
 	}
 	
 }

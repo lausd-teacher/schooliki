@@ -77,20 +77,14 @@ public class RosterService {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createRoster(RosterDTO rosterDTO) {
+	public Response createRoster(RosterDTO rosterDTO) throws Exception{
 
 		final Roster roster = Roster.createFromDTO(rosterDTO);
 
-		ofy().transact(new VoidWork() {
-			@Override
-			public void vrun() {
+				roster.setId(rosterDB.save(roster).getId());
+		
 
-				Long id = rosterDB.save(roster).getId();
-
-			}
-		});
-
-		return Response.status(Status.CREATED).build();
+		return Response.status(Status.CREATED).entity(roster).build();
 	}
 
 	@DELETE
@@ -114,7 +108,7 @@ public class RosterService {
 	@GET
 	@Path("/{id}/student")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRosterStudents(@PathParam("id") Long id) {
+	public Response getRosterStudentsList(@PathParam("id") Long id) {
 
 		List<RosterStudent> studentsList = ofy().load().type(RosterStudent.class).filter("parentRosterId", id).list();
 		List<RosterStudentDTO> rosterStudentDTO = new ArrayList<RosterStudentDTO>();
@@ -127,10 +121,25 @@ public class RosterService {
 		return Response.ok().entity(rosterStudentDTO).build();
 	}
 
+	@GET
+	@Path("/{id}/student/{studentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRosterStudent(@PathParam("id") Long rosterId, @PathParam("studentId") Long studentId) {
+
+		RosterStudent rosterStudent = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
+		  
+		if(rosterStudent != null){
+			RosterStudentDTO rosterStudentDTO = new RosterStudentDTO(rosterStudent);
+			return Response.ok().entity(rosterStudentDTO).build();
+		}
+
+		return Response.status(Status.NOT_FOUND).build();
+	}
+
 	@POST
 	@Path("/{id}/student")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRosterStudent(@PathParam("id") Long id, RosterStudentDTO rosterStudentDTO) {
+	public Response createRosterStudents(@PathParam("id") Long id, RosterStudentDTO rosterStudentDTO) {
 
 		// cheking if roste exists
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
@@ -140,20 +149,44 @@ public class RosterService {
 			rosterStudentDTO.parentRosterId = id;
 
 			final RosterStudent rosterStd = RosterStudent.createFromDTO(rosterStudentDTO);
+		
+			rosterStudentDTO.setId(rosterStudentDB.save(rosterStd).getId());
+			
 
-			ofy().transact(new VoidWork() {
-				@Override
-				public void vrun() {
-
-					rosterStudentDB.save(rosterStd).getId();
-
-				}
-			});
-
-			return Response.ok().build();
+			return Response.ok().entity(rosterStudentDTO).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
+	}
+
+	@POST
+	@Path("/{rosterId}/student/{studentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyRosterStudent(@PathParam("rosterId") Long rosterId, @PathParam("studentId") Long studentId,
+			RosterStudentDTO rosterStudentDTO) {
+          
+		Roster result = ofy().load().key(Key.create(Roster.class, rosterId)).now();
+		
+		if (result != null) {
+
+			// cheking if roster student exists
+			RosterStudent resultStudent = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
+
+			if (resultStudent != null) {
+
+				rosterStudentDTO.parentRosterId = rosterId;
+				rosterStudentDTO.id = studentId;
+
+				final RosterStudent rosterStd = RosterStudent.createFromDTO(rosterStudentDTO);
+
+						rosterStudentDB.save(rosterStd).getId();
+
+			}
+
+			return Response.ok().entity(rosterStudentDTO).build();
+		}
+
+		return Response.status(Status.NOT_MODIFIED).build();
 	}
 
 }

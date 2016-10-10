@@ -28,6 +28,8 @@ public class DB<T> {
 		factory().register(RosterSetting.class);
 		factory().register(SeatingChart.class);
 		factory().register(ClassTime.class);
+		factory().register(AssignedGradedWork.class);
+		factory().register(GoogleCalendarEvent.class);
 		factory().register(GradedWork.class);
 		factory().register(StudentWork.class);
 		factory().register(StudentIncident.class);

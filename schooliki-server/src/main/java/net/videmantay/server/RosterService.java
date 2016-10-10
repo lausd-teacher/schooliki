@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 
+import org.mortbay.log.Log;
+
 import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.server.entity.*;
 import net.videmantay.server.user.AppUser;
@@ -680,122 +682,124 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	}
 	
 	private void saveGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException, ServiceException{
-		UserService us = UserServiceFactory.getUserService();
-		User user = us.getCurrentUser();
 		
-		Credential cred = cred(user.getUserId());
-		Boolean firstSave = false;
-		Calendar calendar = GoogleUtils.calendar(cred);
-		
-		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
-		String calId = Preconditions.checkNotNull("calendarId");
-		
-		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
-		log.log(Level.INFO, "Graded work event to Json is :" + gson.toJson(gradedWork.getEvent()) );
-		if(!AppValid.rosterCheck(gradedWork.rosterId)){
-			//TODO:throw an error
-		}
-		
-		//Before Doing anything validate roster fields
-				Set<ConstraintViolation<GradedWork>> constraintViolations =
-						ValidatorUtil.getValidator().validate( gradedWork );
-			
-				   //If validation rules are violated then log error messages and return 
-					if(constraintViolations.size() > 0){
-						for(ConstraintViolation<GradedWork> violation: constraintViolations){
-							log.log(Level.WARNING, violation.getMessage());
-							
-						}
-			           return;
-			         }
-		
-		Event event = new Event();
-		//if the id is null or zero then this is a first save/////
-		if(gradedWork.getId() == null || gradedWork.getId().isEmpty()){
-			//this is a firstSave
-			firstSave = true;
-			//assign id from uuid
-			gradedWork.setId(UUID.randomUUID().toString());
-			} //id assigned
-		
-		//lets stuff json obj in description
-		//this way we get list from google and have access to our object
-		//essentially using google as the db  ... obviously bad practice
-		String descript = gradedWork.getDescription()+ "\n\n-* " + gradedWork.rosterId +"-Assignment *-";
-		descript+= " " + gradedWork.type.toString();
-		event.setDescription(descript);
-	
-		Event.ExtendedProperties exProps = new Event.ExtendedProperties();
-		Map<String, String> arg = ImmutableMap.of("assignment", gradedWork.getId());
-		exProps.setPrivate(arg);
-		event.setExtendedProperties(exProps);
-		if(firstSave){
-		event = calendar.events().insert(calId, event).execute();
-		gradedWork.setEventId(event.getId());
-		}else{
-			event = calendar.events().update(calId, event.getId(), event).execute();
-		}
-		
-		
-		//get roster student to make sure you can only assign work to them
-		List<RosterStudent> rosterStudents = db().load().type(RosterStudent.class)
-				.ancestor(Key.create(Roster.class, gradedWork.rosterId)).list();
-		List<Long>studentIds  = new ArrayList<Long>();
-		
-		for(RosterStudent s: rosterStudents){
-			studentIds.add(s.id);
-		}
-		
-		Long[] unassign = gson.fromJson(req.getParameter("unassign"), Long[].class);
-		Long[] assign = gson.fromJson(req.getParameter("assign"), Long[].class);
-		
-		//first make sure that assign and unassign don't have matching ids
-		for(Long id: unassign){
-			if(Arrays.asList(assign).contains(id)){
-				//throw an exception
-				log.log(Level.WARNING, "unassign and assign have matching ids : contradiction");
-			}
-		}
-		//now make sure all unassing are students
-		for(Long id: unassign){
-			if(!studentIds.contains(id)){
-				//throw an error
-				log.log(Level.WARNING, "Student is not in Roster");
-			}
-		}
-		
-		// make studentwork list for assigned 
-		ArrayList<StudentWork> studentWorks = new ArrayList<>();
-		
-		//now make sure all assigned are students
-		for(int i= 0; i< assign.length; i++){
-			if(!studentIds.contains(assign[i])){
-				//throw an error
-				log.log(Level.WARNING, "Student is not in Roster");
-			}else{
-				studentWorks.add(new StudentWork(gradedWork,assign[i] ));
-			}
-		}
-		Key<GradedWork>parentKey = Key.create(GradedWork.class, gradedWork.id);
-		//so for unassign cycle through the gradedwork
-		for(Long remove: unassign){
-			gradedWork.getAssignedTo().remove(remove);
-			for(StudentWork stuW:gradedWork.studentWorks){
-				if(stuW.rosterStudentId.equals(remove)){
-					Key<StudentWork> stuKey = Key.create(parentKey, StudentWork.class, stuW.id);
-					db().delete().key(stuKey).now();
-					gradedWork.studentWorks.remove(stuW);
-					break;
-				}//end if
-			}//end inner for
-		}//end for
-		
-		
-	
-		gradedWork.setStudentWorkKeys(db().save().entities(studentWorks).now().keySet());
-		db().save().entity(gradedWork);
-		res.getWriter().write(gson.toJson(gradedWork));
-		res.flushBuffer();
+		log.log(Level.INFO, "saving Graded work have been move to the new service, not active for now");
+//		UserService us = UserServiceFactory.getUserService();
+//		User user = us.getCurrentUser();
+//		
+//		Credential cred = cred(user.getUserId());
+//		Boolean firstSave = false;
+//		Calendar calendar = GoogleUtils.calendar(cred);
+//		
+//		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
+//		String calId = Preconditions.checkNotNull("calendarId");
+//		
+//		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
+//		//log.log(Level.INFO, "Graded work event to Json is :" + gson.toJson(gradedWork.getEvent()) );
+//		if(!AppValid.rosterCheck(gradedWork.rosterId)){
+//			//TODO:throw an error
+//		}
+//		
+//		//Before Doing anything validate roster fields
+//				Set<ConstraintViolation<GradedWork>> constraintViolations =
+//						ValidatorUtil.getValidator().validate( gradedWork );
+//			
+//				   //If validation rules are violated then log error messages and return 
+//					if(constraintViolations.size() > 0){
+//						for(ConstraintViolation<GradedWork> violation: constraintViolations){
+//							log.log(Level.WARNING, violation.getMessage());
+//							
+//						}
+//			           return;
+//			         }
+//		
+//		Event event = new Event();
+//		//if the id is null or zero then this is a first save/////
+//		if(gradedWork.getId() == null || gradedWork.getId().isEmpty()){
+//			//this is a firstSave
+//			firstSave = true;
+//			//assign id from uuid
+//			//gradedWork.setId(UUID.randomUUID().toString());
+//			} //id assigned
+//		
+//		//lets stuff json obj in description
+//		//this way we get list from google and have access to our object
+//		//essentially using google as the db  ... obviously bad practice
+//		String descript = gradedWork.getDescription()+ "\n\n-* " + gradedWork.rosterId +"-Assignment *-";
+//		descript+= " " + gradedWork.type.toString();
+//		event.setDescription(descript);
+//	
+//		Event.ExtendedProperties exProps = new Event.ExtendedProperties();
+//		//Map<String, String> arg = ImmutableMap.of("assignment", gradedWork.getId());
+//		//exProps.setPrivate(arg);
+//		event.setExtendedProperties(exProps);
+//		if(firstSave){
+//		event = calendar.events().insert(calId, event).execute();
+//		//gradedWork.setEventId(event.getId());
+//		}else{
+//			event = calendar.events().update(calId, event.getId(), event).execute();
+//		}
+//		
+//		
+//		//get roster student to make sure you can only assign work to them
+//		List<RosterStudent> rosterStudents = db().load().type(RosterStudent.class)
+//				.ancestor(Key.create(Roster.class, gradedWork.rosterId)).list();
+//		List<Long>studentIds  = new ArrayList<Long>();
+//		
+//		for(RosterStudent s: rosterStudents){
+//			studentIds.add(s.id);
+//		}
+//		
+//		Long[] unassign = gson.fromJson(req.getParameter("unassign"), Long[].class);
+//		Long[] assign = gson.fromJson(req.getParameter("assign"), Long[].class);
+//		
+//		//first make sure that assign and unassign don't have matching ids
+//		for(Long id: unassign){
+//			if(Arrays.asList(assign).contains(id)){
+//				//throw an exception
+//				log.log(Level.WARNING, "unassign and assign have matching ids : contradiction");
+//			}
+//		}
+//		//now make sure all unassing are students
+//		for(Long id: unassign){
+//			if(!studentIds.contains(id)){
+//				//throw an error
+//				log.log(Level.WARNING, "Student is not in Roster");
+//			}
+//		}
+//		
+//		// make studentwork list for assigned 
+//		ArrayList<StudentWork> studentWorks = new ArrayList<>();
+//		
+////		//now make sure all assigned are students
+////		for(int i= 0; i< assign.length; i++){
+////			if(!studentIds.contains(assign[i])){
+////				//throw an error
+////				log.log(Level.WARNING, "Student is not in Roster");
+////			}else{
+////				studentWorks.add(new StudentWork(gradedWork.id ,assign[i] ));
+////			}
+////		}
+////		Key<GradedWork>parentKey = Key.create(GradedWork.class, gradedWork.id);
+////		//so for unassign cycle through the gradedwork
+////		for(Long remove: unassign){ 
+////			gradedWork.getAssignedTo().remove(remove);
+////			for(StudentWork stuW:gradedWork.studentWorks){
+////				if(stuW.rosterStudentId.equals(remove)){
+////					Key<StudentWork> stuKey = Key.create(parentKey, StudentWork.class, stuW.id);
+////					db().delete().key(stuKey).now();
+////					gradedWork.studentWorks.remove(stuW);
+////					break;
+////				}//end if
+////			}//end inner for
+////		}//end for
+////		
+////		
+////	
+////		gradedWork.setStudentWorkKeys(db().save().entities(studentWorks).now().keySet());
+////		db().save().entity(gradedWork);
+////		res.getWriter().write(gson.toJson(gradedWork));
+////		res.flushBuffer();
 		
 	}
 	

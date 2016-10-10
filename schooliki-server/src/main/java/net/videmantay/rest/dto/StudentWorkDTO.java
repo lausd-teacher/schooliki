@@ -1,48 +1,53 @@
-package net.videmantay.server.entity;
+package net.videmantay.rest.dto;
 
-import java.io.Serializable;
-import java.util.List;
 
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.Parent;
-
-import net.videmantay.rest.dto.StudentWorkDTO;
-import net.videmantay.server.user.RosterStudent;
+import net.videmantay.server.entity.StudentWork;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;
 
-@Entity
-public class StudentWork implements Serializable {
+public class StudentWorkDTO {
 
-	// same id as gradedwork////
-	@Id
 	public Long id;
 
 	public Double percentage;
+
 	public Double pointsEarned;
+
 	public String letterGrade;
+
 	public String message;
+
 	public GradedWorkType type;
+
 	public StudentWorkStatus studentWorkStatus = StudentWorkStatus.NOT_TURNED_IN;
 
-	@Index
 	public String dateTaken;
 
 	public String mediaUrl;
 
 	public SubjectType subject;
 	
-	@Index
-	public Long rosterStudentId;
+	private Long rosterStudentId;
 
-	// List of standard to review with accomany links;
-	private List<Standard> standardReviews;
 
-	public StudentWork() {
+	public StudentWorkDTO() {
+
+	}
+
+	public StudentWorkDTO(StudentWork stdWork) {
+		this.id = stdWork.id;
+		this.rosterStudentId = stdWork.rosterStudentId;
+		this.percentage = stdWork.percentage;
+		this.pointsEarned = stdWork.pointsEarned;
+		this.letterGrade = stdWork.letterGrade;
+		this.message = stdWork.message;
+		this.type = stdWork.type;
+		this.studentWorkStatus = stdWork.studentWorkStatus;
+		this.dateTaken = stdWork.dateTaken;
+		this.mediaUrl = stdWork.mediaUrl;
+		this.subject = stdWork.subject;
+
 
 	}
 
@@ -126,10 +131,6 @@ public class StudentWork implements Serializable {
 		this.studentWorkStatus = studentWorkStatus;
 	}
 
-	public void setStudentWorkStatus(String value) {
-		value.trim();
-		this.studentWorkStatus = StudentWorkStatus.valueOf(value.toUpperCase());
-	}
 
 	public Long getRosterStudentId() {
 		return this.rosterStudentId;
@@ -137,25 +138,6 @@ public class StudentWork implements Serializable {
 
 	public void setRosterStudentId(Long rosterStudentId) {
 		this.rosterStudentId = rosterStudentId;
-	}
-
-	public static StudentWork createFromDTO(StudentWorkDTO stdWorkDTO) {
-
-		StudentWork work = new StudentWork();
-		work.id = stdWorkDTO.id;
-		work.rosterStudentId = stdWorkDTO.getRosterStudentId();
-		work.percentage = stdWorkDTO.percentage;
-		work.pointsEarned = stdWorkDTO.pointsEarned;
-		work.letterGrade = stdWorkDTO.letterGrade;
-		work.message = stdWorkDTO.message;
-		work.type = stdWorkDTO.type;
-		work.studentWorkStatus = stdWorkDTO.studentWorkStatus;
-		work.dateTaken = stdWorkDTO.dateTaken;
-		work.mediaUrl = stdWorkDTO.mediaUrl;
-		work.subject = stdWorkDTO.subject;
-
-		return work;
-
 	}
 
 }
