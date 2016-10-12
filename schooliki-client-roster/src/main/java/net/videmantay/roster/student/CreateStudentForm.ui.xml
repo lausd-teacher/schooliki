@@ -10,8 +10,8 @@
 	<g:HTMLPanel>
 	<m:MaterialModal ui:field="modal">
 		<m:MaterialModalContent ui:field="modalContent">
-		<g:FormPanel ui:field="form">
-			<g:HTMLPanel>
+
+			<g:HTMLPanel ui:field="formContainer">
 			<m:MaterialRow>
 				<m:MaterialColumn>
 					<m:MaterialImage ui:field="studentImg" type="CIRCLE"/>
@@ -38,7 +38,7 @@
 					<label id="errorDateOfBirthLabel" class="red-text text-lighten-1">date of birth cannot be empty</label>
 				
 				</g:HTMLPanel>
-			</g:FormPanel>
+		
 		</m:MaterialModalContent>
 		<m:MaterialFooter>
 			<m:MaterialRow>

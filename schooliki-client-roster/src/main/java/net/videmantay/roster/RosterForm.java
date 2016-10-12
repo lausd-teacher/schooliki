@@ -1,6 +1,7 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -9,11 +10,13 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import elemental.json.impl.JsonUtil;
 import gwt.material.design.client.constants.ShowOn;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialCard;
@@ -47,9 +50,6 @@ public class RosterForm extends Composite{
 	MaterialCard card;
 	
 	@UiField
-	FormPanel form;
-	
-	@UiField
 	MaterialInput title;
 	
 	@UiField
@@ -74,14 +74,14 @@ public class RosterForm extends Composite{
 	@UiField
 	HTMLPanel formContainer;
 	
-	private final RosterForm $this;
+	//private final RosterForm $this;
 	
-	private RosterJson data;
+	private RosterJson data = JavaScriptObject.createObject().cast();
 
 	public RosterForm() {
 		initWidget(uiBinder.createAndBindUi(this));
-		$this = this;
-		form.getElement().setId("rosterForm");
+		//$this = this;
+		formContainer.getElement().setId("rosterForm");
 
 		
 		
@@ -90,13 +90,15 @@ public class RosterForm extends Composite{
 
 			@Override
 			public void onClick(ClickEvent event) {
-				$this.submit();
+				submit();
+				
+				
 			}});
 		cancelBtn.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
-				$this.canel();
+				card.setVisible(false);
 				
 			}});
 		
@@ -170,31 +172,21 @@ public class RosterForm extends Composite{
 		startDate.setDate(df.parse(data.getStartDate()));
 		endDate.setDate(df.parse(data.getEndDate()));	
 		
-		//teacher info check for null
-		if(data.getTeacherInfo() == null){
-			TeacherInfoJson teacherInfo = TeacherInfoJson.createObject().cast();
-			console.log("this is the loginInfo from window");
-			console.log(window.getPropertyJSO("loginInfo"));
-			LoginInfo loginInfo = window.getPropertyJSO("loginInfo").cast();
-			teacherInfo.setTitle(loginInfo.getTitle());
-			teacherInfo.setLastName(loginInfo.getLastName());
-			teacherInfo.setPicUrl(loginInfo.getPicUrl());
-			
-			data.setTeacherInfo(teacherInfo);
-		}
+
 	}
 	
 	public boolean hasErrors(){
 		DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
 		try {
+			data.setStartDate(df.format(startDate.getDate()));
+			data.setEndDate(df.format(endDate.getDate()));
 			data.setTitle(title.getValueOrThrow());
 		} catch (ParseException e) {
 			return true;
 		}
 		data.setDescription(description.getValue());
 		data.setRoomNum(roomNum.getValue());
-		data.setStartDate(df.format(startDate.getDate()));
-		data.setEndDate(df.format(endDate.getDate()));
+	
 		
 		return false;
 		
@@ -205,28 +197,57 @@ public class RosterForm extends Composite{
 			//show the errors
 			return;
 		}
-		MaterialLoader.showLoading(true);
-		Ajax.post(RosterUrl.CREATE_ROSTER, $$("roster:" + JsonUtils.stringify(data)))
+		collectDataForm();
+			
+		console.log(collectDataForm());
+		
+		
+		
+	
+		GQuery.ajax("/roster", Ajax.createSettings().setData(data).setType("POST").setDataType("json"))
 		.done(new Function(){
 			@Override
 			public void f(){
-				$(body).trigger("rosterredraw", this.getArgument(0));
+				$(body).trigger("rosterredraw");
 				MaterialLoader.showLoading(false);
+				
 			}
-		});
-		//look into RosterDisplay to handle or Roster???
+		}).progress(
+				new Function(){
+					@Override
+					public void f(){
+						MaterialLoader.showLoading(true);
+					}
+		}).fail(
+					new Function(){
+						@Override
+						public void f(){
+						   Window.alert("Error Please try again later");
+						}
+		 });		
+	}
+	
+	
+	//Need to find a better way to do this
+	private String collectDataForm(){
+		
+		DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
+		
+		String json = "{"
+				+ "\"title\":"+"\""+title.getText()+"\","
+				+ "\"description\":"+"\""+description.getText()+"\","
+				+ "\"roomNum\":"+"\""+roomNum.getText()+"\","
+				+ "\"startDate\":"+"\""+df.format(startDate.getDate())+"\","
+				+ "\"endDate\":"+"\""+df.format(endDate.getDate())+"\""
+				+ "}";
+		
+		data = JsonUtils.safeEval(json);
+		
+		return json;
 		
 	}
 	
-	public void canel(){
-		form.reset();
-		$(this).hide();
-		//look inot RosterDisplay to handle or Roster???
-		$(body).trigger("rostercancel");
-	}
-	
-	private  Function getValidationFunction(){
-		
+	private  Function getValidationFunction(){		
 		return new Function(){
 			@Override
 			public void f(){

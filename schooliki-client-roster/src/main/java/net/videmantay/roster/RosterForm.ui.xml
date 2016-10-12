@@ -9,7 +9,6 @@
 		<m:MaterialCardContent>
 			<m:MaterialCardTitle text="Roster" iconType="CLASS"
 				iconPosition="LEFT" textColor="black" />
-			<g:FormPanel ui:field="form">
 				<g:HTMLPanel ui:field="formContainer">
 					<m:MaterialInput ui:field="title" type="TEXT"
 						required="true" placeholder="Title" />
@@ -26,9 +25,7 @@
 					<m:MaterialDatePicker ui:field="endDate"
 						placeholder="end date" />
 					<label id="errorEndDateLabel" class="red-text text-lighten-1">end date cannot empty or be before start date</label>
-					
 				</g:HTMLPanel>
-			</g:FormPanel>
 		</m:MaterialCardContent>
 		<m:MaterialCardAction>
 			<m:MaterialRow>

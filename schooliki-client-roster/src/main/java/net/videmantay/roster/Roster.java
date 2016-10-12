@@ -2,11 +2,17 @@ package net.videmantay.roster;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterDetailJson;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -19,12 +25,26 @@ import com.google.common.primitives.Longs;
 public class Roster implements EntryPoint , ValueChangeHandler<String> {
 	private RosterMain main;
 	private ClassroomMain classroom;
-	private final JsArray<RosterDetailJson> rosterList;
+	private JsArray<RosterJson> rosterList;
 	private boolean mainState = true;
 
 	
 	Roster(){
-		rosterList = window.getPropertyJSO("rosterList").cast();
+		
+	//temporary : this needs to be done differently
+		Ajax.get("/roster")
+		.done(new Function(){
+			@Override
+			public void f(){
+				rosterList = JsonUtils.safeEval(this.arguments(0).toString()).cast();
+			}
+		}).fail(new Function(){
+			@Override
+			public void f(){
+				Window.alert("Failed to load roster list from the server");
+			}	
+		});
+		
 	}
 	@Override
 	public void onModuleLoad() {

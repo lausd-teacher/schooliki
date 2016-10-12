@@ -13,12 +13,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialLoader;
 
 import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 
+import net.videmantay.roster.json.GradedWorkJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.student.json.RosterDetailJson;
 
 public class RosterDisplay extends Composite{
@@ -42,8 +45,7 @@ public class RosterDisplay extends Composite{
 		$(fab).hide();
 		$(rosterGrid).hide();
 		$(rosterForm).show();
-		RosterJson roster = RosterJson.createObject().cast();
-		rosterForm.edit(roster);
+	
 			
 		}};
 	Function rosterRedraw = new Function(){
@@ -51,26 +53,15 @@ public class RosterDisplay extends Composite{
 		public boolean f(Event e, Object...o){
 			e.stopPropagation();
 			e.preventDefault();
-			RosterDetailJson rd = JsonUtils.safeEval((String)o[0]).cast();
-			console.log("roster ajax finished here is the server response");
-			console.log(rd);
-			JsArray<RosterDetailJson> rosterList = window.getPropertyJSO("rosterList").cast();
-			rosterList.push(rd);
 			$(rosterForm).hide();
-			rosterGrid.drawGrid();
+			getRostersDataAndDrawGrid();
 			$(rosterGrid).show();
 			$(fab).show();
 			
 			return true;
 		}
 	};
-	Function rosterCancel = new Function(){
-		@Override
-		public void f(){
-			$(rosterGrid).show();
-			$(fab).show();
-		}
-	};
+
 	
 	interface RosterDisplayUiBinder extends UiBinder<Widget, RosterDisplay> {
 	}
@@ -83,17 +74,38 @@ public class RosterDisplay extends Composite{
 	@Override
 	public void onLoad(){
 		
+		getRostersDataAndDrawGrid();
 		$(rosterForm).hide();
 		fab.addClickHandler(fabClick);
 		//handle the form and grid events here
 		$(body).on("rosterredraw", rosterRedraw);
-		$(body).on("rostercancel", rosterCancel);
 		
 	}
 	
 	@Override 
 	public void onUnload(){
 		//clear up all the events on the bus with off
+	}
+	
+	
+	public void getRostersDataAndDrawGrid(){
+		
+		Ajax.get("/roster")
+		.done(new Function(){
+			@Override
+			public void f(){
+				JsArray<RosterJson> rosterList = JsonUtils.safeEval(this.arguments(0).toString()).cast();
+				rosterGrid.drawGrid(rosterList);
+			}
+		}).progress(new Function(){
+			@Override
+			public void f(){
+				
+			 }
+			
+		});
+		
+		
 	}
 
 }

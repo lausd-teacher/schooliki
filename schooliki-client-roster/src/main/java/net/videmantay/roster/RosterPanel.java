@@ -1,6 +1,7 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
@@ -9,6 +10,7 @@ import com.google.gwt.query.client.Function;
 import static gwtquery.plugins.ui.Ui.Ui;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
@@ -19,6 +21,8 @@ import gwt.material.design.client.ui.MaterialCardContent;
 import gwt.material.design.client.ui.MaterialCardTitle;
 import gwt.material.design.client.ui.MaterialLabel;
 import static com.google.gwt.query.client.GQuery.*;
+
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterDetailJson;
 
 public class RosterPanel extends Composite {
@@ -37,7 +41,7 @@ public class RosterPanel extends Composite {
 	public MaterialCardTitle cardTitle;
 	@UiField
 	public MaterialLabel cardDescript;
-	private RosterDetailJson rosterDetail;
+	private RosterJson rosterJson;
 	private MouseOverHandler mouseOver = new MouseOverHandler(){
 		@Override
 		public void onMouseOver(MouseOverEvent e){
@@ -60,11 +64,12 @@ public class RosterPanel extends Composite {
 		this.addStyleName("rosterPanel");
 	}
 	
-	public void setData(RosterDetailJson data){
+	public void setData(RosterJson data){
 		console.log("Set data called for " + data.getTitle());
-		rosterDetail = data;
+		rosterJson = data;
 		cardTitle.setText(data.getTitle());
-		cardDescript.setText(data.getDescription());	
+		cardDescript.setText(data.getDescription());
+		
 		//set click functions now
 	}
 	
@@ -74,7 +79,8 @@ public class RosterPanel extends Composite {
 			@Override
 			public boolean f(Event e){
 				console.log("roster panel clicked");
-				History.newItem("roster/" + rosterDetail.getId());
+				History.newItem("roster/" + rosterJson.getId());
+				Cookies.setCookie("currentRoster", JsonUtils.stringify(rosterJson));
 				return true;
 			}
 		});

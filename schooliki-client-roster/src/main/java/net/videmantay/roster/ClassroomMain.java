@@ -11,6 +11,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AttachDetachException;
@@ -174,20 +175,21 @@ public class ClassroomMain extends Composite{
 		}
 		
 		if($this.getRosterId() == null ||id != $this.getRosterId()){
-			console.log("Roster ajax called made from classroom main");
+			console.log("Roster ajax called made from classroom main" + id);
 			//Asyncall to get my roster with id of id
 			//setView must be called after roster is set
-			Ajax.post(RosterUrl.GET_ROSTER, $$("roster:" + id))
+			
+			Ajax.get("/roster/"+id)
 			.done( new Function(){
 					@Override
 					public void f(){
-						classRoster = JsonUtils.safeEval((String) this.arguments(0)).cast();
+						classRoster = JsonUtils.safeEval(this.arguments(0).toString()).cast();
 						rosterTitle.setText(classRoster.getTitle());
 						window.setPropertyJSO("roster", classRoster);
 						//do a classtime check here to see if it is set and if it isn't
 						if(window.getPropertyJSO("classtime") == null){
 							//all roster have a default
-							window.setPropertyJSO("classtime", classRoster.getDefaultClassTime());
+							//window.setPropertyJSO("classtime", classRoster.getDefaultClassTime());
 						}
 				
 							if(token.size()>= 3){

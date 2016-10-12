@@ -1,7 +1,10 @@
 package net.videmantay.roster;
 
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 
 import gwt.material.design.client.constants.ButtonType;
 import gwt.material.design.client.constants.IconSize;
@@ -9,6 +12,7 @@ import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialFAB;
+import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.json.RosterJson;
@@ -23,19 +27,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.google.common.primitives.Longs;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 
 
 public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 
 	
 	private final MaterialPanel mainPanel = new MaterialPanel();
-	private final RosterJson roster = window.getPropertyJSO("roster").cast();
-	private final JsArray<RosterStudentJson> students = roster.getRosterStudents();
+	private final RosterJson roster = JsonUtils.safeEval(Cookies.getCookie("currentRoster"));;
+	private JsArray<RosterStudentJson> students = JavaScriptObject.createArray().cast();
 	private final ArrayList<RosterStudentJson> studentList = new ArrayList<RosterStudentJson>();
 	private final StudentActionModal stuModal = new StudentActionModal();
 	private boolean sortByFirst=true;
@@ -50,24 +57,56 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		}};
 	
 	public ClassroomGrid(){		
-		this.initWidget(mainPanel);
-		if(students.length() <= 0){
-			showEmpty();
-		}else{
-		for(int i = 0; i < students.length(); i++){
-			studentList.add(students.get(i));
-		}
-		drawGrid(sortByFirst);
-		}//end if else	
 		
-		addButton.setIconType(IconType.ADD);
-		addButton.setIconSize(IconSize.LARGE);
-		addButton.setIconFontSize(2, Unit.EM);
-		addButton.addClickHandler(addStudentHandler);
-		fab.add(addButton);
-		mainPanel.add(fab);
-		mainPanel.add(createStuForm);
-		mainPanel.add(stuModal);
+		 
+		Ajax.get("/roster/"+roster.getId()+"/student")
+		.done(new Function(){
+			@Override
+			public void f(){      
+				console.log(arguments(0).toString());
+				students = JsonUtils.safeEval(arguments(0).toString());	
+				if(students.length() <= 0){
+					showEmpty();
+				}else{
+				for(int i = 0; i < students.length(); i++){
+					studentList.add(students.get(i));
+				}
+				drawGrid(sortByFirst);
+				}
+				
+			}
+		}).progress(new Function(){
+			@Override
+			public void f(){
+				
+			 }
+			
+		}).fail(new Function(){
+			@Override
+			public void f(){
+
+			 }
+		});
+		
+		$(body).on(RosterEvent.STUDENT_LIST_UPDATED, new Function(){
+			@Override
+			public boolean f(Event e, Object...o){
+				console.log("redraw triggred");
+				drawGridAfterUpdate();
+				return true;
+			}
+		});
+		
+		initWidget(mainPanel);
+		
+		
+		
+		
+		
+		
+	//end if else	
+		
+		
 		
 	}
 	
@@ -102,16 +141,27 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 			int i = 0;
 			console.log("student 0 is:");
 			console.log(studentList.get(0));
+			
 				do{
 					 c = new MaterialColumn();
-					 rsp = new RosterStudentPanel(studentList.get(i));
+					 rsp = new RosterStudentPanel(students.get(i));
 					 rsp.addStyleName("grid");
 					 c.add(rsp);
 					 ++i;
 					 row.add(c);
-				}while(i < studentList.size());
-			
-		
+				}while(i < students.length());
+				
+				
+				addButton.setIconType(IconType.ADD);
+				addButton.setIconSize(IconSize.LARGE);
+				addButton.setIconFontSize(2, Unit.EM);
+				addButton.addClickHandler(addStudentHandler);
+				fab.add(addButton);
+				mainPanel.add(fab);
+				mainPanel.add(createStuForm);
+				
+				
+				//mainPanel.add(stuModal);
 	}
 	
 	public void drawGrid(boolean firstName){
@@ -296,6 +346,37 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 	@Override
 	public void cancel(final String state) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public void drawGridAfterUpdate(){
+		
+		Ajax.get("/roster/"+roster.getId()+"/student")
+		.done(new Function(){
+			@Override
+			public void f(){      
+				console.log("draw grid after update" +arguments(0).toString());
+				students = JsonUtils.safeEval(arguments(0).toString());
+				if(students.length() <= 0){
+					showEmpty();
+				}else{
+				drawGrid();
+				}
+				
+			}
+		}).progress(new Function(){
+			@Override
+			public void f(){
+				
+			 }
+			
+		}).fail(new Function(){
+			@Override
+			public void f(){
+
+			 }
+		});
+		
 		
 	}
 

@@ -2,6 +2,7 @@ package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,11 +12,14 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -124,7 +128,9 @@ public class RosterDashboardPanel extends Composite //implements ClassroomMain.H
 	
 	@UiField
 	MaterialAnchorButton classEventAddBtn;
-	private final RosterJson roster =window.getPropertyJSO("roster").cast();
+	
+	private RosterJson roster = JsonUtils.safeEval(Cookies.getCookie("currentRoster"));
+	
 	private final Function resizeFunc = new Function(){
 		@Override
 		public boolean f(Event e){
@@ -148,6 +154,7 @@ public class RosterDashboardPanel extends Composite //implements ClassroomMain.H
 			MaterialLink link = (MaterialLink)event.getSelectedItem();
 			if(link.getText().equalsIgnoreCase("Manage...")){
 				History.newItem("roster/"+ roster.getId() +"/classtime");
+			
 			}else{
 				int index =Ints.tryParse(link.getDataAttribute("data-index"));
 				ClassTimeJson classTime = roster.getClassTimes().get(index);
@@ -183,7 +190,7 @@ public class RosterDashboardPanel extends Composite //implements ClassroomMain.H
 	
 	public RosterDashboardPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
+		console.log(Cookies.getCookie("currentRosterId"));
 		
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		

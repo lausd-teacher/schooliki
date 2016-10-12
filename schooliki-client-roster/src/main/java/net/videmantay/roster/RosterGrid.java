@@ -5,56 +5,82 @@ import java.util.ArrayList;
 
 import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
+
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
-import net.videmantay.student.json.RosterDetailJson;
+import net.videmantay.roster.json.RosterJson;
+
 
 public class RosterGrid extends MaterialContainer{
-	final ArrayList<RosterDetailJson> rosterList = new ArrayList<RosterDetailJson>();
+
 	final HTMLPanel emptyList = new HTMLPanel("<h5 class='emptyRosterListHeading'>Your Roster List Is Empty </h5>"+
 												"<h6 class='emptyRosterListContent'>you can begin pressing the big  plus button at" +
 												"the botton of the screen.</h6>");
+	final HTMLPanel errorMessage = new HTMLPanel("<h5 class='emptyRosterListHeading'>Error getting the list of rosters, please check your connnection or try again later </h5>"+
+			"<h6 class='emptyRosterListContent'>you can begin pressing the big  plus button at" +
+			"the botton of the screen.</h6>");
 	
 	@Override
 	public void onLoad(){
 		
-	drawGrid();	
+		Ajax.get("/roster")
+		.done(new Function(){
+			@Override
+			public void f(){
+                   
+				console.log(arguments(0).toString());
+				JsArray<RosterJson> rosterList = JsonUtils.safeEval(this.arguments(0).toString()).cast();
+				drawGrid(rosterList);
+				MaterialLoader.showLoading(false);
+			}
+		}).progress(new Function(){
+			@Override
+			public void f(){
+				MaterialLoader.showLoading(true);
+			 }
+			
+		}).fail(new Function(){
+			@Override
+			public void f(){
+				MaterialLoader.showLoading(false);
+				showErrorMessage();
+			 }
+		});
+		
+		
 	}
 	
-	public void drawGrid(){
-		MaterialLoader.showLoading(true);
-		rosterList.clear();
-		JsArray<RosterDetailJson> rosters = window.getPropertyJSO("rosterList").cast();
-		console.log("These are the rosters that were loaded on RosterMain");
-		console.log(rosters);
-		for(int i = 0; i < rosters.length(); i++){
-			rosterList.add(rosters.get(i));
-		}
+	public void drawGrid(JsArray<RosterJson> rosterList){
 		
-		MaterialLoader.showLoading(false);
-		if(rosterList == null || rosterList.size() <= 0){
+		if(rosterList == null || rosterList.length() <= 0){
 			showEmptyList();
 		}else{
 		this.clear();
 		MaterialRow row = new MaterialRow();
-		for(int i= 0; i< rosterList.size(); i++){
-			
-			
+		for(int i= 0; i< rosterList.length(); i++){
 			MaterialColumn col = new MaterialColumn(12,6,4);
 			RosterPanel panel = new RosterPanel();
 			panel.setData(rosterList.get(i));
 			col.add(panel);
 			row.add(col);
 			this.add(row);
-			}//end for
-		}//end else
+			}
+		}
 	}
 	
 	public void showEmptyList(){
 		this.clear();
 		this.add(this.emptyList);
+	}
+	
+	public void showErrorMessage(){
+		this.clear();
+		this.add(this.errorMessage);
 	}
 
 

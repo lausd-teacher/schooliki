@@ -77,14 +77,15 @@ public class RosterService {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response createRoster(RosterDTO rosterDTO) throws Exception{
 
 		final Roster roster = Roster.createFromDTO(rosterDTO);
 
-				roster.setId(rosterDB.save(roster).getId());
+				rosterDTO.setId(rosterDB.save(roster).getId());
 		
 
-		return Response.status(Status.CREATED).entity(roster).build();
+		return Response.status(Status.CREATED).entity(rosterDTO).build();
 	}
 
 	@DELETE
@@ -138,6 +139,7 @@ public class RosterService {
 
 	@POST
 	@Path("/{id}/student")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createRosterStudents(@PathParam("id") Long id, RosterStudentDTO rosterStudentDTO) {
 

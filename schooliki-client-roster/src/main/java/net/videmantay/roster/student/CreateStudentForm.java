@@ -17,13 +17,17 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 
 import static com.google.gwt.query.client.GQuery.*;
 
@@ -71,9 +75,6 @@ public class CreateStudentForm extends Composite{
 	MaterialButton cancelBtn;
 	
 	@UiField
-	FormPanel form;
-	
-	@UiField
 	MaterialInput schoolEmail;
 	
 	@UiField
@@ -94,9 +95,12 @@ public class CreateStudentForm extends Composite{
 	@UiField
 	MaterialModalContent modalContent;
 	
+	@UiField
+	HTMLPanel formContainer;
+	
 	private  RosterStudentJson student = RosterStudentJson.createObject().cast();
 	
-	private final RosterJson roster  = window.getPropertyJSO("roster").cast();
+	private final RosterJson roster  = JsonUtils.safeEval(Cookies.getCookie("currentRoster"));
 	
 	private DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
 	
@@ -129,26 +133,33 @@ public class CreateStudentForm extends Composite{
 		}};
 	
 	private ClickHandler okHandler = new ClickHandler(){
-
 		@Override
 		public void onClick(ClickEvent event) {
 			event.stopPropagation();
 			getFormData();
-			form.reset();
 			modal.closeModal();
-			MaterialLoader.showLoading(true);
-			Ajax.post(RosterUrl.CREATE_STUDENT,$$("student:" + JsonUtils.stringify(student)))
-			.done(new Function(){
-				@Override
-				public void f(){
-					console.log("create student form done return : " +  this.getArgument(0));
-					RosterStudentJson rosStu = JsonUtils.safeEval((String)this.getArgument(0));
-					RosterJson  roster = window.getPropertyJSO("roster").cast();
-					roster.getRosterStudents().push(rosStu);
-					$(body).trigger(RosterEvent.STUDENT_LIST_UPDATED);
-					MaterialLoader.showLoading(false);
-				}
-			});
+			
+				GQuery.ajax("/roster/"+roster.getId()+"/student", Ajax.createSettings().setData(student).setType("POST").setDataType("json"))
+				.done(new Function(){
+					@Override
+					public void f(){
+						console.log("create student form done return : " +  this.getArgument(0));
+//						RosterStudentJson rosStu = JsonUtils.safeEval((String)this.getArgument(0));
+//						roster.getRosterStudents().push(rosStu);
+						
+						MaterialLoader.showLoading(false);
+						$(body).trigger(RosterEvent.STUDENT_LIST_UPDATED);
+					}
+				}).progress(new Function(){
+					@Override
+					public void f(){
+						MaterialLoader.showLoading(true);
+					}}).fail(new Function(){
+					@Override
+					public void f(){
+						MaterialLoader.showLoading(false);
+						Window.alert("Error creating student");
+					}});
 			
 		}};
 	
@@ -157,12 +168,11 @@ public class CreateStudentForm extends Composite{
 		@Override
 		public void onClick(ClickEvent event) {
 			student = RosterStudentJson.createObject().cast();
-			form.reset();
 			modal.closeModal();
 			
 		}};
 	
-	
+	HTMLPanel test;
 	private Picker picker;
 	private final LoginInfo info = LoginInfo.create();
 	
@@ -170,8 +180,7 @@ public class CreateStudentForm extends Composite{
 ///Constructor Here , Almost lost it//////////////////////////////////////////////
 	public CreateStudentForm() {
 		initWidget(uiBinder.createAndBindUi(this));
-		form.getElement().setId("createStudentForm");
-		
+		formContainer.getElement().setId("createStudentForm");
 		console.log("info to string authToken" + info.getAuthToken());
 		//give form a size
 		//set up the picker
@@ -195,7 +204,6 @@ public class CreateStudentForm extends Composite{
 	
 	public void hide(){
 		modal.closeModal();
-		form.reset();
 		student = null;
 	}
 	
