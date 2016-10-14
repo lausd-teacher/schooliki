@@ -1,132 +1,41 @@
 package net.videmantay.roster;
 
+import com.google.gwt.activity.shared.ActivityManager;
+import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
-import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.web.bindery.event.shared.EventBus;
 
-import net.videmantay.roster.json.RosterJson;
-import net.videmantay.student.json.RosterDetailJson;
+import net.videmantay.roster.places.RosterHomePlace;
 
-import static com.google.gwt.query.client.GQuery.*;
+public class Roster implements EntryPoint {
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import com.google.common.base.Splitter;
-import com.google.common.primitives.Longs;
+	private RosterHomePlace homePlace = new RosterHomePlace("rosters");
+	private SimplePanel appWidget = new SimplePanel();
 
-public class Roster implements EntryPoint , ValueChangeHandler<String> {
-	private RosterMain main;
-	private ClassroomMain classroom;
-	private JsArray<RosterJson> rosterList;
-	private boolean mainState = true;
-
-	
-	Roster(){
-		
-	//temporary : this needs to be done differently
-		Ajax.get("/roster")
-		.done(new Function(){
-			@Override
-			public void f(){
-				rosterList = JsonUtils.safeEval(this.arguments(0).toString()).cast();
-			}
-		}).fail(new Function(){
-			@Override
-			public void f(){
-				Window.alert("Failed to load roster list from the server");
-			}	
-		});
-		
-	}
 	@Override
 	public void onModuleLoad() {
-		//populate rosterList all app essential data
-		//actually the list of ready rosters are hard coded by the server.
-		
-		
-		History.addValueChangeHandler(this);
-		
-		String token = History.getToken();	
-		if(token == null || token.isEmpty() || token.equals("rosters")){
-			History.newItem("rosters");
-		}
-	History.fireCurrentHistoryState();
-		
-	}
-	
 
-	@Override
-	public void onValueChange(ValueChangeEvent<String> event) {
-		//for some reason rosterList becomes null??
-		
-		//parse token and see if there are subpaths
-		ArrayList<String> token = new ArrayList<String>();
-		Iterator<String> iter  = Splitter.on("/").split(event.getValue()).iterator();
-		while(iter.hasNext()){
-			token.add(iter.next());
-		}
-		if(token.size() == 1){console.log("token size = " + token.size());
-		switch(event.getValue()){
-		case "books": return;
-		case "settings":return;
-		case "calendars":return;
-		case "lessons":return;
-		default: loadMain();
-			}//end switch
-		}//end if single token 
-				if(token.size()>= 2 && token.get(0).equalsIgnoreCase("roster")){
-					console.log("If token size 2 or greated called");
-					//first check id is kosher
-					//and then load display with id
-					for(int i =0; i < rosterList.length(); i++){
-						console.log("looping to compare ids");
-						if(Longs.tryParse(token.get(1))==rosterList.get(i).getId()){
-							console.log("If ids matched is called");
-							loadDisplay(token);
-							break;
-						}
-					}
-				}
-	}//change handler
-	
-	private void loadMain(){
-		console.log("loaded main");
-		//ensure History token is correct
-		History.newItem("rosters");
-		main = new RosterMain();
-		RootPanel.get().clear();
-		RootPanel.get().add(main);
-		console.log("this is just before main rosters is called!");
-		main.rosters();
-		classroom = null;
-		mainState = true;
-	}
-	
-	private void loadDisplay(ArrayList<String> token){
-		
-		console.log("load display called");
-		//convert this to a switch when more displays or added
-		//ie lesson creator display
-		
-		
-		if(mainState){
-		classroom = new ClassroomMain();
-		}
-			classroom.setClassroom(token);
-		
+		ClientFactory clientFactory = GWT.create(ClientFactory.class);
+		PlaceController controller = clientFactory.getPlaceController();
 
-		RootPanel.get().clear();
-		RootPanel.get().add(classroom);
-		main = null;
-		mainState = false;
+		EventBus bus = clientFactory.getEventBus();
+		ActivityMapper activityMapper = new MyActivityMapper(clientFactory);
+		ActivityManager activityManager = new ActivityManager(activityMapper, bus);
+		activityManager.setDisplay(appWidget);
+
+		MyHistoryMapper historyMapper = GWT.create(MyHistoryMapper.class);
+		final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
+		historyHandler.register(controller, bus, homePlace);
+
+		RootPanel.get().add(appWidget);
+
+		historyHandler.handleCurrentHistory();
+
 	}
 
 }

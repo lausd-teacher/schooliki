@@ -27,6 +27,10 @@ public class RosterJson extends JavaScriptObject {
 	public final native Long getId()/*-{
 		return this.id;
 	}-*/;
+	
+	public final native void setId(Long id)/*-{
+	return this.id = id;
+    }-*/;
 
 	public final native String getOwnerId()/*-{
 		return this.ownerId;

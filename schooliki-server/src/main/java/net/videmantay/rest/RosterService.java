@@ -82,10 +82,11 @@ public class RosterService {
 
 		final Roster roster = Roster.createFromDTO(rosterDTO);
 
-				rosterDTO.setId(rosterDB.save(roster).getId());
+				Long id = rosterDB.save(roster).getId();
+				
 		
 
-		return Response.status(Status.CREATED).entity(rosterDTO).build();
+		return Response.status(Status.CREATED).entity(id).build();
 	}
 
 	@DELETE

@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html" xmlns:v="urn:import:net.videmantay.roster.views">
+	<ui:style>
+	     .label{
+            margin: 24px;
+        }
+        .profile{
+		border:1px solid Crimson;
+		padding:2em;
+		font-family:Verdana;
+
+	}
+	</ui:style>
+	<g:HTMLPanel>
+		<v:UserProfilePanel></v:UserProfilePanel>
+		<m:MaterialLink ui:field="rosterLink" text="Roster"
+			textColor="green" iconType="CLASS" />
+		<m:MaterialLink ui:field="calendarLink" text="Calendar"
+			textColor="orange" iconType="EVENT" />
+		<m:MaterialLink ui:field="libraryLink" text="Library"
+			textColor="light-green darken-4" iconType="BOOK" />
+		<m:MaterialLink ui:field="lessonsLink" text="Lessons"
+			textColor="amber darken-4" iconType="CONTENT_PASTE" />
+		<m:MaterialLink ui:field="settingsLink" text="Settings"
+			textColor="green" iconType="SETTINGS" />
+		<m:MaterialLink />
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html" xmlns:v="urn:import:net.videmantay.roster.views">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialNavBrand centerOn="CENTER_ON_SMALL"
+			text="Dr. Sammy Lee" />
+		<m:MaterialNavSection hideOn="HIDE_ON_SMALL_DOWN"
+			float="RIGHT">
+			<m:MaterialTooltip ui:field="calendarTooltip" text="Calendar"
+				position="LEFT">
+				<m:MaterialLink iconType="EVENT" iconPosition="NONE"
+					activates="dropthis" />
+			</m:MaterialTooltip>
+			<m:MaterialTooltip ui:field="todoTooltip" text="Todo"
+				position="LEFT">
+				<m:MaterialLink iconType="LIST" iconPosition="NONE"
+					activates="dp2" />
+			</m:MaterialTooltip>
+			<m:MaterialTooltip ui:field="notificationTooltip"
+				text="Notifications" position="LEFT">
+				<m:MaterialLink iconType="NOTIFICATIONS"
+					iconPosition="NONE" activates="dp3" />
+			</m:MaterialTooltip>
+		</m:MaterialNavSection>
+	</g:HTMLPanel>
+</ui:UiBinder> 
