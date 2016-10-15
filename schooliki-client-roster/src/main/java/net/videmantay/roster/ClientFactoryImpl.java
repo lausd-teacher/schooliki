@@ -10,6 +10,7 @@ import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassroomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDisplay;
+import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
@@ -33,8 +34,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	ClassRoomSideNav classRoomSideNav = new ClassRoomSideNav();
 	GradedWorkForm gradedWorkForm = new GradedWorkForm();
 	GradedWorkMain gradedWorkMain = new GradedWorkMain(gradedWorkForm);
-	CreateStudentForm studentFrom = new CreateStudentForm();
-	ClassroomGrid grid = new ClassroomGrid();
+	CreateStudentForm studentForm = new CreateStudentForm();
+	StudentActionModal studentModal = new StudentActionModal();
+	ClassroomGrid grid = new ClassroomGrid(studentForm, studentModal);
 	SeatingChartPanel seatingChartPanel = new SeatingChartPanel();
 
 	@Override
@@ -99,7 +101,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	@Override
 	public CreateStudentForm getCreateStudentForm() {
-		return studentFrom;
+		return studentForm;
 	}
 	@Override
 	public ClassroomGrid getClassRoomGrid() {

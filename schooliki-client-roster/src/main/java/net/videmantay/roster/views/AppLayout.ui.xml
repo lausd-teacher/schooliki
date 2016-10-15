@@ -19,7 +19,9 @@
 			<!-- NavBar -->
 			<m:MaterialNavBar ui:field="navBar" activates="sideNav"
 				backgroundColor="red darken-4">
-				
+				  <m:MaterialNavBrand centerOn="CENTER_ON_SMALL" ui:field="navBartitle" />
+				<m:MaterialNavSection hideOn="HIDE_ON_SMALL_DOWN" float="RIGHT" ui:field="navBarContainer">
+				</m:MaterialNavSection>
 			</m:MaterialNavBar>
 			
 			<!-- SideNav -->

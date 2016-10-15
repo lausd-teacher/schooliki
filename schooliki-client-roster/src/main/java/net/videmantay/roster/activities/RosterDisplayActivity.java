@@ -15,11 +15,9 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Label;
-
 
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialColumn;
@@ -81,7 +79,12 @@ public class RosterDisplayActivity extends AbstractActivity
 		
 		
 		//Adding Nav Bar
-		appPanel.getNavBar().add(mainRosterNavBar);
+		appPanel.getNavBartitle().setText("Dr. Sammy Lee");
+		appPanel.getNavBarContainer().clear();
+		appPanel.getNavBarContainer().add(mainRosterNavBar.getCalendarTooltip());
+		appPanel.getNavBarContainer().add(mainRosterNavBar.getTodoTooltip());
+		appPanel.getNavBarContainer().add(mainRosterNavBar.getNotificationTooltip());
+		
 		appPanel.getMainPanel().clear();
 		
 		appPanel.getSideNav().hide();
@@ -122,7 +125,7 @@ public class RosterDisplayActivity extends AbstractActivity
 				GWT.log(this.arguments(0).toString());
 				rosterList = JsonUtils.safeEval(this.arguments(0).toString()).cast();
 				GWT.log("success");
-				drawGrid(rosterList);
+				drawGrid();
 				MaterialLoader.showLoading(false);
 			}
 		}).progress(new Function() {
@@ -164,7 +167,7 @@ public class RosterDisplayActivity extends AbstractActivity
 							public void f() {
 								formData.setId(Long.valueOf(this.arguments(0).toString()));
 								rosterList.push(formData);
-								drawGrid(rosterList);
+								drawGrid();
 								MaterialLoader.showLoading(false);
 								rosterForm.setVisible(false);
 								rosterDisplay.getRosterGrid().setVisible(true);
@@ -217,7 +220,7 @@ public class RosterDisplayActivity extends AbstractActivity
 
 	}
 
-	public void drawGrid(JsArray<RosterJson> rosterList) {
+	public void drawGrid() {
 
 		if (rosterList == null || rosterList.length() <= 0) {
 			grid.showEmptyList();
@@ -230,42 +233,21 @@ public class RosterDisplayActivity extends AbstractActivity
 				final RosterPanel panel = new RosterPanel(){
 					@Override
 					public void onLoad(){
-//						$(this.getRosterCard()).click(new Function() {
-//							@Override
-//							public boolean f(Event e) {
-//								GWT.log("card clicker" + currentRoster.getId());
-//								//goToClassRoom(currentRoster.getId().toString());
-//								//factory.setCurrentRoster(currentRoster);
-//								return true;
-//							}
-//						});
-						
-						//this.getRosterCard().addDomHandler(handler, Type.);
-						
-						Event.sinkEvents(this.getRosterCard().getElement(), Event.ONCLICK);
-//						Event.sinkEvents(this.getRosterCard().getElement(), Event.ONMOUSEOVER);
-//						Event.sinkEvents(this.getRosterCard().getElement(), Event.ONMOUSEOUT);
-						
-						final MaterialCard tempCard = this.getRosterCard();
-					    Event.setEventListener(this.getRosterCard().getElement(), new EventListener() {
-
-					        @Override
-					        public void onBrowserEvent(Event event) {
-					             if(Event.ONCLICK == event.getTypeInt()) {
-					            	 GWT.log("card clicker" + currentRoster.getId());
-					            		goToClassRoom(currentRoster.getId());
-										factory.setCurrentRoster(currentRoster);
-					             }
-
-					        }
-					    });
-						
+						$(this.getRosterCard()).click(new Function() {
+							@Override
+							public boolean f(Event e) {
+								GWT.log("card clicker" + currentRoster.getId());
+								factory.setCurrentRoster(currentRoster);
+								goToClassRoom(currentRoster.getId());
+								
+								return true;
+							}
+						});						
 					}
 				};
 				panel.setData(currentRoster);
 				col.add(panel);
 				row.add(col);
-				//cardClickEvent(panel.getRosterCard(), currentRoster);
 				grid.add(row);
 
 			}
@@ -340,6 +322,23 @@ public class RosterDisplayActivity extends AbstractActivity
 		currentPlace = place;
 		appPanel.getSideNav().hide();
 		appPanel.getMainPanel().clear();
+		
+		appPanel.getSideNav().clear();
+		appPanel.getSideNav().add(factory.userProfile());
+		appPanel.getSideNav().add(mainRosterSideNav.getRosterLink());
+		appPanel.getSideNav().add(mainRosterSideNav.getCalendarLink());
+		appPanel.getSideNav().add(mainRosterSideNav.getLibraryLink());
+		appPanel.getSideNav().add(mainRosterSideNav.getLessonsLink());
+		appPanel.getSideNav().add(mainRosterSideNav.getSettingsLink());
+		
+		
+		//Adding Nav Bar
+		appPanel.getNavBartitle().setText("Dr. Sammy Lee");
+		appPanel.getNavBarContainer().clear();
+		appPanel.getNavBarContainer().add(mainRosterNavBar.getCalendarTooltip());
+		appPanel.getNavBarContainer().add(mainRosterNavBar.getTodoTooltip());
+		appPanel.getNavBarContainer().add(mainRosterNavBar.getNotificationTooltip());
+
 		
 		if (currentPlace instanceof RosterHomePlace) {
 			

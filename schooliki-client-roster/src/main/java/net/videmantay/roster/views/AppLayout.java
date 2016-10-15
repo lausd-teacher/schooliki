@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialNavBar;
+import gwt.material.design.client.ui.MaterialNavBrand;
+import gwt.material.design.client.ui.MaterialNavSection;
 import gwt.material.design.client.ui.MaterialSideNav;
 
 public class AppLayout extends Composite {
@@ -19,6 +21,12 @@ public class AppLayout extends Composite {
 	
 	@UiField
 	MaterialNavBar navBar;
+	
+	@UiField
+	MaterialNavBrand navBartitle;
+	
+	@UiField
+	MaterialNavSection navBarContainer;
 	
 	@UiField
 	MaterialSideNav sideNav;
@@ -48,6 +56,14 @@ public class AppLayout extends Composite {
 
 	public void setMainPanel(MaterialContainer mainPanel) {
 		this.mainPanel = mainPanel;
+	}
+
+	public MaterialNavBrand getNavBartitle() {
+		return this.navBartitle;
+	}
+
+	public MaterialNavSection getNavBarContainer() {
+		return this.navBarContainer;
 	}
 
 	public AppLayout() {

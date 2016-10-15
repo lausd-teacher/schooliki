@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Schooliki Login</title>
+</head>
+<body>
+
+	<form method="post" style="text-align: center; font: 13px sans-serif">
+		<div
+			style="width: 20em; margin: auto; margin-top: 10%; text-align: left; padding: 0 2em 1.25em 2em; background-color: #d6e9f8; border: 2px solid #67a7e3;">
+			<h3>Not logged in</h3>
+
+			<table>
+				<tr>
+					<td><label for="email" style="width: 3em">Email:</label></td>
+					<td><input type="text" name="email" id="email"
+						value="test@example.com"></td>
+				</tr>
+				<tr>
+					<td><label for="email" style="width: 3em">Password:</label></td>
+					<td><input type="password" name="email" id="email"
+						value="test"></td>
+				</tr>
+				<tr>
+					<td></td>
+
+					<td><input type="hidden" name="continue" value="/login">
+					<input type="checkbox" name="isAdmin" id="isAdmin">
+						<label for="isAdmin">Sign in as Administrator</label></td>
+
+				</tr>
+				<tr>
+					<td><input name="action" type="submit" value="Log In"
+						id="btn-login"></td>
+					<td><input name="action" type="submit" value="Log Out"
+						id="btn-logout"></td>
+				</tr>
+			</table>
+		</div>
+	</form>
+
+</body>
+</html>

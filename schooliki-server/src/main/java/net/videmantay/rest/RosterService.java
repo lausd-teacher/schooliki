@@ -153,10 +153,10 @@ public class RosterService {
 
 			final RosterStudent rosterStd = RosterStudent.createFromDTO(rosterStudentDTO);
 		
-			rosterStudentDTO.setId(rosterStudentDB.save(rosterStd).getId());
+			Long newId = rosterStudentDB.save(rosterStd).getId();
 			
 
-			return Response.ok().entity(rosterStudentDTO).build();
+			return Response.ok().entity(newId).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();

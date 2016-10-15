@@ -6,10 +6,6 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-		<m:MaterialNavBrand centerOn="CENTER_ON_SMALL"
-			text="Dr. Sammy Lee" />
-		<m:MaterialNavSection hideOn="HIDE_ON_SMALL_DOWN"
-			float="RIGHT">
 			<m:MaterialTooltip ui:field="calendarTooltip" text="Calendar"
 				position="LEFT">
 				<m:MaterialLink iconType="EVENT" iconPosition="NONE"
@@ -25,6 +21,5 @@
 				<m:MaterialLink iconType="NOTIFICATIONS"
 					iconPosition="NONE" activates="dp3" />
 			</m:MaterialTooltip>
-		</m:MaterialNavSection>
 	</g:HTMLPanel>
 </ui:UiBinder> 

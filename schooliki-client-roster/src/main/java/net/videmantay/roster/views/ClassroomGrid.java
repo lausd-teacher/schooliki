@@ -1,29 +1,35 @@
 package net.videmantay.roster.views;
 
-import static com.google.gwt.query.client.GQuery.$;
-
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.dom.client.Style.Unit;
 
 import gwt.material.design.client.constants.ButtonType;
+import gwt.material.design.client.constants.IconSize;
+import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialAnchorButton;
+import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialFAB;
 import net.videmantay.roster.HasRosterDashboardView;
+import net.videmantay.roster.views.student.CreateStudentForm;
 
 
-public class ClassroomGrid extends Composite implements HasRosterDashboardView{
-
-	
+public class ClassroomGrid extends MaterialContainer implements HasRosterDashboardView{
 
 
-
-	private final StudentActionModal stuModal = new StudentActionModal();
+	private final StudentActionModal stuModal;
+	private final CreateStudentForm createStudentFrom;
 	private MaterialFAB fab = new MaterialFAB();
 	private MaterialAnchorButton addButton = new MaterialAnchorButton(ButtonType.FLOATING);
 	
 	
-	public ClassroomGrid(){		
-		
-	
+	public ClassroomGrid(CreateStudentForm form, StudentActionModal modal){	
+		this.stuModal = modal;
+		this.createStudentFrom = form;
+		addButton.setIconType(IconType.ADD);
+		addButton.setIconSize(IconSize.LARGE);
+		addButton.setIconFontSize(2, Unit.EM);
+		fab.add(addButton);
+		this.add(fab);
+		this.add(createStudentFrom);
 	}
 	
 	@Override
@@ -105,9 +111,17 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		return this.addButton;
 	}
 	
+	public StudentActionModal getStuModal() {
+		return this.stuModal;
+	}
+
+	public CreateStudentForm getCreateStudentFrom() {
+		return this.createStudentFrom;
+	}
+	
 	@Override
 	public void unHome(){
-		$(".rosterStudent").off("click");
+
 	}
 
 	@Override
@@ -198,6 +212,11 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 	public void cancel(final String state) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	public interface Presenter{
+		void addStudentButtonClickEvent();
 	}
 	
 
