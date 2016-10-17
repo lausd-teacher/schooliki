@@ -56,4 +56,17 @@ and then when the GWT dev mode window, you can choose which url to start from an
 Important: the local DB in schooliki-server/src/main/webapp/WEB-INF/appengine-generated/local_db.bin may need to be copied manually in the /target/schooliki-server-0.1/WEB-INF/appengine-generated/ beause sometimes the app does not recognize it when copied by Maven (This is a strange behavior)
 
 
+## Deploying to Google App Engine: 
+
+1) you need to clean the schooliki-server module. From the schooliki-server module: `clean` 
+
+2) you need to package the whole project with the deploy profile. From the root project: `package -Pdeploy`
+
+3) finally, you need to repackage the server to make sure the GWT modules are included in the war and execute the update goal of the google app engine plugin. From the schooliki-server module: `package appengine:update`
+
+The current app id is schooliki-dev which is a project I created for testing. Do not forget to change the app id and version in appengine-web.xml to your app id and version.
+
+
+
+
 
