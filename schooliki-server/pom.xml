@@ -13,8 +13,8 @@
 	<artifactId>schooliki-server</artifactId>
 
 	<properties>
-		<app.id>drsammyleemag</app.id>
-		<app.version>2</app.version>
+		<app.id>schooliki-dev</app.id>
+		<app.version>1</app.version>
 		<appengine.version>1.9.40</appengine.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -254,6 +254,10 @@
 					<version>${app.version}</version>
 					<address>0.0.0.0</address>
 					<port>9997</port>
+					<fullScanSeconds>60</fullScanSeconds>
+					<jvmFlags>
+					   <jvmFlag>-Xdebug</jvmFlag>
+					</jvmFlags>
 				</configuration>
 			</plugin>
 		</plugins>
