@@ -122,24 +122,25 @@ public class CreateStudentForm extends Composite{
 	public CreateStudentForm() {
 		initWidget(uiBinder.createAndBindUi(this));
 		formContainer.getElement().setId("createStudentForm");
-		console.log("info to string authToken" + info.getAuthToken());
+
 
 		modalContent.setDisplay(Display.BLOCK);
 				
-						picker = PickerBuilder.create()
-								.addView(ViewId.PHOTOS)
-								.addView(ViewId.PHOTO_UPLOAD)
-								.setDeveloperKey("AIzaSyCpTydZp0Hs-TmmM5pn7t_xgCSg1_SBy2o")
-								.setOAuthToken(info.getAuthToken())
-								.setSize(900, 600)
-								.addCallback(callback)
-								.build();
-						picker.setVisible(false);
+//						picker = PickerBuilder.create()
+//								.addView(ViewId.PHOTOS)
+//								.addView(ViewId.PHOTO_UPLOAD)
+//								.setDeveloperKey("AIzaSyCpTydZp0Hs-TmmM5pn7t_xgCSg1_SBy2o")
+//								.setOAuthToken("")
+//								.setSize(900, 600)
+//								.addCallback(callback)
+//								.build();
+//						picker.setVisible(false);
 	}
 	///////////////////END CONSTR////////////////////////////////////////////////
 	
 	public void show(){
 		modal.openModal();
+		
 	}
 	
 	public void hide(){

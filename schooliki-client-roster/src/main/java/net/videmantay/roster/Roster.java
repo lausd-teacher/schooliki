@@ -6,6 +6,9 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.EventBus;
@@ -21,7 +24,7 @@ public class Roster implements EntryPoint {
 	public void onModuleLoad() {
 
 		ClientFactory clientFactory = GWT.create(ClientFactory.class);
-		PlaceController controller = clientFactory.getPlaceController();
+		final PlaceController controller = clientFactory.getPlaceController();
 
 		EventBus bus = clientFactory.getEventBus();
 		ActivityMapper activityMapper = new MyActivityMapper(clientFactory);
@@ -33,6 +36,13 @@ public class Roster implements EntryPoint {
 		historyHandler.register(controller, bus, homePlace);
 
 		RootPanel.get().add(appWidget);
+		
+//		Window.addWindowClosingHandler(new ClosingHandler(){
+//	     	@Override
+//			public void onWindowClosing(ClosingEvent event) {
+//	     		controller.goTo(new RosterHomePlace("rosters"));
+//			}
+//		});
 
 		historyHandler.handleCurrentHistory();
 

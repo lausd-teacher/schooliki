@@ -15,7 +15,7 @@ import net.videmantay.shared.LoginInfo;
 public class UserProfilePanel extends Composite{
 
 	private static UserProfilePanelUiBinder uiBinder = GWT.create(UserProfilePanelUiBinder.class);
-	private final LoginInfo profile = window.getPropertyJSO("loginInfo").cast();
+	//private final LoginInfo profile = window.getPropertyJSO("loginInfo").cast();
 	interface UserProfilePanelUiBinder extends UiBinder<Widget, UserProfilePanel> {
 	}
 
@@ -27,14 +27,14 @@ public class UserProfilePanel extends Composite{
 	
 	public UserProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		name.setText(profile.getTitle() + ". " + profile.getLastName().toUpperCase());
+		name.setText("Lee" + ". " + "VIDEMANTAY");
 		
-		if(profile.getPicUrl()!=null && !profile.getPicUrl().isEmpty()){
-			img.setUrl(profile.getPicUrl());
-		}else{
+//		if(profile.getPicUrl()!=null && !profile.getPicUrl().isEmpty()){
+//			img.setUrl(profile.getPicUrl());
+//		}else{
 			img.setVisibility(Visibility.HIDDEN);
 			
-		}
+//		}
 		
 	}
 

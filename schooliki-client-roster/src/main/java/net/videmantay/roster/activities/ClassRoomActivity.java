@@ -473,6 +473,9 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		appPanel.getNavBartitle().setText(factory.getCurrentRoster().getTitle());
 		appPanel.getNavBarContainer().clear();
 		hideSideNav();
+		
+		currentPlace = place;
+		students = JavaScriptObject.createObject().cast();
 
 		if (place instanceof ClassRoomPlace) {
 			getRosterStudentsListAndDrawGrid();
@@ -497,7 +500,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			appPanel.getMainPanel().add(new Label("FormPlace view is not implemented yet"));
 		}
 		
-		currentPlace = place;
+		
 
 	}
 
@@ -549,7 +552,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		RosterStudentPanel rsp;
 
 		List<RosterStudentJson> studentList = new ArrayList<RosterStudentJson>();
-		GWT.log("before" + students.toString());
+		GWT.log("before" + students.length());
 	
 			for (int i = 0; i < students.length(); i++) {
 				studentList.add(students.get(i));
@@ -563,14 +566,15 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 			int i = 0;
 
-			do {
+			while (i < students.length()){
 				c = new MaterialColumn();
 				rsp = new RosterStudentPanel(students.get(i));
 				rsp.addStyleName("grid");
 				c.add(rsp);
-				++i;
+				i++;
 				row.add(c);
-			} while (i < students.length());
+			}
+			
 
 			
 
@@ -590,6 +594,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		empty.setStylePrimaryName("emptyClassroom");
         grid.clear();
 		grid.add(empty);
+		grid.add(factory.getCreateStudentForm());
 		grid.add(grid.getFab());
 	}
 
@@ -649,7 +654,9 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		grid.getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				GWT.log("Button clicked");
 				grid.getCreateStudentFrom().show();
+				//grid.getCreateStudentFrom().getPicker().setVisible(true);
 			}
 
 		});
@@ -671,11 +678,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 							public void f() {
 								console.log("create student form done return : " + this.getArgument(0));
 								grid.getCreateStudentFrom().hide();
-								//GWT.log(message);
-								Long id = Long.parseLong(this.getArgument(0).toString());
-								newStudent.setId(id);
-								students.push(newStudent);
-								drawGrid(true);
+								getRosterStudentsListAndDrawGrid();
 								MaterialLoader.showLoading(false);
 								
 							}
@@ -702,7 +705,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		grid.getCreateStudentFrom().getCancelBtn().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				grid.getCreateStudentFrom().hide();
+				factory.getCreateStudentForm().hide();
 			}
 		});
 	}
