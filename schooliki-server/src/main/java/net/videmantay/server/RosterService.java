@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
@@ -74,7 +75,7 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 
 
 @SuppressWarnings("serial")
-public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
+public class RosterService extends HttpServlet  {
 	
 	private final Logger log = Logger.getLogger(RosterService.class.getCanonicalName());
 	private final Gson gson = new Gson();
@@ -109,7 +110,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 	private void init(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException, GeneralSecurityException, ServiceException, TemplateException{
 		//authorize
-		initializeFlow();
+		//initializeFlow();
 		// 3. Route The Path
 		String path = req.getRequestURI();
 		log.log(Level.INFO, "the path is " + path);
@@ -128,7 +129,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 		//route student
 		case RosterUrl.CREATE_STUDENT:saveRosterStudent(req,res);break;
-		case RosterUrl.UPDATE_STUDENT:updateRosterStudent(req,res);break;
+//		case RosterUrl.UPDATE_STUDENT:updateRosterStudent(req,res);break;
 		case RosterUrl.DELETE_STUDENT: deleteRosterStudent(req,res);break;
 		
 		case RosterUrl.CREATE_ASSIGNMENT:saveGradedWork(req,res);break;
@@ -154,30 +155,30 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 	           /////////////////  OAUTH Mehtods   ///////////////////////////////////////////
 	
-	@Override
-	protected String getRedirectUri(HttpServletRequest req)
-			throws ServletException, IOException {
-		  GenericUrl url = new GenericUrl(req.getRequestURL().toString());
-		    url.setRawPath("/oauth2callback");
-		    return url.build();
-	}
-
-	@Override
-	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
-			IOException {
-		User user = UserServiceFactory.getUserService().getCurrentUser();
-		return GoogleUtils.authFlow(user.getUserId());
-	}
+//	@Override
+//	protected String getRedirectUri(HttpServletRequest req)
+//			throws ServletException, IOException {
+//		  GenericUrl url = new GenericUrl(req.getRequestURL().toString());
+//		    url.setRawPath("/oauth2callback");
+//		    return url.build();
+//	}
+//
+//	@Override
+//	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
+//			IOException {
+//		User user = UserServiceFactory.getUserService().getCurrentUser();
+//		return GoogleUtils.authFlow(user.getUserId());
+//	}
 	////////////////end oauth ///////////////////////////////////////////////////////
 	
 	//Teacher view////
 	private void getTeacherView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, TemplateException{
-		if(AppValid.roleCheck(UserRoles.TEACHER)){
+		
 			User acct = UserServiceFactory.getUserService().getCurrentUser();
 		res.addHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8888");
 		Map<String, Object> data = new HashMap<String, Object>();
 		AppUser user = db().load().type(AppUser.class).filter("acctId", acct.getEmail()).first().now();
-	if(this.getUserId(req).equals(acct.getUserId())){
+	if(user != null){
 		System.out.println("user id are equal");
 	
 		Credential cred = cred(acct.getUserId());
@@ -212,9 +213,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		Template teacherPage = TemplateGen.getTeacherPage();
 		teacherPage.process(data, res.getWriter());
 		
-		}else{
-			res.sendRedirect("/login");
-		}
+		
 	}
 	
 	//ROSTER CRUD
@@ -594,46 +593,46 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 	}
 	
-	private void updateRosterStudent(HttpServletRequest req, HttpServletResponse res) throws IOException{
-		Drive drive;
-		Credential cred = this.getCredential();
-		
-		String studentCheck = Preconditions.checkNotNull(req.getParameter("student"));
-		RosterStudent student = gson.fromJson(studentCheck, RosterStudent.class);
-		
-		RosterStudent dbCheck = db().load().type(RosterStudent.class).id(student.getId()).now();
-		if(dbCheck == null){
-			//throw exception
-		}
-		
-		//Before updating validate again
-		
-		Set<ConstraintViolation<RosterStudent>> constraintViolations =
-				ValidatorUtil.getValidator().validate(student);
-	
-		   //If validation rules are violated then log error messages and return 
-			if(constraintViolations.size() > 0){
-				for(ConstraintViolation<RosterStudent> violation: constraintViolations){
-					log.log(Level.WARNING, violation.getMessage());
-					
-				}
-		      return;
-		   }
-		
-		if(!student.getAcctId().equals(dbCheck.getAcctId())){
-		drive = drive(cred);
-		File folder = drive.files().get(student.getStudentFolderId()).execute();
-		folder.setName(student.getAcctId());
-		drive.files().update(folder.getId(), folder).execute();
-		
-		}
-		db().save().entity(student);
-		res.getWriter().write(gson.toJson(student));
-		res.flushBuffer();
-		
-		return;
-				
-	}
+//	private void updateRosterStudent(HttpServletRequest req, HttpServletResponse res) throws IOException{
+//		Drive drive;
+//		Credential cred = this.getCredential();
+//		
+//		String studentCheck = Preconditions.checkNotNull(req.getParameter("student"));
+//		RosterStudent student = gson.fromJson(studentCheck, RosterStudent.class);
+//		
+//		RosterStudent dbCheck = db().load().type(RosterStudent.class).id(student.getId()).now();
+//		if(dbCheck == null){
+//			//throw exception
+//		}
+//		
+//		//Before updating validate again
+//		
+//		Set<ConstraintViolation<RosterStudent>> constraintViolations =
+//				ValidatorUtil.getValidator().validate(student);
+//	
+//		   //If validation rules are violated then log error messages and return 
+//			if(constraintViolations.size() > 0){
+//				for(ConstraintViolation<RosterStudent> violation: constraintViolations){
+//					log.log(Level.WARNING, violation.getMessage());
+//					
+//				}
+//		      return;
+//		   }
+//		
+//		if(!student.getAcctId().equals(dbCheck.getAcctId())){
+//		drive = drive(cred);
+//		File folder = drive.files().get(student.getStudentFolderId()).execute();
+//		folder.setName(student.getAcctId());
+//		drive.files().update(folder.getId(), folder).execute();
+//		
+//		}
+//		db().save().entity(student);
+//		res.getWriter().write(gson.toJson(student));
+//		res.flushBuffer();
+//		
+//		return;
+//				
+//	}
 	
 	private void deleteRosterStudent(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		String studentCheck = req.getParameter("student");
@@ -1062,25 +1061,25 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	////////////////////////	
 	///STUDENT INCIDENT CRUD
 
-	private void deleteStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		Calendar cal;
-		Credential cred = this.getCredential();
-		cal = calendar(cred);
-		
-		String calId = Preconditions.checkNotNull(req.getParameter("calId"));
-		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
-		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
-		StudentIncident dbCheck = null;
-	try{
-		dbCheck = db().load().type(StudentIncident.class).id(incident.id).now();
-		Preconditions.checkNotNull(dbCheck);	
-	}catch(NullPointerException e){
-		
-	}
-	
-		db().delete().entity(dbCheck);
-		
-	}
+//	private void deleteStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+//		Calendar cal;
+//		Credential cred = this.getCredential();
+//		cal = calendar(cred);
+//		
+//		String calId = Preconditions.checkNotNull(req.getParameter("calId"));
+//		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
+//		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
+//		StudentIncident dbCheck = null;
+//	try{
+//		dbCheck = db().load().type(StudentIncident.class).id(incident.id).now();
+//		Preconditions.checkNotNull(dbCheck);	
+//	}catch(NullPointerException e){
+//		
+//	}
+//	
+//		db().delete().entity(dbCheck);
+//		
+//	}
 
 	private void searchStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void listStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{

@@ -1,4 +1,4 @@
-package net.videmantay.roster.views;
+package net.videmantay.roster.views.incident;
 
 import com.google.common.primitives.Longs;
 import com.google.common.base.Splitter;

@@ -29,6 +29,7 @@ import net.videmantay.roster.ActionType;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentReportJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.views.incident.IncidentItem;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.shared.url.RosterUrl;
 

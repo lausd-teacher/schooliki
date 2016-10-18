@@ -1,6 +1,7 @@
 package net.videmantay.roster.views.incident;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,6 +12,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import static com.google.gwt.query.client.GQuery.*;
 
@@ -34,13 +36,12 @@ public class IncidentForm extends Composite {
 	interface IncidentFormUiBinder extends UiBinder<Widget, IncidentForm> {
 	}
 
-	private IncidentJson incident;
+
+	@UiField
+	HTMLPanel formContainer;
 
 	@UiField
 	MaterialModal modal;
-
-	@UiField
-	FormPanel form;
 
 	@UiField
 	MaterialInput nameInput;
@@ -69,19 +70,15 @@ public class IncidentForm extends Composite {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			incident.setIconUrl((String) $(iconPanel).data("icon"));
-			incident.setName(nameInput.getValue());
-			incident.setValue(valueInput.getValue());
-			incident.setBehaviorType(typeListBox.getValue());
-			RosterJson roster = window.getPropertyJSO("roster").cast();
-			Ajax.post(RosterUrl.SAVE_INCIDENTS, $$("roster:" + JsonUtils.stringify(roster))).done(new Function() {
+			
+			
+			Ajax.post(RosterUrl.SAVE_INCIDENTS, $$("roster:" + JsonUtils.stringify(null))).done(new Function() {
 				@Override
 				public void f() {
 					MaterialToast.fireToast("Incident saved");
 				}
 			});
-			form.reset();
-			incident = null;
+			
 			modal.closeModal();
 
 		}
@@ -91,8 +88,6 @@ public class IncidentForm extends Composite {
 
 		@Override
 		public void onClick(ClickEvent event) {
-			form.reset();
-			incident = null;
 			modal.closeModal();
 
 		}
@@ -101,13 +96,22 @@ public class IncidentForm extends Composite {
 	public IncidentForm() {
 
 		initWidget(uiBinder.createAndBindUi(this));
-
 		doneBtn.addClickHandler(doneHandler);
-
 		cancelBtn.addClickHandler(cancelHandler);
+		formContainer.getElement().setId("incidentFrom");
 
-		form.getElement().setId("incidentFrom");
-
+	}
+	
+	public IncidentJson getFormData(){
+		
+		IncidentJson newIncident = JavaScriptObject.createObject().cast();
+		newIncident.setIconUrl((String) $(iconPanel).data("icon"));
+		newIncident.setName(nameInput.getValue());
+		newIncident.setValue(valueInput.getValue());
+		newIncident.setBehaviorType(typeListBox.getValue());
+		
+		
+		return newIncident;
 	}
 
 	@Override
@@ -119,13 +123,7 @@ public class IncidentForm extends Composite {
 	}
 
 	public void setIncident(IncidentJson incident) {
-		if (incident == null) {
-			incident = IncidentJson.createObject().cast();
-		}
-		this.incident = incident;
-		nameInput.setValue(incident.getName());
-		valueInput.setValue(incident.getValue());
-		typeListBox.setValueSelected(incident.getBehaviorType(), true);
+		
 		iconPanel.clear();
 
 		// need to fix this so it's in one place
@@ -138,6 +136,10 @@ public class IncidentForm extends Composite {
 
 	public void show() {
 		modal.openModal();
+	}
+	
+	public void hide() {
+		modal.closeModal();
 	}
 
 	private Function getValidationFunction() {
@@ -155,5 +157,20 @@ public class IncidentForm extends Composite {
 			}
 		};
 
+	}
+	
+	
+	public MaterialIcon getDoneBtn() {
+		return this.doneBtn;
+	}
+
+	public MaterialIcon getCancelBtn() {
+		return this.cancelBtn;
+	}
+
+
+	public interface Presenter{
+		void doneButtonClickEvent();
+		void cancelButtonClickEvent();
 	}
 }

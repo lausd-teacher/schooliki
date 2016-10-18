@@ -6,9 +6,9 @@
 	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab" textColor="red" indicatorColor="red accent-4" height="2.5em" >
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Dashboard"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab" ui:field="dashboardTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Dashboard"  waves="RED"/></m:MaterialTabItem>
 			<m:MaterialTabItem addStyleNames="myTab" ui:field="calTab"><m:MaterialAnchorButton type="FLAT" href=".tab2" text="Calendar"  waves="RED"/></m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab" ui:field="reportsTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
 		</m:MaterialTab>
 		<div  id="tab1">
 			<m:MaterialAnchorButton ui:field="classroomtimeBar" backgroundColor="red darken-4" centerOn="CENTER_ON_SMALL" grid="s12" width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar" text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtimedrop"></m:MaterialAnchorButton>
@@ -150,11 +150,12 @@
 			<g:HTMLPanel ui:field="tab1Main">
 			</g:HTMLPanel>
 		</div>
-		<g:HTMLPanel ui:field="tab2">
-			  <g:Frame ui:field="calFrame" url="../cal.html" width="100%"   addStyleNames="calFrame" visible="false" /> 
-			<br/>
-			<m:MaterialFAB ui:field="classEventFAB" visible="false"><m:MaterialAnchorButton  ui:field="classEventAddBtn" type="FLOATING" iconType="ADD" size="LARGE"/></m:MaterialFAB>
+		<m:MaterialColumn m:id="tab2">
+		<g:HTMLPanel>
+            <g:Frame ui:field="calFrame" url="../cal.html" width="100%" visible="false" addStyleNames="calFrame"/> 
+			<!-- <m:MaterialFAB ui:field="classEventFAB"><m:MaterialAnchorButton  ui:field="classEventAddBtn" type="FLOATING" iconType="ADD" size="LARGE"/></m:MaterialFAB> -->
 		</g:HTMLPanel>
+		</m:MaterialColumn>
 		<div  id="tab3">
 			<svg viewBox="0 0 150 200" style="width:200px; height:300px;">
 				<use xlink:href="../img/allIcons.svg#rocket" />

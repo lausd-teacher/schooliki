@@ -1,12 +1,12 @@
 package net.videmantay.roster.views.incident;
 
+import static com.google.gwt.query.client.GQuery.window;
+
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialColumn;
@@ -14,7 +14,6 @@ import gwt.material.design.client.ui.MaterialFAB;
 import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.RosterJson;
-import static com.google.gwt.query.client.GQuery.*;
 
 public class IncidentMain extends Composite {
 
@@ -30,37 +29,25 @@ public class IncidentMain extends Composite {
 	MaterialRow negIncidentRow;
 	
 	@UiField
-	IncidentForm incidentForm;
+	HTMLPanel container;
 	
 	@UiField
 	MaterialFAB addIncidentFAB;
 	
-	Function openForm = new Function(){
-		@Override
-		public void f(){
-			incidentForm.show();
-		}
-	};
-	
-	Function openDeleteModal = new Function(){
-		@Override
-		public void f(){
-			//deleteModal.show();
-		}
-	};
+	IncidentForm incidentForm;
 	
 	
-	public IncidentMain() {
+	public IncidentMain(IncidentForm incidentForm) {
 		initWidget(uiBinder.createAndBindUi(this));
-	}//end constr.
+		this.incidentForm = incidentForm;
+		container.add(incidentForm);
+	}
 	
 	@Override
 	public void onLoad(){
 		RosterJson roster = window.getPropertyJSO("roster").cast();
 		for(int i = 0; i < roster.getIncidents().length(); i++){
 			IncidentJson incident = roster.getIncidents().get(i);
-			//EditIncidentPanel ip = new EditIncidentPanel().setIncident(incident);
-			//console.log(ip);
 			MaterialColumn col = new MaterialColumn();
 			col.setGrid("s2 m4 l2");
 			if(incident.getValue() < 0){
@@ -75,12 +62,24 @@ public class IncidentMain extends Composite {
 		//$(body).on("editIncident", openForm);
 		//$(body).on("deleteIncident", openDeleteModal);
 		
-		addIncidentFAB.addClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				incidentForm.show();
-			}
-		});
+//		addIncidentFAB.addClickHandler(new ClickHandler(){
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				incidentForm.show();
+//			}
+//		});
+	}
+	
+	public MaterialFAB getAddIncidentFAB() {
+		return this.addIncidentFAB;
+	}
+
+	public IncidentForm getIncidentForm() {
+		return this.incidentForm;
+	}
+
+	public interface Presenter{
+		void addIncidentFABButtonClickEvent();	
 	}
 
 }

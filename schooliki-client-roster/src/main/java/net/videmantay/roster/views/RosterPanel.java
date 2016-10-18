@@ -71,19 +71,12 @@ public class RosterPanel extends Composite {
 	}
 	
 	
-
-
-	
-	
 	 public MaterialCard getRosterCard() {
 		return this.card;
 	}
 
-
-
 	public interface Presenter{
 		 void cardClickEvent(MaterialCard RosterCard, RosterJson roster);
-		 
 	 }
 	
 }

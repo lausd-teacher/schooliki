@@ -1,9 +1,5 @@
 package net.videmantay.roster.json;
 
-import java.util.Set;
-
-import com.google.gwt.core.client.JsArrayNumber;
-import com.google.gwt.core.client.JsArrayString;
 
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
@@ -33,32 +29,32 @@ public class GradedWorkJson extends AssignmentJson {
 	}-*/;
 
 
-	public final native GradedWorkType getGradedWorkType()/*-{
+	public final native String getGradedWorkType()/*-{
 		return this.gradedWorkType;
 	}-*/;
 
 
-	public final native GradedWorkJson setGradedWorkType(GradedWorkType gradedWorkType) /*-{
+	public final native String setGradedWorkType(String gradedWorkType) /*-{
 		this.gradedWorkType = gradedWorkType;
 		return this;
 	}-*/;
 	
-	public final native Double getPointsPossible()/*-{
+	public final native double getPointsPossible()/*-{
 		return this.pointsPossible;
 	}-*/;
 	
-	public final native GradedWorkJson setPointsPossible(Double pointsPossible)/*-{
+	public final native GradedWorkJson setPointsPossible(double pointsPossible)/*-{
 		this.pointsPossible = pointsPossible;
 		return this;
 	}-*/;
 
 
-	public final native Language getLang() /*-{
+	public final native String getLang() /*-{
 		return this.lang;
 	}-*/;
 
 
-	public final native GradedWorkJson setLang(Language lang) /*-{
+	public final native String setLang(String lang) /*-{
 		this.lang = lang;
 		return this;
 	}-*/;
@@ -99,13 +95,4 @@ public class GradedWorkJson extends AssignmentJson {
 		this.event = event;
 	}-*/;
 
-
-	public final native JsArrayString getAssignedTo() /*-{
-		return this.assignedTo;
-	}-*/;
-
-
-	public final native void setAssignedTo(JsArrayNumber studentList) /*-{
-		this.assignedTo = assignedTo;
-	}-*/;
 }

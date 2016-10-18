@@ -15,6 +15,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -87,7 +88,7 @@ public class RosterDisplayActivity extends AbstractActivity
 		
 		appPanel.getMainPanel().clear();
 		
-		appPanel.getSideNav().hide();
+		hideSideNav();
 
 		if (currentPlace instanceof RosterHomePlace) {
 			appPanel.getMainPanel().add(rosterDisplay);
@@ -212,7 +213,6 @@ public class RosterDisplayActivity extends AbstractActivity
 			@Override
 			public boolean f(Event e) {
 				GWT.log("card clicker" + roster.getId().toString());
-				//goToClassRoom(roster.getId().toString());
 				factory.setCurrentRoster(roster);
 				return true;
 			}
@@ -320,7 +320,7 @@ public class RosterDisplayActivity extends AbstractActivity
 
 	public void setPlace(Place place) {
 		currentPlace = place;
-		appPanel.getSideNav().hide();
+		hideSideNav();
 		appPanel.getMainPanel().clear();
 		
 		appPanel.getSideNav().clear();
@@ -356,6 +356,15 @@ public class RosterDisplayActivity extends AbstractActivity
 		}
 		
 		
+	}
+	
+	private void hideSideNav(){
+		
+		new Timer(){
+			@Override
+			public void run() {
+				appPanel.getSideNav().hide();
+			}}.schedule(250);
 	}
 
 

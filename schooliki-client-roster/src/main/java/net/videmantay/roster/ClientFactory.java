@@ -13,9 +13,11 @@ import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
+import net.videmantay.roster.views.components.Calendar;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
+import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
 
 public interface ClientFactory {
@@ -36,6 +38,8 @@ public interface ClientFactory {
 	CreateStudentForm getCreateStudentForm();
 	ClassroomGrid getClassRoomGrid();
 	SeatingChartPanel getSettingChartPanel();
+	Calendar getCalendar();
+	IncidentMain getIncidentMainPage();
 
 	
 

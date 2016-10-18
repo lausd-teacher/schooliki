@@ -38,6 +38,7 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTab;
+import gwt.material.design.client.ui.MaterialTabItem;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
@@ -117,20 +118,27 @@ public class RosterDashboardPanel extends Composite
 	@UiField
 	MaterialButton smUndoBtn;
 	
-	@UiField
-	HTMLPanel tab2;
-	
-	@UiField
+    @UiField
 	Frame calFrame;
+
 
 	@UiField
 	MaterialTab tab;
 	
 	@UiField
-	MaterialFAB classEventFAB;
+	MaterialTabItem calTab;
 	
 	@UiField
-	MaterialAnchorButton classEventAddBtn;
+	MaterialTabItem reportsTab;
+	
+	@UiField
+	MaterialTabItem dashboardTab;
+	
+//	@UiField
+//	MaterialFAB classEventFAB;
+	
+//	@UiField
+//	MaterialAnchorButton classEventAddBtn;
 	
 	private RosterJson roster = JavaScriptObject.createObject().cast();
 	
@@ -181,6 +189,8 @@ public class RosterDashboardPanel extends Composite
 	public RosterDashboardPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 		console.log(Cookies.getCookie("currentRosterId"));
+		
+		
 		
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		
@@ -395,26 +405,26 @@ public class RosterDashboardPanel extends Composite
 		}//end for
 		
 		//fullcalendar needs a delay to render correctly so here is the check
-	$(".tab").as(Ui).click(new Function(){
-				@Override
-				public void f(){
-					if( $(this).find("a").attr("href").equalsIgnoreCase(".tab2")){
-						console.log("the table length is : " + $(tab2).find("table").length());
-						if( $(tab2).find("table").length() < 1){
-							console.log("No table found in tab2");
-							new Timer(){
-
-								@Override
-								public void run() {
-									calFrame.setVisible(true);
-									classEventFAB.setVisible(true);
-								}}.schedule(100);;
-						}
-					}else{calFrame.setVisible(false);
-						classEventFAB.setVisible(false);
-					}
-				}
-	});
+//	$(".tab").as(Ui).click(new Function(){
+//				@Override
+//				public void f(){
+//					if( $(this).find("a").attr("href").equalsIgnoreCase(".tab2")){
+//						console.log("the table length is : " + $(tab2).find("table").length());
+//						if( $(tab2).find("table").length() < 1){
+//							console.log("No table found in tab2");
+//							new Timer(){
+//
+//								@Override
+//								public void run() {
+//									calFrame.setVisible(true);
+//									classEventFAB.setVisible(true);
+//								}}.schedule(100);;
+//						}
+//					}else{calFrame.setVisible(false);
+//						classEventFAB.setVisible(false);
+//					}
+//				}
+//	});
 	
 	$(window).resize(resizeFunc);
 	}
@@ -508,25 +518,18 @@ public class RosterDashboardPanel extends Composite
 		return this.smUndoBtn;
 	}
 
-	public HTMLPanel getTab2() {
-		return this.tab2;
-	}
-
-	public Frame getCalFrame() {
-		return this.calFrame;
-	}
 
 	public MaterialTab getTab() {
 		return this.tab;
 	}
 
-	public MaterialFAB getClassEventFAB() {
-		return this.classEventFAB;
-	}
+//	public MaterialFAB getClassEventFAB() {
+//		return this.classEventFAB;
+//	}
 
-	public MaterialAnchorButton getClassEventAddBtn() {
-		return this.classEventAddBtn;
-	}
+//	public MaterialAnchorButton getClassEventAddBtn() {
+//		return this.classEventAddBtn;
+//	}
 
 	public State getState() {
 		return this.state;
@@ -546,13 +549,18 @@ public class RosterDashboardPanel extends Composite
 	}
 	
 	
-	public void setDisplay(HasRosterDashboardView display){
+	public void setDisplayInTab1(HasRosterDashboardView display){
 		tab1Main.clear();
-		tab1Main.add(display);
-		if(display instanceof SeatingChartPanel)
+		if(display instanceof SeatingChartPanel){
+			tab1Main.add(display);
 		   seatingChartEditIcon.setVisible(true);
-		else 
-			 seatingChartEditIcon.setVisible(false);
+		   calFrame.setVisible(false);
+		}else if(display instanceof ClassroomGrid){
+			tab1Main.add(display);
+			seatingChartEditIcon.setVisible(false);
+			calFrame.setVisible(false);
+		}
+			
 	}
 	
 	public HasRosterDashboardView getDisplay(){
@@ -560,13 +568,29 @@ public class RosterDashboardPanel extends Composite
 	}
 
 
+	public MaterialTabItem getCalTab() {
+		return this.calTab;
+	}
+
+
+	public Frame getCalFrame() {
+		return this.calFrame;
+	}
+
+
+	public MaterialTabItem getReportsTab() {
+		return this.reportsTab;
+	}
+
+	public MaterialTabItem getDashboardTab() {
+		return this.dashboardTab;
+	}
+
+
 	public interface Presenter{
-		
 		void gridSwitchClickEvent();
 		void homeworkIconClickEvent();
-		
-		
-		
+		void tabsClickEvent();
 	}
 
 

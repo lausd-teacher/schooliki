@@ -1,4 +1,4 @@
-package net.videmantay.roster.views;
+package net.videmantay.roster.views.incident;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;

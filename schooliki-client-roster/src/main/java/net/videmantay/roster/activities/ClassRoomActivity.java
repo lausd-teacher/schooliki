@@ -35,6 +35,7 @@ import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagin
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -65,17 +66,21 @@ import net.videmantay.roster.views.RosterStudentPanel;
 import net.videmantay.roster.views.assignment.AssignmentGrid;
 import net.videmantay.roster.views.assignment.EmptyAssignmentGrid;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
+import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
+import net.videmantay.roster.views.incident.IncidentMain;
+import net.videmantay.roster.views.incident.IncidentForm;
 import net.videmantay.roster.views.student.CreateStudentForm;
 import net.videmantay.roster.views.student.FistNameCompare;
 import net.videmantay.roster.views.student.LastNameCompare;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class ClassRoomActivity extends AbstractActivity implements ClassRoomSideNav.Presenter,
-		RosterDashboardPanel.Presenter, ClassroomGrid.Presenter, CreateStudentForm.Presenter {
+		RosterDashboardPanel.Presenter, ClassroomGrid.Presenter, CreateStudentForm.Presenter, GradedWorkMain.Presenter, 
+		  GradedWorkForm.Presenter, IncidentMain.Presenter, IncidentForm.Presenter{
 
-	ClientFactory factory;
+	final ClientFactory factory;
 
 	RosterDashboardPanel dashboard;
 	Place currentPlace;
@@ -85,6 +90,10 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	ClassroomGrid grid;
 	SeatingChartPanel seatingChart;
 	JsArray<RosterStudentJson> students = JavaScriptObject.createObject().cast();
+	JsArray<GradedWorkJson> gradedWorkList = JavaScriptObject.createObject().cast();
+	AsyncDataProvider<GradedWorkJson> providesKey;
+	AssignmentGrid assignementGrid;
+	IncidentMain incidentMainPage;
 
 	public ClassRoomActivity(ClientFactory factory, Place place) {
 		this.factory = factory;
@@ -96,7 +105,12 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		this.grid = factory.getClassRoomGrid();
 		this.gradedWorkMain = factory.getGradedWorkMain();
 		this.seatingChart = factory.getSettingChartPanel();
+		this.assignementGrid = consctructAssignementGridTable();
+		gradedWorkMain.setAssignementGrid(assignementGrid);
+		this.incidentMainPage = factory.getIncidentMainPage();
 		initializeEvents();
+		
+		
 		
 	}
 
@@ -124,16 +138,15 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		hideSideNav();
 		if (currentPlace instanceof ClassRoomPlace) {
 		    getRosterStudentsListAndDrawGrid();
-			dashboard.setDisplay(grid);
+			dashboard.setDisplayInTab1(grid);
 			appPanel.getMainPanel().add(dashboard);
 		} else if (currentPlace instanceof AssignementPlace) {
-			AssignmentGrid grid = consctructAssignementGridTable();
-			gradedWorkMain.setAssignementGrid(grid);
+			 getGradedWorkListAndDrawGrid();
 			appPanel.getMainPanel().add(gradedWorkMain);
 		} else if (currentPlace instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (currentPlace instanceof IncidentPlace) {
-			appPanel.getMainPanel().add(new Label("Incident view is under construction"));
+			appPanel.getMainPanel().add(incidentMainPage);
 		} else if (currentPlace instanceof GoalPlace) {
 			appPanel.getMainPanel().add(new Label("Goal view is under construction"));
 		} else if (currentPlace instanceof JobPlace) {
@@ -147,11 +160,27 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		}
 
 		panel.setWidget(appPanel);
+		
+		providesKey = new AsyncDataProvider<GradedWorkJson>() {
+			@Override
+			protected void onRangeChanged(final HasData<GradedWorkJson> display) {
+				GWT.log("range is changing");
+			}
 
+			@Override
+			public Long getKey(GradedWorkJson value) {
+				return value.getId();
+			}
+		};
+		
 	}
 
 	private void hideSideNav() {
-		appPanel.getSideNav().hide();
+		new Timer(){
+			@Override
+			public void run() {
+				appPanel.getSideNav().hide();
+			}}.schedule(250);
 	}
 
 	private void goTo(Place place) {
@@ -282,38 +311,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	private AssignmentGrid consctructAssignementGridTable() {
 
 		// Cannot be injected because it is redrawn on each roster
-
-		AsyncDataProvider<GradedWorkJson> providesKey = new AsyncDataProvider<GradedWorkJson>() {
-
-			@Override
-			protected void onRangeChanged(final HasData<GradedWorkJson> display) {
-				Ajax.get("/gradedwork?=rosterId" + factory.getCurrentRoster().getId()).done(new Function() {
-					@Override
-					public void f() {
-						JsArray<GradedWorkJson> list = JsonUtils.safeEval((String) this.arguments(0)).cast();
-						ArrayList<GradedWorkJson> data = new ArrayList<GradedWorkJson>();
-						for (int i = 0; i < list.length(); i++) {
-							data.add(list.get(i));
-						}
-						display.setRowData(0, data);
-						display.setRowCount(data.size());
-					}
-				}).fail(new Function() {
-					@Override
-					public void f() {
-						Window.alert("Unable to fetch graded work list from the server");
-					}
-				});
-
-			}
-
-			@Override
-			public Long getKey(GradedWorkJson value) {
-				return value.getId();
-			}
-
-		};
-
 		AssignmentGrid assignementGrid = new AssignmentGrid(providesKey);
 
 		TextColumn<GradedWorkJson> titleCol = new TextColumn<GradedWorkJson>() {
@@ -328,7 +325,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 			@Override
 			public String getValue(GradedWorkJson object) {
-				return object.getGradedWorkType().name();
+				return object.getGradedWorkType();
 			}
 		};
 
@@ -336,29 +333,16 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 			@Override
 			public String getValue(GradedWorkJson object) {
-				return object.getSubject().name();
+				return object.getSubject();
 			}
 		};
-		TextColumn<GradedWorkJson> assignedToCol = new TextColumn<GradedWorkJson>() {
-
-			@Override
-			public String getValue(GradedWorkJson object) {
-				StringBuilder sb = new StringBuilder();
-				for (int i = 0; i < object.getAssignedTo().length(); i++) {
-					sb.append(object.getAssignedTo().get(i));
-					if (i != object.getAssignedTo().length() - 1) {
-						sb.append(", ");
-					}
-				}
-				return sb.toString();
-			}
-		};
+		
 
 		TextColumn<GradedWorkJson> dueDateCol = new TextColumn<GradedWorkJson>() {
 
 			@Override
 			public String getValue(GradedWorkJson object) {
-				return object.getSubject().name();
+				return object.getDueDate();
 			}
 		};
 
@@ -366,7 +350,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 			@Override
 			public String getValue(GradedWorkJson object) {
-				return object.getSubject().name();
+				return object.getSubject();
 			}
 		};
 
@@ -384,12 +368,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 			@Override
 			public SafeHtml getValue(GradedWorkJson object) {
-				SafeHtml html;
-				if (object.isFinishedGrading()) {
-					html = SafeHtmlUtils.fromString("<i class='material-icons'>done</i>");
-				} else {
-					html = SafeHtmlUtils.fromString("<i></i>");
-				}
+				SafeHtml html = SafeHtmlUtils.fromString("<i class='material-icons'>done</i>");
+				
 				return html;
 			}
 		};
@@ -432,12 +412,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				SafeHtmlUtils.fromTrustedString("<span class='gradedWork-grid-header'>Subject</span>"));
 		assignementGrid.addColumn(pointsCol,
 				SafeHtmlUtils.fromTrustedString("<span class='gradedWork-grid-header'>Points</span>"));
-		// this.addColumn(descriptCol, SafeHtmlUtils.fromTrustedString("<span
-		// class='gradedWork-grid-header'>Summary</span>"));
 		assignementGrid.addColumn(assignedDateCol,
 				SafeHtmlUtils.fromTrustedString("<span class='gradedWork-grid-header'>Assigned<br/> Date</span>"));
-		assignementGrid.addColumn(assignedToCol,
-				SafeHtmlUtils.fromTrustedString("<span class='gradedWork-grid-header'>Students</span>"));
 		assignementGrid.addColumn(isGradedCol,
 				SafeHtmlUtils.fromTrustedString("<span class='gradedWork-grid-header'>Scored</span>"));
 		assignementGrid.addColumn(actionCol);
@@ -446,6 +422,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		assignementGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		assignementGrid.setFocus(true);
 		assignementGrid.setEmptyTableWidget(new EmptyAssignmentGrid());
+		
 
 		return assignementGrid;
 
@@ -481,31 +458,32 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			getRosterStudentsListAndDrawGrid();
 			appPanel.getMainPanel().add(dashboard);
 		} else if (place instanceof AssignementPlace) {
-			AssignmentGrid grid = consctructAssignementGridTable();
-			gradedWorkMain.setAssignementGrid(grid);
+			
+			getGradedWorkListAndDrawGrid();
 			appPanel.getMainPanel().add(gradedWorkMain);
 		} else if (place instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (place instanceof IncidentPlace) {
-			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
+			appPanel.getMainPanel().add(incidentMainPage);
 		} else if (place instanceof GoalPlace) {
-			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
+			appPanel.getMainPanel().add(new Label("Goal view is not implemented yet"));
 		} else if (place instanceof JobPlace) {
-			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
+			appPanel.getMainPanel().add(new Label("Job view is not implemented yet"));
 		} else if (place instanceof BookPlace) {
 			appPanel.getMainPanel().add(new Label("BookPlace view is not implemented yet"));
 		} else if (place instanceof ClassTimePlace) {
-			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
+			appPanel.getMainPanel().add(new Label("ClassTime view is not implemented yet"));
 		} else if (place instanceof FormPlace) {
 			appPanel.getMainPanel().add(new Label("FormPlace view is not implemented yet"));
 		}
+		
+	
 		
 		
 
 	}
 
 	private void initializeEvents() {
-
 		dashboardLinkClickEvent();
 		assignmentLinkClickEvent();
 		lessonPlanLinkClickEvent();
@@ -521,7 +499,13 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		okButtonClickHandler();
 		cancelButtonClickHandler();
 		pickerButtonClick();
-
+		tabsClickEvent();
+		assignementGridFabClick();
+		gradedWorkFromOkButtonClickEvent();
+		gradedWorkFromCancelButtonClickEvent();
+		addIncidentFABButtonClickEvent();
+		doneButtonClickEvent();
+		cancelButtonClickEvent();
 	}
 
 	@Override
@@ -532,10 +516,10 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
 				if (dashboard.getViewType() == RosterDashboardPanel.View.GRID) {
 					dashboard.setViewType(RosterDashboardPanel.View.CHART);
-					dashboard.setDisplay(seatingChart);
+					dashboard.setDisplayInTab1(seatingChart);
 				} else {
 					dashboard.setViewType(RosterDashboardPanel.View.GRID);
-					dashboard.setDisplay(grid);
+					dashboard.setDisplayInTab1(grid);
 				}
 			}
 		});
@@ -574,12 +558,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				i++;
 				row.add(c);
 			}
-			
-
-			
-
-		
-		
 		grid.add(factory.getCreateStudentForm());
 		grid.add(grid.getFab());
 
@@ -625,6 +603,40 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		});
 
 	}
+	
+	
+	
+	private void getGradedWorkListAndDrawGrid() {
+		Ajax.get("/gradedwork?rosterId=" + factory.getCurrentRoster().getId()).done(new Function() {
+			@Override
+			public void f() {
+				GWT.log(arguments(0).toString());
+	
+				    gradedWorkList = JsonUtils.safeEval(arguments(0).toString());
+				    
+				    List<GradedWorkJson> list = new ArrayList<GradedWorkJson>();
+                       for(int i = 0; i < gradedWorkList.length(); i++){
+                    	   list.add(gradedWorkList.get(i));
+                       }
+                       assignementGrid.setRowCount(list.size());
+                       assignementGrid.setRowData(list); 
+				
+			}
+		}).progress(new Function() {
+			@Override
+			public void f() {
+
+			}
+
+		}).fail(new Function() {
+			@Override
+			public void f() {
+				Window.alert("Student Roster List could not be fetched from the server");
+			}
+		});
+
+	}
+
 
 	@Override
 	public void homeworkIconClickEvent() {
@@ -676,7 +688,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 						.done(new Function() {
 							@Override
 							public void f() {
-								console.log("create student form done return : " + this.getArgument(0));
 								grid.getCreateStudentFrom().hide();
 								getRosterStudentsListAndDrawGrid();
 								MaterialLoader.showLoading(false);
@@ -720,5 +731,133 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			}
 		});
 	}
+
+	@Override
+	public void tabsClickEvent() {
+		dashboard.getCalTab().addDomHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.getCalFrame().setVisible(true);
+				grid.getFab().setVisible(false);
+				
+			}
+		}, ClickEvent.getType());
+		
+		dashboard.getDashboardTab().addDomHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.getCalFrame().setVisible(false);
+				grid.getFab().setVisible(true);
+				
+			}
+		}, ClickEvent.getType());
+		
+		dashboard.getReportsTab().addDomHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.getCalFrame().setVisible(false);
+				grid.getFab().setVisible(false);
+				
+			}
+		}, ClickEvent.getType());
+		
+	}
+
+	@Override
+	public void assignementGridFabClick() {
+		gradedWorkMain.getFab().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				gradedWorkMain.getForm().show();
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void gradedWorkFromOkButtonClickEvent() {
+		gradedWorkMain.getForm().getOkBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				GradedWorkJson newGradedWork = gradedWorkMain.getForm().getFormData();
+				newGradedWork.setRosterId(factory.getCurrentRoster().getId());
+				GWT.log("Object " + JsonUtils.stringify(newGradedWork));
+				GQuery.ajax("/gradedwork",
+						Ajax.createSettings().setData(newGradedWork).setType("POST").setDataType("json"))
+						.done(new Function() {
+							@Override
+							public void f() {
+								getGradedWorkListAndDrawGrid();
+								gradedWorkMain.getForm().hide();
+								MaterialLoader.showLoading(false);
+							}
+						}).progress(new Function() {
+							@Override
+							public void f() {
+								MaterialLoader.showLoading(true);
+							}
+						}).fail(new Function() {
+							@Override
+							public void f() {
+								MaterialLoader.showLoading(false);
+								Window.alert("Error creating graded work");
+							}
+						});
+			}
+		});
+	}
+
+	@Override
+	public void gradedWorkFromCancelButtonClickEvent() {
+		gradedWorkMain.getForm().getCancelBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				gradedWorkMain.getForm().hide();
+				
+			}
+		});
+	}
+
+	@Override
+	public void addIncidentFABButtonClickEvent() {
+		incidentMainPage.getAddIncidentFAB().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				incidentMainPage.getIncidentForm().show();
+				
+			}
+			
+			
+		});
+		
+	}
+
+	@Override
+	public void doneButtonClickEvent() {
+		incidentMainPage.getIncidentForm().getDoneBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				incidentMainPage.getIncidentForm().show();
+				
+			}
+			
+			
+		});
+		
+	}
+
+	@Override
+	public void cancelButtonClickEvent() {
+		incidentMainPage.getIncidentForm().getCancelBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				incidentMainPage.getIncidentForm().hide();
+			}
+		});
+	}
+
+
 
 }

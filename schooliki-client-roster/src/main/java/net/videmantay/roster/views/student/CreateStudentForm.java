@@ -87,28 +87,6 @@ public class CreateStudentForm extends Composite{
 	private final RosterJson roster  = RosterStudentJson.createObject().cast();
 	
 	private DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
-	
-	private AbstractPickerCallback callback = new AbstractPickerCallback() {
-        
-        @Override
-        public void onCanceled() {
-          picker.setVisible(false);
-          modal.openModal();
-        }
-
-		@Override
-		public void onPicked(ViewToken viewToken, BaseResult result) {
-			modal.openModal();
-			PhotoResult pr = result.cast();
-			student.setThumbnails(pr.getDocs().get(0).getThumbnails());
-			String url = pr.getDocs().get(0).getThumbnails().get(pr.getDocs().get(0).getThumbnails().length() -1).getUrl();
-			studentImg.setUrl(url);
-			imgUrl.setText(url);
-			picker.setVisible(false);
-			
-		}
-      };
-      
 
 	
 	

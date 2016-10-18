@@ -6,9 +6,8 @@
 	<ui:style>
 	
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel ui:field="container">
 		<m:MaterialTitle title="Manage  classroom expectations by creating positive and negative incidents" description="Incidents are events you want to encourage like 'Turned in Homework', 'Shared with a friend'" />
-		<!-- Show the same grid as the dashboard  sorted alphabetically-->
 		<m:MaterialCard>
 			<m:MaterialCardContent>
 				<m:MaterialTab ui:field="tab" indicatorColor="green">
@@ -30,7 +29,6 @@
 		<m:MaterialFAB ui:field="addIncidentFAB">
 			<m:MaterialAnchorButton type="RAISED" iconType="ADD"/>
 		</m:MaterialFAB>
-		<v:IncidentForm ui:field="incidentForm" />
-	  <!-- <v:DeleteIncidentModal ui:field="deleteModal" /> -->
+
 	</g:HTMLPanel>
 </ui:UiBinder> 

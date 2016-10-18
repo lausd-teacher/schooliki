@@ -61,11 +61,11 @@ public class AssignmentJson extends JavaScriptObject {
 		this.description = description;
 	}-*/;
 
-	public final native SubjectType getSubject()/*-{
+	public final native String getSubject()/*-{
 		return this.subject;
 	}-*/;
 
-	public final native void setSubject(SubjectType subject)/*-{
+	public final native void setSubject(String subject)/*-{
 		this.subject = subject;
 	}-*/;
 

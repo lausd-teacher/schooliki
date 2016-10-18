@@ -1,37 +1,47 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
 	<m:MaterialModal ui:field="modal">
-	<m:MaterialModalContent>
-	<g:FormPanel ui:field="form">
-	<g:HTMLPanel>
-		<m:MaterialInput ui:field="iconUrl" type="TEXT" visible="false" addStyleNames="valign-wrapper"/>
-		<m:html.Div>
-		<m:MaterialPanel ui:field="iconPanel"  m:id="iconFormIconPanel"/>
-		<m:MaterialIcon iconPosition="RIGHT" iconType="ARROW_DROP_DOWN"  iconSize="TINY" activates="iconList" addStyleNames="valign bottom"/>
-		</m:html.Div>
-		<m:MaterialDropDown ui:field="dropDown" activator="iconList">
-		</m:MaterialDropDown>
-		<m:MaterialLabel ui:field="nameLabel" text="Name:"/>
-		<m:MaterialInput ui:field="nameInput" type="TEXT" required="true"/>
-		<m:html.Label styleName="errorLabel" text="You must include a name" textColor="red lighten-1"/>
-		<m:MaterialChip ui:field="valueLabel" text="Points:"/>
-		<m:MaterialNumberBox ui:field="valueInput" />
-		<m:MaterialLabel text="Type:" />
-		<m:MaterialListBox ui:field="typeListBox"></m:MaterialListBox>
-	</g:HTMLPanel>
-	</g:FormPanel>
-	</m:MaterialModalContent>
-	<m:MaterialModalFooter>
-		<m:MaterialRow ui:field="doneCancelRow">
-			<m:MaterialColumn>
-				<m:MaterialIcon ui:field="doneBtn"  iconType="DONE" />
-			</m:MaterialColumn>
-			<m:MaterialColumn>
-				<m:MaterialIcon ui:field="cancelBtn"  iconType="CANCEL" />
-			</m:MaterialColumn>
-		</m:MaterialRow>
-	</m:MaterialModalFooter>
+		<m:MaterialModalContent>
+			<g:HTMLPanel ui:field="formContainer">
+				<m:MaterialInput ui:field="iconUrl" type="TEXT"
+					visible="false" addStyleNames="valign-wrapper" />
+				<m:html.Div>
+					<m:MaterialPanel ui:field="iconPanel" m:id="iconFormIconPanel" />
+					<m:MaterialIcon iconPosition="RIGHT" iconType="ARROW_DROP_DOWN"
+						iconSize="TINY" activates="iconList" addStyleNames="valign bottom" />
+				</m:html.Div>
+				<m:MaterialDropDown ui:field="dropDown"
+					activator="iconList">
+				</m:MaterialDropDown>
+				<m:MaterialLabel ui:field="nameLabel" text="Name:" />
+				<m:MaterialInput ui:field="nameInput" type="TEXT"
+					required="true" />
+				<m:html.Label styleName="errorLabel" text="You must include a name"
+					textColor="red lighten-1" />
+				<m:MaterialChip ui:field="valueLabel" text="Points:" />
+				<m:MaterialNumberBox ui:field="valueInput" />
+				<m:MaterialLabel text="Type:" />
+				<m:MaterialListBox ui:field="typeListBox">
+					<m:html.Option text="WORST" />
+					<m:html.Option text="SEVER" />
+					<m:html.Option text="MODERATE" />
+					<m:html.Option text="INCIDENTAL" />
+					<m:html.Option text="GOOD" />
+					<m:html.Option text="BETTER" />
+					<m:html.Option text="BEST" />
+				</m:MaterialListBox>
+			</g:HTMLPanel>
+		</m:MaterialModalContent>
+		<m:MaterialModalFooter>
+			<m:MaterialRow ui:field="doneCancelRow">
+				<m:MaterialColumn>
+					<m:MaterialIcon ui:field="doneBtn" iconType="DONE" />
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+					<m:MaterialIcon ui:field="cancelBtn" iconType="CANCEL" />
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialModalFooter>
 	</m:MaterialModal>
 </ui:UiBinder> 
