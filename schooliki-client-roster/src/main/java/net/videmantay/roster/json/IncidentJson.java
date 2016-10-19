@@ -22,6 +22,10 @@ public class IncidentJson extends JavaScriptObject {
 	return this.id;
 }-*/;
 	
+	public final native Long getRosterId()/*-{
+	      return this.rosterId;
+     }-*/;
+	
 	public final native IncidentJson setValue(int value)/*-{
 		this.value = value;
 		return this;
@@ -41,6 +45,10 @@ public class IncidentJson extends JavaScriptObject {
 		this.id = id;
 		return this;
 	}-*/;
+	
+	public final native void setRosterId(Long rostId)/*-{
+          this.rosterId = rostId;
+     }-*/;
 	
 	public final native String getBehaviorType()/*-{
 			return this.type;

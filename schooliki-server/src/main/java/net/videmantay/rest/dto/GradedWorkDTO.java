@@ -1,10 +1,7 @@
 package net.videmantay.rest.dto;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.google.api.client.util.DateTime;
 
 import net.videmantay.server.entity.EducationalLink;
 import net.videmantay.server.entity.GradedWork;
@@ -37,7 +34,7 @@ public class GradedWorkDTO {
 
 	public Language lang = Language.ENGLISH;
 
-	public Double pointsPossible = 0.0;
+	public Double pointsPossible;
 
 	public String assignedDate;
 
@@ -48,7 +45,6 @@ public class GradedWorkDTO {
 	public Long rubric;
 
 	public GradedWorkDTO(GradedWork gradedWork) {
-
 		this.id = gradedWork.id;
 		this.title = gradedWork.title;
 		this.rosterId = gradedWork.rosterId;
@@ -65,8 +61,6 @@ public class GradedWorkDTO {
 		this.dueDate = gradedWork.dueDate;
 		this.finishedGrading = gradedWork.finishedGrading;
 		this.rubric = gradedWork.rubric;
-		// this.event = event;
-
 	}
 
 	public GradedWorkDTO() {

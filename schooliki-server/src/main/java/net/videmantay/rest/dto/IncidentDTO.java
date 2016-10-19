@@ -1,25 +1,11 @@
-package net.videmantay.server.entity;
+package net.videmantay.rest.dto;
 
-import java.io.Serializable;
-
-import com.googlecode.objectify.annotation.Cache;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
-
-import net.videmantay.rest.dto.IncidentDTO;
+import net.videmantay.server.entity.Incident;
 import net.videmantay.shared.BehaviorType;
 
-@Cache
-@Entity
-public class Incident implements Serializable {
-
-	private static final long serialVersionUID = -2538747210938445430L;
-
-	@Id
-	public Long id;
+public class IncidentDTO {
 	
-	@Index
+	public Long id;
 	public Long rosterId;
 	public String name;
 	public String iconUrl;
@@ -27,9 +13,19 @@ public class Incident implements Serializable {
 	public BehaviorType type = BehaviorType.INCIDENTAL;
 	
 	
-	public Incident() {
+	public IncidentDTO(Incident incident) {
+		this.id = incident.id;
+		this.rosterId = incident.rosterId;
+		this.name = incident.name;
+		this.iconUrl = incident.iconUrl;
+		this.value = incident.value;
+		this.type = incident.type;
+	}
+	
+	public IncidentDTO() {
 		
 	}
+	
 	public Long getId() {
 		return this.id;
 	}
@@ -65,16 +61,5 @@ public class Incident implements Serializable {
 	}
 	public void setType(BehaviorType type) {
 		this.type = type;
-	}
-	public static Incident createFromDTO(IncidentDTO incidentDTO) {
-		Incident incident = new Incident();
-		incident.id = incidentDTO.id;
-		incident.rosterId = incidentDTO.rosterId;
-		incident.name = incidentDTO.name;
-		incident.iconUrl = incidentDTO.iconUrl;
-		incident.value = incidentDTO.value;
-		incident.type = incidentDTO.type;
-		
-		return incident;
 	}
 }

@@ -19,6 +19,7 @@ import static com.google.gwt.query.client.GQuery.*;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialInput;
+import gwt.material.design.client.ui.MaterialIntegerBox;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialNumberBox;
@@ -47,7 +48,7 @@ public class IncidentForm extends Composite {
 	MaterialInput nameInput;
 
 	@UiField
-	MaterialNumberBox<Integer> valueInput;
+	MaterialIntegerBox valueInput;
 
 	@UiField
 	MaterialListBox typeListBox;
@@ -66,38 +67,9 @@ public class IncidentForm extends Composite {
 
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
 
-	final ClickHandler doneHandler = new ClickHandler() {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			
-			
-			Ajax.post(RosterUrl.SAVE_INCIDENTS, $$("roster:" + JsonUtils.stringify(null))).done(new Function() {
-				@Override
-				public void f() {
-					MaterialToast.fireToast("Incident saved");
-				}
-			});
-			
-			modal.closeModal();
-
-		}
-	};
-
-	final ClickHandler cancelHandler = new ClickHandler() {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			modal.closeModal();
-
-		}
-	};
-
 	public IncidentForm() {
 
 		initWidget(uiBinder.createAndBindUi(this));
-		doneBtn.addClickHandler(doneHandler);
-		cancelBtn.addClickHandler(cancelHandler);
 		formContainer.getElement().setId("incidentFrom");
 
 	}
@@ -105,7 +77,7 @@ public class IncidentForm extends Composite {
 	public IncidentJson getFormData(){
 		
 		IncidentJson newIncident = JavaScriptObject.createObject().cast();
-		newIncident.setIconUrl((String) $(iconPanel).data("icon"));
+		newIncident.setIconUrl("");
 		newIncident.setName(nameInput.getValue());
 		newIncident.setValue(valueInput.getValue());
 		newIncident.setBehaviorType(typeListBox.getValue());
@@ -166,6 +138,19 @@ public class IncidentForm extends Composite {
 
 	public MaterialIcon getCancelBtn() {
 		return this.cancelBtn;
+	}
+
+
+	public MaterialInput getNameInput() {
+		return this.nameInput;
+	}
+
+	public MaterialIntegerBox getValueInput() {
+		return this.valueInput;
+	}
+
+	public MaterialListBox getTypeListBox() {
+		return this.typeListBox;
 	}
 
 

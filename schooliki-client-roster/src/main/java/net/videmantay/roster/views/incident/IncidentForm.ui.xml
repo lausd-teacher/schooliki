@@ -20,7 +20,7 @@
 				<m:html.Label styleName="errorLabel" text="You must include a name"
 					textColor="red lighten-1" />
 				<m:MaterialChip ui:field="valueLabel" text="Points:" />
-				<m:MaterialNumberBox ui:field="valueInput" />
+				<m:MaterialIntegerBox ui:field="valueInput" />
 				<m:MaterialLabel text="Type:" />
 				<m:MaterialListBox ui:field="typeListBox">
 					<m:html.Option text="WORST" />

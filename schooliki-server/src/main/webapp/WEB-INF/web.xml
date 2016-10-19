@@ -54,16 +54,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/teacher/*</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>oauth2</servlet-name>
-		<servlet-class>net.videmantay.server.AuthCallback</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>oauth2</servlet-name>
-		<url-pattern>/oauth2callback</url-pattern>
-	</servlet-mapping>
-	<servlet>
 		<servlet-name>login</servlet-name>
-		<servlet-class>net.videmantay.server.LoginService</servlet-class>
+		<servlet-class>net.videmantay.rest.LoginService</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>login</servlet-name>
@@ -77,26 +69,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>rostersetup</servlet-name>
 		<url-pattern>/rostersetup</url-pattern>
 	</servlet-mapping>
-	<security-constraint>
-		<auth-constraint>
-			<role-name>*</role-name>
-		</auth-constraint>
-		<web-resource-collection>
-			<web-resource-name>roster</web-resource-name>
-			<url-pattern>/teacher/*</url-pattern>
-			<url-pattern>/teacher.html</url-pattern>
-		</web-resource-collection>
-	</security-constraint>
-	<security-constraint>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
-		<web-resource-collection>
-			<web-resource-name>admin</web-resource-name>
-			<url-pattern>/admin.html</url-pattern>
-			<url-pattern>/teacher*</url-pattern>
-		</web-resource-collection>
-	</security-constraint>  
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

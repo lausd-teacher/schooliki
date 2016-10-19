@@ -22,8 +22,10 @@ import javax.ws.rs.core.Response.Status;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
+import net.videmantay.rest.dto.IncidentDTO;
 import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
+import net.videmantay.server.entity.Incident;
 import net.videmantay.server.user.DB;
 import net.videmantay.server.user.Roster;
 import net.videmantay.server.user.RosterStudent;
@@ -36,9 +38,10 @@ public class RosterService {
 	DB<Roster> rosterDB = new DB<Roster>(Roster.class);
 
 	DB<RosterStudent> rosterStudentDB = new DB<RosterStudent>(RosterStudent.class);
+	
+	DB<Incident> incidentDB = new DB<Incident>(Incident.class);
 
 	static {
-
 		DB.start();
 	}
 
@@ -190,6 +193,42 @@ public class RosterService {
 		}
 
 		return Response.status(Status.NOT_MODIFIED).build();
+	}
+	
+	@GET
+	@Path("/{id}/incident")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getIncidentList(@PathParam("id") Long id) {
+		List<Incident> incidentList = ofy().load().type(Incident.class).filter("rosterId", id).list();
+		List<IncidentDTO> incidentDTOList = new ArrayList<IncidentDTO>();
+
+		for (Incident incident : incidentList) {
+			IncidentDTO dto = new IncidentDTO(incident);
+			incidentDTOList.add(dto);
+		}
+
+		return Response.ok().entity(incidentDTOList).build();
+	}
+	
+	@POST
+	@Path("/{id}/incident")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createIncident(@PathParam("id") Long id, IncidentDTO incidentDTO) {
+
+		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+
+		if (result != null) {
+			incidentDTO.rosterId = id;
+
+			final Incident newIncident = Incident.createFromDTO(incidentDTO);
+		
+			Long newId = incidentDB.save(newIncident).getId();
+
+			return Response.ok().entity(newId).build();
+		}
+
+		return Response.status(Status.NOT_FOUND).build();
 	}
 
 }
