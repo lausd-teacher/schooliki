@@ -27,7 +27,6 @@ import com.googlecode.objectify.VoidWork;
 
 import net.videmantay.rest.dto.GradedWorkDTO;
 import net.videmantay.rest.dto.StudentWorkDTO;
-import net.videmantay.server.GoogleUtils;
 import net.videmantay.server.entity.AssignedGradedWork;
 import net.videmantay.server.entity.GoogleCalendarEvent;
 import net.videmantay.server.entity.GradedWork;

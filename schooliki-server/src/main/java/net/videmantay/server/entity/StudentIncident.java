@@ -1,15 +1,11 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import com.google.api.services.calendar.model.Event;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
-
-import net.videmantay.shared.BehaviorType;
 
 @Entity
 public class StudentIncident implements Serializable {

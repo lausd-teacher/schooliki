@@ -50,6 +50,8 @@
 
 	<build>
 		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+
+		
 		<plugins>
 			<plugin>
 				<groupId>net.ltgt.gwt.maven</groupId>
@@ -59,6 +61,7 @@
 				<configuration>
 					<classpathScope>compile</classpathScope>
 					<moduleName>net.videmantay.Roster</moduleName>
+					<moduleShortName>roster</moduleShortName>
 					<localWorkers>4</localWorkers>
 				</configuration>
 			</plugin>
@@ -78,9 +81,9 @@
 								<phase>package</phase>
 								<configuration>
 									<target>
-										<copy todir="${basedir}/../schooliki-server/target/schooliki-server-1.0/net.videmantay.Roster">
+										<copy todir="${basedir}/../schooliki-server/target/schooliki-server-1.0/roster">
 											<fileset
-												dir="${project.build.directory}/${project.build.finalName}/net.videmantay.Roster">
+												dir="${project.build.directory}/${project.build.finalName}/roster">
 											</fileset>
 										</copy>
 									</target>

@@ -94,79 +94,10 @@
 
 			</exclusions>
 		</dependency>
-
 		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client-appengine</artifactId>
-			<version>1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client-gson</artifactId>
-			<version>1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client-java6</artifactId>
-			<version>1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client-servlet</artifactId>
-			<version>1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-drive</artifactId>
-			<version>v3-rev6-1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-sheets</artifactId>
-			<version>v4-rev5-1.22.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-calendar</artifactId>
-			<version>v3-rev160-1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-tasks</artifactId>
-			<version>v1-rev42-1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-books</artifactId>
-			<version>v1-rev78-1.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client</artifactId>
-			<version>1.20.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.gwidgets.misc</groupId>
-			<artifactId>gdata-contacts3</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.gwidgets.misc</groupId>
-			<artifactId>gdata-contacts3-meta</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.gdata</groupId>
-			<artifactId>gdata-core</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gdata</groupId>
-			<artifactId>gdata-client</artifactId>
-			<version>1.0</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
 		</dependency>
 
 
@@ -179,27 +110,6 @@
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
 			<version>1.5.0</version>
-		</dependency>
-		<dependency>
-			<groupId>goog.appengine</groupId>
-			<artifactId>channel</artifactId>
-			<version>1.0</version>
-
-		</dependency>
-		<dependency>
-			<groupId>gwtquery.plugins</groupId>
-			<artifactId>gwtquery-ui-plugin</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.floreysoft</groupId>
-			<artifactId>picker</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -256,7 +166,7 @@
 					<port>9997</port>
 					<fullScanSeconds>60</fullScanSeconds>
 					<jvmFlags>
-					   <jvmFlag>-Xdebug</jvmFlag>
+						<jvmFlag>-Xdebug</jvmFlag>
 					</jvmFlags>
 				</configuration>
 			</plugin>

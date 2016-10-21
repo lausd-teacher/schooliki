@@ -17,6 +17,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Serialize;
 
+import net.videmantay.rest.dto.AppUserDTO;
 import net.videmantay.server.validation.ValidRoles;
 import net.videmantay.server.validation.ValidStringWithNoSpecialCharacters;
 import net.videmantay.server.validation.ValidationMessages;
@@ -24,295 +25,106 @@ import net.videmantay.shared.UserRoles;
 import net.videmantay.shared.UserStatus;
 
 
+
 @Entity
-@Cache
-@ValidRoles
-public  class AppUser extends DBObj implements Serializable{
+public  class AppUser  implements Serializable {
 
-
-	/**
-	 * 
-	 */
-	public static final long serialVersionUID = -6653229961000100210L;
-	
+     
 	@Id
-	public Long id;
-	
-	@Index
-	public Long idBis;
-	
-	
+    Long id;
+    
+    @Index
+    String token;
+    
+    @Index
+    String googleId;
+    
+    String name;
+    
+    String imageUrl;
+    
+    String eMail;
 
-	@Index
-	@Email(message=ValidationMessages.EMAIL_INVALID)
-	public String acctId;//Google Id may be different than email 
-							// in cases where teacher want to use their email
-							//and not a videmantay.net acct
-							//acct id will reflect videmantay.net
-	@Email(message=ValidationMessages.EMAIL_INVALID)
-	public String email;
-	
-	@ValidStringWithNoSpecialCharacters
-	public String firstName;
-	
-	@ValidStringWithNoSpecialCharacters
-	public String lastName;
-	
-	@ValidStringWithNoSpecialCharacters
-	public String middleName;
-	
-	@ValidStringWithNoSpecialCharacters
-	public String extendedName;
-	
+	public AppUser() {
 
-	public UserTitle title;
-
-	@ValidStringWithNoSpecialCharacters
-	public String picUrl;
-	
-	@ValidStringWithNoSpecialCharacters
-	public String authToken;
-	public boolean loggedIn;
-
-	public  UserStatus userStatus;
-	public  Integer loginTimes;
-	public  Boolean isFirstLogin;
-	
-	@ValidStringWithNoSpecialCharacters
-	public String mainDriveFolder;
-	
-	public  Set<UserRoles> roles = new  HashSet<UserRoles>();
-	
-	public AppUser(){}
-	
-	public AppUser(String email){
-		this.setEmail(email);
 	}
 	
-	public AppUser(Long id, String email){
-		this.setId(id);
-		this.setEmail(email);
-		
-	}
 	
+
+	public AppUser(Long id, String token, String name, String imageUrl, String eMail, String googleId) {
+		this.id = id;
+		this.token = token;
+		this.name = name;
+		this.imageUrl = imageUrl;
+		this.eMail = eMail;
+		this.googleId = googleId;
+	}
+
+
+
 	public Long getId() {
-		return id;
+		return this.id;
+	}
+
+	public String getToken() {
+		return this.token;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getImageUrl() {
+		return this.imageUrl;
+	}
+
+	public String geteMail() {
+		return this.eMail;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-		this.idBis = id;
 	}
 
-	public String getAcctId() {
-		return acctId;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
-	public void setAcctId(String googleId) {
-		this.acctId = googleId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Date getCreateOn() {
-		return createOn;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
-	public Long getVersionNum() {
-		return versionNum;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
 	}
 	
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getExtendedName() {
-		return extendedName;
-	}
-
-	public void setExtendedName(String extendedName) {
-		this.extendedName = extendedName;
-	}
-
-	public UserTitle getTitle() {
-		return title;
-	}
-
-	public void setTitle(UserTitle title) {
-		this.title = title;
-	}
-
-	public UserStatus getUserStatus() {
-		return userStatus;
-	}
-
-	public void setUserStatus(UserStatus userStatus) {
-		this.userStatus = userStatus;
-	}
-
-	public String getPicUrl() {
-		return picUrl;
-	}
-
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
-	}
-
-	public String getAuthToken() {
-		return authToken;
-	}
-
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
-	}
-
-	public Set<UserRoles> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<UserRoles> roles) {
-		this.roles = roles;
-	}
-
-	public Integer getLoginTimes() {
-		return loginTimes;
-	}
-
-	public void setLoginTimes(Integer loginTimes) {
-		this.loginTimes = loginTimes;
-	}
-
-	public boolean isLoggedIn() {
-		return loggedIn;
-	}
-
-	public void setLoggedIn(boolean isLoggedin) {
-		this.loggedIn = isLoggedin;
-	}
-
-	public Boolean getIsFirstLogin() {
-		return isFirstLogin;
-	}
-
-	public void setIsFirstLogin(Boolean isFirstLogin) {
-		this.isFirstLogin = isFirstLogin;
-	}
-
-	public void setVersionNum(Long versionNum) {
-		this.versionNum = versionNum;
-	}
 	
-
-	public String getMainDriveFolder() {
-		return mainDriveFolder;
+	public String getGoogleId() {
+		return this.googleId;
 	}
 
-	public void setMainDriveFolder(String mainDriveFolder) {
-		this.mainDriveFolder = mainDriveFolder;
-	}
-	
-	public Long getIdBis() {
-		return this.id;
+
+
+	public void setGoogleId(String googleId) {
+		this.googleId = googleId;
 	}
 
-	public void setIdBis(Long idBis) {
-		this.idBis = id;
-	}
-	public enum UserTitle{MR, MS, MRS}
-	@Override
-	public boolean valid() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	
-	public LoginInfo getLoginInfo(){
-		return new LoginInfo(acctId, firstName,lastName, extendedName,title, 
-				picUrl, authToken,mainDriveFolder,loggedIn, isFirstLogin);
-	}
-	
-	public static class LoginInfo{
-		private LoginInfo(){}
-		
-		public LoginInfo(String acctId, String firstName, String lastName, String extendedName, UserTitle title,
-				String picUrl, String authToken,String mainDriveFolder, boolean loggedIn, Boolean isFirstLogin){
-			this.acctId = acctId;
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.extendedName = extendedName;
-			this.authToken = authToken;
-			this.mainDriveFolder = mainDriveFolder;
-			this.loggedIn = loggedIn;
-			this.isFirstLogin = isFirstLogin;
-			this.title = title;
-			this.picUrl = picUrl;
-		}
-		
-		@Index
-		public String acctId;//Google Id may be different than email 
-								// in cases where teacher want to use their email
-								//and not a videmantay.net acct
-								//acct id will reflect videmantay.net
-		
-		public String email;
-		
-		public String firstName;
-		public String lastName;
-		public String middleName;
-		public String extendedName;
-		public UserTitle title;
 
-		public String picUrl;
-		public String authToken;
-		public boolean loggedIn;
-		public  Boolean isFirstLogin;
-		public String mainDriveFolder;
+
+	public static AppUser createFromDTO(AppUserDTO appuserDTO) {
+		AppUser appUser = new AppUser();
+		appUser.id = appuserDTO.getId();
+		appUser.googleId = appuserDTO.getGoogleId();
+		appUser.token = appuserDTO.getToken();
+		appUser.name = appuserDTO.getName();
+		appUser.imageUrl = appuserDTO.getImageUrl();
+		appUser.eMail = appuserDTO.geteMail();
 		
+		return appUser;
 	}
 	
 	

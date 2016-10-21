@@ -1,21 +1,13 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Index;
 
 import net.videmantay.rest.dto.GradedWorkDTO;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
-
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.Event;
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Ignore;
-import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class GradedWork extends Assignment implements Serializable{
