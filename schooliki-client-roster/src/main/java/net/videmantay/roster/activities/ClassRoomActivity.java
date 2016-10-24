@@ -876,7 +876,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			}
 		});
 	}
-
+	
+	
 	private void getIncidentsAndDraw() {
 		Ajax.get("/roster/" + factory.getCurrentRoster().getId() + "/incident").done(new Function() {
 			@Override

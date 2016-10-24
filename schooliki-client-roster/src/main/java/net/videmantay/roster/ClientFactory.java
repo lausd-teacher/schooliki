@@ -9,6 +9,7 @@ import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassroomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDisplay;
+import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
@@ -40,6 +41,9 @@ public interface ClientFactory {
 	SeatingChartPanel getSettingChartPanel();
 	Calendar getCalendar();
 	IncidentMain getIncidentMainPage();
+	UserProfilePage getUserProfilePage();
+	String getCurrentUserName();
+	String getCurrentUserProfileImageUrl();
 
 	
 

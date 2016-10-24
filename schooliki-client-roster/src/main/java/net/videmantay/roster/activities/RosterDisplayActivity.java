@@ -26,19 +26,16 @@ import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.places.CalendarPlace;
-import net.videmantay.roster.places.ClassRoomPlace;
-import net.videmantay.roster.places.LessonsPlace;
-import net.videmantay.roster.places.LibraryPlace;
-import net.videmantay.roster.places.RosterHomePlace;
-import net.videmantay.roster.places.SettingsPlace;
+import net.videmantay.roster.places.*;
 import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.RosterDisplay;
 import net.videmantay.roster.views.RosterForm;
 import net.videmantay.roster.views.RosterGrid;
 import net.videmantay.roster.views.RosterPanel;
+import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
+import net.videmantay.shared.util.GoogleJs;
 
 public class RosterDisplayActivity extends AbstractActivity
 		implements RosterDisplay.Presenter, RosterForm.Presenter, RosterPanel.Presenter, MainRosterSideNav.Presenter {
@@ -53,6 +50,7 @@ public class RosterDisplayActivity extends AbstractActivity
 	AppLayout appPanel;
 	MainRosterSideNav mainRosterSideNav;
 	MainRosterNavBar mainRosterNavBar;
+	UserProfilePage profilePage;
 
 	public RosterDisplayActivity(ClientFactory factory, Place currentPlace) {
 		this.factory = factory;
@@ -63,6 +61,7 @@ public class RosterDisplayActivity extends AbstractActivity
 		this.appPanel = factory.getAppPanel();
 		this.mainRosterNavBar = factory.gerMainRosterNavBar();
 		this.mainRosterSideNav = factory.getMainRosterSideNav();
+		this.profilePage = factory.getUserProfilePage();
 		initializeEvents();
 	}
 
@@ -77,10 +76,11 @@ public class RosterDisplayActivity extends AbstractActivity
 		appPanel.getSideNav().add(mainRosterSideNav.getLibraryLink());
 		appPanel.getSideNav().add(mainRosterSideNav.getLessonsLink());
 		appPanel.getSideNav().add(mainRosterSideNav.getSettingsLink());
-		
+		appPanel.getSideNav().add(mainRosterSideNav.getProfileLink());
+		appPanel.getSideNav().add(mainRosterSideNav.getLogoutLink());
 		
 		//Adding Nav Bar
-		appPanel.getNavBartitle().setText("Dr. Sammy Lee");
+		appPanel.getNavBartitle().setText(factory.getCurrentUserName());
 		appPanel.getNavBarContainer().clear();
 		appPanel.getNavBarContainer().add(mainRosterNavBar.getCalendarTooltip());
 		appPanel.getNavBarContainer().add(mainRosterNavBar.getTodoTooltip());
@@ -101,8 +101,10 @@ public class RosterDisplayActivity extends AbstractActivity
 			appPanel.getMainPanel().add(new Label("Calendar section is not implemented yet"));
 		}else if (currentPlace instanceof SettingsPlace) {
 			appPanel.getMainPanel().add(new Label("Settings section is not implemented yet"));
+		}else if (currentPlace instanceof UserProfilePlace) {
+			appPanel.getMainPanel().add(profilePage);
+			
 		}
-
 		panel.setWidget(appPanel);
 	}
 
@@ -115,7 +117,8 @@ public class RosterDisplayActivity extends AbstractActivity
 		libraryLinkClick();
 		lessonsLinkClick();
 		settingsLinkClick();
-
+		profileLinkClick();
+		appLogoutLinkClick();
 	}
 
 	public void getRostersDataAndDrawGrid() {
@@ -316,6 +319,17 @@ public class RosterDisplayActivity extends AbstractActivity
 		});
 		
 	}
+	
+	@Override
+	public void profileLinkClick() {
+		mainRosterSideNav.getProfileLink().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				goTo(new UserProfilePlace("profile"));
+				
+			}
+		});
+	}
 
 
 	public void setPlace(Place place) {
@@ -330,6 +344,8 @@ public class RosterDisplayActivity extends AbstractActivity
 		appPanel.getSideNav().add(mainRosterSideNav.getLibraryLink());
 		appPanel.getSideNav().add(mainRosterSideNav.getLessonsLink());
 		appPanel.getSideNav().add(mainRosterSideNav.getSettingsLink());
+		appPanel.getSideNav().add(mainRosterSideNav.getProfileLink());
+		appPanel.getSideNav().add(mainRosterSideNav.getLogoutLink());
 		
 		
 		//Adding Nav Bar
@@ -353,6 +369,8 @@ public class RosterDisplayActivity extends AbstractActivity
 			appPanel.getMainPanel().add(new Label("Calendar section is not implemented yet"));
 		}else if (currentPlace instanceof SettingsPlace) {
 			appPanel.getMainPanel().add(new Label("Settings section is not implemented yet"));
+		}else if (currentPlace instanceof UserProfilePlace) {
+			appPanel.getMainPanel().add(profilePage);
 		}
 		
 		
@@ -366,6 +384,22 @@ public class RosterDisplayActivity extends AbstractActivity
 				appPanel.getSideNav().hide();
 			}}.schedule(250);
 	}
+
+	@Override
+	public void appLogoutLinkClick() {
+		mainRosterSideNav.getLogoutLink().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				GoogleJs.logout();
+				
+			}
+		});
+	}
+
+	
+	
+	
+	
 
 
 }

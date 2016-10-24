@@ -14,7 +14,6 @@
 	}
 	</ui:style>
 	<g:HTMLPanel>
-		<v:UserProfilePanel></v:UserProfilePanel>
 		<m:MaterialLink ui:field="rosterLink" text="Roster"
 			textColor="green" iconType="CLASS" />
 		<m:MaterialLink ui:field="calendarLink" text="Calendar"
@@ -25,6 +24,12 @@
 			textColor="amber darken-4" iconType="CONTENT_PASTE" />
 		<m:MaterialLink ui:field="settingsLink" text="Settings"
 			textColor="green" iconType="SETTINGS" />
+		<m:MaterialLink />
+		<m:MaterialLink ui:field="profileLink" text="Profile"
+			textColor="green" iconType="CONTACTS" />
+		<m:MaterialLink />
+		<m:MaterialLink ui:field="logoutLink" text="Logout"
+			textColor="green" iconType="INPUT" />
 		<m:MaterialLink />
 	</g:HTMLPanel>
 </ui:UiBinder> 

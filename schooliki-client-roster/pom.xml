@@ -51,7 +51,7 @@
 	<build>
 		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 
-		
+
 		<plugins>
 			<plugin>
 				<groupId>net.ltgt.gwt.maven</groupId>
@@ -62,41 +62,18 @@
 					<classpathScope>compile</classpathScope>
 					<moduleName>net.videmantay.Roster</moduleName>
 					<moduleShortName>roster</moduleShortName>
+					<warDir>${basedir}/../schooliki-server/target/schooliki-server-${project.version}</warDir>
+					<devmodeWorkDir>${basedir}/../schooliki-server/target/schooliki-server-${project.version}</devmodeWorkDir>
+					<webappDirectory>${basedir}/../schooliki-server/target/schooliki-server-${project.version}</webappDirectory>
+					<devmodeArgs>
+						<arg>-noserver</arg>
+					</devmodeArgs>
 					<localWorkers>4</localWorkers>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<id>deploy</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.7</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<configuration>
-									<target>
-										<copy todir="${basedir}/../schooliki-server/target/schooliki-server-1.0/roster">
-											<fileset
-												dir="${project.build.directory}/${project.build.finalName}/roster">
-											</fileset>
-										</copy>
-									</target>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+
 
 </project>

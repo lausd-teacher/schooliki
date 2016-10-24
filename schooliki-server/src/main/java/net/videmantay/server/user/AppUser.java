@@ -32,10 +32,7 @@ public  class AppUser  implements Serializable {
      
 	@Id
     Long id;
-    
-    @Index
-    String token;
-    
+        
     @Index
     String googleId;
     
@@ -44,6 +41,12 @@ public  class AppUser  implements Serializable {
     String imageUrl;
     
     String eMail;
+    
+    boolean isActive;
+    
+    UserRoles[] roles;
+    
+    String password;
 
 	public AppUser() {
 
@@ -51,13 +54,13 @@ public  class AppUser  implements Serializable {
 	
 	
 
-	public AppUser(Long id, String token, String name, String imageUrl, String eMail, String googleId) {
-		this.id = id;
-		this.token = token;
+	public AppUser(String name, String imageUrl, String eMail, String googleId, boolean isActive, UserRoles[] roles) {
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.eMail = eMail;
 		this.googleId = googleId;
+		this.isActive = isActive;
+		this.roles = roles;
 	}
 
 
@@ -66,9 +69,6 @@ public  class AppUser  implements Serializable {
 		return this.id;
 	}
 
-	public String getToken() {
-		return this.token;
-	}
 
 	public String getName() {
 		return this.name;
@@ -86,9 +86,6 @@ public  class AppUser  implements Serializable {
 		this.id = id;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
-	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -115,16 +112,64 @@ public  class AppUser  implements Serializable {
 
 
 
+	public boolean isActive() {
+		return this.isActive;
+	}
+
+
+
+	public UserRoles[] getRoles() {
+		return this.roles;
+	}
+
+
+
+	public void setRoles(UserRoles[] roles) {
+		this.roles = roles;
+	}
+
+
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+
+
+	public String getPassword() {
+		return this.password;
+	}
+
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
 	public static AppUser createFromDTO(AppUserDTO appuserDTO) {
 		AppUser appUser = new AppUser();
 		appUser.id = appuserDTO.getId();
+		appUser.isActive = appuserDTO.isActive();
 		appUser.googleId = appuserDTO.getGoogleId();
-		appUser.token = appuserDTO.getToken();
 		appUser.name = appuserDTO.getName();
 		appUser.imageUrl = appuserDTO.getImageUrl();
 		appUser.eMail = appuserDTO.geteMail();
-		
+		appUser.password = appuserDTO.getPassword();
 		return appUser;
+	}
+	
+	
+	public boolean hasRole(UserRoles role){
+		for(int i = 0; i < roles.length; i++){
+			if(roles[i].toString().equals(role.toString()))
+				return true;
+		}
+		
+		return false;
+		
+		
 	}
 	
 	

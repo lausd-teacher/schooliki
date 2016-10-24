@@ -31,6 +31,12 @@ public class MainRosterSideNav extends Composite {
 	@UiField
 	MaterialLink settingsLink;
 	
+	@UiField
+	MaterialLink profileLink;
+	
+	@UiField
+	MaterialLink logoutLink;
+	
 
 
 	public MainRosterSideNav() {
@@ -59,17 +65,28 @@ public class MainRosterSideNav extends Composite {
 		return this.settingsLink;
 	}
 
+	 public MaterialLink getLogoutLink() {
+		return this.logoutLink;
+	}
 
 
-	
-	 public interface Presenter {
-		 
+
+
+	public MaterialLink getProfileLink() {
+		return this.profileLink;
+	}
+
+
+
+
+	public interface Presenter {
 		 void rosterLinkClick();
 		 void calendarLinkClick();
 		 void libraryLinkClick();
 		 void lessonsLinkClick();
 		 void settingsLinkClick();
-		 
+		 void profileLinkClick();
+		 void appLogoutLinkClick();
 	 }
 	
 

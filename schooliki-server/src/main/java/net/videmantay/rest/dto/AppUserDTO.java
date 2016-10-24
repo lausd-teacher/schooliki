@@ -1,15 +1,12 @@
 package net.videmantay.rest.dto;
 
 import net.videmantay.server.user.AppUser;
+import net.videmantay.shared.UserRoles;
 
 public class AppUserDTO {
 	
-	
-	
     Long id;
    
-    String token;
-    
     String name;
     
     String imageUrl;
@@ -17,6 +14,12 @@ public class AppUserDTO {
     String eMail;
     
     String googleId;
+    
+    boolean isActive;
+    
+    UserRoles[] roles;
+    
+    String password;
 
 	public AppUserDTO() {
 
@@ -26,21 +29,19 @@ public class AppUserDTO {
 
 	public AppUserDTO(AppUser appuser) {
 		this.id = appuser.getId();
-		this.token = appuser.getToken();
 		this.name = appuser.getName();
 		this.imageUrl = appuser.getImageUrl();
 		this.eMail = appuser.geteMail();
 		this.googleId = appuser.getGoogleId();
+		this.isActive = appuser.isActive();
+		this.roles = appuser.getRoles();
+		this.password = appuser.getPassword();
 	}
 
 
 
 	public Long getId() {
 		return this.id;
-	}
-
-	public String getToken() {
-		return this.token;
 	}
 
 	public String getName() {
@@ -59,10 +60,6 @@ public class AppUserDTO {
 		this.id = id;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -75,16 +72,48 @@ public class AppUserDTO {
 		this.eMail = eMail;
 	}
 
-
-
 	public String getGoogleId() {
 		return this.googleId;
 	}
 
 
-
 	public void setGoogleId(String googleId) {
 		this.googleId = googleId;
+	}
+
+
+
+	public boolean isActive() {
+		return this.isActive;
+	}
+
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+
+
+	public UserRoles[] getRoles() {
+		return this.roles;
+	}
+
+
+
+	public void setRoles(UserRoles[] roles) {
+		this.roles = roles;
+	}
+
+
+
+	public String getPassword() {
+		return this.password;
+	}
+
+
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

@@ -51,5 +51,19 @@ public class ViewsUtils {
 	return loginView;
 	}
 	
+	
+	public static String loginViewWithErrors(String errorMessage){
+		String loginView = "<h1> error rendering the login view on the server </h1>";
+		try {
+			
+				loginView = TemplateGen.getInstance().getLoginViewWithError(errorMessage);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	return loginView;
+	}
+	
 
 }

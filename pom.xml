@@ -23,7 +23,6 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<agent.location>${basedir}/appengine-agent.jar</agent.location>
 		<appengine.version>1.9.40</appengine.version>
 	</properties>
 
@@ -48,22 +47,7 @@
 			<version>${gwtVersion}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-1.0-sdk</artifactId>
-			<version>${appengine.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-labs</artifactId>
-			<version>${appengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-tools-sdk</artifactId>
-			<version>1.9.40</version>
-		</dependency>
+		
 
 
 		<dependency>
@@ -117,46 +101,7 @@
 		</dependency>
 
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>local</id>
-			<build>
 
-				<plugins>
-					<plugin>
-						<groupId>net.ltgt.gwt.maven</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<version>1.0-rc-6</version>
-						<extensions>true</extensions>
-						<configuration>
-							<modules>net.videmantay.Admin,net.videmantay.Roster</modules>
-							<projects>schooliki-client-admin,schooliki-client-roster</projects>
-							<startupUrls>
-								<startupUrl>index.html</startupUrl>
-								<startupUrl>admin.html</startupUrl>
-							</startupUrls>
-							<classpathScope>compile+runtime</classpathScope>
-							<warDir>${basedir}/schooliki-server/target/schooliki-server-${project.version}</warDir>
-							<devmodeWorkDir>${basedir}/schooliki-server/target/schooliki-server-${project.version}</devmodeWorkDir>
-							<webappDirectory>${basedir}/schooliki-server/target/schooliki-server-${project.version}</webappDirectory>
-							<devmodeArgs>
-								<arg>-server</arg>
-								<arg>com.google.appengine.tools.development.gwt.AppEngineLauncher</arg>
-							</devmodeArgs>
-							<jvmArgs>
-								<jvmArg>-Dappengine.sdk.root=${user.home}/.m2/repository/com/google/appengine/appengine-java-sdk/1.9.40/appengine-java-sdk/appengine-java-sdk-1.9.40</jvmArg>
-								<jvmArg>-javaagent:${agent.location}</jvmArg>
-								<jvmArg>-Ddatastore.default_high_rep_job_policy_unapplied_job_pct=50</jvmArg>
-								<jvmArg>-D--disable_update_check</jvmArg>
-							</jvmArgs>
-							<localWorkers>4</localWorkers>
-						</configuration>
-					</plugin>
-
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 	<modules>
 		<module>schooliki-client-roster</module>

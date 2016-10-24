@@ -131,6 +131,36 @@ public class TemplateGen{
   		
   		return error();
 	}
+      
+      
+      public String getLoginViewWithError(String errorMessage){
+    	  try {
+    		StringWriter writer1 = new StringWriter();
+  			StringWriter writer2 = new StringWriter();
+  			Template logginPage = cfg.getTemplate("login.html");
+  			Template loggedOutBody = cfg.getTemplate("loggedoutwitherrors.html");
+  			
+  			Map<String, String> errors = new HashMap<String, String>();
+  			errors.put("errors", errorMessage);
+  			
+  			loggedOutBody.process(errors, writer1);
+             
+  			 
+  			 Map<String, String> pageParts = new HashMap<String, String>();
+  			 pageParts.put("loginBody", writer1.toString());
+  			 
+  			 logginPage.process(pageParts, writer2);
+  			
+  			return writer2.toString();
+  			
+  			
+  		} catch (IOException | TemplateException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		}
+  		
+  		return error();
+	}
 	
 	
    private static String error(){

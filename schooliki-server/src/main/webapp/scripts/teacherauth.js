@@ -1,8 +1,4 @@
-function getUserprofileAsJson(){
-	
-	
-	var user;
-	
+function getUserprofileAsJson(){	
 	 gapi.load('auth2', function(){
          /**
           * Retrieve the singleton for the GoogleAuth library and set up the
@@ -13,15 +9,24 @@ function getUserprofileAsJson(){
          }).then(function(){
         	         var instance = gapi.auth2.getAuthInstance();
 	            	 var profile = instance.currentUser.get().getBasicProfile();
+	            	 var currentuser = {"email":profile.getEmail(), "name": profile.getName(), "imageUrl":profile.getImageUrl()};
 	            	 
-	            	 var currentuser = {"googleId":profile.getId(), "name": profile.getName(), "imageUrl":profile.getImageUrl()};
+	            	 var profilepicimage = document.getElementById("profileimg");
+	            	 var firsnameSpan = document.getElementById("profilefname");
+	            	 var lastNameSpan = document.getElementById("profilelname");
+	            	 var emailSpan = document.getElementById("profilemail");
+	            	 
+	            	 profilepicimage.src = profile.getImageUrl();
+	            	 firsnameSpan.innerText = profile.getGivenName();
+	            	 lastNameSpan.innerText = profile.getFamilyName();
+	            	 emailSpan.innerText = profile.getEmail();
+	            	 
 	            	 console.log(currentuser);
-	            	 user = currentuser;
-	                 
+	            	 
             });
      });
 	
-    return JSON.stringify(user);
+    
 }
 
 

@@ -1,6 +1,9 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -11,6 +14,7 @@ import net.videmantay.roster.views.ClassroomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDisplay;
 import net.videmantay.roster.views.StudentActionModal;
+import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
@@ -33,7 +37,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	RosterJson currentRoster = JavaScriptObject.createArray().cast();
 	MainRosterSideNav mainRosterSideNav = new MainRosterSideNav();
 	MainRosterNavBar mainRosterNavBar = new MainRosterNavBar();
-	UserProfilePanel userProfile = new UserProfilePanel();
+	UserProfilePanel userProfile = new UserProfilePanel(getCurrentUserName(), getCurrentUserProfileImageUrl());
 	ClassRoomSideNav classRoomSideNav = new ClassRoomSideNav();
 	GradedWorkForm gradedWorkForm = new GradedWorkForm();
 	GradedWorkMain gradedWorkMain = new GradedWorkMain(gradedWorkForm);
@@ -44,6 +48,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	Calendar calendar = new Calendar();
 	IncidentForm incidentForm = new IncidentForm();
 	IncidentMain incidentMain = new IncidentMain(incidentForm);
+	UserProfilePage profilePage = new UserProfilePage();
 
 	@Override
 	public RosterDisplay getRosterDisplay() {
@@ -124,6 +129,23 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public IncidentMain getIncidentMainPage() {
 		return incidentMain;
+	}
+	@Override
+	public UserProfilePage getUserProfilePage() {
+		return profilePage;
+	}
+	@Override
+	public String getCurrentUserName() {
+		Element fistNameSpan = Document.get().getElementById("profilefname");
+		Element lastNameSpan = Document.get().getElementById("profilelname");
+		
+		return fistNameSpan.getInnerText() + " " + lastNameSpan.getInnerText();
+	}
+	@Override
+	public String getCurrentUserProfileImageUrl() {
+		ImageElement imageSpan = Document.get().getElementById("profileimg").cast();
+		
+		return imageSpan.getSrc();
 	}
 	
 }

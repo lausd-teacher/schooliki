@@ -314,3 +314,17 @@ div.item-student.ui-selecting { background: #FECA40;
 	.classroomNav{
 		background-image:url("../img/sammyOwlTemplate.svg");
 	}
+	
+		.profilePad{
+	    width: 50%;
+    max-width: 450px;
+    margin-left: 33%;
+    margin-top: 10%;
+    background-color: #d6e9f8;
+    border: 2px solid #67a7e3;
+	}
+	
+	.errors{
+	   font-size: 30px;
+	   color: #00ff00;
+	}

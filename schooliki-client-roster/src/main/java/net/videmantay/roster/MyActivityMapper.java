@@ -23,7 +23,7 @@ public class MyActivityMapper implements ActivityMapper {
 		
 		
 		
-		if (place instanceof RosterHomePlace || place instanceof CalendarPlace ||  place instanceof LessonsPlace || place instanceof LibraryPlace || place instanceof SettingsPlace) {
+		if (place instanceof RosterHomePlace || place instanceof CalendarPlace ||  place instanceof LessonsPlace || place instanceof LibraryPlace || place instanceof SettingsPlace || place instanceof UserProfilePlace) {
 		
 			if(rosterActivity == null){
 				 rosterActivity = new RosterDisplayActivity(factory, place);

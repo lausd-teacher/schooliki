@@ -4,7 +4,7 @@ package net.videmantay.roster.views.classtime;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.core.client.ScriptInjector;
+
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import static com.google.gwt.query.client.GQuery.*;
@@ -82,7 +82,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		//first check for jQuery ui
 		if(window.getPropertyJSO("JQuery.ui") == null){
 			//load script
-			ScriptInjector.fromUrl("/loader.js").setWindow(ScriptInjector.TOP_WINDOW).inject();
+			//ScriptInjector.fromUrl("/loader.js").setWindow(ScriptInjector.TOP_WINDOW).inject();
 		}
 		initWidget(uiBinder.createAndBindUi(this));
 		roster = window.getPropertyJSO("roster").cast();

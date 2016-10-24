@@ -2,30 +2,63 @@ function login(googleuser){
 
 
         var login = getUserprofileAsJson(googleuser);
+        console.log(login);
         var isAdmin = document.getElementById("isadmin").checked;
         
-        console.log(login);
+        // Useful data for your client-side scripts:
+        var profile = googleuser.getBasicProfile();
+        
+        var googleId = profile.getId();
+        var lastName = profile.getFamilyName();
+        var firstName = profile.getGivenName();
+        var imageUrl = profile.getImageUrl();
+        var email = profile.getEmail();
+        var token = googleuser.getAuthResponse().id_token;
        
-              jQuery.ajax({
-                      url : "/login",
-                      headers: { 
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json' 
-                      },
-                      type: "POST",
-                      data : login,
-                      contentType: "application/json",
-                      success: function(data, textStatus, jqXHR)
-                      {
-                          console.log("successfully logged in");
-                          window.location = data;
-                          
-                      },
-                      error: function (jqXHR, textStatus, errorThrown)
-                      {
-                         alert("Error! Please try later");
-                      }
-                  });
+        
+        var formGoogleId = document.getElementById("googleId");
+        var formLastName = document.getElementById("lastName");
+        var formFirstName = document.getElementById("firstName");
+        var formImageUrl = document.getElementById("profilePicUrl");
+        var formEmail = document.getElementById("email");
+        var formToken = document.getElementById("token");
+        var isAdminForm = document.getElementById("isadminForm");
+        
+        
+        formGoogleId.value = googleId;
+        formLastName.value = lastName;
+        formFirstName.value = firstName;
+        formImageUrl.value = imageUrl;
+        formEmail.value = email;
+        formToken.value = token;
+        isAdminForm.value = isAdmin;
+
+        
+        document.getElementById("loginForm").submit();
+        
+        
+       
+       
+//              jQuery.ajax({
+//                      url : "/login",
+//                      headers: { 
+//                          'Accept': 'application/json',
+//                          'Content-Type': 'application/json' 
+//                      },
+//                      type: "POST",
+//                      data : login,
+//                      contentType: "application/json",
+//                      success: function(data, textStatus, jqXHR)
+//                      {
+//                          console.log("successfully logged in");
+//                          window.location = data;
+//                          
+//                      },
+//                      error: function (jqXHR, textStatus, errorThrown)
+//                      {
+//                         alert("Error! Please try later");
+//                      }
+//                  });
 }
 
 
