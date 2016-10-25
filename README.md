@@ -40,27 +40,24 @@ In any case everything is set up in the project.
 
 The project needs to be imported into Eclipse as Maven project ( File -> import -> existing maven projects)
 
-Then, dependencies modules needs to be packaged, by executing the following maven command from the root project (Right Click on project -> Run As -> Run configurations -> double click on Maven build  -> enter the following command in Goals field) : `package`
+Then, the app engine dev server needs to be run, from the schooliki-server submodule using the command `appengine:devserver`
 
-This needs to be executed only before executing the project for the first time or if a clean is executed. 
+To run the dev mode, you need run the module that you would like to debug using: `gwt:devmode` from the directory of the module
 
-To run the dev mode, you need run the project form the root with the command: gwt:devmode -Plocal
+For simplicity, it's better to run only one module. But if you would like to run several modules in dev mode, you need to use different ports
 
-![alt tag](https://1.bp.blogspot.com/-8pz-GZ1ITic/V_a5OT1-3GI/AAAAAAAAA3w/bkHPg2tpIZQnkehIdaFFYi3NtjXmLpyGgCLcB/s1600/devmodelocal.png)
+![alt tag](https://2.bp.blogspot.com/-O9yGA7ccPTM/WA_EuIksyCI/AAAAAAAAA4Y/_ed37mBk7MMdGwTKsoVkDCxmUbsXlkK5QCLcB/s1600/devmodenew.png)
 
-and then when the GWT dev mode window, you can choose which url to start from and copy it in the browser
+Important: The module needs to be run from the address of the server not the address of GWT code server, for example if the app engine dev server is on port 9997, if the teacher module is run then the access address would be: http://localhost:9997/teacher
 
-![alt tag](https://2.bp.blogspot.com/-JQCUX1O7enE/V_a5L8MgZ6I/AAAAAAAAA3s/mUIncMehZGkCv2N5CPSPHa8tcimJ2OSPgCLcB/s1600/gwt-window.png)
-
-
-Important: the local DB in schooliki-server/src/main/webapp/WEB-INF/appengine-generated/local_db.bin may need to be copied manually in the /target/schooliki-server-0.1/WEB-INF/appengine-generated/ beause sometimes the app does not recognize it when copied by Maven (This is a strange behavior)
+Important: the local DB in schooliki-server/src/main/webapp/WEB-INF/appengine-generated/local_db.bin may need to be copied manually in the /target/schooliki-server-0.1/WEB-INF/appengine-generated/ because sometimes the app does not recognize it when copied by Maven (This is a strange behavior)
 
 
 ## Deploying to Google App Engine: 
 
-1) you need to clean the schooliki-server module. From the schooliki-server module: `clean` 
+1) you need to clean the schooliki-server module and package it. From the schooliki-server module: `clean package` 
 
-2) you need to package the whole project with the deploy profile. From the root project: `package -Pdeploy`
+2) you need to package the modules one by one. From the module directory project: `clean package`, the files are copied automatically in the schooliki-server war directory.
 
 3) finally, you need to repackage the server to make sure the GWT modules are included in the war and execute the update goal of the google app engine plugin. From the schooliki-server module: `package appengine:update`
 
