@@ -1,4 +1,4 @@
-package net.videmantay.admin;
+package net.videmantay.admin.views;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -28,15 +28,15 @@ import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.shared.UserRoles;
 import net.videmantay.shared.url.AdminUrl;
 
-public class AppUserGrid extends DataGrid<AppUserJson> {
+public class AppUserDataTable extends DataGrid<AppUserJson> {
 
 	private static final AppUserAsyncDataProvider dataProv = new AppUserAsyncDataProvider();
 	
-	TextColumn<AppUserJson> acctIdCol = new TextColumn<AppUserJson>(){
+	TextColumn<AppUserJson> emailCol = new TextColumn<AppUserJson>(){
 
 		@Override
 		public String getValue(AppUserJson object) {
-			return object.getAcctId();
+			return object.geteMail();
 		}};
 		
 	TextColumn<AppUserJson> firstNameCol = new TextColumn<AppUserJson>(){
@@ -51,12 +51,7 @@ public class AppUserGrid extends DataGrid<AppUserJson> {
 				public String getValue(AppUserJson object) {
 					return object.getLastName();
 				}};	
-	TextColumn<AppUserJson> titleCol = new TextColumn<AppUserJson>(){
 
-		@Override
-		public String getValue(AppUserJson object) {
-			return object.getTitle();
-		}};
 	TextColumn<AppUserJson> rolesCol = new TextColumn<AppUserJson>(){
 		@Override
 		public String getValue(AppUserJson object){
@@ -76,22 +71,22 @@ public class AppUserGrid extends DataGrid<AppUserJson> {
 
 		@Override
 		public String getValue(AppUserJson object) {
-			return object.getUserStatus();
+			   if(object.isActive())
+				    return "active";
+			   
+			return "inactive";
 		}};
 	AbstractCell<AppUserJson> actionCell = new AbstractCell<AppUserJson>("click"){
-
 		@Override
 		public void onBrowserEvent(Cell.Context context, Element parent, AppUserJson value, NativeEvent event, ValueUpdater<AppUserJson> valueUpdater){
-			
-			
 			if($(event.getEventTarget()).hasClass("delete-user")){
 				//fire a show deleteModal
 				console.log("delete button hit");
-				$(body).trigger(AdminEvent.SHOW_DELETE, value);
+				//$(body).trigger(AdminEvent.SHOW_DELETE, value);
 			}
 			if($(event.getEventTarget()).hasClass("update-user")){
 				//fire show updateModal
-				$(body).trigger(AdminEvent.SHOW_SAVE, value);
+				//$(body).trigger(AdminEvent.SHOW_SAVE, value);
 			}
 			
 		}
@@ -111,24 +106,16 @@ public class AppUserGrid extends DataGrid<AppUserJson> {
 										+"<br/>No problem just hit the big plus button at the bottom of the screen"
 										+"</p></div>");
 	
-	private final AppUserGrid $this = this;
+	private final AppUserDataTable $this = this;
 	
-	public AppUserGrid(){
+	public AppUserDataTable(){
 		
 		super(dataProv);
 		dataProv.addDataDisplay(this);
 		this.addStyleName("striped responsive-table");
 		
 		
-		//setup col to be sortable and misc interactions
-		/*titleCol.setSortable(true);
-		acctIdCol.setSortable(true);
-		firstNameCol.setSortable(true);
-		lastNameCol.setSortable(true);
-		statusCol.setSortable(true);*/
-		
-		this.addColumn(acctIdCol, SafeHtmlUtils.fromSafeConstant("<h6 class='header'>Acct ID</h6>"));
-		this.addColumn(titleCol, SafeHtmlUtils.fromSafeConstant("<h6 class='header'>Title</h6>"));
+		this.addColumn(emailCol, SafeHtmlUtils.fromSafeConstant("<h6 class='header'>E-mail</h6>"));
 		this.addColumn(firstNameCol, SafeHtmlUtils.fromSafeConstant("<h6 class='header'>First Name</h6>"));
 		this.addColumn(lastNameCol, SafeHtmlUtils.fromSafeConstant("<h6 class='header'>Last Name</h6>"));
 		this.addColumn(rolesCol, SafeHtmlUtils.fromSafeConstant("<h6 class='header'>Roles</h6>"));

@@ -5,4 +5,4 @@
  * @author LAUSD
  *
  */
-package net.videmantay.admin;
+package net.videmantay.admin.views;

@@ -1,8 +1,6 @@
 package net.videmantay.roster.json;
 
 
-import net.videmantay.shared.GradedWorkType;
-import net.videmantay.shared.Language;
 import net.videmantay.shared.json.EventJson;
 
 public class GradedWorkJson extends AssignmentJson {

@@ -15,13 +15,17 @@ import javax.ws.rs.core.Response.Status;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
+import net.videmantay.rest.dto.AppUserDTO;
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
+import net.videmantay.server.util.UserPasswordGenerator;
+
 import com.google.appengine.api.datastore.Entity;
 
 import static net.videmantay.server.user.DB.*;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +53,7 @@ public class AppUserService {
 		log.log(Level.INFO, "get user is called " + id);
 
 		if (result != null) {
-			return Response.ok().entity(result).build();
+			return Response.ok().entity(new AppUserDTO(result)).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
@@ -64,42 +68,51 @@ public class AppUserService {
 		log.log(Level.INFO, "List users is called");
 
 		List<AppUser> userAcctList = db().load().type(AppUser.class).list();
+		
+		List<AppUserDTO> appUserDTOList = new ArrayList<AppUserDTO>();
+		   
+		   for(AppUser user: userAcctList)
+			   appUserDTOList.add(new AppUserDTO(user));
 
-		return Response.ok().entity(userAcctList).build();
+		return Response.ok().entity(appUserDTOList).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createUser(AppUser appUser) {
+	public Response createUser(AppUserDTO appUser) {
 
-		final AppUser toBeCreated = appUser;
+		final AppUser toBeCreated = AppUser.createFromDTO(appUser);
+		
+		//Generate password for the newly created user
+		
+		  toBeCreated.setPassword(UserPasswordGenerator.nextPassword());
 
 		ofy().transact(new VoidWork() {
-
 			@Override
 			public void vrun() {
 				toBeCreated.setId(appUserDB.save(toBeCreated).getId());
-
 			}
 		});
-		return Response.status(Status.CREATED).build();
+		return Response.status(Status.CREATED).entity(toBeCreated.getId()).build();
 	}
 
 	@POST
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifyUser(@PathParam("id") Long id, AppUser newProperties) {
+	public Response modifyUser(@PathParam("id") Long id, AppUserDTO newProperties) {
 
 		AppUser result = ofy().load().key(Key.create(AppUser.class, id)).now();
 
 		if (result != null) {
 			newProperties.setId(id);
+			
+			AppUser modified = AppUser.createFromDTO(newProperties);
 
-			appUserDB.save(newProperties);
+			appUserDB.save(modified);
 
-			return Response.ok().entity(newProperties).build();
+			return Response.ok().build();
 
 		}
 

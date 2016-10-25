@@ -1,48 +1,46 @@
-package net.videmantay.admin;
-
-import com.google.gwt.query.client.Properties;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.HasData;
-
-
-import static com.google.gwt.query.client.GQuery.*;
+package net.videmantay.admin.views;
 
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.HasData;
 
+import gwt.material.design.client.ui.MaterialLoader;
 import net.videmantay.admin.json.AppUserJson;
-import net.videmantay.shared.url.AdminUrl;
 
 public class AppUserAsyncDataProvider extends AsyncDataProvider<AppUserJson> {
 	private final ArrayList<AppUserJson> list = new ArrayList<AppUserJson>();
-	private static int cursor = 0;
-	private boolean previous = false;
-	Properties data;
-	
-	
+
 	@Override
 	protected void onRangeChanged(final HasData<AppUserJson> display) {
-		
-		if(previous){
-			cursor -= 50;
-		}else{
-			cursor += 50;
-		}
-		
-		data = $$("cursor:" + cursor);
-		Ajax.get(AdminUrl.USER_LIST).done(new Function(){
+		Ajax.get("/appuser").done(new Function() {
 			@Override
-			public void f(){
+			public void f() {
+				GWT.log(this.arguments(0).toString());
 				JsArray<AppUserJson> array = JsonUtils.unsafeEval((String)this.arguments(0)).cast();
 				 for(int i = 0; i < array.length(); i++){
 					 list.add(array.get(i));
 				 }//end for
 				 display.setRowCount(list.size());
 				display.setRowData(0, list); 
+				MaterialLoader.showLoading(false);
+			}
+		}).progress(new Function() {
+			@Override
+			public void f() {
+				MaterialLoader.showLoading(true);
+			}
+		}).fail(new Function() {
+			@Override
+			public void f() {
+				MaterialLoader.showLoading(false);
+				Window.alert("Error connecting to the Server, Please try again later");
 			}
 		});
 	}

@@ -47,6 +47,12 @@
 
 
 	<build>
+	    <resources>
+	      <resource>
+	        <directory>src/main/java</directory>
+	      </resource>
+	    </resources>
+	    
 		<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
@@ -64,7 +70,7 @@
 					<devmodeArgs>
 						<arg>-noserver</arg>
 					</devmodeArgs>
-					<localWorkers>4</localWorkers>
+					
 				</configuration>
 			</plugin>
 		</plugins>

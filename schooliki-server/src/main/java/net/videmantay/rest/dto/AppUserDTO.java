@@ -9,15 +9,21 @@ public class AppUserDTO {
    
     String name;
     
+    String firstName;
+    
+    String lastName;
+    
     String imageUrl;
     
     String eMail;
     
     String googleId;
     
-    boolean isActive;
+    boolean active;
     
-    UserRoles[] roles;
+    boolean firstLogin;
+    
+    String[] roles;
     
     String password;
 
@@ -33,9 +39,12 @@ public class AppUserDTO {
 		this.imageUrl = appuser.getImageUrl();
 		this.eMail = appuser.geteMail();
 		this.googleId = appuser.getGoogleId();
-		this.isActive = appuser.isActive();
+		this.active = appuser.isActive();
 		this.roles = appuser.getRoles();
 		this.password = appuser.getPassword();
+		this.firstLogin = appuser.isFirstLogin();
+		this.firstName = appuser.getFirstName();
+		this.lastName = appuser.getLastName();
 	}
 
 
@@ -84,23 +93,23 @@ public class AppUserDTO {
 
 
 	public boolean isActive() {
-		return this.isActive;
+		return this.active;
 	}
 
 
 	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+		this.active = isActive;
 	}
 
 
 
-	public UserRoles[] getRoles() {
+	public String[] getRoles() {
 		return this.roles;
 	}
 
 
 
-	public void setRoles(UserRoles[] roles) {
+	public void setRoles(String[] roles) {
 		this.roles = roles;
 	}
 
@@ -115,7 +124,40 @@ public class AppUserDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
 
+
+
+	public boolean isFirstLogin() {
+		return this.firstLogin;
+	}
+
+
+
+	public void setFirstLogin(boolean isFirstLogin) {
+		this.firstLogin = isFirstLogin;
+	}
+
+
+
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+
+
+	public String getLastName() {
+		return this.lastName;
+	}
+
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 }

@@ -1,4 +1,4 @@
-package net.videmantay.admin;
+package net.videmantay.admin.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
@@ -47,7 +47,7 @@ public class AppUserDeleteModal extends Composite {
 	
 	public void setdata(AppUserJson user){
 		this.user = user;
-		$(deletedUserHeading).html("<span>" + this.user.getAcctId() + "<br/>" 
+		$(deletedUserHeading).html("<span>" + this.user.geteMail() + "<br/>" 
 				+ this.user.getFirstName() +"&nbsp;" + this.user.getLastName() 
 				+"</span>");
 	}
@@ -75,7 +75,7 @@ public class AppUserDeleteModal extends Composite {
 						deleteModal.closeModal();
 						user = null;
 						MaterialToast.fireToast("User deleted", 2000);
-						$(body).trigger(AdminEvent.DELETE_USER);
+						
 					}
 				});
 				
@@ -87,7 +87,7 @@ public class AppUserDeleteModal extends Composite {
 			public void onClick(ClickEvent event) {
 				deleteModal.closeModal();
 				user=null;
-				$(body).trigger(AdminEvent.HIDE_DELETE);
+				
 				
 			}});
 	}

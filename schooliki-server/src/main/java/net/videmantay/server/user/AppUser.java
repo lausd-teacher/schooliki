@@ -38,13 +38,19 @@ public  class AppUser  implements Serializable {
     
     String name;
     
+    String firstName;
+    
+    String lastName;
+    
     String imageUrl;
     
     String eMail;
     
-    boolean isActive;
+    boolean active;
     
-    UserRoles[] roles;
+    boolean firstLogin;
+    
+    String[] roles;
     
     String password;
 
@@ -54,13 +60,16 @@ public  class AppUser  implements Serializable {
 	
 	
 
-	public AppUser(String name, String imageUrl, String eMail, String googleId, boolean isActive, UserRoles[] roles) {
-		this.name = name;
+	public AppUser(String firstName, String lastName, String imageUrl, String eMail, String googleId, boolean isActive, String[] roles, boolean isFirstLogin) {
+		this.name = firstName + " " + lastName;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.imageUrl = imageUrl;
 		this.eMail = eMail;
 		this.googleId = googleId;
-		this.isActive = isActive;
+		this.active = isActive;
 		this.roles = roles;
+		this.firstLogin = isFirstLogin;
 	}
 
 
@@ -113,25 +122,25 @@ public  class AppUser  implements Serializable {
 
 
 	public boolean isActive() {
-		return this.isActive;
+		return this.active;
 	}
 
 
 
-	public UserRoles[] getRoles() {
+	public String[] getRoles() {
 		return this.roles;
 	}
 
 
 
-	public void setRoles(UserRoles[] roles) {
+	public void setRoles(String[] roles) {
 		this.roles = roles;
 	}
 
 
 
 	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+		this.active = isActive;
 	}
 
 
@@ -148,15 +157,55 @@ public  class AppUser  implements Serializable {
 
 
 
+	public boolean isFirstLogin() {
+		return this.firstLogin;
+	}
+
+
+
+	public void setFirstLogin(boolean isFirstLogin) {
+		this.firstLogin = isFirstLogin;
+	}
+
+
+
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+
+
+	public String getLastName() {
+		return this.lastName;
+	}
+
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
 	public static AppUser createFromDTO(AppUserDTO appuserDTO) {
 		AppUser appUser = new AppUser();
 		appUser.id = appuserDTO.getId();
-		appUser.isActive = appuserDTO.isActive();
+		appUser.active = appuserDTO.isActive();
 		appUser.googleId = appuserDTO.getGoogleId();
 		appUser.name = appuserDTO.getName();
 		appUser.imageUrl = appuserDTO.getImageUrl();
 		appUser.eMail = appuserDTO.geteMail();
 		appUser.password = appuserDTO.getPassword();
+		appUser.firstName =appuserDTO.getFirstName();
+		appUser.lastName = appuserDTO.getLastName();
+		appUser.firstLogin = appuserDTO.isFirstLogin();
+		appUser.setRoles(appuserDTO.getRoles());
 		return appUser;
 	}
 	
@@ -166,10 +215,7 @@ public  class AppUser  implements Serializable {
 			if(roles[i].toString().equals(role.toString()))
 				return true;
 		}
-		
 		return false;
-		
-		
 	}
 	
 	

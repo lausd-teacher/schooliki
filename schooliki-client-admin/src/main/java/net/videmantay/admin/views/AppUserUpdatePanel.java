@@ -1,4 +1,4 @@
-package net.videmantay.admin;
+package net.videmantay.admin.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
