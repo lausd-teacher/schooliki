@@ -1,42 +1,45 @@
 package net.videmantay.admin.views;
 
+import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.body;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import gwt.material.design.client.ui.MaterialPreLoader;
 import gwt.material.design.client.ui.MaterialSpinner;
-import static com.google.gwt.query.client.GQuery.*;
-import com.google.gwt.query.client.Function;
-
+import net.videmantay.admin.ClientFactory;
 import net.videmantay.admin.json.AppUserJson;
-import net.videmantay.shared.UserRoles;
-import net.videmantay.shared.url.AdminUrl;
 
 public class AppUserDataTable extends DataGrid<AppUserJson> {
 
 	private static final AppUserAsyncDataProvider dataProv = new AppUserAsyncDataProvider();
+	
+	
+	private final AppUserDeleteModal deleteModal;
+	
+	private final ClientFactory factory;
 	
 	TextColumn<AppUserJson> emailCol = new TextColumn<AppUserJson>(){
 
 		@Override
 		public String getValue(AppUserJson object) {
 			return object.geteMail();
+			
 		}};
 		
 	TextColumn<AppUserJson> firstNameCol = new TextColumn<AppUserJson>(){
@@ -81,21 +84,27 @@ public class AppUserDataTable extends DataGrid<AppUserJson> {
 		public void onBrowserEvent(Cell.Context context, Element parent, AppUserJson value, NativeEvent event, ValueUpdater<AppUserJson> valueUpdater){
 			if($(event.getEventTarget()).hasClass("delete-user")){
 				//fire a show deleteModal
-				console.log("delete button hit");
-				//$(body).trigger(AdminEvent.SHOW_DELETE, value);
+				GWT.log("delete button hit" + value.geteMail());
+				factory.setCurrentSelectedUser(value);
+				deleteModal.show(value);
 			}
 			if($(event.getEventTarget()).hasClass("update-user")){
-				//fire show updateModal
-				//$(body).trigger(AdminEvent.SHOW_SAVE, value);
+				
+				GWT.log("update button hit" + value.isActive());
+				deleteModal.show(value);
 			}
 			
 		}
 		
 		@Override
 		public void render(com.google.gwt.cell.client.Cell.Context context, AppUserJson value, SafeHtmlBuilder sb) {
-			String html = "<div><span class='action-icon'><i class='delete-user material-icons'/>delete</span><span class='action-icon'><i class='update-user material-icons'/>edit</span></div>";
+			String html = "";
+			if(value.isActive())
+			   html = "<div><span class='action-icon'><i class='delete-user material-icons'/>visibility_off</span><span class='action-icon'><i class='update-user material-icons'/>edit</span></div>";
+			else
+			   html = "<div><span class='action-icon'><i class='delete-user material-icons'/>visibility</span><span class='action-icon'><i class='update-user material-icons'/>edit</span></div>";
+			 
 			sb.appendHtmlConstant(html);
-			
 		}};
 	IdentityColumn<AppUserJson> actionCol = new IdentityColumn<AppUserJson>(actionCell){};
 	//loader
@@ -106,11 +115,12 @@ public class AppUserDataTable extends DataGrid<AppUserJson> {
 										+"<br/>No problem just hit the big plus button at the bottom of the screen"
 										+"</p></div>");
 	
-	private final AppUserDataTable $this = this;
 	
-	public AppUserDataTable(){
+	public AppUserDataTable(AppUserDeleteModal deleteModal, ClientFactory factory){
 		
 		super(dataProv);
+		this.deleteModal = deleteModal; 
+		this.factory = factory;
 		dataProv.addDataDisplay(this);
 		this.addStyleName("striped responsive-table");
 		
@@ -130,41 +140,4 @@ public class AppUserDataTable extends DataGrid<AppUserJson> {
 		
 		
 	}
-	
-	@Override
-	public void onLoad(){
-		
-	}//end onLoad
-	
-	
-	public void reset(){
-		
-		console.log("refreshing the grid");
-		dataProv.updateRowCount(0, false);
-		
-		Timer timer = new Timer(){
-
-			@Override
-			public void run() {
-				Ajax.get(AdminUrl.USER_LIST).done(new Function(){
-					@Override
-					public void f(){
-						JsArray<AppUserJson> jsList = JsonUtils.unsafeEval((String)this.arguments(0)).cast();
-						ArrayList<AppUserJson> list = new ArrayList<AppUserJson>();
-						for(int i=0; i< jsList.length(); i++){
-							list.add(jsList.get(i));
-						}
-						dataProv.updateRowData(0, list);
-						$this.redraw();
-						
-					}
-				});//end Ajax call
-				
-			}};//end timer
-			
-		timer.schedule(4000);
-	}
-	
-	
-
 }

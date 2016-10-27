@@ -1,12 +1,15 @@
 package net.videmantay.admin;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
+import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.admin.views.AdminGrid;
 import net.videmantay.admin.views.AppLayout;
 import net.videmantay.admin.views.AppUserDataTable;
+import net.videmantay.admin.views.AppUserDeleteModal;
 import net.videmantay.admin.views.AppUserForm;
 import net.videmantay.admin.views.components.AdminSideNav;
 
@@ -17,8 +20,11 @@ public class ClientFactoryImpl implements ClientFactory{
 	AppLayout appLayout = new AppLayout();
 	AdminSideNav adminSideNav = new AdminSideNav();
 	AppUserForm form = new AppUserForm();
-	AppUserDataTable dataTable = new AppUserDataTable();
-	AdminGrid grid = new AdminGrid(dataTable, form);
+	AppUserDeleteModal deleteModal = new AppUserDeleteModal();
+	AppUserDataTable dataTable = new AppUserDataTable(deleteModal, this);
+	AdminGrid grid = new AdminGrid(dataTable, form, deleteModal);
+	AppUserJson currentUser = JavaScriptObject.createObject().cast();
+	
 
 	@Override
 	public AppLayout getAppLayout() {
@@ -53,6 +59,21 @@ public class ClientFactoryImpl implements ClientFactory{
 	@Override
 	public EventBus getEventBus() {
 		return eventBus;
+	}
+
+	@Override
+	public AppUserDeleteModal getAppUserDeleteModal() {
+		return deleteModal;
+	}
+
+	@Override
+	public AppUserJson getCurrentSelectedUser() {
+		return currentUser;
+	}
+
+	@Override
+	public void setCurrentSelectedUser(AppUserJson currentSelectedUser) {
+		this.currentUser = currentSelectedUser;
 	}
 
 }

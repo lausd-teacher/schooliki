@@ -1,11 +1,5 @@
 function login(googleuser){
 
-
-        var login = getUserprofileAsJson(googleuser);
-        console.log(login);
-        var isAdmin = document.getElementById("isadmin").checked;
-        
-        // Useful data for your client-side scripts:
         var profile = googleuser.getBasicProfile();
         
         var googleId = profile.getId();
@@ -22,7 +16,7 @@ function login(googleuser){
         var formImageUrl = document.getElementById("profilePicUrl");
         var formEmail = document.getElementById("email");
         var formToken = document.getElementById("token");
-        var isAdminForm = document.getElementById("isadminForm");
+        var admin = document.getElementById("isadminForm");
         
         
         formGoogleId.value = googleId;
@@ -31,34 +25,14 @@ function login(googleuser){
         formImageUrl.value = imageUrl;
         formEmail.value = email;
         formToken.value = token;
-        isAdminForm.value = isAdmin;
+        
+          if(document.getElementById("isadmin").checked)
+        	  admin.value = "true";
+          else
+        	  admin.value = "false";
 
-        
-        document.getElementById("loginForm").submit();
-        
-        
-       
-       
-//              jQuery.ajax({
-//                      url : "/login",
-//                      headers: { 
-//                          'Accept': 'application/json',
-//                          'Content-Type': 'application/json' 
-//                      },
-//                      type: "POST",
-//                      data : login,
-//                      contentType: "application/json",
-//                      success: function(data, textStatus, jqXHR)
-//                      {
-//                          console.log("successfully logged in");
-//                          window.location = data;
-//                          
-//                      },
-//                      error: function (jqXHR, textStatus, errorThrown)
-//                      {
-//                         alert("Error! Please try later");
-//                      }
-//                  });
+
+        document.getElementById("loginForm").submit();        
 }
 
 
@@ -74,20 +48,18 @@ function getUserprofileAsJson(googleuser){
 }
 
   function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
-
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-
-        login(googleUser);
+	       if(document.getElementById("secondAttempt")){
+	    	   if(document.getElementById("secondAttempt").innerText === "1"){
+	    		   document.getElementById("secondAttempt").innerText = "0";
+	    	         signOut();
+	    	   }else{
+	    		   login(googleUser);  
+ 
+	    	   }
+	            
+	       }else{
+	    	   login(googleUser);
+	       }
       };
 
     function onFailure(error) {
@@ -124,20 +96,22 @@ function getUserprofileAsJson(googleuser){
                 	var instance = gapi.auth2.getAuthInstance();
 	            	 var token = instance.currentUser.get().getAuthResponse().id_token;
 	                 instance.signOut().then(function () {
-	                	 jQuery.ajax({
-	                         url : "/logout",
-	                         type: "POST",
-	                         data : {token: token},
-	                         success: function(data, textStatus, jqXHR)
-	                         {
-	                        	 console.log('logged out');
-	                        	 window.location = "/login";
-	                         },
-	                         error: function (jqXHR, textStatus, errorThrown)
-	                         {
-	                            alert("Error logging out. Please try later.");
-	                         }
-	                     });
+//	                	 jQuery.ajax({
+//	                         url : "/logout",
+//	                         type: "POST",
+//	                         data : {token: token},
+//	                         success: function(data, textStatus, jqXHR)
+//	                         {
+//	                        	 console.log('logged out');
+//	                        	 window.location = "/login";
+//	                         },
+//	                         error: function (jqXHR, textStatus, errorThrown)
+//	                         {
+//	                            alert("Error logging out. Please try later.");
+//	                         }
+//	                     });
+	                	 
+	                	 console.log('logged out');
 	                	 
 	       		      
 	       		    });
@@ -150,23 +124,25 @@ function getUserprofileAsJson(googleuser){
     	var instance = gapi.auth2.getAuthInstance();
    	 var token = instance.currentUser.get().getAuthResponse().id_token;
         instance.signOut().then(function () {
-       	 jQuery.ajax({
-                url : "/logout",
-                type: "POST",
-                data : {token: token},
-                success: function(data, textStatus, jqXHR)
-                {
-               	 console.log('logged out');
-               	 window.location = "/login";
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                   alert("Error logging out. Please try later.");
-                }
-            });
-       	 
-		      
+//       	 jQuery.ajax({
+//                url : "/logout",
+//                type: "POST",
+//                data : {token: token},
+//                success: function(data, textStatus, jqXHR)
+//                {
+//               	 console.log('logged out');
+//               	 window.location = "/login";
+//                },
+//                error: function (jqXHR, textStatus, errorThrown)
+//                {
+//                   alert("Error logging out. Please try later.");
+//                }
+//            });
+//       	 
+//		      
+        	console.log('logged out');
 		    });
+        	
     	
     }
     

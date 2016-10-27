@@ -32,14 +32,10 @@ public class AdminGrid extends Composite {
 	
 	
 	private final AppUserDataTable grid;
+
 	private final AppUserForm form;
-	private final MaterialModal modal = new MaterialModal();
-	private final AppUserDeleteModal deleteModal = new AppUserDeleteModal();
+	private final AppUserDeleteModal deleteModal;
 	
-	
-
-
-
 
 	@UiField
 	MaterialButton fab;
@@ -48,12 +44,15 @@ public class AdminGrid extends Composite {
 	HTMLPanel container;
 	
 
-	public AdminGrid(AppUserDataTable grid, AppUserForm form) {
+	public AdminGrid(AppUserDataTable grid, AppUserForm form, AppUserDeleteModal deleteModal) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.grid = grid;
 		this.form = form;
-		container.add(grid);
-		container.add(form);		
+		this.deleteModal = deleteModal;
+		container.add(this.grid);
+		container.add(this.form);
+		container.add(this.deleteModal);
+		this.grid.redraw();
 	}
 	
 	
@@ -65,6 +64,11 @@ public class AdminGrid extends Composite {
 	public AppUserForm getForm() {
 		return this.form;
 	}
+	
+	public AppUserDataTable getGrid() {
+		return this.grid;
+	}
+
 
 	public interface Presenter{
 		

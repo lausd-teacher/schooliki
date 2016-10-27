@@ -1,5 +1,7 @@
 package net.videmantay.rest.dto;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import net.videmantay.server.user.AppUser;
 import net.videmantay.shared.UserRoles;
 
@@ -25,14 +27,13 @@ public class AppUserDTO {
     
     String[] roles;
     
+    @JsonIgnore
     String password;
 
 	public AppUserDTO() {
 
 	}
 	
-	
-
 	public AppUserDTO(AppUser appuser) {
 		this.id = appuser.getId();
 		this.name = appuser.getName();
@@ -46,7 +47,6 @@ public class AppUserDTO {
 		this.firstName = appuser.getFirstName();
 		this.lastName = appuser.getLastName();
 	}
-
 
 
 	public Long getId() {
@@ -114,13 +114,13 @@ public class AppUserDTO {
 	}
 
 
-
+	@JsonIgnore
 	public String getPassword() {
 		return this.password;
 	}
 
 
-
+	@JsonIgnore
 	public void setPassword(String password) {
 		this.password = password;
 	}

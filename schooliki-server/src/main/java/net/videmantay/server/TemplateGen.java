@@ -137,11 +137,14 @@ public class TemplateGen{
     	  try {
     		StringWriter writer1 = new StringWriter();
   			StringWriter writer2 = new StringWriter();
+  			
   			Template logginPage = cfg.getTemplate("login.html");
   			Template loggedOutBody = cfg.getTemplate("loggedoutwitherrors.html");
   			
   			Map<String, String> errors = new HashMap<String, String>();
   			errors.put("errors", errorMessage);
+  			
+  			log.log(Level.INFO, "called login view with errors");
   			
   			loggedOutBody.process(errors, writer1);
              
@@ -151,9 +154,7 @@ public class TemplateGen{
   			 
   			 logginPage.process(pageParts, writer2);
   			
-  			return writer2.toString();
-  			
-  			
+  			return writer2.toString();	
   		} catch (IOException | TemplateException e) {
   			// TODO Auto-generated catch block
   			e.printStackTrace();

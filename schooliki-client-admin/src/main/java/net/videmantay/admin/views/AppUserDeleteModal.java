@@ -39,57 +39,35 @@ public class AppUserDeleteModal extends Composite {
 	@UiField
 	HeadingElement deletedUserHeading;
 	
-	private AppUserJson user;
 	
 	public AppUserDeleteModal() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public void setdata(AppUserJson user){
-		this.user = user;
-		$(deletedUserHeading).html("<span>" + this.user.geteMail() + "<br/>" 
-				+ this.user.getFirstName() +"&nbsp;" + this.user.getLastName() 
-				+"</span>");
-	}
+
 	
-	public void show(){
+	public void show(AppUserJson user){
+		$(deletedUserHeading).html("<span>" + user.geteMail() + "<br/>" 
+				+ user.getFirstName() +"&nbsp;" + user.getLastName() 
+				+"</span>");
 		deleteModal.openModal();
 	}
 	
 	public void close(){
 		deleteModal.closeModal();
-		user = null;
+	}
+
+	public MaterialAnchorButton getConfirmDeleteBtn() {
+		return this.confirmDeleteBtn;
+	}
+
+	public MaterialAnchorButton getCancelDeleteBtn() {
+		return this.cancelDeleteBtn;
 	}
 	
-	@Override
-	public void onLoad(){
-		confirmDeleteBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				String appUser = JsonUtils.stringify(user);
-				Ajax.post(AdminUrl.USER_DELETE, $$("user:" + appUser))
-				.done(new Function(){
-					@Override
-					public void f(){
-						deleteModal.closeModal();
-						user = null;
-						MaterialToast.fireToast("User deleted", 2000);
-						
-					}
-				});
-				
-			}});
-		
-		cancelDeleteBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				deleteModal.closeModal();
-				user=null;
-				
-				
-			}});
+	public interface Presenter{
+		void confirmDeleteClickEvent();
+		void cancelDeleteClickEvent();
 	}
-
+	
 }

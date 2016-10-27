@@ -19,10 +19,11 @@ import net.videmantay.admin.ClientFactory;
 import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.admin.views.AdminGrid;
 import net.videmantay.admin.views.AppLayout;
+import net.videmantay.admin.views.AppUserDeleteModal;
 import net.videmantay.admin.views.AppUserForm;
 import net.videmantay.admin.views.components.AdminSideNav;
 
-public class MainPageActivity extends AbstractActivity implements AppUserForm.Presenter, AdminGrid.Presenter {
+public class MainPageActivity extends AbstractActivity implements AppUserForm.Presenter, AdminGrid.Presenter, AppUserDeleteModal.Presenter {
 	
 	
 	ClientFactory factory;
@@ -30,6 +31,7 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 	AppLayout layout;
 	AdminSideNav sideNav;
 	AdminGrid grid;
+	AppUserDeleteModal deleteModal;
 	
 	public MainPageActivity(ClientFactory factory, Place currentPlace){
 		this.factory = factory;
@@ -37,6 +39,7 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 		this.layout = factory.getAppLayout();
 		this.sideNav = factory.getAdminSideNav();
 		this.grid = factory.getAdminGrid();
+		this.deleteModal = factory.getAppUserDeleteModal();
 		initializeEvents();
 	}
 
@@ -49,6 +52,8 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 		layout.getSideNav().add(sideNav.getStarterLink());
 		
 		layout.getMainPanel().add(grid);
+		
+		
 		
 		panel.setWidget(layout);
 	}
@@ -77,6 +82,8 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 		saveButtonClickEvent();
 		cancelButtonClickEvent();
 		fabButtonClickEvent();
+		cancelDeleteClickEvent();
+		confirmDeleteClickEvent();
 	}
 
 	@Override
@@ -139,6 +146,52 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 			public void onClick(ClickEvent event) {
 				grid.getForm().show();
 				
+			}
+		});
+		
+	}
+
+	@Override
+	public void confirmDeleteClickEvent() {
+		final AppUserJson userToBeDesactivated = factory.getCurrentSelectedUser();
+//		deleteModal.getConfirmDeleteBtn().addClickHandler(new ClickHandler(){
+//			@Override
+//			public void onClick(ClickEvent event) {
+//				GQuery.ajax("/appuser/"+ userToBeDesactivated.getId(), Ajax.createSettings().setType("DELETE").setDataType("json"))
+//				.done(new Function() {
+//					@Override
+//					public void f() {
+//						GWT.log(this.arguments(0).toString());
+//						//Refresh grid
+//						
+//						MaterialLoader.showLoading(false);
+//
+//					}
+//				}).progress(new Function() {
+//					@Override
+//					public void f() {
+//						MaterialLoader.showLoading(true);
+//					}
+//				}).fail(new Function() {
+//					@Override
+//					public void f() {
+//						MaterialLoader.showLoading(false);
+//						Window.alert("Error connecting to the Server, Please try again later");
+//					}
+//				});
+//				
+//				
+//			}
+//		});
+		
+	}
+
+	@Override
+	public void cancelDeleteClickEvent() {
+		deleteModal.getCancelDeleteBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {	
+				deleteModal.close();
 			}
 		});
 		

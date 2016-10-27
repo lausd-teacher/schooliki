@@ -44,6 +44,7 @@ public  class AppUser  implements Serializable {
     
     String imageUrl;
     
+    @Index
     String eMail;
     
     boolean active;
