@@ -139,11 +139,17 @@ public class ClientFactoryImpl implements ClientFactory {
 		Element fistNameSpan = Document.get().getElementById("profilefname");
 		Element lastNameSpan = Document.get().getElementById("profilelname");
 		
+		if(lastNameSpan == null || fistNameSpan == null)
+			  return "Demo user";
+		
 		return fistNameSpan.getInnerText() + " " + lastNameSpan.getInnerText();
 	}
 	@Override
 	public String getCurrentUserProfileImageUrl() {
 		ImageElement imageSpan = Document.get().getElementById("profileimg").cast();
+		
+		 if(imageSpan == null)
+			  return "";
 		
 		return imageSpan.getSrc();
 	}
