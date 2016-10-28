@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import net.videmantay.shared.util.GoogleJs;
+
 
 public class UserProfilePage extends Composite {
 
@@ -23,7 +25,7 @@ public class UserProfilePage extends Composite {
 
 	public UserProfilePage() {
 		initWidget(uiBinder.createAndBindUi(this));
-		//GoogleJs.renderGoogleProfile();
+		GoogleJs.renderGoogleProfile();
 		Element profileElement = Document.get().getElementById("profile");
 		Element temp = profileElement;
 		temp.getStyle().setDisplay(Display.BLOCK);

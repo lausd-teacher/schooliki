@@ -29,7 +29,7 @@ public class SchoolikiUserDetails implements UserDetails {
 		this.username = username;
 		
 		AppUser appuser = ofy().load().type(AppUser.class).filter("eMail", username).first().now();
-		if(appuser != null)
+		if(appuser == null)
 			throw new UsernameNotFoundException(username + " not found in the dabase");
 		
 		

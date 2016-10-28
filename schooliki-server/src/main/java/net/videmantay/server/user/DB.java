@@ -2,6 +2,7 @@ package net.videmantay.server.user;
 
 import static com.googlecode.objectify.ObjectifyService.*;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -12,9 +13,7 @@ import com.googlecode.objectify.Work;
 import net.videmantay.server.entity.*;
 
 
-public class DB<T> {
-	
-	
+public class DB<T> implements Serializable {
 	
 	static {
 		

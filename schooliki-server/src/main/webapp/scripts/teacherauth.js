@@ -42,22 +42,7 @@ function signOut() {
 		            	 var instance = gapi.auth2.getAuthInstance();
 		            	 var token = instance.currentUser.get().getAuthResponse().id_token;
 		                 instance.signOut().then(function () {
-		                	 jQuery.ajax({
-		                         url : "/logout",
-		                         type: "POST",
-		                         data : {token: token},
-		                         success: function(data, textStatus, jqXHR)
-		                         {
-		                        	 console.log('logged out');
-		                        	 window.location = "/login";
-		                         },
-		                         error: function (jqXHR, textStatus, errorThrown)
-		                         {
-		                            alert("Error logging out. Please try later.");
-		                         }
-		                     });
-		                	 
-		       		      
+		                	 document.getElementById("logout").submit();
 		       		    });
                    });
             	
@@ -67,20 +52,7 @@ function signOut() {
     	var token = instance.currentUser.get().getAuthResponse().id_token;
 	    
 	   	instance.signOut().then(function () {
-	   		jQuery.ajax({
-                url : "/logout",
-                type: "POST",
-                data : {token: token},
-                success: function(data, textStatus, jqXHR)
-                {
-               	 console.log('logged out');
-               	window.location = "/login";
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                   alert("Error logging out. Please try later.");
-                }
-            });
+	   		       document.getElementById("logout").submit();
 		    });
     	
     }

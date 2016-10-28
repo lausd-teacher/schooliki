@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import net.videmantay.security.AppCurrentUsersTokens;
 import net.videmantay.security.GoogleTokenVerifier;
 import net.videmantay.security.SchoolikiUserDetailsService;
+import net.videmantay.security.SecurityConfig;
 import net.videmantay.server.ErrorMessages;
 import net.videmantay.server.ViewsUtils;
 import net.videmantay.server.user.AppUser;
@@ -37,22 +38,15 @@ public class LoginService extends HttpServlet {
 	
 	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 	
-	//ApplicationContext applicationContext = new ClassPathXmlApplicationContext("WEB-INF/applicationContext.xml");
+	ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SecurityConfig.class);
 	
-	@Autowired
-	AuthenticationManager authenticationManager;
+	AuthenticationManager authenticationManager = applicationContext.getBean("schoolikiAuthenticationManager", AuthenticationManager.class);
 	
 	
-	//SchoolikiUserDetailsService schoolikiUserDetailsServices = applicationContext.getBean(SchoolikiUserDetailsService.class);
-	
-	@Autowired
-	SchoolikiUserDetailsService schoolikiUserDetailsServices;
-	
+	SchoolikiUserDetailsService schoolikiUserDetailsServices = applicationContext.getBean(SchoolikiUserDetailsService.class);
 	static {
 		DB.start();
 	}
-	
-	
 	
 	
 	@Override
@@ -186,6 +180,7 @@ public class LoginService extends HttpServlet {
 		
 		   UserDetails userDetails = schoolikiUserDetailsServices.loadUserByUsername(username);
 		   UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
+		   
 		   
 		    // Authenticate the user
 		    Authentication authentication = authenticationManager.authenticate(authRequest);

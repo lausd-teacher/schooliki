@@ -70,7 +70,8 @@
 					<devmodeArgs>
 						<arg>-noserver</arg>
 					</devmodeArgs>
-					
+					<port>9879</port>
+					<codeServerPort>4569</codeServerPort>
 				</configuration>
 			</plugin>
 		</plugins>
