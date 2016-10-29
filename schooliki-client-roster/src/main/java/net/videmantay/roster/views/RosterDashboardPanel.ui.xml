@@ -152,7 +152,7 @@
 		</div>
 		<m:MaterialColumn m:id="tab2">
 		<g:HTMLPanel>
-            <g:Frame ui:field="calFrame" url="../cal.html" width="100%" visible="false" addStyleNames="calFrame"/> 
+
 			<!-- <m:MaterialFAB ui:field="classEventFAB"><m:MaterialAnchorButton  ui:field="classEventAddBtn" type="FLOATING" iconType="ADD" size="LARGE"/></m:MaterialFAB> -->
 		</g:HTMLPanel>
 		</m:MaterialColumn>

@@ -1,3 +1,40 @@
+document.addEventListener("DOMContentLoaded", function(event) { 
+	
+	  var auth2 = gapi.auth2;    
+	    if(!auth2){    
+		  
+				gapi.load('auth2', function(){
+			        var auth2 = gapi.auth2.init({
+			            client_id: '535909648993-7nfaqivi206q2phmicubas1hjri084eb.apps.googleusercontent.com'
+			        }).then(function(){
+			       	         var instance = gapi.auth2.getAuthInstance();
+				            	 instance.isSignedIn.listen(function(isSignedIn){
+				            	           if(!isSignedIn){
+				            	            document.getElementById("logout").submit();
+				            	           
+				            	           }
+				            	    }
+				            	 );
+				            	 
+				            	 
+			           });
+			    });
+	    
+	    }else{
+	       var instance = auth2.getAuthInstance();
+		    
+		   	              instance.isSignedIn.listen(function(isSignedIn){
+				            	           if(!isSignedIn){
+				            	            document.getElementById("logout").submit();
+				            	           
+				            	           }
+				            	    }
+				            	 );
+	            }
+	    
+		
+ });
+
 function login(googleuser){
 
         var profile = googleuser.getBasicProfile();
@@ -96,20 +133,7 @@ function getUserprofileAsJson(googleuser){
                 	var instance = gapi.auth2.getAuthInstance();
 	            	 var token = instance.currentUser.get().getAuthResponse().id_token;
 	                 instance.signOut().then(function () {
-//	                	 jQuery.ajax({
-//	                         url : "/logout",
-//	                         type: "POST",
-//	                         data : {token: token},
-//	                         success: function(data, textStatus, jqXHR)
-//	                         {
-//	                        	 console.log('logged out');
-//	                        	 window.location = "/login";
-//	                         },
-//	                         error: function (jqXHR, textStatus, errorThrown)
-//	                         {
-//	                            alert("Error logging out. Please try later.");
-//	                         }
-//	                     });
+	                	 document.getElementById("logout").submit();
 	                	 
 	                	 console.log('logged out');
 	                	 
@@ -124,22 +148,7 @@ function getUserprofileAsJson(googleuser){
     	var instance = gapi.auth2.getAuthInstance();
    	 var token = instance.currentUser.get().getAuthResponse().id_token;
         instance.signOut().then(function () {
-//       	 jQuery.ajax({
-//                url : "/logout",
-//                type: "POST",
-//                data : {token: token},
-//                success: function(data, textStatus, jqXHR)
-//                {
-//               	 console.log('logged out');
-//               	 window.location = "/login";
-//                },
-//                error: function (jqXHR, textStatus, errorThrown)
-//                {
-//                   alert("Error logging out. Please try later.");
-//                }
-//            });
-//       	 
-//		      
+        	document.getElementById("logout").submit();
         	console.log('logged out');
 		    });
         	

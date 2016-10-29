@@ -32,8 +32,6 @@ public class TemplateGen{
 		cfg = new Configuration(Configuration.VERSION_2_3_23);
 		log.log(Level.INFO, this.getClass().getClassLoader().getResource("").getPath());
 		
-//		File file = new File(this.getClass().getClassLoader().getResource("").getPath());
-//		File war = file.getParentFile().getParentFile();
 
 		try {
 			cfg.setDirectoryForTemplateLoading(new File("html"));

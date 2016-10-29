@@ -130,7 +130,7 @@ public class LoginService extends HttpServlet {
 									   if(appUser.isActive()){
 										   if(Boolean.parseBoolean(isAdmin)){
 											   if(appUser.hasRole(UserRoles.ADMIN)){
-												   login(email, req);
+												   login(email, req, token);
 												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/admin");
 											   }else{
@@ -139,15 +139,15 @@ public class LoginService extends HttpServlet {
 											   }   
 										   }else{
 											   if(appUser.hasRole(UserRoles.TEACHER)){
-												   login(email, req);
+												   login(email, req, token);
 												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/teacher");
 											   }else if (appUser.hasRole(UserRoles.FACULTY)){
-												   login(email, req);
+												   login(email, req, token);
 												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/faculty");
 											   }else if(appUser.hasRole(UserRoles.STUDENT)){
-												   login(email, req);
+												   login(email, req, token);
 												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/student");
 											   }
@@ -176,7 +176,7 @@ public class LoginService extends HttpServlet {
 	}
 	
 	
-	private void login(String username, HttpServletRequest request){
+	private void login(String username, HttpServletRequest request, String authToken){
 		
 		   UserDetails userDetails = schoolikiUserDetailsServices.loadUserByUsername(username);
 		   UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
@@ -190,6 +190,7 @@ public class LoginService extends HttpServlet {
 		    // Create a new session and add the security context.
 		    HttpSession session = request.getSession(true);
 		    session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+		    session.setAttribute("OAuth_TOKEN", authToken);
 		    
 		    log.log(Level.INFO, "User successfully authenticated");
 		

@@ -69,9 +69,10 @@
 					<webappDirectory>${basedir}/../schooliki-server/target/schooliki-server-${project.version}</webappDirectory>
 					<devmodeArgs>
 						<arg>-noserver</arg>
+						<arg>-codeServerPort</arg>
+						<arg>4524</arg>
 					</devmodeArgs>
-					<port>9879</port>
-					<codeServerPort>4569</codeServerPort>
+					
 				</configuration>
 			</plugin>
 		</plugins>

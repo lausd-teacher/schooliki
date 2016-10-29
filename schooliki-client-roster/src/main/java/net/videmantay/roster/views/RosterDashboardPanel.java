@@ -118,8 +118,8 @@ public class RosterDashboardPanel extends Composite
 	@UiField
 	MaterialButton smUndoBtn;
 	
-    @UiField
-	Frame calFrame;
+//    @UiField
+//	Frame calFrame;
 
 
 	@UiField
@@ -554,11 +554,11 @@ public class RosterDashboardPanel extends Composite
 		if(display instanceof SeatingChartPanel){
 			tab1Main.add(display);
 		   seatingChartEditIcon.setVisible(true);
-		   calFrame.setVisible(false);
+		  // calFrame.setVisible(false);
 		}else if(display instanceof ClassroomGrid){
 			tab1Main.add(display);
 			seatingChartEditIcon.setVisible(false);
-			calFrame.setVisible(false);
+			//calFrame.setVisible(false);
 		}
 			
 	}
@@ -573,9 +573,9 @@ public class RosterDashboardPanel extends Composite
 	}
 
 
-	public Frame getCalFrame() {
-		return this.calFrame;
-	}
+//	public Frame getCalFrame() {
+//		return this.calFrame;
+//	}
 
 
 	public MaterialTabItem getReportsTab() {

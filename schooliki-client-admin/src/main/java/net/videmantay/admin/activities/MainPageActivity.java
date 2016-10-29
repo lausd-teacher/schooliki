@@ -22,8 +22,10 @@ import net.videmantay.admin.views.AppLayout;
 import net.videmantay.admin.views.AppUserDeleteModal;
 import net.videmantay.admin.views.AppUserForm;
 import net.videmantay.admin.views.components.AdminSideNav;
+import net.videmantay.shared.util.GoogleJs;
 
-public class MainPageActivity extends AbstractActivity implements AppUserForm.Presenter, AdminGrid.Presenter, AppUserDeleteModal.Presenter {
+public class MainPageActivity extends AbstractActivity implements AppUserForm.Presenter, AdminGrid.Presenter, 
+   AppUserDeleteModal.Presenter,AdminSideNav.Presenter {
 	
 	
 	ClientFactory factory;
@@ -49,7 +51,7 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 		layout.getSideNav().add(sideNav.getFavoriteLink());
 		layout.getSideNav().add(sideNav.getNavigationLink());
 		layout.getSideNav().add(sideNav.getNotificationsLink());
-		layout.getSideNav().add(sideNav.getStarterLink());
+		layout.getSideNav().add(sideNav.getLogoutLink());
 		
 		layout.getMainPanel().add(grid);
 		
@@ -84,6 +86,7 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 		fabButtonClickEvent();
 		cancelDeleteClickEvent();
 		confirmDeleteClickEvent();
+		logoutClickEvent();
 	}
 
 	@Override
@@ -192,6 +195,17 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 			@Override
 			public void onClick(ClickEvent event) {	
 				deleteModal.close();
+			}
+		});
+		
+	}
+
+	@Override
+	public void logoutClickEvent() {
+		sideNav.getLogoutLink().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				GoogleJs.logout();
 			}
 		});
 		

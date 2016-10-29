@@ -16,7 +16,7 @@ public class AdminSideNav extends Composite {
 	}
 	
 	@UiField
-	MaterialLink starterLink;
+	MaterialLink logoutLink;
 	
 	@UiField
 	MaterialLink appsLink;
@@ -34,10 +34,8 @@ public class AdminSideNav extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-
-
-	public MaterialLink getStarterLink() {
-		return this.starterLink;
+	public MaterialLink getLogoutLink() {
+		return this.logoutLink;
 	}
 
 	public MaterialLink getAppsLink() {
@@ -54,6 +52,12 @@ public class AdminSideNav extends Composite {
 
 	public MaterialLink getFavoriteLink() {
 		return this.favoriteLink;
+	}
+	
+	public interface Presenter {
+		
+		
+		void logoutClickEvent();
 	}
 
 }

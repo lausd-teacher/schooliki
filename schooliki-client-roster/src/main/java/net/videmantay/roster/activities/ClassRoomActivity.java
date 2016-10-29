@@ -730,8 +730,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getCalTab().addDomHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				dashboard.getCalFrame().setVisible(true);
-				grid.getFab().setVisible(false);
+			
 
 			}
 		}, ClickEvent.getType());
@@ -739,8 +738,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getDashboardTab().addDomHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				dashboard.getCalFrame().setVisible(false);
-				grid.getFab().setVisible(true);
+
 
 			}
 		}, ClickEvent.getType());
@@ -748,8 +746,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getReportsTab().addDomHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				dashboard.getCalFrame().setVisible(false);
-				grid.getFab().setVisible(false);
+
 
 			}
 		}, ClickEvent.getType());

@@ -104,8 +104,10 @@ public class RosterDisplayActivity extends AbstractActivity
 		}else if (currentPlace instanceof UserProfilePlace) {
 			appPanel.getMainPanel().add(profilePage);
 			
+			
 		}
 		panel.setWidget(appPanel);
+		
 	}
 
 	private void initializeEvents() {

@@ -13,7 +13,7 @@
 	}
 	</ui:style>
 	<g:HTMLPanel>
-				<m:MaterialLink ui:field="starterLink" text="Logout" iconType="WHATSHOT" />
+				<m:MaterialLink ui:field="logoutLink" text="Logout" iconType="WHATSHOT" />
 				<m:MaterialLink ui:field="appsLink" text="Apps" iconType="VIEW_MODULE" />
 				<m:MaterialLink ui:field="notificationsLink" text="Notifications" textColor="blue"
 					iconType="NOTIFICATIONS" separator="true" />

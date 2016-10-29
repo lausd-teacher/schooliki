@@ -37,6 +37,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	RosterJson currentRoster = JavaScriptObject.createArray().cast();
 	MainRosterSideNav mainRosterSideNav = new MainRosterSideNav();
 	MainRosterNavBar mainRosterNavBar = new MainRosterNavBar();
+	UserProfilePage profilePage = new UserProfilePage(appPanel.getNavBartitle());
 	UserProfilePanel userProfile = new UserProfilePanel(getCurrentUserName(), getCurrentUserProfileImageUrl());
 	ClassRoomSideNav classRoomSideNav = new ClassRoomSideNav();
 	GradedWorkForm gradedWorkForm = new GradedWorkForm();
@@ -48,7 +49,8 @@ public class ClientFactoryImpl implements ClientFactory {
 	Calendar calendar = new Calendar();
 	IncidentForm incidentForm = new IncidentForm();
 	IncidentMain incidentMain = new IncidentMain(incidentForm);
-	UserProfilePage profilePage = new UserProfilePage();
+	
+
 
 	@Override
 	public RosterDisplay getRosterDisplay() {
@@ -136,22 +138,15 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	@Override
 	public String getCurrentUserName() {
-		Element fistNameSpan = Document.get().getElementById("profilefname");
-		Element lastNameSpan = Document.get().getElementById("profilelname");
 		
-		if(lastNameSpan == null || fistNameSpan == null)
-			  return "Demo user";
 		
-		return fistNameSpan.getInnerText() + " " + lastNameSpan.getInnerText();
+		return profilePage.getProfileFullName();
 	}
 	@Override
 	public String getCurrentUserProfileImageUrl() {
-		ImageElement imageSpan = Document.get().getElementById("profileimg").cast();
-		
-		 if(imageSpan == null)
-			  return "";
-		
-		return imageSpan.getSrc();
+	
+		return profilePage.getProfilePictureUrl();
 	}
+
 	
 }

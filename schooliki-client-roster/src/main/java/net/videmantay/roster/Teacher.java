@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.EventBus;
 
 import net.videmantay.roster.places.RosterHomePlace;
+import net.videmantay.shared.util.GoogleJs;
 
 public class Teacher implements EntryPoint {
 
@@ -45,6 +46,8 @@ public class Teacher implements EntryPoint {
 //		});
 
 		historyHandler.handleCurrentHistory();
+		
+		GoogleJs.InitializeSignedInListener();
 
 	}
 

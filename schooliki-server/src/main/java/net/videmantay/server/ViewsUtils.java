@@ -8,8 +8,8 @@ import org.apache.commons.io.FileUtils;
 public class ViewsUtils {
 	
 	
-	private static final String TEACHER_VIEW = "teacher.html";
-	private static final String ADMIN_VIEW = "admin.html";
+	private static final String TEACHER_VIEW = "html/teacher.html";
+	private static final String ADMIN_VIEW = "html/admin.html";
 	
 	private static final File TEACHER_HTML_FILE = new File(TEACHER_VIEW);
 	private static final File ADMIN_HTML_FILE = new File(ADMIN_VIEW);
