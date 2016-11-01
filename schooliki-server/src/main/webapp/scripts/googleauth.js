@@ -88,7 +88,6 @@ function getUserprofileAsJson(googleuser){
 	       if(document.getElementById("secondAttempt")){
 	    	   if(document.getElementById("secondAttempt").innerText === "1"){
 	    		   document.getElementById("secondAttempt").innerText = "0";
-	    	         signOut();
 	    	   }else{
 	    		   login(googleUser);  
  
@@ -105,7 +104,7 @@ function getUserprofileAsJson(googleuser){
 
     function renderButton() {
       gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
+        'scope': 'profile email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive',
         'width': 240,
         'height': 50,
         'longtitle': true,
@@ -123,30 +122,21 @@ function getUserprofileAsJson(googleuser){
     if(!auth2){
     	//usually the case, because it's done on another page than the main login page
             gapi.load('auth2', function(){
-                /**
-                 * Retrieve the singleton for the GoogleAuth library and set up the
-                 * client.
-                 */
                 auth2 = gapi.auth2.init({
                     client_id: '535909648993-7nfaqivi206q2phmicubas1hjri084eb.apps.googleusercontent.com'
                 }).then(function(){
                 	var instance = gapi.auth2.getAuthInstance();
-	            	 var token = instance.currentUser.get().getAuthResponse().id_token;
+
 	                 instance.signOut().then(function () {
 	                	 document.getElementById("logout").submit();
-	                	 
 	                	 console.log('logged out');
-	                	 
-	       		      
 	       		    });
             });
             	
             });
     }else{
     	var instance = auth2.getAuthInstance();
-	    
-    	var instance = gapi.auth2.getAuthInstance();
-   	 var token = instance.currentUser.get().getAuthResponse().id_token;
+
         instance.signOut().then(function () {
         	document.getElementById("logout").submit();
         	console.log('logged out');
@@ -155,5 +145,9 @@ function getUserprofileAsJson(googleuser){
     	
     }
     
-   	
-  }
+    }
+    
+    
+    
+    
+   

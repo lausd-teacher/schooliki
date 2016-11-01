@@ -36,6 +36,8 @@ public class LoginService extends HttpServlet {
 	
 	private final Logger log = Logger.getLogger("logger");
 	
+	public static final String TOKEN_SESSION_ATTRIBUTE = "OAuth_TOKEN";
+	
 	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 	
 	ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SecurityConfig.class);
@@ -51,41 +53,55 @@ public class LoginService extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+		
+		HttpSession session = req.getSession(false);
+		
+		     if(session == null){
 		         
-		         String query = req.getQueryString();
-		           if(query != null && !query.isEmpty()){
-		              String firstQuery = (query.split("&"))[0];
-		              String[] firstQueryTokens = firstQuery.split("=");
-		              String firstQueryType = firstQueryTokens[0];
-		              String firstQueryNumber = firstQueryTokens[1];
-		              
-		              if(firstQueryType.equals("error")){
-		            	  switch(firstQueryNumber){
-		            	  case "1":
-		            		  res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.USER_NOT_INVITED));
-		            		  break;
-		            	  case "2":
-		            		  res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.TOKEN_NOT_VALID));
-		            		  break;
-		            	  case "3":
-		            		  res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.USER_NOT_ADMIN)); 
-		            	      break;
-		            	  default:
-		            	      break;
-		            	  
-		            	  
-		            	  }
-		            	  
-		              }
-		           } else{
-		        		 
-		        	   String token = AppCurrentUsersTokens.getUserToken(req.getSession().getId());
+					         String query = req.getQueryString();
+					           if(query != null && !query.isEmpty()){
+					              String firstQuery = (query.split("&"))[0];
+					              String[] firstQueryTokens = firstQuery.split("=");
+					              String firstQueryType = firstQueryTokens[0];
+					              String firstQueryNumber = firstQueryTokens[1];
+					              
+					              if(firstQueryType.equals("error")){
+					            	  switch(firstQueryNumber){
+					            	  case "1":
+					            		  res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.USER_NOT_INVITED));
+					            		  break;
+					            	  case "2":
+					            		  res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.TOKEN_NOT_VALID));
+					            		  break;
+					            	  case "3":
+					            		  res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.USER_NOT_ADMIN)); 
+					            	      break;
+					            	  default:
+					            	      break;
+					            	  
+					            	  
+					            	  }
+					            	  
+					              }
+					              
+					           }else{
+					        	   res.getWriter().write(ViewsUtils.loginView(false, ""));
+					        	   
+					           }
+		     } else{
+		        		
+		        	
+
+		        	   String token = session.getAttribute(TOKEN_SESSION_ATTRIBUTE).toString();
+		        	   
 			          if(token == null){
 			            res.getWriter().write(ViewsUtils.loginView(false, ""));
 			          }else{
 			        	 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			        	 res.getWriter().write(ViewsUtils.loginView(true, auth.getName()));
 			          }
+			          
+		        	
 		          
 		           }
 	}
@@ -131,24 +147,19 @@ public class LoginService extends HttpServlet {
 										   if(Boolean.parseBoolean(isAdmin)){
 											   if(appUser.hasRole(UserRoles.ADMIN)){
 												   login(email, req, token);
-												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/admin");
 											   }else{
-												   //res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.USER_NOT_ADMIN)); 
 												   res.sendRedirect("/login?error=3");
 											   }   
 										   }else{
 											   if(appUser.hasRole(UserRoles.TEACHER)){
 												   login(email, req, token);
-												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/teacher");
 											   }else if (appUser.hasRole(UserRoles.FACULTY)){
 												   login(email, req, token);
-												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/faculty");
 											   }else if(appUser.hasRole(UserRoles.STUDENT)){
 												   login(email, req, token);
-												   AppCurrentUsersTokens.registerUserToken(req.getSession().getId(), token);
 												   res.sendRedirect("/student");
 											   }
 										   }
@@ -157,11 +168,9 @@ public class LoginService extends HttpServlet {
 										   res.sendRedirect("/error.html");
 									   }
 						}else{
-							//res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.USER_NOT_INVITED));
 							res.sendRedirect("/login?error=1");
 						}		
 					}else{
-						//res.getWriter().write(ViewsUtils.loginViewWithErrors(ErrorMessages.TOKEN_NOT_VALID));
 						res.sendRedirect("/login?error=2");
 					}
 				} catch (Exception e) {
@@ -190,7 +199,7 @@ public class LoginService extends HttpServlet {
 		    // Create a new session and add the security context.
 		    HttpSession session = request.getSession(true);
 		    session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-		    session.setAttribute("OAuth_TOKEN", authToken);
+		    session.setAttribute(TOKEN_SESSION_ATTRIBUTE, authToken);
 		    
 		    log.log(Level.INFO, "User successfully authenticated");
 		

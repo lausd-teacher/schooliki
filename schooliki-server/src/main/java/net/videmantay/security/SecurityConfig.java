@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import net.videmantay.shared.UserRoles;
 
@@ -34,13 +34,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	
 	
+	
+	
 		
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	  http.authorizeRequests()
+	  http
+	  //  .antMatcher("/appuser").addFilterBefore(new OAuthAuthenticationFilter(), BasicAuthenticationFilter.class)
+	    .authorizeRequests()
 	    //.antMatchers("/login").permitAll()
 		//.antMatchers("/admin/**").access("hasRole('"+UserRoles.ADMIN.toString()+"')")
-	    .antMatchers("/html/**").denyAll()
+	    .antMatchers("/html", "/html/**").denyAll()
 	    .antMatchers("/admin/**").access("hasRole('"+UserRoles.ADMIN.toString()+"')")
 		.antMatchers("/teacher/**").access("hasRole('"+UserRoles.TEACHER.toString()+"')")
 		.antMatchers("/student/**").access("hasRole('"+UserRoles.STUDENT.toString()+"')")
