@@ -26,7 +26,13 @@ import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.places.*;
+import net.videmantay.roster.places.CalendarPlace;
+import net.videmantay.roster.places.ClassRoomPlace;
+import net.videmantay.roster.places.LessonsPlace;
+import net.videmantay.roster.places.LibraryPlace;
+import net.videmantay.roster.places.RosterHomePlace;
+import net.videmantay.roster.places.SettingsPlace;
+import net.videmantay.roster.places.UserProfilePlace;
 import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.RosterDisplay;
 import net.videmantay.roster.views.RosterForm;
@@ -98,7 +104,7 @@ public class RosterDisplayActivity extends AbstractActivity
 		} else if (currentPlace instanceof LibraryPlace) {
 			appPanel.getMainPanel().add(new Label("Library section is not implemented yet"));
 		} else if (currentPlace instanceof CalendarPlace) {
-			appPanel.getMainPanel().add(new Label("Calendar section is not implemented yet"));
+			appPanel.getMainPanel().add(factory.getGoogleCalendar());
 		}else if (currentPlace instanceof SettingsPlace) {
 			appPanel.getMainPanel().add(new Label("Settings section is not implemented yet"));
 		}else if (currentPlace instanceof UserProfilePlace) {
@@ -351,7 +357,7 @@ public class RosterDisplayActivity extends AbstractActivity
 		
 		
 		//Adding Nav Bar
-		appPanel.getNavBartitle().setText("Dr. Sammy Lee");
+		appPanel.getNavBartitle().setText(factory.getCurrentUserName());
 		appPanel.getNavBarContainer().clear();
 		appPanel.getNavBarContainer().add(mainRosterNavBar.getCalendarTooltip());
 		appPanel.getNavBarContainer().add(mainRosterNavBar.getTodoTooltip());
@@ -368,7 +374,7 @@ public class RosterDisplayActivity extends AbstractActivity
 		} else if (currentPlace instanceof LibraryPlace) {
 			appPanel.getMainPanel().add(new Label("Library section is not implemented yet"));
 		} else if (currentPlace instanceof CalendarPlace) {
-			appPanel.getMainPanel().add(new Label("Calendar section is not implemented yet"));
+			appPanel.getMainPanel().add(factory.getGoogleCalendar());
 		}else if (currentPlace instanceof SettingsPlace) {
 			appPanel.getMainPanel().add(new Label("Settings section is not implemented yet"));
 		}else if (currentPlace instanceof UserProfilePlace) {

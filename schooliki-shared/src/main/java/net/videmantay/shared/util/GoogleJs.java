@@ -54,7 +54,6 @@ public class GoogleJs {
     
     }else{
        var instance = auth2.getAuthInstance();
-	    
 	   	              instance.isSignedIn.listen(function(isSignedIn){
 			            	           if(!isSignedIn){
 			            	            $wnd.document.getElementById("logout").submit();
@@ -64,6 +63,19 @@ public class GoogleJs {
 			            	 );
             }
     }-*/;
+	
+	public native static String getAccessToken()/*-{
+		
+    var instance = $wnd.gapi.auth2.getAuthInstance();
+    var currentUser = instance.currentUser.get();
+    
+       if(currentUser.Zi.access_token) 
+             return currentUser.Zi.access_token;
+       else
+             return null;
+		       	         
+		          
+  }-*/;
 	
 	
 	 

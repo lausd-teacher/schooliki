@@ -18,14 +18,15 @@ import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
+import net.videmantay.roster.views.calendar.GoogleCalendar;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
-import net.videmantay.roster.views.components.Calendar;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
 import net.videmantay.roster.views.incident.IncidentForm;
 import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
+import net.videmantay.shared.util.GoogleJs;
 
 public class ClientFactoryImpl implements ClientFactory {
 	
@@ -46,10 +47,10 @@ public class ClientFactoryImpl implements ClientFactory {
 	StudentActionModal studentModal = new StudentActionModal();
 	ClassroomGrid grid = new ClassroomGrid(studentForm, studentModal);
 	SeatingChartPanel seatingChartPanel = new SeatingChartPanel();
-	Calendar calendar = new Calendar();
 	IncidentForm incidentForm = new IncidentForm();
 	IncidentMain incidentMain = new IncidentMain(incidentForm);
-	
+	GoogleCalendar googleCalendar = null;
+	 String token = null;
 
 
 	@Override
@@ -124,10 +125,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	public SeatingChartPanel getSettingChartPanel() {
 		return seatingChartPanel;
 	}
-	@Override
-	public Calendar getCalendar() {
-		return calendar;
-	}
+	
 	@Override
 	public IncidentMain getIncidentMainPage() {
 		return incidentMain;
@@ -146,6 +144,24 @@ public class ClientFactoryImpl implements ClientFactory {
 	public String getCurrentUserProfileImageUrl() {
 	
 		return profilePage.getProfilePictureUrl();
+	}
+	@Override
+	public GoogleCalendar getGoogleCalendar() {
+		if(googleCalendar == null){
+			
+			googleCalendar = new GoogleCalendar(this);
+		}
+			
+		return googleCalendar;
+	}
+	@Override
+	public String getAccessToken() {
+		
+		 if(token == null){
+			 
+			 token = GoogleJs.getAccessToken();
+		 }
+		return token;
 	}
 
 	
