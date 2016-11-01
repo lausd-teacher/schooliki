@@ -496,7 +496,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		addStudentButtonClickEvent();
 		okButtonClickHandler();
 		cancelButtonClickHandler();
-		pickerButtonClick();
 		tabsClickEvent();
 		assignementGridFabClick();
 		gradedWorkFromOkButtonClickEvent();
@@ -670,6 +669,17 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 	@Override
 	public void okButtonClickHandler() {
+		
+		
+		if(grid.getCreateStudentFrom().getAddedStudentsMasonery().getWidgetCount() == 0){
+			grid.getCreateStudentFrom().hide();
+			
+		}else{
+			
+			 
+			
+			
+		}
 
 		grid.getCreateStudentFrom().getOkBtn().addClickHandler(new ClickHandler() {
 			@Override
@@ -681,7 +691,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 						.done(new Function() {
 							@Override
 							public void f() {
-								grid.getCreateStudentFrom().hide();
+								
 								getRosterStudentsListAndDrawGrid();
 								MaterialLoader.showLoading(false);
 
@@ -714,16 +724,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		});
 	}
 
-	@Override
-	public void pickerButtonClick() {
-		grid.getCreateStudentFrom().getPickerButton().addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				grid.getCreateStudentFrom().hide();
-				grid.getCreateStudentFrom().getPicker().setVisible(true);
-			}
-		});
-	}
+	
 
 	@Override
 	public void tabsClickEvent() {

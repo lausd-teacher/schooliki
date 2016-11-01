@@ -25,7 +25,7 @@
 			textColor="red darken-4" iconType="SCHEDULE" />
 		<m:MaterialLink ui:field="formLink" text="Forms"
 			textColor="deep-orange darken-4" iconType="INBOX" />
-		<m:MaterialLink ui:field="logoutLink" text="Logout"
+		<m:MaterialLink ui:field="logoutLink" text="Back to Main"
 			iconType="INPUT" />
 	</g:HTMLPanel>
 </ui:UiBinder> 

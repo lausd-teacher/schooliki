@@ -27,328 +27,77 @@ import net.videmantay.server.validation.ValidationMessages;
 
 
 @Entity
-public class RosterStudent extends DBObj implements  Serializable,Comparator<RosterStudent> {
+public class RosterStudent implements Serializable {
 	
 	@Id
 	public Long id;
 	///Key to roster detail not parent roster
 	//why not set actual key???
-	
-	@NotNull
 	@Index
-	public Long parentRosterId;
-	
-	@NotNull
-	@NotBlank
-	public String firstName;
-	
-	@NotNull
-	@NotBlank
-	public String lastName;
-	public String extName;
-	public Thumbnail[] thumbnails;
-	
-	@ValidDateOfBirth
-	public Date DOB;
-	public Boolean glasses;
-	public String eldLevel;
-	public Set<StudentJob> jobs;
-	public boolean inactive = false;
+	Long studentId;
 	
 	@Index
-	@Email(message=ValidationMessages.EMAIL_INVALID)
-	public String acctId;
+	Long rosterId;
 	
-	public ArrayList<Integer> points;
 	
-	@Serialize
-	public Set<Goal> goals;
-	
-	@Ignore
-	public RosterDetail rosterDetail;
-	
-	public String studentFolderId;
-	public String studentCalId;
-	public String recordUrl;
-	public String studentTasksId;
 	
 	public RosterStudent(){
 		
+		
 	}
 	
 	
-	public Long getRoster() {
-		return parentRosterId;
-	}
-	public void setRoster(Long roster) {
-		this.parentRosterId = roster;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	public Boolean getGlasses() {
-		return glasses;
-	}
-	public void setGlasses(Boolean glasses) {
-		this.glasses = glasses;
-	}
-	public String getEldLevel() {
-		return eldLevel;
-	}
-	public void setEldLevel(String eldLevel) {
-		this.eldLevel = eldLevel;
-	}
-	public Set<StudentJob> getJobs() {
-		return jobs;
-	}
-	public void setJobs(Set<StudentJob> jobs) {
-		this.jobs = jobs;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	public String getExtName(){
-		return this.extName;
-	}
-	public void setExtName(String extName){
-		this.extName = extName;
-	}
-	public void setPicUrl(Thumbnail[] thumbnails) {
-		this.thumbnails = thumbnails;
-	}
-	
-	public Thumbnail[] getThumbnails(){
-		return this.thumbnails;
-	}
-	public Date getDOB() {
-		return DOB;
-	}
-	public void setDOB(Date dOB) {
-		DOB = dOB;
-	}
-	public String getAcctId() {
-		return acctId;
-	}
-	public void setAcctId(String studentGoogleId) {
-		this.acctId = studentGoogleId;
-	}
 
-	
-	public Set<Goal> getBadges() {
-		return goals;
-	}
-	public void setBadges(Set<Goal> goals) {
-		this.goals = goals;
-	}
-	public Long getId() {
-		return id;
-	}
-	
-	public RosterDetail getRosterDetail(){
-		return this.rosterDetail;
-	}
-	
-	public void setRostserDetail(RosterDetail rosDe){
-		this.rosterDetail = rosDe;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getStudentFolderId() {
-		return studentFolderId;
-	}
-	public void setStudentFolderId(String studentFolderId) {
-		this.studentFolderId = studentFolderId;
-	}
-	public String getStudentCalId() {
-		return studentCalId;
-	}
-	public void setStudentCalId(String studentCalId) {
-		this.studentCalId = studentCalId;
-	}
-	public String getStudentTasksId() {
-		return studentTasksId;
-	}
-	
-	public String getRecordUrl(){
-		return this.recordUrl;
-	}
-	
-	public void setRecordUrl(String url){
-		this.recordUrl = url;
-	}
-	public void setStudentTasksId(String studentTasksId) {
-		this.studentTasksId = studentTasksId;
-	}
-	public Boolean getInactive() {
-		return inactive;
-	}
-	public void setInactive(Boolean inactive) {
-		this.inactive = inactive;
-	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((DOB == null) ? 0 : DOB.hashCode());
-		result = prime * result
-				+ ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((parentRosterId == null) ? 0 : parentRosterId.hashCode());
-		result = prime * result
-				+ ((acctId == null) ? 0 : acctId.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof RosterStudent))
-			return false;
-		RosterStudent other = (RosterStudent) obj;
-		if (DOB == null) {
-			if (other.DOB != null)
-				return false;
-		} else if (!DOB.equals(other.DOB))
-			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		if (parentRosterId == null) {
-			if (other.parentRosterId != null)
-				return false;
-		} else if (!parentRosterId.equals(other.parentRosterId))
-			return false;
-		if (acctId == null) {
-			if (other.acctId != null)
-				return false;
-		} else if (!acctId.equals(other.acctId))
-			return false;
-		return true;
-	}
-	@Override
-	public int compare(RosterStudent student1, RosterStudent student2) {
-		
-		
-		switch(student1.getLastName().compareToIgnoreCase(student2.getLastName())){
-			case 0: compareFirstName(student1, student2)  ;break;
-			case 1: return 1;
-			case -1: return -1;
-		}
-		return 0;
-	}
-	
-	private int compareFirstName(RosterStudent student1, RosterStudent student2){
-		switch(student1.getFirstName().compareToIgnoreCase(student2.getFirstName())){
-		case 0: compareDOB(student1, student2) ;break;
-		case 1: return 1;
-		case -1: return -1;
-		
-		}
-		return 0;
-		
-	}
-	
-	private int compareDOB(RosterStudent student1, RosterStudent student2){
-		
-		switch(student1.getDOB().compareTo(student2.getDOB())){
-		case 0: compareId(student1, student2); break;
-		case 1: return 1;
-		case -1: return -1;
-		}
-		
-		return 0;
-	}
-	
-	private int compareId(RosterStudent student1, RosterStudent student2){
-		switch(student1.getId().compareTo(student2.getId())){
-		case 1: return 1;
-		case -1: return -1;
-		case 0: return 0;
-		default: return 0;
-		
-		}
-	}
-	@Override
-	public boolean valid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	public RosterStudent(Long id, Long parentRosterId, String firstName, String lastName, String extName,
-			Thumbnail[] thumbnails, Date dOB, Boolean glasses, String eldLevel, Set<StudentJob> jobs, boolean inactive,
-			String acctId, ArrayList<Integer> points, Set<Goal> goals, String studentFolderId, String studentCalId,
-			String recordUrl, String studentTasksId) {
+	public RosterStudent(Long studentId, Long rosterId) {
 		super();
-		this.id = id;
-		this.parentRosterId = parentRosterId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.extName = extName;
-		this.thumbnails = thumbnails;
-		DOB = dOB;
-		this.glasses = glasses;
-		this.eldLevel = eldLevel;
-		this.jobs = jobs;
-		this.inactive = inactive;
-		this.acctId = acctId;
-		this.points = points;
-		this.goals = goals;
-		this.studentFolderId = studentFolderId;
-		this.studentCalId = studentCalId;
-		this.recordUrl = recordUrl;
-		this.studentTasksId = studentTasksId;
+		this.studentId = studentId;
+		this.rosterId = rosterId;
 	}
 	
 	
 	public static RosterStudent createFromDTO(RosterStudentDTO dto){
-		
 		RosterStudent student = new RosterStudent();
 		student.id = dto.id;
-		student.parentRosterId = dto.parentRosterId;
-		student.firstName = dto.firstName;
-		student.lastName = dto.lastName;
-		student.extName = dto.extName;
-		student.thumbnails = dto.thumbnails;
-		student.DOB = dto.DOB;
-		student.glasses = dto.glasses;
-		student.eldLevel = dto.eldLevel;
-		student.jobs = dto.jobs;
-		student.inactive = dto.inactive;
-		student.acctId = dto.acctId;
-		student.points = dto.points;
-		student.goals = dto.goals;
-		student.studentFolderId = dto.studentFolderId;
-		student.studentCalId = dto.studentCalId;
-		student.recordUrl = dto.recordUrl;
-		student.studentTasksId = dto.studentTasksId;
+		student.rosterId = dto.getRosterId();
+		student.studentId = dto.getStudentId();
 		
 		return student;
+	}
+
+
+
+	public Long getId() {
+		return this.id;
+	}
+
+
+
+	public Long getStudentId() {
+		return this.studentId;
+	}
+
+
+
+	public Long getRosterId() {
+		return this.rosterId;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
+	}
+
+
+
+	public void setRosterId(Long rosterId) {
+		this.rosterId = rosterId;
 	}
 	
 	

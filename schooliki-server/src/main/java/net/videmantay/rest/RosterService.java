@@ -26,6 +26,7 @@ import net.videmantay.rest.dto.IncidentDTO;
 import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
 import net.videmantay.server.entity.Incident;
+import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
 import net.videmantay.server.user.Roster;
 import net.videmantay.server.user.RosterStudent;
@@ -145,18 +146,20 @@ public class RosterService {
 	@Path("/{id}/student")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createRosterStudents(@PathParam("id") Long id, RosterStudentDTO rosterStudentDTO) {
+	public Response createRosterStudents(@PathParam("id") Long id, Long studentId) {
 
-		// cheking if roste exists
+		// cheking if roste exists and student exists
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
-
-		if (result != null) {
-
-			rosterStudentDTO.parentRosterId = id;
-
-			final RosterStudent rosterStd = RosterStudent.createFromDTO(rosterStudentDTO);
 		
-			Long newId = rosterStudentDB.save(rosterStd).getId();
+		AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
+
+		if (result != null && student != null) {
+
+			RosterStudent rosterStudent = new RosterStudent();
+			rosterStudent.setRosterId(id);
+			rosterStudent.setStudentId(student.getId());
+		
+			Long newId = rosterStudentDB.save(rosterStudent).getId();
 			
 
 			return Response.ok().entity(newId).build();
@@ -165,35 +168,35 @@ public class RosterService {
 		return Response.status(Status.NOT_FOUND).build();
 	}
 
-	@POST
-	@Path("/{rosterId}/student/{studentId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifyRosterStudent(@PathParam("rosterId") Long rosterId, @PathParam("studentId") Long studentId,
-			RosterStudentDTO rosterStudentDTO) {
-          
-		Roster result = ofy().load().key(Key.create(Roster.class, rosterId)).now();
-		
-		if (result != null) {
-
-			// cheking if roster student exists
-			RosterStudent resultStudent = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
-
-			if (resultStudent != null) {
-
-				rosterStudentDTO.parentRosterId = rosterId;
-				rosterStudentDTO.id = studentId;
-
-				final RosterStudent rosterStd = RosterStudent.createFromDTO(rosterStudentDTO);
-
-						rosterStudentDB.save(rosterStd).getId();
-
-			}
-
-			return Response.ok().entity(rosterStudentDTO).build();
-		}
-
-		return Response.status(Status.NOT_MODIFIED).build();
-	}
+//	@POST
+//	@Path("/{rosterId}/student/{studentId}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response modifyRosterStudent(@PathParam("rosterId") Long rosterId, @PathParam("studentId") Long studentId,
+//			RosterStudentDTO rosterStudentDTO) {
+//          
+//		Roster result = ofy().load().key(Key.create(Roster.class, rosterId)).now();
+//		
+//		if (result != null) {
+//
+//			// cheking if roster student exists
+//			RosterStudent resultStudent = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
+//
+//			if (resultStudent != null) {
+//
+//				rosterStudentDTO.parentRosterId = rosterId;
+//				rosterStudentDTO.id = studentId;
+//
+//				final RosterStudent rosterStd = RosterStudent.createFromDTO(rosterStudentDTO);
+//
+//						rosterStudentDB.save(rosterStd).getId();
+//
+//			}
+//
+//			return Response.ok().entity(rosterStudentDTO).build();
+//		}
+//
+//		return Response.status(Status.NOT_MODIFIED).build();
+//	}
 	
 	@GET
 	@Path("/{id}/incident")
