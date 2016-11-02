@@ -6,13 +6,11 @@ import java.util.Set;
 
 import org.hibernate.validator.constraints.SafeHtml;
 
-import net.videmantay.server.user.DBObj;
-import net.videmantay.shared.GradeLevel;
-import net.videmantay.shared.SubjectType;
-
-import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+
+import net.videmantay.shared.GradeLevel;
+import net.videmantay.shared.SubjectType;
 
 
 

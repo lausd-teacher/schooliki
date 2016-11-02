@@ -38,21 +38,13 @@ import com.googlecode.objectify.annotation.Serialize;
 @Cache
 @Entity
 @ValidDateRange
-public class Roster extends DBObj implements Serializable{
+public class Roster implements Serializable{
 	
 	/**
 	 * 
 	 */
 	public static final long serialVersionUID = 1L;
 
-
-	/*
-	 * Roster should only send back what is immediately needed by roster view???
-	 * Well if we cache it then we can have a great deal available and not worry about 
-	 * DB  calls??? Anything that will be over a hundred will not be included
-	 */
-
-	
 	@Id
 	public Long id;
 	
@@ -102,57 +94,8 @@ public class Roster extends DBObj implements Serializable{
 	public List<GoogleService> googleFolders = new ArrayList<GoogleService>();
 
 	
-	//maybe a sorted set by last name???
-	public transient Set<Key<RosterStudent>> studentKeys = new HashSet<Key<RosterStudent>>();
-	
-	@Serialize
-	public Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
-		
-	@Serialize
-	public ArrayList<StudentJob> studentJobs = new ArrayList<>();
-	
-	@Serialize
-	public ArrayList<ClassTime> classTimes = new ArrayList<>();
-		
-//
-//	public ArrayList<Incident> incidents = new ArrayList<Incident>();
-	
-	//folders for roster and place for student folders
-	@SafeHtml
-	public  String rosterFolderId = "";
-	
-	@SafeHtml
-	public String studentFolderId = "";
-		
-	/*
-	 * used to set a reference date for when to query
-	 * incidents (student points) clears everything before it.
-	 * think classdojo clear point from here.
-	 */
-	
-	@ValidDateFormat
-	public transient String incidentQueryDate = "";
-	
-	///Constructors
-	
 	public Roster(){
 		
-	}
-	
-	public Set<Key<RosterStudent>> getStudentKeys() {
-		return studentKeys;
-	}
-
-	public void setStudentKeys(Set<Key<RosterStudent>> students) {
-		this.studentKeys = students;
-	}
-
-	public ArrayList<StudentJob> getStudentJobs() {
-		return studentJobs;
-	}
-
-	public void setStudentJobs(ArrayList<StudentJob> studentJobs) {
-		this.studentJobs = studentJobs;
 	}
 
 	public Long getId() {
@@ -251,31 +194,6 @@ public class Roster extends DBObj implements Serializable{
 	public void setGoogleTasks(List<GoogleService> googleTasks){
 		this.googleTasks = googleTasks;
 	}
-	
-	public String getRosterFolderId() {
-		return rosterFolderId;
-	}
-
-	public void setRosterFolderId(String rosterFolderId) {
-		this.rosterFolderId = rosterFolderId;
-	}
-	
-	public String getStudentFolderId(){
-		return this.studentFolderId;
-	}
-	
-	public void setStudentFolderId(String studentFolder){
-		this.studentFolderId = studentFolder;
-	}
-	
-	
-	public Set<RosterStudent> getRosterStudents() {
-		return rosterStudents;
-	}
-
-	public void setRosterStudents(Set<RosterStudent> rosterStudents) {
-		this.rosterStudents = rosterStudents;
-	}
 
 	public String getRollBook() {
 		return rollBook;
@@ -300,22 +218,7 @@ public class Roster extends DBObj implements Serializable{
 	public void setBehaviorReport(String behaviorReport) {
 		this.behaviorReport = behaviorReport;
 	}
-	
-	public void setClassTimes(ArrayList<ClassTime> classTimes){
-		this.classTimes = classTimes;
-	}
-	
-	public ArrayList<ClassTime> getClassTimes(){
-		return this.classTimes;
-	}
-	
-	public String getInicidentQueryDate(){
-		return this.incidentQueryDate;
-	}
-	
-	public void setIncidentQueryDate(String date){
-		this.incidentQueryDate = date;
-	}
+
 
 	public RosterDetail createDetail(){
 		RosterDetail detail = new RosterDetail();
@@ -327,20 +230,7 @@ public class Roster extends DBObj implements Serializable{
 		return detail;
 	}
 	
-	public Key<Roster> getKey(){
-		return Key.create(Roster.class, this.id);
-	}
 
-	@Override
-	public boolean valid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@OnLoad void onLoad(){
-		//load students from keys
-		this.getRosterStudents().addAll(DB.db().load().keys(this.getStudentKeys()).values());
-	}
 	
 	public static Roster createFromDTO(RosterDTO dto) throws ParseException{
 		
@@ -363,9 +253,6 @@ public class Roster extends DBObj implements Serializable{
 		roster.googleCalendars = dto.googleCalendars;
 		roster.googleTasks = dto.googleTasks;
 		roster.googleFolders = dto.googleFolders;
-		roster.rosterFolderId = dto.rosterFolderId;
-		roster.studentFolderId = dto.studentFolderId;
-		roster.incidentQueryDate = dto.incidentQueryDate;
 		
 		 return roster;
 	}

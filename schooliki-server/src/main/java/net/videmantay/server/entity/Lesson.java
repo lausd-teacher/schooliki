@@ -1,22 +1,18 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import net.videmantay.server.user.DBObj;
-import net.videmantay.shared.GradeLevel;
-import net.videmantay.shared.SubjectType;
-
-import com.google.appengine.api.datastore.Key;
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
+import net.videmantay.shared.GradeLevel;
+import net.videmantay.shared.SubjectType;
+
 @Entity
-public class Lesson extends DBObj implements Serializable{
+public class Lesson  implements Serializable{
 	
 	/**
 	 * 
@@ -40,30 +36,7 @@ public class Lesson extends DBObj implements Serializable{
 	public Long getId() {
 		return id;
 	}
-	public Date getCreateOn() {
-		return createOn;
-	}
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
-	}
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	public Date getLastUpdate() {
-		return lastUpdate;
-	}
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-	public Long getVersionNum() {
-		return versionNum;
-	}
-	public void setVersionNum(Long versionNum) {
-		this.versionNum = versionNum;
-	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -118,10 +91,6 @@ public class Lesson extends DBObj implements Serializable{
 	public void setVocabList(Set<Long> vocabList) {
 		this.vocabList = vocabList;
 	}
-	@Override
-	public boolean valid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 	
 }

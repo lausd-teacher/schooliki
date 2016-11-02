@@ -116,7 +116,7 @@ public class RosterService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRosterStudentsList(@PathParam("id") Long id) {
 
-		List<RosterStudent> studentsList = ofy().load().type(RosterStudent.class).filter("parentRosterId", id).list();
+		List<RosterStudent> studentsList = ofy().load().type(RosterStudent.class).filter("id", id).list();
 		List<RosterStudentDTO> rosterStudentDTO = new ArrayList<RosterStudentDTO>();
 
 		for (RosterStudent roster : studentsList) {
@@ -146,23 +146,34 @@ public class RosterService {
 	@Path("/{id}/student")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createRosterStudents(@PathParam("id") Long id, Long studentId) {
+	public Response createRosterStudents(@PathParam("id") Long id, List<Long> studentIds) {
 
 		// cheking if roste exists and student exists
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+		boolean studentsCheck = true;
 		
-		AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
-
-		if (result != null && student != null) {
-
-			RosterStudent rosterStudent = new RosterStudent();
-			rosterStudent.setRosterId(id);
-			rosterStudent.setStudentId(student.getId());
-		
-			Long newId = rosterStudentDB.save(rosterStudent).getId();
+		for(int i = 0; i < studentIds.size(); i++){
+			Long currentStudentId = studentIds.get(i);
+			AppUser student = ofy().load().key(Key.create(AppUser.class, currentStudentId)).now();
+			 if(student == null){
+				 studentsCheck = false;
+			 }
 			
+		}
+		  
 
-			return Response.ok().entity(newId).build();
+		if (result != null && studentsCheck) {
+
+		  for(int i = 0; i < studentIds.size(); i++){
+			  RosterStudent rosterStudent = new RosterStudent();
+				rosterStudent.setRosterId(id);
+				rosterStudent.setStudentId(studentIds.get(i));
+			
+				rosterStudentDB.save(rosterStudent);
+			    
+		  }
+			
+			return Response.ok().build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();

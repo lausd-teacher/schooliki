@@ -17,7 +17,7 @@ import com.googlecode.objectify.annotation.Parent;
 
 @Cache
 @Entity
-public class RosterSetting extends DBObj implements Serializable{
+public class RosterSetting implements Serializable{
 	
 	@Id
 	public Long id;
@@ -92,11 +92,6 @@ public class RosterSetting extends DBObj implements Serializable{
 		overrideDefault = override;
 	}
 
-	@Override
-	public boolean valid() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public RosterSetting defaultSetting(){
 		

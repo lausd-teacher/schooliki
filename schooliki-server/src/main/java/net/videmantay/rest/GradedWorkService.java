@@ -199,7 +199,7 @@ public class GradedWorkService {
 					assignedWork.setGradedWorkId(idAsFinalVariable);
 					assignedWork.setStudentWorkId(work.id);
 					assignedWork.setRosterStudentId(work.rosterStudentId);
-					assignedWork.setRosterId(rosterStudent.parentRosterId);
+					assignedWork.setRosterId(rosterStudent.getRosterId());
 
 					assignedGradedeWokDB.save(assignedWork);
 				}

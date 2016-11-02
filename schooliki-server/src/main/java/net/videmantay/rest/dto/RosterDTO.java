@@ -48,13 +48,6 @@ public class RosterDTO implements Serializable {
 
 	public List<GoogleService> googleFolders = new ArrayList<GoogleService>();
 
-	public String rosterFolderId = "";
-
-	public String studentFolderId = "";
-
-	public String incidentQueryDate = "";
-
-	/// Constructors
 
 	public RosterDTO() {
 
@@ -77,9 +70,6 @@ public class RosterDTO implements Serializable {
 		this.googleCalendars = roster.googleCalendars;
 		this.googleTasks = roster.googleTasks;
 		this.googleFolders = roster.googleFolders;
-		this.rosterFolderId = roster.rosterFolderId;
-		this.studentFolderId = roster.studentFolderId;
-		this.incidentQueryDate = roster.incidentQueryDate;
 	}
 
 	public Long getId() {
@@ -179,21 +169,6 @@ public class RosterDTO implements Serializable {
 		this.googleTasks = googleTasks;
 	}
 
-	public String getRosterFolderId() {
-		return rosterFolderId;
-	}
-
-	public void setRosterFolderId(String rosterFolderId) {
-		this.rosterFolderId = rosterFolderId;
-	}
-
-	public String getStudentFolderId() {
-		return this.studentFolderId;
-	}
-
-	public void setStudentFolderId(String studentFolder) {
-		this.studentFolderId = studentFolder;
-	}
 
 	public String getRollBook() {
 		return rollBook;
@@ -219,12 +194,5 @@ public class RosterDTO implements Serializable {
 		this.behaviorReport = behaviorReport;
 	}
 
-	public String getInicidentQueryDate() {
-		return this.incidentQueryDate;
-	}
-
-	public void setIncidentQueryDate(String date) {
-		this.incidentQueryDate = date;
-	}
 
 }
