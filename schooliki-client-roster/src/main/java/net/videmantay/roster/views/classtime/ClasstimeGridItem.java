@@ -51,18 +51,6 @@ public class ClasstimeGridItem extends Composite {
 	}
 	
 	private void draw(){
-		title.setText(classTime.getTitle());
-		description.setText(classTime.getDescript());
-		String groupNumText = "0";
-		if(classTime.getGroups() != null){
-			groupNumText=classTime.getGroups().length() + "";
-		}
-		groupNum.setText(groupNumText);
 		
-		String procedNumText = "0";
-		if(classTime.getProcedures() != null){
-			procedNumText=classTime.getProcedures().length() + "";
-		}
-		procedureNum.setText(procedNumText);
 	}
 }

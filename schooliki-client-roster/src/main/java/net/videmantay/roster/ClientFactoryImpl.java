@@ -1,16 +1,14 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
+import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.AppLayout;
-import net.videmantay.roster.views.ClassroomGrid;
+import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDisplay;
 import net.videmantay.roster.views.StudentActionModal;
@@ -19,6 +17,8 @@ import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
 import net.videmantay.roster.views.calendar.GoogleCalendar;
+import net.videmantay.roster.views.classtime.ClassTimeForm;
+import net.videmantay.roster.views.classtime.ClassTimeGrid;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
 import net.videmantay.roster.views.components.MainRosterNavBar;
@@ -27,6 +27,7 @@ import net.videmantay.roster.views.incident.IncidentForm;
 import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
 import net.videmantay.shared.util.GoogleJs;
+
 
 public class ClientFactoryImpl implements ClientFactory {
 	
@@ -45,12 +46,15 @@ public class ClientFactoryImpl implements ClientFactory {
 	GradedWorkMain gradedWorkMain = new GradedWorkMain(gradedWorkForm);
 	CreateStudentForm studentForm = new CreateStudentForm();
 	StudentActionModal studentModal = new StudentActionModal();
-	ClassroomGrid grid = new ClassroomGrid(studentForm, studentModal);
+	ClassRoomGrid grid = new ClassRoomGrid(studentForm, studentModal);
 	SeatingChartPanel seatingChartPanel = new SeatingChartPanel();
 	IncidentForm incidentForm = new IncidentForm();
 	IncidentMain incidentMain = new IncidentMain(incidentForm);
 	GoogleCalendar googleCalendar = null;
 	 String token = null;
+	 ClassTimeJson selectedClassTime = null;
+	 ClassTimeGrid classTimeGrid = null;
+	 ClassTimeForm classTimeForm = null;
 
 
 	@Override
@@ -118,7 +122,7 @@ public class ClientFactoryImpl implements ClientFactory {
 		return studentForm;
 	}
 	@Override
-	public ClassroomGrid getClassRoomGrid() {
+	public ClassRoomGrid getClassRoomGrid() {
 		return grid;
 	}
 	@Override
@@ -158,10 +162,34 @@ public class ClientFactoryImpl implements ClientFactory {
 	public String getAccessToken() {
 		
 		 if(token == null){
-			 
 			 token = GoogleJs.getAccessToken();
 		 }
 		return token;
+	}
+	@Override
+	public ClassTimeJson getSelectedClassTime() {
+		// TODO Auto-generated method stub
+		return selectedClassTime;
+	}
+	@Override
+	public void setSelectedClassTime(ClassTimeJson selectedClassTime) {
+		this.selectedClassTime = selectedClassTime;
+	}
+	@Override
+	public ClassTimeGrid getClassTimeGrid() {
+		  if(classTimeGrid == null){
+			  classTimeGrid = new ClassTimeGrid(this);
+		  }
+		// TODO Auto-generated method stub
+		return classTimeGrid;
+	}
+	@Override
+	public ClassTimeForm getClassTimeForm() {
+		if(classTimeForm == null){
+			
+			classTimeForm = new ClassTimeForm();
+		}
+		return classTimeForm;
 	}
 
 	

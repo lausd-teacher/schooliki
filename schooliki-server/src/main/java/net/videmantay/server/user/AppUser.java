@@ -1,28 +1,13 @@
 package net.videmantay.server.user;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Email;
-
-import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.Serialize;
 
 import net.videmantay.rest.dto.AppUserDTO;
-import net.videmantay.server.validation.ValidRoles;
-import net.videmantay.server.validation.ValidStringWithNoSpecialCharacters;
-import net.videmantay.server.validation.ValidationMessages;
 import net.videmantay.shared.UserRoles;
-import net.videmantay.shared.UserStatus;
 
 
 
@@ -65,6 +50,7 @@ public  class AppUser  implements Serializable {
 		this.name = firstName + " " + lastName;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.name = firstName + " " + lastName;
 		this.imageUrl = imageUrl;
 		this.eMail = eMail;
 		this.googleId = googleId;
@@ -81,7 +67,7 @@ public  class AppUser  implements Serializable {
 
 
 	public String getName() {
-		return this.name;
+		return this.firstName + " " + this.lastName;
 	}
 
 	public String getImageUrl() {

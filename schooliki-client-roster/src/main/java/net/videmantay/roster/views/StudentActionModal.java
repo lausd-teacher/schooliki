@@ -164,13 +164,7 @@ public class StudentActionModal extends Composite {
 	}
 	
 	private void single(){
-		image.setType(ImageType.CIRCLE);
-		if(students.get(0).getThumbnails() != null){
-		image.setUrl(students.get(0).getThumbnails().get(3).getUrl());
-		}else{
-			image.setUrl("../img/user.svg");
-		}
-		studentsTitle.setTitle(students.get(0).getFirstName() + " " + students.get(0).getLastName());
+		
 	}
 	
 	private void multi(){

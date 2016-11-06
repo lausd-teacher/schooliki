@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.videmantay.server.user.DB;
+
 public class AdminServlet extends HttpServlet{
 	
 	
@@ -15,6 +17,7 @@ public class AdminServlet extends HttpServlet{
 		
 		
 		res.setContentType("text/html");
+		DB.start();
 		res.getWriter().write(ViewsUtils.adminView());
 		
 		

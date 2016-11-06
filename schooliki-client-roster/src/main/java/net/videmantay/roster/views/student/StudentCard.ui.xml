@@ -5,7 +5,7 @@
 	<ui:style>
 	</ui:style>
 	 <m:MaterialColumn grid="l3 m4 s12" height="100px" marginBottom="12">
-	    <m:MaterialCard height="100%" padding="20">
+	    <m:MaterialCard height="100%" padding="7">
             <m:MaterialIcon ui:field="removeButton" layoutPosition="RELATIVE" iconType="CLOSE" />
             <m:MaterialColumn grid="l3">
                 <m:MaterialImage ui:field="studentProfileImage" width="50px" height="50px" circle="true"/>

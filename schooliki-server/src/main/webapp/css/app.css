@@ -328,3 +328,6 @@ div.item-student.ui-selecting { background: #FECA40;
 	   font-size: 30px;
 	   color: #00ff00;
 	}
+	.studentCardLabel{
+	   font-size: 10px;
+	}

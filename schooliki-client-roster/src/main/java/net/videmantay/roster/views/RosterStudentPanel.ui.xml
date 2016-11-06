@@ -11,8 +11,8 @@
 				<div class="counterRotate"><!-- wrapped around a div for rotatable -->
 				<section class="studentInfoTable">
 					<m:html.Div ui:field="studentName" addStyleNames="studentName">
-						<m:html.Span ui:field="firstName" addStyleNames="first"/><m:html.Br />
-						<m:html.Span ui:field="lastName" addStyleNames="last" />
+						<m:html.Span ui:field="name" addStyleNames="first"/>
+						
 					</m:html.Div>
 					<m:html.Div ui:field="studentCheckBox" addStyleNames="studentCheckbox"></m:html.Div>
 				<div class="studentPanelToolbox">

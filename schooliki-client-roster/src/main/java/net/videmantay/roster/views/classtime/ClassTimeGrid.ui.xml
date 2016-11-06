@@ -5,7 +5,7 @@
 	<ui:style>
 	
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel ui:field="container">
 	<m:MaterialPanel textColor="grey" textAlign="LEFT" marginLeft="30.5">
 	<m:MaterialLabel text="Manage procedures, groups, and stations for specific 'times' of the day."></m:MaterialLabel>
 	</m:MaterialPanel>

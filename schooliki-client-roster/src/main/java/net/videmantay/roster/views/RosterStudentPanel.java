@@ -1,6 +1,5 @@
 package net.videmantay.roster.views;
 
-import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,9 +8,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.html.Span;
-import net.videmantay.student.json.RosterStudentJson;
+import net.videmantay.roster.json.AppUserJson;
 
 public class RosterStudentPanel extends Composite {
 
@@ -27,30 +25,22 @@ public class RosterStudentPanel extends Composite {
 	DivElement studentImg;
 	
 	@UiField
-	Span firstName;
+	Span name;
 	
-	@UiField
-	Span lastName;
 
-	public RosterStudentPanel() {
+
+	public RosterStudentPanel(AppUserJson student) {
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-
-
-
-	public RosterStudentPanel(RosterStudentJson student) {
-		this();
 		setData(student);
 	}
+
 	
-	public void setData(RosterStudentJson student){
+	public void setData(AppUserJson student){
 		//set the id of the panel to student id 
 		//this is so we can query and hide it when necessary
 		this.getElement().setId(student.getId() +"");
-		//studentImg.setUrl(student.getThumbnails().get(0).getUrl());
-		firstName.setText(student.getFirstName());
-		lastName.setText(student.getLastName());
-		String url= student.getThumbnails() == null||student.getThumbnails().get(1).getUrl() == null ||student.getThumbnails().get(1).getUrl() == ""? "../img/user.svg":student.getThumbnails().get(1).getUrl();
+		name.setText(student.getName());
+		String url= student.getImageUrl();
 		studentImg.getStyle().setBackgroundImage("url('" + url +"')");
 	}
 

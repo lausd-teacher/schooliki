@@ -24,7 +24,7 @@ public class StudentGroup implements Serializable{
 	
 	public String borderColor;
 	
-	public Set<String> students;
+	public Set<String> studentIds;
 
 	public Long getId() {
 		return id;
@@ -83,11 +83,11 @@ public class StudentGroup implements Serializable{
 	}
 
 	public Set<String> getStudents() {
-		return students;
+		return studentIds;
 	}
 
 	public void setStudents(Set<String> students) {
-		this.students = students;
+		this.studentIds = students;
 	}
 	
 }

@@ -5,25 +5,30 @@ import java.util.Date;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+
+import net.videmantay.rest.dto.ClassTimeDTO;
+import net.videmantay.rest.dto.RosterStudentDTO;
+import net.videmantay.server.user.RosterStudent;
 
 @Entity
 public class ClassTime implements Serializable{
 	
-	
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2845019435811983254L;
 	
 	
 	@Id
 	public Long id;
+	
+	@Index
+	public Long rosterId;
 	public String title;
 	public String descript;
 	public Date lastUpdate;
-	public boolean isDefault = false;
-	public String procedureFileId;
+	
+	public String startTime;
+	public String endTime;
+	
 	
 	public String getTitle() {
 		return title;
@@ -51,6 +56,24 @@ public class ClassTime implements Serializable{
 		this.id = id;
 	}
 	
+	public Long getRosterId() {
+		return this.rosterId;
+	}
+	public String getStartTime() {
+		return this.startTime;
+	}
+	public String getEndTime() {
+		return this.endTime;
+	}
+	public void setRosterId(Long rosterId) {
+		this.rosterId = rosterId;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -79,6 +102,19 @@ public class ClassTime implements Serializable{
 		} else if (!title.equals(other.title))
 			return false;
 		return true;
+	}
+	
+	public static ClassTime createFromDTO(ClassTimeDTO dto){
+		ClassTime classtime = new ClassTime();
+		classtime.id = dto.getId();
+		classtime.rosterId = dto.getRosterId();
+		classtime.title = dto.getTitle();
+		classtime.descript = dto.getDescript();
+		classtime.lastUpdate = dto.getLastUpdate();
+		classtime.startTime = dto.getStartTime();
+		classtime.endTime = dto.getEndTime();
+		
+		return classtime;
 	}
 	
 

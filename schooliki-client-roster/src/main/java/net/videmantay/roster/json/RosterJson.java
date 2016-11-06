@@ -215,15 +215,4 @@ public class RosterJson extends JavaScriptObject {
 							return this.seatingCharts;
 	}-*/;
 	
-	public final ClassTimeJson getDefaultClassTime(){
-		ClassTimeJson classTime = this.getClassTimes().get(0);
-		for(int i = 0; i < this.getClassTimes().length(); i++){
-			if(this.getClassTimes().get(i).getIsDefault()){
-				classTime =  this.getClassTimes().get(i);
-				break;
-			}
-		}
-		return classTime;
-	}
-	
 }

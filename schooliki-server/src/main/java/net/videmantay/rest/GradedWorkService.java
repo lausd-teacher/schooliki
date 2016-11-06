@@ -50,10 +50,6 @@ public class GradedWorkService {
 
 	DB<AssignedGradedWork> assignedGradedeWokDB = new DB<AssignedGradedWork>(AssignedGradedWork.class);
 
-	static {
-
-		DB.start();
-	}
 
 	// Calendar calendar = GoogleUtils.calendar(null);
 
@@ -110,46 +106,7 @@ public class GradedWorkService {
 			ofy().transact(new VoidWork() {
 				@Override
 				public void vrun() {
-					// Not needed for now
-					// new EventDateTime();
-					// Event event = new Event();
-					//
-					// SimpleDateFormat format = new
-					// SimpleDateFormat("yyyy-mm-dd");
-					//
-					// DateTime assigned = null;
-					// DateTime due = null;
-					// try {
-					// assigned = new
-					// DateTime(format.parse(gradedWork.getAssignedDate()));
-					// due = new
-					// DateTime(format.parse(gradedWork.getDueDate()));
-					// } catch (Exception exp) {
-					//
-					// log.log(Level.INFO, "parsing date error");
-					//
-					// }
-					//
-					// EventDateTime start = new EventDateTime();
-					// start.setDate(assigned);
-					//
-					// EventDateTime end = new EventDateTime();
-					// end.setDate(due);
-					//
-					// event.setStart(start);
-					// event.setEnd(end);
-
 					gradedWork.setId(gradedWorkDB.save(gradedWork).getId());
-
-					// leave this for now
-					// event = calendar.events().insert(calId, event).execute();
-
-					// GoogleCalendarEvent gcEvent = new GoogleCalendarEvent();
-					// gcEvent.setEventId(event.getId());
-					// gcEvent.setGradedWorkId(gradedWork.id);
-					//
-					// googleCalendarDB.save(gcEvent);
-
 				}
 			});
 

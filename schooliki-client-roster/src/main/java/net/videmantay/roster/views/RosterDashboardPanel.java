@@ -96,6 +96,9 @@ public class RosterDashboardPanel extends Composite
 	MaterialLink manageFurnitureLink;
 	
 	@UiField
+	MaterialLink manageClassTimeLink;
+	
+	@UiField
 	MaterialLink arrangeStudentsLink;
 	@UiField
 	MaterialLink manageStationsLink;
@@ -140,7 +143,7 @@ public class RosterDashboardPanel extends Composite
 //	@UiField
 //	MaterialAnchorButton classEventAddBtn;
 	
-	private RosterJson roster = JavaScriptObject.createObject().cast();
+	//private RosterJson roster = JavaScriptObject.createObject().cast();
 	
 	private final Function resizeFunc = new Function(){
 		@Override
@@ -158,22 +161,22 @@ public class RosterDashboardPanel extends Composite
 		}
 	};
 	
-	private final SelectionHandler<Widget> selectHand = new SelectionHandler<Widget>(){
-
-		@Override
-		public void onSelection(SelectionEvent<Widget> event) {
-			MaterialLink link = (MaterialLink)event.getSelectedItem();
-			if(link.getText().equalsIgnoreCase("Manage...")){
-				History.newItem("roster/"+ roster.getId() +"/classtime");
-			
-			}else{
-				int index =Ints.tryParse(link.getDataAttribute("data-index"));
-				ClassTimeJson classTime = roster.getClassTimes().get(index);
-				window.setPropertyJSO("classtime", classTime);
-				classtimeBtn.setText(classTime.getTitle());
-				//updateClassTime();
-			}	
-		}};
+//	private final SelectionHandler<Widget> selectHand = new SelectionHandler<Widget>(){
+//
+//		@Override
+//		public void onSelection(SelectionEvent<Widget> event) {
+//			MaterialLink link = (MaterialLink)event.getSelectedItem();
+//			if(link.getText().equalsIgnoreCase("Manage...")){
+//				History.newItem("roster/"+ roster.getId() +"/classtime");
+//			
+//			}else{
+//				int index =Ints.tryParse(link.getDataAttribute("data-index"));
+//				ClassTimeJson classTime = roster.getClassTimes().get(index);
+//				window.setPropertyJSO("classtime", classTime);
+//				classtimeBtn.setText(classTime.getTitle());
+//				//updateClassTime();
+//			}	
+//		}};
 	
 	private View viewType = View.GRID;
 	private State state = State.DASHBOARD;
@@ -188,7 +191,6 @@ public class RosterDashboardPanel extends Composite
 	
 	public RosterDashboardPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		console.log(Cookies.getCookie("currentRosterId"));
 		
 		
 		
@@ -196,9 +198,11 @@ public class RosterDashboardPanel extends Composite
 		
 	
 		
-		classtimeDrop.addSelectionHandler(selectHand);
-		classtimeDrop2.addSelectionHandler(selectHand);
+//		classtimeDrop.addSelectionHandler(selectHand);
+//		classtimeDrop2.addSelectionHandler(selectHand);
 		/////////////////seatingChartEditLinks events
+		
+		
 		manageFurnitureLink.addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
@@ -367,41 +371,41 @@ public class RosterDashboardPanel extends Composite
 	public void onLoad(){
 	
 		
-		JsArray<ClassTimeJson> classTimes = roster.getClassTimes();
+		//JsArray<ClassTimeJson> classTimes = roster.getClassTimes();
 		
 		//set up classtimeDrop list
-		classtimeDrop.clear();
-		classtimeDrop2.clear();
-		//set up first link as manager
-		MaterialLink manageLink = new MaterialLink();
-		manageLink.setText("Manage...");
-		classtimeDrop.add(manageLink);
-		for(int i = 0; i< classTimes.length(); i++){
-			MaterialLink link = new MaterialLink();
-			link.setText(classTimes.get(i).getTitle());
-			link.setDataAttribute("data-index", ""+i);
-			classtimeDrop.add(link);
-			if(classTimes.get(i).getIsDefault()){
-			classtimeBtn.setText(classTimes.get(i).getTitle());
-			window.setPropertyJSO("classtime", classTimes.get(i));
-			console.log("... window called from rosterdassh bord panel for classtime is .... ");
-			console.log(window.getPropertyJSO("classtime"));
-			}
-		}//end for
-		MaterialLink manageLink2 = new MaterialLink();
-		manageLink2.setText("Manage...");
-		classtimeDrop2.add(manageLink2);
-		for(int i = 0; i< classTimes.length(); i++){
-			MaterialLink link = new MaterialLink();
-			link.setText(classTimes.get(i).getTitle());
-			link.setDataAttribute("data-index", ""+i);
-			classtimeDrop2.add(link);
-			if(classTimes.get(i).getIsDefault()){
-			classtimeBtn.setText(classTimes.get(i).getTitle());
-			window.setPropertyJSO("classtime", classTimes.get(i));
-			console.log("... window called from rosterdassh bord panel for classtime is .... ");
-			console.log(window.getPropertyJSO("classtime"));
-			}
+//		classtimeDrop.clear();
+//		classtimeDrop2.clear();
+//		//set up first link as manager
+//		MaterialLink manageLink = new MaterialLink();
+//		manageLink.setText("Manage...");
+//		classtimeDrop.add(manageLink);
+//		for(int i = 0; i< classTimes.length(); i++){
+//			MaterialLink link = new MaterialLink();
+//			link.setText(classTimes.get(i).getTitle());
+//			link.setDataAttribute("data-index", ""+i);
+//			classtimeDrop.add(link);
+//			if(classTimes.get(i).getIsDefault()){
+//			classtimeBtn.setText(classTimes.get(i).getTitle());
+//			window.setPropertyJSO("classtime", classTimes.get(i));
+//			console.log("... window called from rosterdassh bord panel for classtime is .... ");
+//			console.log(window.getPropertyJSO("classtime"));
+//			}
+//		}//end for
+//		MaterialLink manageLink2 = new MaterialLink();
+//		manageLink2.setText("Manage...");
+//		classtimeDrop2.add(manageLink2);
+//		for(int i = 0; i< classTimes.length(); i++){
+//			MaterialLink link = new MaterialLink();
+//			link.setText(classTimes.get(i).getTitle());
+//			link.setDataAttribute("data-index", ""+i);
+//			classtimeDrop2.add(link);
+//			if(classTimes.get(i).getIsDefault()){
+//			classtimeBtn.setText(classTimes.get(i).getTitle());
+//			window.setPropertyJSO("classtime", classTimes.get(i));
+//			console.log("... window called from rosterdassh bord panel for classtime is .... ");
+//			console.log(window.getPropertyJSO("classtime"));
+//			}
 		}//end for
 		
 		//fullcalendar needs a delay to render correctly so here is the check
@@ -426,8 +430,8 @@ public class RosterDashboardPanel extends Composite
 //				}
 //	});
 	
-	$(window).resize(resizeFunc);
-	}
+	//$(window).resize(resizeFunc);
+	
 	
 	
 	public MaterialSwitch getGridSwitch() {
@@ -555,7 +559,7 @@ public class RosterDashboardPanel extends Composite
 			tab1Main.add(display);
 		   seatingChartEditIcon.setVisible(true);
 		  // calFrame.setVisible(false);
-		}else if(display instanceof ClassroomGrid){
+		}else if(display instanceof ClassRoomGrid){
 			tab1Main.add(display);
 			seatingChartEditIcon.setVisible(false);
 			//calFrame.setVisible(false);
@@ -587,10 +591,16 @@ public class RosterDashboardPanel extends Composite
 	}
 
 
+	public MaterialLink getManageClassTimeLink() {
+		return this.manageClassTimeLink;
+	}
+
+
 	public interface Presenter{
 		void gridSwitchClickEvent();
 		void homeworkIconClickEvent();
 		void tabsClickEvent();
+		void manageClassTimeLinkClickEvent();
 	}
 
 

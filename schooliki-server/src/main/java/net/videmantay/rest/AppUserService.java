@@ -37,10 +37,6 @@ public class AppUserService {
 
 	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 
-	static {
-
-		DB.start();
-	}
 
 	@GET
 	@Path("/{id}")

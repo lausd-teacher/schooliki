@@ -57,12 +57,7 @@ public class OAuthAuthenticationFilter extends GenericFilterBean {
 		   
 		   
 		   log.log(Level.INFO, "received " + tokenInHeader);
-		   
-		   
-		   
-		   
-		   
-		   
+		    
 	}
 
 }

@@ -27,8 +27,6 @@ import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.json.AppUserJson;
-import net.videmantay.roster.json.RosterJson;
-import net.videmantay.student.json.RosterStudentJson;
 
 
 public class CreateStudentForm extends Composite{
@@ -59,8 +57,6 @@ public class CreateStudentForm extends Composite{
 	@UiField
 	MaterialRow availableStudentContainer;
 
-	private final RosterJson roster  = RosterStudentJson.createObject().cast();
-	
 	JsArray<AppUserJson> studentList = JavaScriptObject.createArray().cast();
 	
 	HTMLPanel test;
@@ -110,12 +106,6 @@ public class CreateStudentForm extends Composite{
 	}
 
 	
-	public RosterStudentJson getFormData(){
-		RosterStudentJson newStudent = JavaScriptObject.createObject().cast();
-		newStudent.setRoster(roster.getId());
-		return newStudent;
-	}
-	
 	
 	
 	public MaterialModal getModal() {
@@ -148,24 +138,20 @@ private void renderStudentList(){
                     GWT.log("double clicked");
                
 				addedStudentsMasonery.add(card);
-				availableStudentsMasonery.remove(card);
+				availableStudentContainer.remove(card);
 				 card.getRemoveButton().setDisplay(Display.BLOCK);
 				 card.getRemoveButton().addClickHandler(new ClickHandler(){
 
 					@Override
 					public void onClick(ClickEvent event) {
 						addedStudentsMasonery.remove(card);
-						availableStudentsMasonery.add(card);
-						
+						availableStudentContainer.add(card);
+						card.getRemoveButton().setDisplay(Display.NONE);
 					}
-					 
-					 
 				 });
-				
 			}
 		 }, DoubleClickEvent.getType());
 		}
-			
 	}
 
   public MaterialMasonry getAddedStudentsMasonery() {

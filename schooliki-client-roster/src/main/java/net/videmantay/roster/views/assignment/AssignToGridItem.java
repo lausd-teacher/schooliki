@@ -33,12 +33,7 @@ public class AssignToGridItem extends Composite {
 	}
 	
 	public void setStudent(RosterStudentJson student){
-		String url = student.getThumbnails() ==null? "/img/user.svg": student.getThumbnails().get(1).getUrl();
-		studentImg.setUrl(url);
-		firstName.setText(student.getFirstName());
-		firstName.setTruncate(true);
-		lastName.setText(student.getLastName());
-		lastName.setTruncate(true);
+		
 	}
 
 }

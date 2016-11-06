@@ -7,17 +7,18 @@
 	xmlns:ma="urn:import:gwt.material.design.addins.client" >
 	<ui:style>
 	 .studentMasonery{
-	   border: 1px solid #85F;
+	   border: 1px solid #b71c1c;
+	   min-height: 100px;
+	   background:white;
        }
-	
 	</ui:style>
 	<g:HTMLPanel>
 	<m:MaterialModal ui:field="modal" width="100%" height="100%">
-	  <m:MaterialLabel>Available Students</m:MaterialLabel>
+	  <m:MaterialLabel>Available Students (Double click on the card to add)</m:MaterialLabel>
 		<m:MaterialModalContent ui:field="modalContent">
 		<g:HTMLPanel>
 		 <m:MaterialRow>
-			<ma:masonry.MaterialMasonry addStyleNames="{style.studentMasonery}" ui:field="availableStudentsMasonery">
+			<ma:masonry.MaterialMasonry  ui:field="availableStudentsMasonery">
              <m:MaterialRow ui:field="availableStudentContainer">
                
              </m:MaterialRow>
@@ -29,8 +30,8 @@
       </g:HTMLPanel>
       <m:MaterialLabel>Students to add to the current Roster</m:MaterialLabel>
       <g:HTMLPanel>
-        <m:MaterialRow>
-	      <ma:masonry.MaterialMasonry addStyleNames="{style.studentMasonery}" ui:field="addedStudentsMasonery"/>
+        <m:MaterialRow addStyleNames="{style.studentMasonery}">
+	      <ma:masonry.MaterialMasonry  ui:field="addedStudentsMasonery"/>
 	     </m:MaterialRow>
       </g:HTMLPanel>
 		</m:MaterialModalContent>

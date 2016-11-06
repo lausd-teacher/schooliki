@@ -3,18 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
-	
 	</ui:style>
-	<g:HTMLPanel>
-	<m:MaterialModal>
-		<m:MaterialModalContent>
-			<g:FormPanel>
-			<g:HTMLPanel>
-				<m:MaterialTextBox />
-				<m:MaterialTextBox />
-			</g:HTMLPanel>
-			</g:FormPanel>
-		</m:MaterialModalContent>
-	</m:MaterialModal>
-	</g:HTMLPanel>
+	<m:MaterialContainer ui:field="container">
+	</m:MaterialContainer>
 </ui:UiBinder> 

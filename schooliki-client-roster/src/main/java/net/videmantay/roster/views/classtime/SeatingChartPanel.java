@@ -79,11 +79,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	
 	public SeatingChartPanel() {
-		//first check for jQuery ui
-		if(window.getPropertyJSO("JQuery.ui") == null){
-			//load script
-			//ScriptInjector.fromUrl("/loader.js").setWindow(ScriptInjector.TOP_WINDOW).inject();
-		}
 		initWidget(uiBinder.createAndBindUi(this));
 		roster = window.getPropertyJSO("roster").cast();
 		console.log("The roster from seating chart is : ");
@@ -164,11 +159,11 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		ArrayList<RosterStudentPanel> stuPanels = new ArrayList<RosterStudentPanel>();
 		for(int i =0; i < roster.getRosterStudents().length(); i++){
 			//might as well setup the studentList here too
-			RosterStudentPanel sp =new RosterStudentPanel();
-			sp.setData(roster.getRosterStudents().get(i));
+//			RosterStudentPanel sp =new RosterStudentPanel();
+//			sp.setData(roster.getRosterStudents().get(i));
 			/*MaterialLink link = new MaterialLink();
 			link.add(sp);*/
-			stuPanels.add(sp);
+//			stuPanels.add(sp);
 		}
 		console.log("We've cycled through students here is array of panels ");
 		console.log(stuPanels);

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.videmantay.server.user.DB;
+
 public class TeacherServlet extends HttpServlet {
 	
 	private final Logger log = Logger.getLogger("logger");
@@ -20,6 +22,7 @@ public class TeacherServlet extends HttpServlet {
 		//Not protected yet
 		res.setContentType("text/html");
 		log.log(Level.INFO, "redenring teacher");
+		DB.start();
 		res.getWriter().write(ViewsUtils.teacherView());
 		
 	}

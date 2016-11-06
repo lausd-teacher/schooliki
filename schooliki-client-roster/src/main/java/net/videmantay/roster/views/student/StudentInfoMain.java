@@ -35,7 +35,7 @@ public class StudentInfoMain extends Composite {
 	
 	public StudentInfoMain setStudent(Long studentId){
 		for(int i = 0; i < roster.getRosterStudents().length(); i++){
-			if(studentId == roster.getRosterStudents().get(i).getId()){
+			if(roster.getRosterStudents().get(i).getId().equals(studentId.toString())){
 				student = roster.getRosterStudents().get(i);
 				break;
 			}

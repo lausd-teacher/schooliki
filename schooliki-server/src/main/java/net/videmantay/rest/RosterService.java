@@ -22,9 +22,12 @@ import javax.ws.rs.core.Response.Status;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
+import net.videmantay.rest.dto.AppUserDTO;
+import net.videmantay.rest.dto.ClassTimeDTO;
 import net.videmantay.rest.dto.IncidentDTO;
 import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
+import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Incident;
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
@@ -41,10 +44,9 @@ public class RosterService {
 	DB<RosterStudent> rosterStudentDB = new DB<RosterStudent>(RosterStudent.class);
 	
 	DB<Incident> incidentDB = new DB<Incident>(Incident.class);
+	
+	DB<ClassTime> classTimeDB = new DB<ClassTime>(ClassTime.class);
 
-	static {
-		DB.start();
-	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -116,15 +118,14 @@ public class RosterService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRosterStudentsList(@PathParam("id") Long id) {
 
-		List<RosterStudent> studentsList = ofy().load().type(RosterStudent.class).filter("id", id).list();
-		List<RosterStudentDTO> rosterStudentDTO = new ArrayList<RosterStudentDTO>();
-
+		List<RosterStudent> studentsList = ofy().load().type(RosterStudent.class).filter("rosterId", id).list();
+		List<AppUserDTO> appUserDTOList = new ArrayList<AppUserDTO>();
+	
 		for (RosterStudent roster : studentsList) {
-			RosterStudentDTO dto = new RosterStudentDTO(roster);
-			rosterStudentDTO.add(dto);
+			AppUser student = ofy().load().key(Key.create(AppUser.class, roster.getStudentId())).now();
+			appUserDTOList.add(new AppUserDTO(student));
 		}
-
-		return Response.ok().entity(rosterStudentDTO).build();
+		return Response.ok().entity(appUserDTOList).build();
 	}
 
 	@GET
@@ -146,33 +147,28 @@ public class RosterService {
 	@Path("/{id}/student")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createRosterStudents(@PathParam("id") Long id, List<Long> studentIds) {
-
+	public Response createRosterStudents(@PathParam("id") Long id, List<RosterStudentDTO> rosterStudents) {
 		// cheking if roste exists and student exists
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 		boolean studentsCheck = true;
 		
-		for(int i = 0; i < studentIds.size(); i++){
-			Long currentStudentId = studentIds.get(i);
-			AppUser student = ofy().load().key(Key.create(AppUser.class, currentStudentId)).now();
+		for(int i = 0; i < rosterStudents.size(); i++){
+			RosterStudentDTO rosterStudentDTO = rosterStudents.get(i);
+			AppUser student = ofy().load().key(Key.create(AppUser.class, rosterStudentDTO.getStudentId())).now();
 			 if(student == null){
 				 studentsCheck = false;
 			 }
 			
 		}
 		  
-
 		if (result != null && studentsCheck) {
+			
+			for(int i = 0; i < rosterStudents.size(); i++){
+				RosterStudentDTO rosterStudentDTO = rosterStudents.get(i);
+				
+				rosterStudentDB.save(RosterStudent.createFromDTO(rosterStudentDTO));
+			}
 
-		  for(int i = 0; i < studentIds.size(); i++){
-			  RosterStudent rosterStudent = new RosterStudent();
-				rosterStudent.setRosterId(id);
-				rosterStudent.setStudentId(studentIds.get(i));
-			
-				rosterStudentDB.save(rosterStudent);
-			    
-		  }
-			
 			return Response.ok().build();
 		}
 
@@ -242,6 +238,68 @@ public class RosterService {
 			return Response.ok().entity(newId).build();
 		}
 
+		return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	
+	@GET
+	@Path("/{id}/classtime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getClasstimes(@PathParam("id") Long id) {
+		
+		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+
+		if (result != null) {
+			
+			List<ClassTime> classTimeList = ofy().load().type(ClassTime.class).filter("rosterId", id).list();
+			List<ClassTimeDTO> classTimeDTOList = new ArrayList<ClassTimeDTO>();
+			for (ClassTime classTime : classTimeList) {
+				ClassTimeDTO dto = new ClassTimeDTO(classTime);
+				classTimeDTOList.add(dto);
+			}
+			return Response.ok().entity(classTimeDTOList).build();
+		}
+		
+		return Response.status(Status.NOT_FOUND).build();
+		
+		
+	}
+	
+	
+	
+	@GET
+	@Path("/{id}/classtime/{subId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDetailedClassTimeList(@PathParam("id") Long id, @PathParam("subId") Long classtimeId){
+		
+		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+
+		if (result != null) {
+			ClassTime classTime = ofy().load().key(Key.create(ClassTime.class, classtimeId)).now();
+			if(classTime != null)
+			    return Response.ok().entity(classTime).build();
+			else
+				Response.status(Status.NOT_FOUND).build();
+				
+		}
+		
+		return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	
+	@POST
+	@Path("/{id}/classtime/{subId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createClassTime(@PathParam("id") Long id, ClassTimeDTO classTimeDTO) {
+		
+		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+
+		if (result != null) {
+			ClassTime classTime = ClassTime.createFromDTO(classTimeDTO);
+			classTimeDB.save(classTime);
+			return Response.ok().build();
+		}
+		
 		return Response.status(Status.NOT_FOUND).build();
 	}
 

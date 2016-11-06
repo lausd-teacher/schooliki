@@ -30,20 +30,35 @@ public class StudentCard extends Composite {
     @UiField
 	MaterialLabel studentEmailLabel;
     
-    Long userId;
+    private Long userId;
 	
 	public StudentCard(String studentProfileImageUrl, String studentName, String studentEmail, Long id) {
 		initWidget(uiBinder.createAndBindUi(this));
 		studentProfileImage.setUrl(studentProfileImageUrl);
 		studentNameLabel.setText(studentName);
+		studentNameLabel.getElement().addClassName("studentCardLabel");
 		studentEmailLabel.setText(studentEmail);
+		studentEmailLabel.getElement().addClassName("studentCardLabel");
+		//**************************************
+		
 		removeButton.setDisplay(Display.NONE);
-		//removeButton.getElement().getStyle().setProperty("right", "68%");
 		this.userId = id;
 	}
 	
 	public MaterialIcon getRemoveButton() {
 		return this.removeButton;
 	}
-	
+
+	public Long getUserId() {
+		return this.userId;
+	}
+
+	public MaterialLabel getStudentNameLabel() {
+		return this.studentNameLabel;
+	}
+
+	public MaterialImage getStudentProfileImage() {
+		return this.studentProfileImage;
+	}
+
 }

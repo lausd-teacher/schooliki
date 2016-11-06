@@ -56,7 +56,7 @@ public class IncidentToastContent extends Composite {
 		List<String >stuIds = Splitter.on(',').splitToList(report.getStudentIds());
 		for(int i = 0; i < roster.getRosterStudents().length(); i++){
 			for(int j = 0; j < stuIds.size(); j++){
-				if(roster.getRosterStudents().get(i).getId() == Longs.tryParse(stuIds.get(j))){
+				if(roster.getRosterStudents().get(i).getId().equals(stuIds.get(j))){
 					students.add(roster.getRosterStudents().get(i));
 				}
 			}
@@ -64,12 +64,7 @@ public class IncidentToastContent extends Composite {
 		}
 		switch(report.getActionType()){
 		case "Single": RosterStudentJson student = students.get(0);
-				msg = student.getFirstName() + " " + student.getLastName();
-				if(student.getThumbnails() != null){
-				studentImage.setUrl(student.getThumbnails().get(2).getUrl());
-				}else{
-					studentImage.setUrl("../img/user.svg");
-				}
+				
 				break;
 		case "Multi":msg = students.size() + " students ";
 					studentImage.setUrl("toMultiStudentPic");
