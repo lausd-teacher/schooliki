@@ -58,6 +58,11 @@ public class ClassTimeGrid extends Composite {
 	}
 	
 	
+	public void addItem(ClasstimeGridItem classtimeGridItem){
+		  cardCol.add(classtimeGridItem);
+		
+	}
+	
 	public MaterialColumn getCardCol() {
 		return this.cardCol;
 	}
@@ -65,6 +70,11 @@ public class ClassTimeGrid extends Composite {
 
 	public MaterialAnchorButton getCreateBtn() {
 		return this.createBtn;
+	}
+
+
+	public MaterialColumn getContainer() {
+		return this.cardCol;
 	}
 
 

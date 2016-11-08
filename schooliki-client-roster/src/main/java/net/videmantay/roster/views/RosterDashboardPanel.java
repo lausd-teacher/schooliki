@@ -89,17 +89,16 @@ public class RosterDashboardPanel extends Composite
 	@UiField
 	MaterialDropDown classtimeDrop;
 	
-	@UiField
-	MaterialDropDown classtimeDrop2;
+   @UiField
+	MaterialLink classDropDownManageLink;
 	
 	@UiField
 	MaterialLink manageFurnitureLink;
 	
-	@UiField
-	MaterialLink manageClassTimeLink;
 	
 	@UiField
 	MaterialLink arrangeStudentsLink;
+	
 	@UiField
 	MaterialLink manageStationsLink;
 	
@@ -478,12 +477,8 @@ public class RosterDashboardPanel extends Composite
 		return this.classtimeBtn;
 	}
 
-	public MaterialDropDown getClasstimeDrop() {
+	public MaterialDropDown getClasstimeDropDown() {
 		return this.classtimeDrop;
-	}
-
-	public MaterialDropDown getClasstimeDrop2() {
-		return this.classtimeDrop2;
 	}
 
 	public MaterialLink getManageFurnitureLink() {
@@ -557,7 +552,7 @@ public class RosterDashboardPanel extends Composite
 		tab1Main.clear();
 		if(display instanceof SeatingChartPanel){
 			tab1Main.add(display);
-		   seatingChartEditIcon.setVisible(true);
+		    seatingChartEditIcon.setVisible(true);
 		  // calFrame.setVisible(false);
 		}else if(display instanceof ClassRoomGrid){
 			tab1Main.add(display);
@@ -576,10 +571,11 @@ public class RosterDashboardPanel extends Composite
 		return this.calTab;
 	}
 
-
-//	public Frame getCalFrame() {
-//		return this.calFrame;
-//	}
+    public void clearDropDown(){
+    	     classtimeDrop.clear();
+    	     classtimeDrop.add(classDropDownManageLink);
+    	
+    }
 
 
 	public MaterialTabItem getReportsTab() {
@@ -589,12 +585,10 @@ public class RosterDashboardPanel extends Composite
 	public MaterialTabItem getDashboardTab() {
 		return this.dashboardTab;
 	}
-
-
-	public MaterialLink getManageClassTimeLink() {
-		return this.manageClassTimeLink;
+	
+	public MaterialLink getClassDropDownManageLink() {
+		return this.classDropDownManageLink;
 	}
-
 
 	public interface Presenter{
 		void gridSwitchClickEvent();
@@ -602,6 +596,8 @@ public class RosterDashboardPanel extends Composite
 		void tabsClickEvent();
 		void manageClassTimeLinkClickEvent();
 	}
+
+
 
 
 }

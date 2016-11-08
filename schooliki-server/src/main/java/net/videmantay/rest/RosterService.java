@@ -270,7 +270,7 @@ public class RosterService {
 	@GET
 	@Path("/{id}/classtime/{subId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDetailedClassTimeList(@PathParam("id") Long id, @PathParam("subId") Long classtimeId){
+	public Response getDetailedClassTime(@PathParam("id") Long id, @PathParam("subId") Long classtimeId){
 		
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
@@ -288,7 +288,7 @@ public class RosterService {
 	
 	
 	@POST
-	@Path("/{id}/classtime/{subId}")
+	@Path("/{id}/classtime")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createClassTime(@PathParam("id") Long id, ClassTimeDTO classTimeDTO) {
 		
@@ -296,8 +296,9 @@ public class RosterService {
 
 		if (result != null) {
 			ClassTime classTime = ClassTime.createFromDTO(classTimeDTO);
-			classTimeDB.save(classTime);
-			return Response.ok().build();
+			classTime.setRosterId(id);
+			Long newId = classTimeDB.save(classTime).getId();
+			return Response.ok().entity(newId).build();
 		}
 		
 		return Response.status(Status.NOT_FOUND).build();

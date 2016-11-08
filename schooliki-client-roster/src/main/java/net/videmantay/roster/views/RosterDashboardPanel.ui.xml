@@ -12,13 +12,10 @@
 		</m:MaterialTab>
 		<div  id="tab1">
 			<m:MaterialAnchorButton ui:field="classroomtimeBar" backgroundColor="red darken-4" centerOn="CENTER_ON_SMALL" grid="s12" width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar" text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtimedrop"></m:MaterialAnchorButton>
-			<m:MaterialDropDown activator="classtimedrop" ui:field="classtimeDrop2">
-					<m:MaterialLink  addStyleNames="manageClassTimeLink" ui:field="manageClassTimeLink" text="Manage..." />
-				</m:MaterialDropDown>
 			<m:MaterialRow ui:field="toolbar" height="3em" backgroundColor="yellow darken-1" textColor="red darken-3" paddingLeft="10" centerOn="CENTER_ON_SMALL">
 				<m:MaterialAnchorButton ui:field="classtimeBtn" hideOn="HIDE_ON_SMALL" addStyleNames="classTimeBtn" float="RIGHT" text="Class Time" fontSize="1.10em"  marginRight="5.0" textAlign="CENTER" backgroundColor="red darken-3" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime"/>
 				<m:MaterialDropDown activator="classtime" ui:field="classtimeDrop">
-					<m:MaterialLink addStyleNames="manageClassTimeLink" text="Manage..." />
+					<m:MaterialLink addStyleNames="manageClassTimeLink" ui:field="classDropDownManageLink" text="Manage..." />
 				</m:MaterialDropDown>
 			<m:MaterialColumn  grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT" centerOn="CENTER_ON_SMALL">
 				<m:MaterialRow>
@@ -32,7 +29,7 @@
 					<m:MaterialLabel text="Seating Chart" paddingLeft="7.5" />
 					</m:MaterialColumn>
 					<m:MaterialColumn>
-						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT" activates="seatingChartEdit" marginLeft="5.5"/>
+						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT" activates="seatingChartEdit"/>
 						<m:MaterialDropDown activator="seatingChartEdit">
 							<m:MaterialLink ui:field="arrangeStudentsLink" text="Arrange Students" />
 							<m:MaterialLink ui:field="manageFurnitureLink" text="Manage Furntirue"/>

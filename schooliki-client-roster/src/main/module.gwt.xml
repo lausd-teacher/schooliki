@@ -10,7 +10,6 @@
 	<inherits name="gwt.material.design.GwtMaterialDesignBasic" />
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeRed" />
 	<inherits name="gwt.material.design.addins.GwtMaterialAddins" />
-	<inherits name="org.gwtbootstrap3.extras.summernote.Summernote"/>
 	<inherits name="goog.appengine.channel.Channel" />
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name="net.videmantay.SchoolikiShared" />

@@ -42,12 +42,6 @@
 			<artifactId>picker</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.gwtbootstrap3</groupId>
-			<artifactId>gwtbootstrap3-extras</artifactId>
-			<version>0.9.3</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 

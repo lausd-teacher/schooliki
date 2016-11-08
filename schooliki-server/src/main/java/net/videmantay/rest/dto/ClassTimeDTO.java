@@ -6,15 +6,15 @@ import net.videmantay.server.entity.ClassTime;
 
 public class ClassTimeDTO {
 	
-	public Long id;
+	Long id;
+	Long rosterId;
+	String title;
+	String descript;
+	Date lastUpdate;
+	String startTime;
+	String endTime;
 	
-	public Long rosterId;
-	public String title;
-	public String descript;
-	public Date lastUpdate;
-	
-	public String startTime;
-	public String endTime;
+	boolean isDefault;
 
 	public ClassTimeDTO(ClassTime classTime) {
 		this.id = classTime.getId();
@@ -24,6 +24,7 @@ public class ClassTimeDTO {
 		this.lastUpdate = classTime.getLastUpdate();
 		this.startTime = classTime.getStartTime();
 		this.endTime = classTime.getEndTime();
+		this.isDefault = classTime.isDefault();
 	}
 	
 	public ClassTimeDTO(){
@@ -85,6 +86,14 @@ public class ClassTimeDTO {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public boolean getIsDefault() {
+		return this.isDefault;
+	}
+	
+	public void setIsDefault(boolean isDefault){
+		this.isDefault = isDefault;
 	}
 
 }

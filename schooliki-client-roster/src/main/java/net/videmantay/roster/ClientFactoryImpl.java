@@ -47,7 +47,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	CreateStudentForm studentForm = new CreateStudentForm();
 	StudentActionModal studentModal = new StudentActionModal();
 	ClassRoomGrid grid = new ClassRoomGrid(studentForm, studentModal);
-	SeatingChartPanel seatingChartPanel = new SeatingChartPanel();
+	SeatingChartPanel seatingChartPanel = null;
 	IncidentForm incidentForm = new IncidentForm();
 	IncidentMain incidentMain = new IncidentMain(incidentForm);
 	GoogleCalendar googleCalendar = null;
@@ -127,6 +127,10 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	@Override
 	public SeatingChartPanel getSettingChartPanel() {
+		
+		if(seatingChartPanel == null){
+			seatingChartPanel = new SeatingChartPanel(this);
+		}
 		return seatingChartPanel;
 	}
 	

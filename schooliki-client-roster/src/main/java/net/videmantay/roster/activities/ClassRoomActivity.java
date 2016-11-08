@@ -75,6 +75,7 @@ import net.videmantay.roster.views.assignment.EmptyAssignmentGrid;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.classtime.ClassTimeGrid;
+import net.videmantay.roster.views.classtime.ClasstimeGridItem;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
 import net.videmantay.roster.views.incident.IncidentMain;
@@ -107,6 +108,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	IncidentMain incidentMainPage;
 	IncidentForm incidentForm;
 	ClassTimeGrid classTimegrid;
+	boolean isGridEmpty = true;
 
 	public ClassRoomActivity(ClientFactory factory, Place place) {
 		this.factory = factory;
@@ -150,7 +152,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		appPanel.getMainPanel().clear();
 		hideSideNav();
 		if (currentPlace instanceof ClassRoomPlace) {
-			getClassTimesForCurrentRoster();
+			dashboard.clearDropDown();
+			getClassTimesForCurrentRosterAndDrawClassTimeGrid();
 			getRosterStudentsListAndDrawGrid();
 			dashboard.setDisplayInTab1(grid);
 			appPanel.getMainPanel().add(dashboard);
@@ -169,6 +172,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		} else if (currentPlace instanceof BookPlace) {
 			appPanel.getMainPanel().add(new Label("BookPlace view is not implemented yet"));
 		} else if (currentPlace instanceof ClassTimePlace) {
+			drawClassTimeGrid();
 			appPanel.getMainPanel().add(classTimegrid);
 		} else if (currentPlace instanceof FormPlace) {
 			appPanel.getMainPanel().add(new Label("FormPlace view is under construction"));
@@ -486,6 +490,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		} else if (place instanceof BookPlace) {
 			appPanel.getMainPanel().add(new Label("BookPlace view is not implemented yet"));
 		} else if (place instanceof ClassTimePlace) {
+			drawClassTimeGrid();
 			appPanel.getMainPanel().add(classTimegrid);
 		} else if (place instanceof FormPlace) {
 			appPanel.getMainPanel().add(new Label("FormPlace view is not implemented yet"));
@@ -543,10 +548,13 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 		// dashboard.getTab1Main().clear();
 		MaterialRow row = new MaterialRow();
+		MaterialRow row2 = new MaterialRow();
 		grid.getContainer().clear();
+		seatingChart.getStudentsPanel().clear();
+		
 		grid.getContainer().add(row);
-		MaterialColumn c;
-		RosterStudentPanel rsp;
+		seatingChart.getStudentsPanel().add(row2);
+		
 
 //		List<AppUserJ> studentList = new ArrayList<RosterStudentJson>();
 //		GWT.log("before" + students.length());
@@ -562,17 +570,27 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 //		}
 
 		int i = 0;
-       GWT.log(students.length()+ " this is the length");
+		//add students to both seating chart and grid
 		while (i < students.length()) {
-			c = new MaterialColumn();
-			rsp = new RosterStudentPanel(students.get(i));
+			MaterialColumn c = new MaterialColumn();
+			MaterialColumn c2 = new MaterialColumn();
+			
+			RosterStudentPanel rsp = new RosterStudentPanel(students.get(i));
+			RosterStudentPanel seatingChartStudent = new RosterStudentPanel(students.get(i));
 			rsp.addStyleName("grid");
 			c.add(rsp);
 			i++;
+			
 			row.add(c);
+			c2.add(seatingChartStudent);
+			row2.add(c2);
 		}
+		
+		
 		grid.getContainer().add(factory.getCreateStudentForm());
 		grid.getContainer().add(grid.getFab());
+		
+		
 
 	}
 
@@ -581,6 +599,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				+ "<p>To manage you students just open the side menu"
 				+ "and click on + button to add a new student </p>");
 		empty.setStylePrimaryName("emptyClassroom");
+		isGridEmpty = true;
 		grid.getContainer().clear();
 		grid.getContainer().add(empty);
 		grid.getContainer().add(factory.getCreateStudentForm());
@@ -621,18 +640,27 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		
 		MaterialMasonry addedStudentsMasonery = grid.getCreateStudentFrom().getAddedStudentsMasonery();
 		
-		if(String.valueOf(students.length()).equals("undefined") || students.length() == 0)
-			grid.getContainer().clear();  
+		GWT.log("students length"+students.length());
+		
+		//There is usually a Material Row, which counts for 1, this is a security check
+		if(addedStudentsMasonery.getWidgetCount() == 1 || addedStudentsMasonery.getWidgetCount() == 0){
+			return;
+		}
+			  if(isGridEmpty)
+		         grid.getContainer().clear();
+			  
+		grid.getContainer().add(grid.getFab());
+		grid.getContainer().add(grid.getCreateStudentFrom());
 		
 		MaterialRow row = new MaterialRow();
+		MaterialRow row2 = new MaterialRow();
+		
 		grid.getContainer().add(row);
+		seatingChart.getStudentsPanel().add(row2);
 		
 		
-		GWT.log("widget count in addNewStudentsToGrid " + addedStudentsMasonery.getWidgetCount());
 		for(int i = 0; i < addedStudentsMasonery.getWidgetCount(); i++){
 			Widget child = addedStudentsMasonery.getWidget(i);
-			GWT.log(child.getClass().toString());
-			GWT.log("loop" + i);
 			if(child.getClass().toString().equals("class net.videmantay.roster.views.student.StudentCard")){
 				StudentCard card = (StudentCard) child;
 				AppUserJson rosterStudent = JavaScriptObject.createObject().cast();
@@ -640,10 +668,18 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				rosterStudent.setImageUrl(card.getStudentProfileImage().getUrl());
 				students.push(rosterStudent);  
 				MaterialColumn c = new MaterialColumn();
+				MaterialColumn c2 = new MaterialColumn();
+				
 				RosterStudentPanel rsp = new RosterStudentPanel(rosterStudent);
+				RosterStudentPanel seatingChartStudent = new RosterStudentPanel(rosterStudent);
+				
 				rsp.addStyleName("grid");
 				c.add(rsp);
 				row.add(c);
+				
+				c2.add(seatingChartStudent);
+				row2.add(c2);
+				
 			}
 		}
 		
@@ -758,6 +794,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 								public void f() {
 									addNewStudentsToGrid();
 									grid.getCreateStudentFrom().hide();
+									isGridEmpty = false;
 									MaterialLoader.showLoading(false);
 
 								}
@@ -981,7 +1018,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 	@Override
 	public void manageClassTimeLinkClickEvent() {
-		dashboard.getManageClassTimeLink().addClickHandler(new ClickHandler(){
+		dashboard.getClassDropDownManageLink().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
 				goTo(new ClassTimePlace("classtime"));
@@ -993,11 +1030,13 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		});
 	}
 	
-	private void getClassTimesForCurrentRoster(){
+	private void getClassTimesForCurrentRosterAndDrawClassTimeGrid(){
+		
+		MaterialLoader.showLoading(true);
 		Ajax.get("/roster/" + factory.getCurrentRoster().getId() + "/classtime").done(new Function() {
 			@Override
 			public void f() {
-				
+				GWT.log("received classtimes " + arguments(0).toString());
 				currentRosterClassTimesList = JsonUtils.safeEval(arguments(0).toString());
 				for(int i = 0; i < currentRosterClassTimesList.length(); i++){
 					final ClassTimeJson classtime = currentRosterClassTimesList.get(i);
@@ -1007,20 +1046,22 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 						@Override
 						public void onClick(ClickEvent event) {
 							factory.setSelectedClassTime(classtime);
-							loadClassTimeConfiguration(classtime);
+							loadClassTimeConfiguration();
 						}
 					});
+					dashboard.getClasstimeDropDown().add(link);
 				}
+				MaterialLoader.showLoading(false);
 			}
 		}).progress(new Function() {
 			@Override
-			public void f() {
-
+			public void f(){
+				MaterialLoader.showLoading(true);
 			}
-
 		}).fail(new Function() {
 			@Override
 			public void f() {
+				MaterialLoader.showLoading(false);
 				Window.alert("Incident List could not be fetched from the server");
 			}
 		});
@@ -1029,9 +1070,9 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	}
 	
 	
-	private void loadClassTimeConfiguration(ClassTimeJson classTime){
+	private void loadClassTimeConfiguration(){
 		
-		Ajax.get("/roster/" + factory.getCurrentRoster().getId() + "/classtime/"+factory.getSelectedClassTime().getId()).done(new Function() {
+		Ajax.get("/roster/" + factory.getCurrentRoster().getId() + "/classtime/"+factory.getSelectedClassTime().getId()+"/config").done(new Function() {
 			@Override
 			public void f() {
 				
@@ -1073,7 +1114,44 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		factory.getClassTimeForm().getSubmitBtn().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
+				final ClassTimeJson newClassTime = factory.getClassTimeForm().getFormData();
+				newClassTime.setRosterId(String.valueOf(factory.getCurrentRoster().getId()));
+				GQuery.ajax("/roster/" + factory.getCurrentRoster().getId() + "/classtime/",
+						Ajax.createSettings().setData(newClassTime).setType("POST").setDataType("json"))
+						.done(new Function() {
+							@Override
+							public void f() {
+								GWT.log(arguments(0).toString());
+								String newClassTimeId = arguments(0).toString();
+								ClasstimeGridItem newClassTimeGridItem = new ClasstimeGridItem(newClassTime.getTitle(), newClassTime.getDescript(), newClassTimeId);
+								classTimegrid.addItem(newClassTimeGridItem);
+								currentRosterClassTimesList.push(newClassTime);
+								MaterialLink newClassTimeLink = new MaterialLink();
+								newClassTimeLink.setText(newClassTime.getTitle());
+								newClassTimeLink.addClickHandler(new ClickHandler(){
+									@Override
+									public void onClick(ClickEvent event) {
+										factory.setSelectedClassTime(newClassTime);
+										loadClassTimeConfiguration();
+									}
+								});
+								dashboard.getClasstimeDropDown().add(newClassTimeLink);
+								factory.getClassTimeForm().hide();
+								MaterialToast.fireToast("ClassTime created");
+								MaterialLoader.showLoading(false);
+							}
+						}).progress(new Function() {
+							@Override
+							public void f() {
+								MaterialLoader.showLoading(true);
+							}
+						}).fail(new Function() {
+							@Override
+							public void f() {
+								MaterialLoader.showLoading(false);
+								Window.alert("could not get classtimes from the server");
+							}
+						});
 				
 			}
 			
@@ -1091,6 +1169,18 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			}
 			
 		});
+		
+	}
+	
+	
+	private void drawClassTimeGrid(){
+		classTimegrid.getContainer().clear();
+		for(int i = 0; i < currentRosterClassTimesList.length(); i++){
+			ClassTimeJson classtime = currentRosterClassTimesList.get(i);
+			ClasstimeGridItem item = new ClasstimeGridItem(classtime.getTitle(), classtime.getDescript(), classtime.getId());
+			classTimegrid.addItem(item);
+		}
+		
 		
 	}
 

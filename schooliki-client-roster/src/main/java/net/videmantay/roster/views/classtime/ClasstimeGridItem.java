@@ -20,8 +20,11 @@ public class ClasstimeGridItem extends Composite {
 	interface ClasstimeGridItemUiBinder extends UiBinder<Widget, ClasstimeGridItem> {
 	}
 
-	public ClasstimeGridItem() {
+	public ClasstimeGridItem(String title, String description, String classTimeId) {
 		initWidget(uiBinder.createAndBindUi(this));
+		this.title.setText(title);
+		this.description.setText(description);
+		this.classTimeId = classTimeId;
 	}
 	
 	@UiField
@@ -42,15 +45,7 @@ public class ClasstimeGridItem extends Composite {
 	@UiField
 	MaterialAnchorButton procedBtn;
 	
-	private  ClassTimeJson classTime;
+	String classTimeId;
 
 	
-	public void setClassTime(ClassTimeJson classTime){
-		this.classTime = classTime;
-		draw();
-	}
-	
-	private void draw(){
-		
-	}
 }

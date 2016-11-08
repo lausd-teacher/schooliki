@@ -63,4 +63,15 @@ public class ClassTimeJson extends JavaScriptObject {
 	public final native void setEndTime(String endTime) /*-{
 		this.endTime = endTime;
 	}-*/;	
+	
+	public final native void setIsDefault(boolean isDefault) /*-{
+	   this.isDefault = isDefault;
+     }-*/;
+	
+	public final native String getIsDefault() /*-{
+	return this.isDefault;
+}-*/;
+	
+	
+	
 }

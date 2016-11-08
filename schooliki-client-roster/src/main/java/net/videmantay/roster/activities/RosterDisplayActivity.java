@@ -247,7 +247,6 @@ public class RosterDisplayActivity extends AbstractActivity
 						$(this.getRosterCard()).click(new Function() {
 							@Override
 							public boolean f(Event e) {
-								GWT.log("card clicker" + currentRoster.getId());
 								factory.setCurrentRoster(currentRoster);
 								goToClassRoom(currentRoster.getId());
 								

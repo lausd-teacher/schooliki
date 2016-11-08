@@ -29,6 +29,8 @@ public class ClassTime implements Serializable{
 	public String startTime;
 	public String endTime;
 	
+	public boolean isDefault;
+	
 	
 	public String getTitle() {
 		return title;
@@ -113,8 +115,15 @@ public class ClassTime implements Serializable{
 		classtime.lastUpdate = dto.getLastUpdate();
 		classtime.startTime = dto.getStartTime();
 		classtime.endTime = dto.getEndTime();
+		classtime.isDefault = dto.getIsDefault();
 		
 		return classtime;
+	}
+	public boolean isDefault() {
+		return this.isDefault;
+	}
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 	
 
