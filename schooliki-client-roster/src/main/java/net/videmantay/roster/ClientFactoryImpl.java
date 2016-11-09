@@ -40,7 +40,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	MainRosterSideNav mainRosterSideNav = new MainRosterSideNav();
 	MainRosterNavBar mainRosterNavBar = new MainRosterNavBar();
 	UserProfilePage profilePage = new UserProfilePage(appPanel.getNavBartitle());
-	UserProfilePanel userProfile = new UserProfilePanel(getCurrentUserName(), getCurrentUserProfileImageUrl());
+	UserProfilePanel userProfile = null;
 	ClassRoomSideNav classRoomSideNav = new ClassRoomSideNav();
 	GradedWorkForm gradedWorkForm = new GradedWorkForm();
 	GradedWorkMain gradedWorkMain = new GradedWorkMain(gradedWorkForm);
@@ -55,6 +55,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	 ClassTimeJson selectedClassTime = null;
 	 ClassTimeGrid classTimeGrid = null;
 	 ClassTimeForm classTimeForm = null;
+	 boolean isEditMode = false;
 
 
 	@Override
@@ -102,6 +103,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	@Override
 	public UserProfilePanel userProfile() {
+		if(userProfile == null){
+			userProfile = new UserProfilePanel(getCurrentUserName(), getCurrentUserProfileImageUrl());
+		}
 		return userProfile;
 	}
 	
@@ -194,6 +198,14 @@ public class ClientFactoryImpl implements ClientFactory {
 			classTimeForm = new ClassTimeForm();
 		}
 		return classTimeForm;
+	}
+	@Override
+	public boolean isEditMode() {
+		return isEditMode;
+	}
+	@Override
+	public void setEditMode(boolean isEditMode) {
+		this.isEditMode = isEditMode;
 	}
 
 	

@@ -21,7 +21,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialRow;
+import gwt.material.design.client.ui.MaterialToast;
 import gwtquery.plugins.ui.DroppableUi;
+import gwtquery.plugins.ui.interactions.Draggable;
 import gwtquery.plugins.ui.interactions.Droppable;
 import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.HasRosterDashboardView;
@@ -56,30 +58,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	public SeatingChartPanel(ClientFactory factory) {
 		initWidget(uiBinder.createAndBindUi(this));
         this.factory = factory;
-        Droppable.Options options = Droppable.Options.create();
-        
-        options.accept(".furnitureItem");
-        
-        $(floorPlan).as(Ui).droppable(options).on("drop", new Function(){
-			@Override
-			public boolean f(Event e, Object...o){
-				
-				DroppableUi ui =(DroppableUi)o[0];
-				Element droppedElement = ui.draggable().get();
-				
-				
-				GWT.log("dropping here " + droppedElement.getClassName());
-				
-				if(droppedElement.getClassName().contains("studentDraggable")){
-					GWT.log("received draggable");
-					
-				}
-				
-				return true;	
-			   }
-			});
-        
-        
+       
+        enableDragAndDrop();
+      //  disableDragAndDrop();
         
         List<FurniturePanelItem> furnitureList = DragAndDropManager.getFurnitureItems();
         
@@ -95,6 +76,69 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
          furniturePanel.add(row);
        
 
+	}
+	
+	
+	public void enableDragAndDrop(){
+		 Droppable.Options options = Droppable.Options.create();
+	        
+	        options.accept(".furnitureItem");
+	        options.disabled(false);
+	        
+	        $(floorPlan).unbind("drop");
+	        $(floorPlan).as(Ui).droppable(options).on("drop", new Function(){
+				@Override
+				public boolean f(Event e, Object...o){
+					DroppableUi ui =(DroppableUi)o[0];
+					Element droppedElement = ui.draggable().get();
+					
+					GWT.log("dropping here " + droppedElement.getClassName());
+					
+					
+					
+					  GWT.log("received draggable : " + droppedElement.getParentElement().getClassName());
+					//if(droppedElement.getClassName().contains("studentDraggable")){
+					  
+					 if(factory.isEditMode()){
+						 Droppable.Options dropOptions = Droppable.Options.create();
+							dropOptions.accept(".studentDraggable");
+						  if(droppedElement.getParentElement().getClassName().contains("furnitureItem")){
+							  $(ui.helper()).clone().as(Ui).draggable().droppable(dropOptions).appendTo($(floorPlan).as(Ui));
+						  }else{
+							  Draggable.Options dragOptions = Draggable.Options.create();
+								dragOptions.helper("original");
+							 $(droppedElement).as(Ui).draggable(dragOptions).droppable(dropOptions).appendTo($(floorPlan).as(Ui));
+							  
+						  }
+					 }else{
+						 
+						MaterialToast.fireToast("Please activate editing before dropping anything on the class plan", 2000); 
+					 }
+					
+					return true;	
+				   }
+				});
+		
+	}
+	
+	
+	public void disableDragAndDrop(){
+		 Droppable.Options options = Droppable.Options.create();
+	        options.disabled(true);
+	        
+	        $(floorPlan).unbind("drop");
+	        $(floorPlan).on("drop", new Function(){
+				@Override
+				public boolean f(Event e, Object...o){
+					
+					MaterialToast.fireToast("Please acitvate editing before dropping anything on the class plan", 2000);
+					return true;
+					
+				}
+				});
+	         
+	        $(floorPlan).as(Ui).droppable(options);
+		
 	}
 	
 

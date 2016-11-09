@@ -69,6 +69,7 @@ import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.classtime.ClassTimeForm;
 import net.videmantay.roster.views.RosterDashboardPanel;
+import net.videmantay.roster.views.RosterDashboardPanel.View;
 import net.videmantay.roster.views.RosterStudentPanel;
 import net.videmantay.roster.views.assignment.AssignmentGrid;
 import net.videmantay.roster.views.assignment.EmptyAssignmentGrid;
@@ -87,7 +88,7 @@ import net.videmantay.student.json.RosterStudentJson;
 
 
 public class ClassRoomActivity extends AbstractActivity implements ClassRoomSideNav.Presenter,
-		RosterDashboardPanel.Presenter, ClassRoomGrid.Presenter, CreateStudentForm.Presenter, GradedWorkMain.Presenter,
+    RosterDashboardPanel.Presenter, ClassRoomGrid.Presenter, CreateStudentForm.Presenter, GradedWorkMain.Presenter,
 		GradedWorkForm.Presenter, IncidentMain.Presenter, IncidentForm.Presenter, ClassTimeGrid.Presenter, ClassTimeForm.Presenter {
 
 	final ClientFactory factory;
@@ -524,6 +525,9 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		classTimeAddButtonClickEvent();
         createClassTimeFormSubmitButton();
         createClassTimeFormCancelButton();
+    	seatingChartEditClickEvent();
+        barDoneButtonClickEvent();
+	    barCancelButtonClickEvent();
 	}
 
 	@Override
@@ -575,8 +579,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			MaterialColumn c = new MaterialColumn();
 			MaterialColumn c2 = new MaterialColumn();
 			
-			RosterStudentPanel rsp = new RosterStudentPanel(students.get(i));
-			RosterStudentPanel seatingChartStudent = new RosterStudentPanel(students.get(i));
+			RosterStudentPanel rsp = new RosterStudentPanel(students.get(i), View.GRID);
+			RosterStudentPanel seatingChartStudent = new RosterStudentPanel(students.get(i), View.CHART);
 			rsp.addStyleName("grid");
 			c.add(rsp);
 			i++;
@@ -670,8 +674,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				MaterialColumn c = new MaterialColumn();
 				MaterialColumn c2 = new MaterialColumn();
 				
-				RosterStudentPanel rsp = new RosterStudentPanel(rosterStudent);
-				RosterStudentPanel seatingChartStudent = new RosterStudentPanel(rosterStudent);
+				RosterStudentPanel rsp = new RosterStudentPanel(rosterStudent, View.GRID);
+				RosterStudentPanel seatingChartStudent = new RosterStudentPanel(rosterStudent, View.CHART);
 				
 				rsp.addStyleName("grid");
 				c.add(rsp);
@@ -1181,6 +1185,46 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			classTimegrid.addItem(item);
 		}
 		
+		
+	}
+
+	@Override
+	public void seatingChartEditClickEvent() {
+		dashboard.getSeatingChartEditIcon().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.showDoneBar();
+				//seatingChart.enableDragAndDrop();
+				factory.setEditMode(true);
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void barDoneButtonClickEvent() {
+		dashboard.getDoneBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.showToolBar();
+				//seatingChart.disableDragAndDrop();
+				factory.setEditMode(false);
+			}
+		});
+		
+	}
+
+	@Override
+	public void barCancelButtonClickEvent() {
+		dashboard.getCancelBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.showToolBar();
+				//seatingChart.disableDragAndDrop();
+				factory.setEditMode(false);
+			}
+		});
 		
 	}
 

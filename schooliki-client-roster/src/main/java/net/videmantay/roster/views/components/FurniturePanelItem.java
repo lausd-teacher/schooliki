@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialLabel;
+import gwtquery.plugins.ui.DraggableUi;
 import gwtquery.plugins.ui.DroppableUi;
 import gwtquery.plugins.ui.interactions.Draggable;
 import gwtquery.plugins.ui.interactions.Droppable;
@@ -49,6 +50,8 @@ public class FurniturePanelItem extends Composite {
 		Draggable.Options options = Draggable.Options.create();
 		options.revert("invalid");
 		options.helper("clone");
+		options.grid(20, 20);
+		options.containment("window");
 		
 		Droppable.Options options2 = Droppable.Options.create();
 		options2.accept(".studentDraggable");
@@ -56,24 +59,7 @@ public class FurniturePanelItem extends Composite {
 		
 		$(furnitureImage).as(Ui).draggable(options);
 		
-		$(furnitureImage).as(Ui).droppable().on("drop", new Function(){
-			@Override
-			public boolean f(Event e, Object...o){
-				
-				DroppableUi ui =(DroppableUi)o[0];
-				Element droppedElement = ui.draggable().get();
-				
-				
-				GWT.log("dropping here " + droppedElement.getClassName());
-				
-				if(droppedElement.getClassName().contains("studentDraggable")){
-					GWT.log("received draggable");
-					
-				}
-				
-				return true;	
-			   }
-			});
+		$(furnitureImage).as(Ui).droppable(options2);
 		
 		
 	}

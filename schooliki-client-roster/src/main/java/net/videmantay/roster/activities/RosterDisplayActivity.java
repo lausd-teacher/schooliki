@@ -114,6 +114,7 @@ public class RosterDisplayActivity extends AbstractActivity
 		}
 		panel.setWidget(appPanel);
 		
+		
 	}
 
 	private void initializeEvents() {

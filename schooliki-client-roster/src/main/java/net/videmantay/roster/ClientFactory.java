@@ -52,7 +52,7 @@ public interface ClientFactory {
 	void setSelectedClassTime(ClassTimeJson selectedClassTime);
 	ClassTimeGrid getClassTimeGrid();
 	ClassTimeForm getClassTimeForm();
-
-	
+	boolean isEditMode();
+	void setEditMode(boolean isEditMode);
 
 }

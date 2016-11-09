@@ -21,7 +21,6 @@ import net.videmantay.shared.LoginInfo;
 public class UserProfilePanel extends Composite{
 
 	private static UserProfilePanelUiBinder uiBinder = GWT.create(UserProfilePanelUiBinder.class);
-	//private final LoginInfo profile = window.getPropertyJSO("loginInfo").cast();
 	interface UserProfilePanelUiBinder extends UiBinder<Widget, UserProfilePanel> {
 	}
 

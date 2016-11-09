@@ -29,20 +29,7 @@
 					<m:MaterialLabel text="Seating Chart" paddingLeft="7.5" />
 					</m:MaterialColumn>
 					<m:MaterialColumn>
-						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT" activates="seatingChartEdit"/>
-						<m:MaterialDropDown activator="seatingChartEdit">
-							<m:MaterialLink ui:field="arrangeStudentsLink" text="Arrange Students" />
-							<m:MaterialLink ui:field="manageFurnitureLink" text="Manage Furntirue"/>
-							<m:MaterialLink ui:field="manageStationsLink" text="Manage Stations" />
-							<m:MaterialLink ui:field="manageGroupsLink" text="Manage Groups" />
-							<m:MaterialLink ui:field="manageSeatingChart" text="Manage Chart" activates="manageSeating"/>
-								<m:MaterialDropDown activator="manageSeating">
-									<m:MaterialLink ui:field="newLink" text="New" />
-									<m:MaterialLink ui:field="copyLink" text="Copy" />
-									<m:MaterialLink ui:field="deleteLink" text="Delete" />
-								</m:MaterialDropDown>
-							
-						</m:MaterialDropDown>
+						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT"/>
 					</m:MaterialColumn>
 				</m:MaterialRow>
 				</m:MaterialColumn>
@@ -123,7 +110,7 @@
 					<m:MaterialButton  ui:field="undoBtn" text="Undo" iconType="UNDO" backgroundColor="orange darken-4" />
 				</m:MaterialColumn>
 				<m:MaterialColumn grid="m3">
-					<m:MaterialAnchorButton ui:field="doneBarCancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="red darken-1"></m:MaterialAnchorButton>
+					<m:MaterialAnchorButton ui:field="CancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="red darken-1"></m:MaterialAnchorButton>
 				</m:MaterialColumn>
 				<m:MaterialColumn grid="m3">
 					<m:MaterialButton  type="FLAT" textColor="white" text="Mangage" iconType="MORE_VERT" iconPosition="RIGHT"/>
