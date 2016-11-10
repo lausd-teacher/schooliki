@@ -112,9 +112,6 @@
 				<m:MaterialColumn grid="m3">
 					<m:MaterialAnchorButton ui:field="CancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="red darken-1"></m:MaterialAnchorButton>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="m3">
-					<m:MaterialButton  type="FLAT" textColor="white" text="Mangage" iconType="MORE_VERT" iconPosition="RIGHT"/>
-				</m:MaterialColumn>
 			</m:MaterialColumn>
 			<m:MaterialColumn ui:field="smDoneToolbar" hideOn="HIDE_ON_MED_UP">
 				<m:MaterialColumn grid="s3">

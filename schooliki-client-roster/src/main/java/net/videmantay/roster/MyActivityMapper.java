@@ -10,8 +10,8 @@ import net.videmantay.roster.places.*;
 public class MyActivityMapper implements ActivityMapper {
 
 	ClientFactory factory;
-	static RosterDisplayActivity rosterActivity;
-	static ClassRoomActivity classRoomActivity;
+	static RosterDisplayActivity rosterActivity = null;
+	static ClassRoomActivity classRoomActivity = null;
 
 	public MyActivityMapper(ClientFactory factory) {
 		this.factory = factory;

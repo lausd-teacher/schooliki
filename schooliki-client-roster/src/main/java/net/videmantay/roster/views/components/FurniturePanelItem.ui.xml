@@ -6,7 +6,7 @@
 	
 	</ui:style>
 	<g:HTMLPanel styleName="furnitureItem">
-	     <img ui:field="furnitureImage"></img>
+	     <div ui:field="furnitureImage" class="seatingChartImageDiv"></div>
 	     <m:MaterialLabel ui:field="furnitureName"></m:MaterialLabel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

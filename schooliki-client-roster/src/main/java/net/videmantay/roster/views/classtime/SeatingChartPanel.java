@@ -10,6 +10,7 @@ import java.util.Stack;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialToast;
@@ -29,6 +31,7 @@ import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.views.components.FurniturePanelItem;
 import net.videmantay.roster.views.draganddrop.DragAndDropManager;
+import net.videmantay.roster.views.draganddrop.SelectionManager;
 import net.videmantay.shared.Action;
 
 public class SeatingChartPanel extends Composite implements HasRosterDashboardView {
@@ -47,6 +50,12 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	@UiField
 	HTMLPanel studentsPanel;
+	
+	@UiField
+	MaterialButton rotateButton;
+	
+	@UiField
+    MaterialButton removeButton; 
 	
 
 	private final Stack<Action> stack = new Stack<Action>();
@@ -83,35 +92,56 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		 Droppable.Options options = Droppable.Options.create();
 	        
 	        options.accept(".furnitureItem");
-	        options.disabled(false);
 	        
-	        $(floorPlan).unbind("drop");
 	        $(floorPlan).as(Ui).droppable(options).on("drop", new Function(){
 				@Override
 				public boolean f(Event e, Object...o){
 					DroppableUi ui =(DroppableUi)o[0];
 					Element droppedElement = ui.draggable().get();
+					NativeEvent nativeEvent = e.cast();
 					
 					GWT.log("dropping here " + droppedElement.getClassName());
 					
+					GWT.log("received draggable : " + droppedElement.getParentElement().getClassName());
 					
+					DivElement eventTarget = nativeEvent.getEventTarget().cast();
 					
-					  GWT.log("received draggable : " + droppedElement.getParentElement().getClassName());
-					//if(droppedElement.getClassName().contains("studentDraggable")){
-					  
+					GWT.log("target : " + eventTarget.getClassName());
+					
 					 if(factory.isEditMode()){
 						 Droppable.Options dropOptions = Droppable.Options.create();
 							dropOptions.accept(".studentDraggable");
-						  if(droppedElement.getParentElement().getClassName().contains("furnitureItem")){
-							  $(ui.helper()).clone().as(Ui).draggable().droppable(dropOptions).appendTo($(floorPlan).as(Ui));
-						  }else{
+							
+							
+							
+						  if(eventTarget.getClassName().contains("floorPlan") &&  !droppedElement.getParentElement().getClassName().contains("floorPlan")){
+							  Draggable.Options dragOptions = Draggable.Options.create();
+								dragOptions.containment("parent");
+								
+								
+								
+							  $(ui.helper()).clone().as(Ui).draggable(dragOptions).droppable(dropOptions).appendTo($(floorPlan).as(Ui)).focus(new Function(){
+								  public boolean f(Event e, Object...o){
+									 
+									  NativeEvent nativeEvent = e.cast();
+									  DivElement eventTarget = nativeEvent.getEventTarget().cast();
+									  
+									  SelectionManager.setCurrentlySelected(eventTarget);
+									  
+									  return true;
+								  }
+							  });
+							  
+							  
+						  }else if(eventTarget.getClassName().contains("furnitureItem") && droppedElement.getParentElement().getClassName().contains("rosterStudentPanel")){
 							  Draggable.Options dragOptions = Draggable.Options.create();
 								dragOptions.helper("original");
-							 $(droppedElement).as(Ui).draggable(dragOptions).droppable(dropOptions).appendTo($(floorPlan).as(Ui));
+								dragOptions.containment("parent");
+								
+							 $(ui.helper()).clone().css("left", "0").css("top", "0").as(Ui).draggable(dragOptions).appendTo($(eventTarget).as(Ui));
 							  
 						  }
 					 }else{
-						 
 						MaterialToast.fireToast("Please activate editing before dropping anything on the class plan", 2000); 
 					 }
 					
@@ -121,25 +151,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 	}
 	
-	
-	public void disableDragAndDrop(){
-		 Droppable.Options options = Droppable.Options.create();
-	        options.disabled(true);
-	        
-	        $(floorPlan).unbind("drop");
-	        $(floorPlan).on("drop", new Function(){
-				@Override
-				public boolean f(Event e, Object...o){
-					
-					MaterialToast.fireToast("Please acitvate editing before dropping anything on the class plan", 2000);
-					return true;
-					
-				}
-				});
-	         
-	        $(floorPlan).as(Ui).droppable(options);
-		
-	}
 	
 
 	@Override
@@ -291,6 +302,14 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 
 	public HTMLPanel getStudentsPanel() {
 		return this.studentsPanel;
+	}
+	
+	public MaterialButton getRotateButton() {
+		return this.rotateButton;
+	}
+	
+	public interface Presenter{
+		void rotateActionButtonClickEvent();
 	}
 	
 

@@ -89,7 +89,6 @@ div.item-student.ui-selecting { background: #FECA40;
 		display:flex;
 		flex-direction: row;
 	}
-	
 	.floorPlan{
 		width:60%;
 		height:100%;
@@ -107,7 +106,16 @@ div.item-student.ui-selecting { background: #FECA40;
 		width:20%;
 		height:100%;
 		border:1px dotted Red;
+	}
 	
+	.seatingChartSectionTitle{
+	  font-size: 26px;
+	  display:block;
+	  text-align:center;
+	}
+	
+	.floorPlan .furnitureItem:focus{
+	     border: solid 5px green;
 	}
 	
 	.floorplan-hover{
@@ -232,7 +240,11 @@ div.item-student.ui-selecting { background: #FECA40;
 		height:7.5em;
 		font-size:1em;
 	}
-	
+	.seatingChartImageDiv{
+		background-size:contain;
+		background-repeat:no-repeat;
+		background-position:center;
+	}
 	
 	.rosterStudent .studentHead{
 		width:100%;

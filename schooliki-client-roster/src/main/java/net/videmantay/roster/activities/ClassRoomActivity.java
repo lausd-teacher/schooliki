@@ -1,7 +1,6 @@
 package net.videmantay.roster.activities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.activity.shared.AbstractActivity;
@@ -13,6 +12,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
@@ -67,20 +67,21 @@ import net.videmantay.roster.places.LessonPlanPlace;
 import net.videmantay.roster.places.RosterHomePlace;
 import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassRoomGrid;
-import net.videmantay.roster.views.classtime.ClassTimeForm;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDashboardPanel.View;
 import net.videmantay.roster.views.RosterStudentPanel;
 import net.videmantay.roster.views.assignment.AssignmentGrid;
 import net.videmantay.roster.views.assignment.EmptyAssignmentGrid;
-import net.videmantay.roster.views.assignment.GradedWorkMain;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
+import net.videmantay.roster.views.assignment.GradedWorkMain;
+import net.videmantay.roster.views.classtime.ClassTimeForm;
 import net.videmantay.roster.views.classtime.ClassTimeGrid;
 import net.videmantay.roster.views.classtime.ClasstimeGridItem;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
-import net.videmantay.roster.views.incident.IncidentMain;
+import net.videmantay.roster.views.draganddrop.SelectionManager;
 import net.videmantay.roster.views.incident.IncidentForm;
+import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
 import net.videmantay.roster.views.student.StudentCard;
 import net.videmantay.student.json.RosterStudentJson;
@@ -89,7 +90,8 @@ import net.videmantay.student.json.RosterStudentJson;
 
 public class ClassRoomActivity extends AbstractActivity implements ClassRoomSideNav.Presenter,
     RosterDashboardPanel.Presenter, ClassRoomGrid.Presenter, CreateStudentForm.Presenter, GradedWorkMain.Presenter,
-		GradedWorkForm.Presenter, IncidentMain.Presenter, IncidentForm.Presenter, ClassTimeGrid.Presenter, ClassTimeForm.Presenter {
+		GradedWorkForm.Presenter, IncidentMain.Presenter, IncidentForm.Presenter, 
+		ClassTimeGrid.Presenter, ClassTimeForm.Presenter,SeatingChartPanel.Presenter {
 
 	final ClientFactory factory;
 
@@ -116,7 +118,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		this.dashboard = factory.getRosterDashBoard();
 		this.appPanel = factory.getAppPanel();
 		this.currentPlace = place;
-		this.dashboard = factory.getRosterDashBoard();
 		this.classRoomSideNav = factory.getClassRoomSideNav();
 		this.grid = factory.getClassRoomGrid();
 		this.gradedWorkMain = factory.getGradedWorkMain();
@@ -528,6 +529,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
     	seatingChartEditClickEvent();
         barDoneButtonClickEvent();
 	    barCancelButtonClickEvent();
+	    rotateActionButtonClickEvent();
 	}
 
 	@Override
@@ -560,19 +562,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		seatingChart.getStudentsPanel().add(row2);
 		
 
-//		List<AppUserJ> studentList = new ArrayList<RosterStudentJson>();
-//		GWT.log("before" + students.length());
-//
-//		for (int i = 0; i < students.length(); i++) {
-//			studentList.add(students.get(i));
-//		}
-//
-//		if (sortbyFirstName) {
-//			Collections.sort(studentList, new FistNameCompare());
-//		} else {
-//			Collections.sort(studentList, new LastNameCompare());
-//		}
-
 		int i = 0;
 		//add students to both seating chart and grid
 		while (i < students.length()) {
@@ -584,13 +573,18 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			rsp.addStyleName("grid");
 			c.add(rsp);
 			i++;
-			
 			row.add(c);
+			
+			//For seating chart grid
 			c2.add(seatingChartStudent);
 			row2.add(c2);
+			   if( i != 0 && i % 3 == 0){
+				   row2 = new MaterialRow();
+				   //there is row above so make some space betwwen the two
+				   row2.setMarginTop(40);
+				   seatingChart.getStudentsPanel().add(row2);
+			   }
 		}
-		
-		
 		grid.getContainer().add(factory.getCreateStudentForm());
 		grid.getContainer().add(grid.getFab());
 		
@@ -660,7 +654,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		MaterialRow row2 = new MaterialRow();
 		
 		grid.getContainer().add(row);
-		seatingChart.getStudentsPanel().add(row2);
+		//seatingChart.getStudentsPanel().add(row2);
 		
 		
 		for(int i = 0; i < addedStudentsMasonery.getWidgetCount(); i++){
@@ -682,7 +676,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				row.add(c);
 				
 				c2.add(seatingChartStudent);
-				row2.add(c2);
+				seatingChart.getStudentsPanel().add(c2);
 				
 			}
 		}
@@ -1194,7 +1188,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			@Override
 			public void onClick(ClickEvent event) {
 				dashboard.showDoneBar();
-				//seatingChart.enableDragAndDrop();
 				factory.setEditMode(true);
 				
 			}
@@ -1208,7 +1201,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			@Override
 			public void onClick(ClickEvent event) {
 				dashboard.showToolBar();
-				//seatingChart.disableDragAndDrop();
 				factory.setEditMode(false);
 			}
 		});
@@ -1221,8 +1213,29 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			@Override
 			public void onClick(ClickEvent event) {
 				dashboard.showToolBar();
-				//seatingChart.disableDragAndDrop();
 				factory.setEditMode(false);
+			}
+		});
+		
+	}
+
+	@Override
+	public void rotateActionButtonClickEvent() {
+		seatingChart.getRotateButton().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				if(factory.isEditMode()){
+					if(SelectionManager.isSelectionActive()){
+						DivElement selected = SelectionManager.getSelection();
+						GWT.log(selected.getStyle().toString());
+					}else{
+						MaterialToast.fireToast("No Element to rotate, please select an element", 3000);
+						
+					}
+				}else{
+					MaterialToast.fireToast("Cannot apply action while not in edit mode, please activate edit mode before taking an action", 3000);	
+				}
+				
 			}
 		});
 		

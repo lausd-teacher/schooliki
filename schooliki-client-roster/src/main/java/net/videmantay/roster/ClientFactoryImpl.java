@@ -176,7 +176,6 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	@Override
 	public ClassTimeJson getSelectedClassTime() {
-		// TODO Auto-generated method stub
 		return selectedClassTime;
 	}
 	@Override
@@ -188,13 +187,11 @@ public class ClientFactoryImpl implements ClientFactory {
 		  if(classTimeGrid == null){
 			  classTimeGrid = new ClassTimeGrid(this);
 		  }
-		// TODO Auto-generated method stub
 		return classTimeGrid;
 	}
 	@Override
 	public ClassTimeForm getClassTimeForm() {
 		if(classTimeForm == null){
-			
 			classTimeForm = new ClassTimeForm();
 		}
 		return classTimeForm;
