@@ -15,21 +15,21 @@
 					activator="iconList">
 				</m:MaterialDropDown>
 				<m:MaterialLabel ui:field="nameLabel" text="Name:" />
-				<m:MaterialInput ui:field="nameInput" type="TEXT"
-					required="true" />
+				<m:MaterialListBox ui:field="nameInput">
+				</m:MaterialListBox>
 				<m:html.Label styleName="errorLabel" text="You must include a name"
 					textColor="red lighten-1" />
 				<m:MaterialChip ui:field="valueLabel" text="Points:" />
 				<m:MaterialIntegerBox ui:field="valueInput" />
 				<m:MaterialLabel text="Type:" />
 				<m:MaterialListBox ui:field="typeListBox">
-					<m:html.Option text="WORST" />
-					<m:html.Option text="SEVER" />
-					<m:html.Option text="MODERATE" />
-					<m:html.Option text="INCIDENTAL" />
-					<m:html.Option text="GOOD" />
-					<m:html.Option text="BETTER" />
-					<m:html.Option text="BEST" />
+					<m:html.Option text="👍 Helping others" />
+					<m:html.Option text="On task" />
+					<m:html.Option text="Participating" />
+					<m:html.Option text="Persistence" />
+					<m:html.Option text="Teamwork" />
+					<m:html.Option text="Test" />
+					<m:html.Option text="Working Hard" />
 				</m:MaterialListBox>
 			</g:HTMLPanel>
 		</m:MaterialModalContent>

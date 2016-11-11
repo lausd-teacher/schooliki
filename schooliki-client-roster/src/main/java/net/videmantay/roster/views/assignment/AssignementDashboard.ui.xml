@@ -1,9 +1,46 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
 	
 	</ui:style>
 	<g:HTMLPanel>
+	<m:MaterialTab textColor="red"  height="2.5em" >
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Assignements"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab2" text="Calendar"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
+	</m:MaterialTab>
+	<div  id="tab1">
+	   <g:HTMLPanel >
+	      <m:MaterialRow height="3em" backgroundColor="yellow darken-1" textColor="red darken-3" paddingLeft="10" centerOn="CENTER_ON_SMALL">
+				<m:MaterialColumn textAlign="LEFT" grid="s6 m4 l3"> 
+				<g:HTMLPanel>
+				<table>
+					<tr>
+						<td><m:MaterialLabel text="List" /></td>
+						<td><m:MaterialSwitch ui:field="gradebookSwitch" /></td>
+						<td><m:MaterialLabel text="Gradebook" /></td>
+					</tr>
+				</table>	
+				</g:HTMLPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn float="RIGHT" textAlign="RIGHT" grid="s6 m4 l3"> 
+					<m:MaterialSearch ui:field="assignmentSearch"/>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+			<g:HTMLPanel ui:field="assignementsTabContent">
+			
+			</g:HTMLPanel>
+	   </g:HTMLPanel>	
+	</div>
+	<div  id="tab2">
+      <g:HTMLPanel>
+	  </g:HTMLPanel>	
+	</div>
+	<div  id="tab3">
+	  <g:HTMLPanel>
+	  </g:HTMLPanel>	
+	</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -6,25 +6,7 @@
 	
 	</ui:style>
 	<g:HTMLPanel ui:field="wrapper">
-		<m:MaterialHeader> 
-			<m:MaterialRow>
-				<m:MaterialColumn textAlign="LEFT" grid="s6 m4 l3"> 
-				<g:HTMLPanel>
-				<table>
-					<tr>
-						<td><m:MaterialLabel text="List" /></td>
-						<td><m:MaterialSwitch ui:field="gradebookSwitch" /></td>
-						<td><m:MaterialLabel text="Gradebook" /></td>
-					</tr>
-				</table>	
-				</g:HTMLPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn float="RIGHT" textAlign="RIGHT" grid="s6 m4 l3"> 
-					<m:MaterialSearch ui:field="assignmentSearch"/>
-				</m:MaterialColumn>
-			</m:MaterialRow>
-			</m:MaterialHeader>
-		<m:MaterialPanel><!--  -->
+		<m:MaterialPanel>
 			<m:html.Div ui:field="gradedWorkViz">
 			
 			</m:html.Div>

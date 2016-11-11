@@ -12,6 +12,7 @@ import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDisplay;
 import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.UserProfilePanel;
+import net.videmantay.roster.views.assignment.AssignementDashboard;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
 import net.videmantay.roster.views.calendar.GoogleCalendar;
@@ -54,5 +55,6 @@ public interface ClientFactory {
 	ClassTimeForm getClassTimeForm();
 	boolean isEditMode();
 	void setEditMode(boolean isEditMode);
+	AssignementDashboard getAssignementDashboard();
 
 }

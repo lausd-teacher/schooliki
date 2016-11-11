@@ -28,6 +28,9 @@ public class MyActivityMapper implements ActivityMapper {
 			if(rosterActivity == null){
 				 rosterActivity = new RosterDisplayActivity(factory, place);
 			 }else{
+				 if(classRoomActivity != null)
+				     classRoomActivity.resetRosterDataLists();
+				 
 				 rosterActivity.setPlace(place);
 			 }
 			return rosterActivity;
@@ -35,6 +38,7 @@ public class MyActivityMapper implements ActivityMapper {
 			if(classRoomActivity == null){
 				classRoomActivity = new ClassRoomActivity(factory, place);
 			 }else{
+				 
 				 classRoomActivity.setPlace(place);
 			 }
 			return classRoomActivity;

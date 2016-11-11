@@ -12,17 +12,15 @@
 		   <div>
 		   <div style="background:white;"> <span class="seatingChartSectionTitle">Actions</span></div>
 		    <g:HTMLPanel ui:field="actionsPanel">
-		      <m:MaterialButton ui:field="rotateButton" type="FLOATING" waves="LIGHT" size="LARGE" backgroundColor="GREEN" text="Rotate" iconType="REPLAY" />
-              <m:MaterialButton ui:field="removeButton" type="FLOATING" waves="LIGHT" size="LARGE" text="Remove" iconType="REMOVE_CIRCLE" />
+		      <m:MaterialButton ui:field="rotateButton" addStyleNames="floorPlanActionButton" type="FLOATING" waves="LIGHT" size="LARGE" backgroundColor="GREEN" text="Rotate" iconType="REPLAY" />
+              <m:MaterialButton ui:field="removeButton" addStyleNames="floorPlanActionButton" type="FLOATING" waves="LIGHT" size="LARGE" text="Remove" iconType="REMOVE_CIRCLE" />
 		    </g:HTMLPanel>
 		   </div>
 		</div>
 		<div ui:field="floorPlan" class="floorPlan">
 		</div>
 		<g:HTMLPanel ui:field="studentsPanel" addStyleNames="studentsPanel">
-		       <div style="background:white;"><span class="seatingChartSectionTitle">Students</span> </div>
-		        
-		       
+		       <div style="background:white;"><span class="seatingChartSectionTitle">Students</span></div>
 		</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

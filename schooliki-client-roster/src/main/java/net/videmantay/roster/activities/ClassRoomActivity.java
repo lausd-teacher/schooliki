@@ -70,6 +70,7 @@ import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDashboardPanel.View;
 import net.videmantay.roster.views.RosterStudentPanel;
+import net.videmantay.roster.views.assignment.AssignementDashboard;
 import net.videmantay.roster.views.assignment.AssignmentGrid;
 import net.videmantay.roster.views.assignment.EmptyAssignmentGrid;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
@@ -111,6 +112,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	IncidentMain incidentMainPage;
 	IncidentForm incidentForm;
 	ClassTimeGrid classTimegrid;
+	AssignementDashboard assignementDashboard;
 	boolean isGridEmpty = true;
 
 	public ClassRoomActivity(ClientFactory factory, Place place) {
@@ -128,6 +130,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		this.incidentForm = incidentMainPage.getIncidentForm();
 		this.classTimegrid = factory.getClassTimeGrid();
 		initializeEvents();
+		SelectionManager.registerDocumentClickEvent();
 
 	}
 
@@ -161,7 +164,9 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			appPanel.getMainPanel().add(dashboard);
 		} else if (currentPlace instanceof AssignementPlace) {
 			getGradedWorkListAndDrawGrid();
-			appPanel.getMainPanel().add(gradedWorkMain);
+			//lazy loading
+			assignementDashboard = factory.getAssignementDashboard();
+			appPanel.getMainPanel().add(assignementDashboard);
 		} else if (currentPlace instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (currentPlace instanceof IncidentPlace) {
@@ -471,19 +476,23 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		hideSideNav();
 
 		currentPlace = place;
-		students = JavaScriptObject.createObject().cast();
+		
 
 		if (place instanceof ClassRoomPlace) {
 			//No need to draw Again 
 			//getRosterStudentsListAndDrawGrid();
+			dashboard.getGridSwitch().setValue(false);
 			appPanel.getMainPanel().add(dashboard);
 		} else if (place instanceof AssignementPlace) {
 			getGradedWorkListAndDrawGrid();
-			appPanel.getMainPanel().add(gradedWorkMain);
+			//lazy loading
+			assignementDashboard = factory.getAssignementDashboard();
+			appPanel.getMainPanel().add(assignementDashboard);
 		} else if (place instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (place instanceof IncidentPlace) {
 			getIncidentsAndDraw();
+			incidentForm.populateStudentsNamesList(students);
 			appPanel.getMainPanel().add(incidentMainPage);
 		} else if (place instanceof GoalPlace) {
 			appPanel.getMainPanel().add(new Label("Goal view is not implemented yet"));
@@ -1224,13 +1233,30 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		seatingChart.getRotateButton().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
+				event.stopPropagation();
 				if(factory.isEditMode()){
 					if(SelectionManager.isSelectionActive()){
 						DivElement selected = SelectionManager.getSelection();
-						GWT.log(selected.getStyle().toString());
+						if(selected.getStyle().getProperty("transform").isEmpty()){
+						     selected.getStyle().setProperty("transform", "rotate(45deg)");
+						}else{
+							//Extracting the current rotation and adding 45 degrees
+							String transform = selected.getStyle().getProperty("transform");
+							transform = transform.replace("rotate(", "");
+							transform = transform.replace("deg)", "");
+							int degrees = Integer.valueOf(transform);
+							if(degrees == 360){
+								degrees = 0;
+								
+							}
+								
+								degrees+=45;
+							
+							
+							 selected.getStyle().setProperty("transform", "rotate("+degrees+"deg)");
+						}
 					}else{
 						MaterialToast.fireToast("No Element to rotate, please select an element", 3000);
-						
 					}
 				}else{
 					MaterialToast.fireToast("Cannot apply action while not in edit mode, please activate edit mode before taking an action", 3000);	
@@ -1238,6 +1264,15 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				
 			}
 		});
+		
+	}
+	
+	
+	public void resetRosterDataLists(){
+		students = JavaScriptObject.createObject().cast();
+		gradedWorkList = JavaScriptObject.createObject().cast();
+		incidentsList = JavaScriptObject.createObject().cast();
+		currentRosterClassTimesList = JavaScriptObject.createObject().cast();
 		
 	}
 

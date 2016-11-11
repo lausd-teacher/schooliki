@@ -10,7 +10,7 @@
 		<m:MaterialTitle title="Manage  classroom expectations by creating positive and negative incidents" description="Incidents are events you want to encourage like 'Turned in Homework', 'Shared with a friend'" />
 		<m:MaterialCard>
 			<m:MaterialCardContent>
-				<m:MaterialTab ui:field="tab" indicatorColor="green">
+				<m:MaterialTab ui:field="tab">
 					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton ui:field="posTab" type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
 					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton ui:field="negTab" type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
 				</m:MaterialTab>

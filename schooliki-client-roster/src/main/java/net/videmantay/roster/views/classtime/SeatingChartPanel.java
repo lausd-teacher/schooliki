@@ -69,7 +69,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
         this.factory = factory;
        
         enableDragAndDrop();
-      //  disableDragAndDrop();
         
         List<FurniturePanelItem> furnitureList = DragAndDropManager.getFurnitureItems();
         
@@ -120,13 +119,24 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 								
 								
 								
-							  $(ui.helper()).clone().as(Ui).draggable(dragOptions).droppable(dropOptions).appendTo($(floorPlan).as(Ui)).focus(new Function(){
+							  $(ui.helper()).clone().as(Ui).draggable(dragOptions).droppable(dropOptions).appendTo($(floorPlan).as(Ui)).on("focus click", new Function(){
 								  public boolean f(Event e, Object...o){
 									 
+									if(factory.isEditMode()){
+									  e.stopPropagation();
 									  NativeEvent nativeEvent = e.cast();
 									  DivElement eventTarget = nativeEvent.getEventTarget().cast();
-									  
 									  SelectionManager.setCurrentlySelected(eventTarget);
+									}
+									  
+									  return true;
+								  }
+							  }).blur(new Function(){
+								  public boolean f(Event e, Object...o){
+									  NativeEvent nativeEvent = e.cast();
+									  Element eventTarget = nativeEvent.getRelatedEventTarget().cast();
+									  GWT.log("blurring" + eventTarget);
+									 SelectionManager.unSelect(eventTarget);
 									  
 									  return true;
 								  }

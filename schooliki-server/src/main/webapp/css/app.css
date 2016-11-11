@@ -114,10 +114,6 @@ div.item-student.ui-selecting { background: #FECA40;
 	  text-align:center;
 	}
 	
-	.floorPlan .furnitureItem:focus{
-	     border: solid 5px green;
-	}
-	
 	.floorplan-hover{
 		background-color:Teal;
 }

@@ -14,6 +14,7 @@ import net.videmantay.roster.views.RosterDisplay;
 import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.UserProfilePanel;
+import net.videmantay.roster.views.assignment.AssignementDashboard;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
 import net.videmantay.roster.views.calendar.GoogleCalendar;
@@ -56,6 +57,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	 ClassTimeGrid classTimeGrid = null;
 	 ClassTimeForm classTimeForm = null;
 	 boolean isEditMode = false;
+	 AssignementDashboard assignementDashboard = null;
 
 
 	@Override
@@ -203,6 +205,15 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public void setEditMode(boolean isEditMode) {
 		this.isEditMode = isEditMode;
+	}
+	@Override
+	public AssignementDashboard getAssignementDashboard() {
+		
+		if(assignementDashboard == null){
+		// TODO Auto-generated method stub
+			assignementDashboard = new AssignementDashboard(gradedWorkMain);
+		}
+		return assignementDashboard;
 	}
 
 	

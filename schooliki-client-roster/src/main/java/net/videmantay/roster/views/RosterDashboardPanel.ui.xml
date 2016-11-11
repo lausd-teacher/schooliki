@@ -5,7 +5,7 @@
 	xmlns:h="urn:import:gwt.material.design.client.ui.html"
 	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<g:HTMLPanel height="100%" width="100%">
-		<m:MaterialTab ui:field="tab" textColor="red" indicatorColor="red accent-4" height="2.5em" >
+		<m:MaterialTab ui:field="tab" textColor="red"  height="2.5em" >
 			<m:MaterialTabItem addStyleNames="myTab" ui:field="dashboardTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Dashboard"  waves="RED"/></m:MaterialTabItem>
 			<m:MaterialTabItem addStyleNames="myTab" ui:field="calTab"><m:MaterialAnchorButton type="FLAT" href=".tab2" text="Calendar"  waves="RED"/></m:MaterialTabItem>
 			<m:MaterialTabItem addStyleNames="myTab" ui:field="reportsTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
