@@ -3,11 +3,15 @@ package net.videmantay.roster.views.draganddrop;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 
+import gwt.material.design.client.ui.MaterialCard;
+
 public class SelectionManager {
 	
 	
 	static DivElement currentlySelected = null;
 	static DivElement previouslySelected = null;
+	
+	static MaterialCard incidentCard = null;
 	
 	
 	public static void setCurrentlySelected(DivElement selected){
@@ -49,6 +53,8 @@ public class SelectionManager {
 		
 	}-*/;
 	
+	
+	
 	/* Each click event should deselect the selected element except for an action button and the element itself */
 	public static native boolean registerDocumentClickEvent()/*-{
 	
@@ -61,6 +67,20 @@ public class SelectionManager {
 	   	});
 	
 }-*/;
+	
+	
+	public static void selectIncidentCard(MaterialCard card){
+		    incidentCard = card;
+		    incidentCard.getElement().addClassName("selectedIncidentCard");
+		
+	}
+	
+	public static void unSelectCurrentSelectedIncidentCard(){
+		if(incidentCard != null){
+			incidentCard.getElement().removeClassName("selectedIncidentCard");
+		    incidentCard = null;
+		}
+}
 	
 	
 	

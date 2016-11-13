@@ -102,6 +102,14 @@ div.item-student.ui-selecting { background: #FECA40;
 		border:1px solid Teal;
 	}
 	
+	.incidentCard:hover{
+	 border: solid 2px blue;
+	}
+	
+	.selectedIncidentCard{
+	   border: solid 2px blue;
+	}
+	
 	.furniturePanel{
 		width:20%;
 		height:100%;

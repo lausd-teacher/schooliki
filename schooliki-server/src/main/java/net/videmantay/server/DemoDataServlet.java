@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.videmantay.server.entity.IncidentType;
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
 import net.videmantay.server.util.UserPasswordGenerator;
@@ -14,6 +15,8 @@ import net.videmantay.server.util.UserPasswordGenerator;
 public class DemoDataServlet extends HttpServlet {
 	
 	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
+	
+	DB<IncidentType> incidentTypeDB = new DB<IncidentType>(IncidentType.class);
 		
 	/* Servlet for adding demo data, as it becomes tedious addding on each server Restart */
 	
@@ -53,10 +56,46 @@ public class DemoDataServlet extends HttpServlet {
 		demoUser4.setRoles(new String[]{"STUDENT"});
 		demoUser4.setFirstLogin(true);
 		
+		IncidentType type = new IncidentType();
+		type.setImageUrl("img/1.png");
+		type.setName("Helping others");
+		
+		IncidentType type2 = new IncidentType();
+		type2.setImageUrl("img/32.png");
+		type2.setName("On task");
+		
+		IncidentType type3 = new IncidentType();
+		type3.setImageUrl("img/5.png");
+		type3.setName("Participating");
+		
+		IncidentType type4 = new IncidentType();
+		type4.setImageUrl("img/6.png");
+		type4.setName("Persistence");
+		
+		IncidentType type5 = new IncidentType();
+		type5.setImageUrl("img/7.png");
+		type5.setName("Teamwork");
+		
+		IncidentType type6 = new IncidentType();
+		type6.setImageUrl("img/9.png");
+		type6.setName("Test");
+		
+		IncidentType type7 = new IncidentType();
+		type7.setImageUrl("img/10.png");
+		type7.setName("Working hard");
+		
 		appUserDB.save(demoUser);
 		appUserDB.save(demoUser2);
 		appUserDB.save(demoUser3);
 		appUserDB.save(demoUser4);
+		
+		incidentTypeDB.save(type);
+		incidentTypeDB.save(type2);
+		incidentTypeDB.save(type3);
+		incidentTypeDB.save(type4);
+		incidentTypeDB.save(type5);
+		incidentTypeDB.save(type6);
+		incidentTypeDB.save(type7);
 		
 		resp.getWriter().write("Demo Data added successfuly");
 		

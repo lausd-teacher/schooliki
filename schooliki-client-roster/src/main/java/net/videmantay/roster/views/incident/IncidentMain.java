@@ -17,11 +17,6 @@ public class IncidentMain extends Composite {
 	interface IncidentMainUiBinder extends UiBinder<Widget, IncidentMain> {
 	}
 
-	@UiField
-	MaterialRow posIncidentRow;
-	
-	@UiField
-	MaterialRow negIncidentRow;
 	
 	@UiField
 	HTMLPanel container;
@@ -46,13 +41,6 @@ public class IncidentMain extends Composite {
 		return this.incidentForm;
 	}
 
-	public MaterialRow getPositiveIncidentRow() {
-		return this.posIncidentRow;
-	}
-
-	public MaterialRow getNegativeIncidentRow() {
-		return this.negIncidentRow;
-	}
 
 	public interface Presenter{
 		void addIncidentFABButtonClickEvent();	

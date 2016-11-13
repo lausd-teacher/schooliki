@@ -22,15 +22,20 @@
 				<m:MaterialChip ui:field="valueLabel" text="Points:" />
 				<m:MaterialIntegerBox ui:field="valueInput" />
 				<m:MaterialLabel text="Type:" />
-				<m:MaterialListBox ui:field="typeListBox">
-					<m:html.Option text="👍 Helping others" />
-					<m:html.Option text="On task" />
-					<m:html.Option text="Participating" />
-					<m:html.Option text="Persistence" />
-					<m:html.Option text="Teamwork" />
-					<m:html.Option text="Test" />
-					<m:html.Option text="Working Hard" />
-				</m:MaterialListBox>
+				<m:MaterialTab>
+					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
+					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton  type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
+				</m:MaterialTab>
+				<m:MaterialColumn m:id="posIncidentGrid">
+	                <m:MaterialContainer ui:field="incidentsTypeContainer">
+	                 
+	                
+	                
+	                </m:MaterialContainer>
+                </m:MaterialColumn>
+                <m:MaterialColumn m:id="negIncidentGrid">
+	                <g:Label>No negative incidents for now</g:Label>
+                </m:MaterialColumn>
 			</g:HTMLPanel>
 		</m:MaterialModalContent>
 		<m:MaterialModalFooter>

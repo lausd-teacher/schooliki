@@ -8,7 +8,6 @@ public class IncidentDTO {
 	public Long id;
 	public Long rosterId;
 	public String name;
-	public String iconUrl;
 	public Integer value;
 	public BehaviorType type = BehaviorType.INCIDENTAL;
 	
@@ -17,7 +16,6 @@ public class IncidentDTO {
 		this.id = incident.id;
 		this.rosterId = incident.rosterId;
 		this.name = incident.name;
-		this.iconUrl = incident.iconUrl;
 		this.value = incident.value;
 		this.type = incident.type;
 	}
@@ -35,9 +33,6 @@ public class IncidentDTO {
 	public String getName() {
 		return this.name;
 	}
-	public String getIconUrl() {
-		return this.iconUrl;
-	}
 	public Integer getValue() {
 		return this.value;
 	}
@@ -52,9 +47,6 @@ public class IncidentDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public void setIconUrl(String iconUrl) {
-		this.iconUrl = iconUrl;
 	}
 	public void setValue(Integer value) {
 		this.value = value;

@@ -29,6 +29,7 @@ import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Incident;
+import net.videmantay.server.entity.StudentIncident;
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
 import net.videmantay.server.user.Roster;
@@ -44,6 +45,8 @@ public class RosterService {
 	DB<RosterStudent> rosterStudentDB = new DB<RosterStudent>(RosterStudent.class);
 	
 	DB<Incident> incidentDB = new DB<Incident>(Incident.class);
+	
+	DB<StudentIncident> studentIncidentDB = new DB<StudentIncident>(StudentIncident.class);
 	
 	DB<ClassTime> classTimeDB = new DB<ClassTime>(ClassTime.class);
 
@@ -148,7 +151,7 @@ public class RosterService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createRosterStudents(@PathParam("id") Long id, List<RosterStudentDTO> rosterStudents) {
-		// cheking if roste exists and student exists
+		// cheking if roster exists and student exists
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 		boolean studentsCheck = true;
 		
@@ -174,36 +177,66 @@ public class RosterService {
 
 		return Response.status(Status.NOT_FOUND).build();
 	}
+	
+	@POST
+	@Path("/{id}/student/{studentId}/incident")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createIncidentForStudent(@PathParam("id") Long id, IncidentDTO incidentDTO, @PathParam("studentId") Long studentId) {
 
-//	@POST
-//	@Path("/{rosterId}/student/{studentId}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response modifyRosterStudent(@PathParam("rosterId") Long rosterId, @PathParam("studentId") Long studentId,
-//			RosterStudentDTO rosterStudentDTO) {
-//          
-//		Roster result = ofy().load().key(Key.create(Roster.class, rosterId)).now();
-//		
-//		if (result != null) {
-//
-//			// cheking if roster student exists
-//			RosterStudent resultStudent = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
-//
-//			if (resultStudent != null) {
-//
-//				rosterStudentDTO.parentRosterId = rosterId;
-//				rosterStudentDTO.id = studentId;
-//
-//				final RosterStudent rosterStd = RosterStudent.createFromDTO(rosterStudentDTO);
-//
-//						rosterStudentDB.save(rosterStd).getId();
-//
-//			}
-//
-//			return Response.ok().entity(rosterStudentDTO).build();
-//		}
-//
-//		return Response.status(Status.NOT_MODIFIED).build();
-//	}
+		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+
+		if (result != null) {
+			incidentDTO.rosterId = id;
+
+			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
+			
+			if(student != null){
+					final Incident newIncident = Incident.createFromDTO(incidentDTO);
+				
+					Long newId = incidentDB.save(newIncident).getId();
+					
+					StudentIncident incident = new StudentIncident();
+					incident.setIncidentId(newId);
+					incident.setStudentId(studentId);
+					
+		
+					return Response.ok().entity(newId).build();
+			}
+		}
+
+		return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	
+	@GET
+	@Path("/{id}/student/{studentId}/incident")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getStudentIncidents(@PathParam("id") Long id, @PathParam("studentId") Long studentId) {
+
+		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+
+		if (result != null) {
+
+			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
+			
+			if(student != null){
+					List<StudentIncident> studentIncidents = db().load().type(StudentIncident.class).filter("studentId", studentId).list();
+					List<IncidentDTO> incidentDTOList = new ArrayList<IncidentDTO>();
+					
+					for(StudentIncident studentIncident : studentIncidents){
+						Incident incident = ofy().load().key(Key.create(Incident.class, studentIncident.getIncidentId())).now();
+						
+						incidentDTOList.add(new IncidentDTO(incident));
+					}
+		
+					return Response.ok().entity(incidentDTOList).build();
+			}
+		}
+		return Response.status(Status.NOT_FOUND).build();
+	}
+
 	
 	@GET
 	@Path("/{id}/incident")
@@ -220,28 +253,7 @@ public class RosterService {
 		return Response.ok().entity(incidentDTOList).build();
 	}
 	
-	@POST
-	@Path("/{id}/incident")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response createIncident(@PathParam("id") Long id, IncidentDTO incidentDTO) {
 
-		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
-
-		if (result != null) {
-			incidentDTO.rosterId = id;
-
-			final Incident newIncident = Incident.createFromDTO(incidentDTO);
-		
-			Long newId = incidentDB.save(newIncident).getId();
-
-			return Response.ok().entity(newId).build();
-		}
-
-		return Response.status(Status.NOT_FOUND).build();
-	}
-	
-	
 	@GET
 	@Path("/{id}/classtime")
 	@Produces(MediaType.APPLICATION_JSON)

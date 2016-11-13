@@ -10,20 +10,42 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 public class StudentIncident implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8576611663190914147L;
 	
 	@Id
 	public Long id;
 	@Index
 	public Long studentId;
-	@Index
-	public String date;
-	public int incidentId;
-	@Ignore
-	public Incident incident;
 	
+	@Index
+	public Long incidentId;
+
+	public StudentIncident() {
+
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public Long getStudentId() {
+		return this.studentId;
+	}
+
+	public Long getIncidentId() {
+		return this.incidentId;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
+	}
+
+	public void setIncidentId(Long incidentId) {
+		this.incidentId = incidentId;
+	}
 	
 }

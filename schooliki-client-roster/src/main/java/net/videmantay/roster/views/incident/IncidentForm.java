@@ -18,6 +18,8 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import static com.google.gwt.query.client.GQuery.*;
 
+import gwt.material.design.client.ui.MaterialColumn;
+import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialInput;
@@ -26,11 +28,15 @@ import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialNumberBox;
 import gwt.material.design.client.ui.MaterialPanel;
+import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTextBox;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.json.IncidentJson;
+import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.views.components.IncidentCard;
+import net.videmantay.roster.views.draganddrop.SelectionManager;
 import net.videmantay.shared.url.RosterUrl;
 
 public class IncidentForm extends Composite {
@@ -54,9 +60,6 @@ public class IncidentForm extends Composite {
 	MaterialIntegerBox valueInput;
 
 	@UiField
-	MaterialListBox typeListBox;
-
-	@UiField
 	MaterialPanel iconPanel;
 
 	@UiField
@@ -67,6 +70,9 @@ public class IncidentForm extends Composite {
 
 	@UiField
 	MaterialDropDown dropDown;
+	
+	@UiField
+	MaterialContainer incidentsTypeContainer;
 
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
 
@@ -74,6 +80,7 @@ public class IncidentForm extends Composite {
 
 		initWidget(uiBinder.createAndBindUi(this));
 		formContainer.getElement().setId("incidentFrom");
+		
 
 	}
 	
@@ -83,10 +90,27 @@ public class IncidentForm extends Composite {
 		newIncident.setIconUrl("");
 		newIncident.setName(nameInput.getSelectedItemText());
 		newIncident.setValue(valueInput.getValue());
-		newIncident.setBehaviorType(typeListBox.getValue());
+		newIncident.setBehaviorType("");
 		
 		
 		return newIncident;
+	}
+	
+	public void setIncidentsTypes(JsArray<IncidentTypeJson> incidentTypes){
+		MaterialRow incidentRow = new MaterialRow();
+		for(int i = 0; i < incidentTypes.length(); i++){
+			IncidentTypeJson incidentType = incidentTypes.get(i);
+			IncidentCard card = new IncidentCard(incidentType.getName(), incidentType.getImageUrl(), incidentType.getId(), null);
+			
+			MaterialColumn column = new MaterialColumn();
+			column.add(card);
+			incidentRow.add(column);
+			//always select the first incident
+			if(i == 0)
+				 SelectionManager.selectIncidentCard(card.getContainer());
+		}
+		incidentsTypeContainer.add(incidentRow);
+		
 	}
 
 	@Override
@@ -144,9 +168,6 @@ public class IncidentForm extends Composite {
 		return this.valueInput;
 	}
 
-	public MaterialListBox getTypeListBox() {
-		return this.typeListBox;
-	}
 
 
 	public interface Presenter{
