@@ -1,43 +1,32 @@
 package net.videmantay.roster.views.incident;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import static com.google.gwt.query.client.GQuery.*;
 
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
-import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialIntegerBox;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
-import gwt.material.design.client.ui.MaterialNumberBox;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialRow;
-import gwt.material.design.client.ui.MaterialTextBox;
-import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentTypeJson;
-import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.components.IncidentCard;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
-import net.videmantay.shared.url.RosterUrl;
 
 public class IncidentForm extends Composite {
 
@@ -59,17 +48,12 @@ public class IncidentForm extends Composite {
 	@UiField
 	MaterialIntegerBox valueInput;
 
-	@UiField
-	MaterialPanel iconPanel;
 
 	@UiField
 	MaterialIcon doneBtn;
 
 	@UiField
 	MaterialIcon cancelBtn;
-
-	@UiField
-	MaterialDropDown dropDown;
 	
 	@UiField
 	MaterialContainer incidentsTypeContainer;
@@ -77,21 +61,17 @@ public class IncidentForm extends Composite {
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
 
 	public IncidentForm() {
-
 		initWidget(uiBinder.createAndBindUi(this));
 		formContainer.getElement().setId("incidentFrom");
-		
-
+		valueInput.setValue(0);
 	}
 	
 	public IncidentJson getFormData(){
 		
 		IncidentJson newIncident = JavaScriptObject.createObject().cast();
-		newIncident.setIconUrl("");
 		newIncident.setName(nameInput.getSelectedItemText());
 		newIncident.setValue(valueInput.getValue());
-		newIncident.setBehaviorType("");
-		
+		newIncident.setIncidentTypeId(SelectionManager.getSelectedIncidentCard().getElement().getId());
 		
 		return newIncident;
 	}
@@ -100,10 +80,11 @@ public class IncidentForm extends Composite {
 		MaterialRow incidentRow = new MaterialRow();
 		for(int i = 0; i < incidentTypes.length(); i++){
 			IncidentTypeJson incidentType = incidentTypes.get(i);
-			IncidentCard card = new IncidentCard(incidentType.getName(), incidentType.getImageUrl(), incidentType.getId(), null);
+			IncidentCard card = new IncidentCard(incidentType.getName(), incidentType.getImageUrl(), incidentType.getId());
 			
 			MaterialColumn column = new MaterialColumn();
 			column.add(card);
+			
 			incidentRow.add(column);
 			//always select the first incident
 			if(i == 0)
@@ -120,6 +101,7 @@ public class IncidentForm extends Composite {
 	}
 	
 	public void populateStudentsNamesList(JsArray<AppUserJson> students){
+		nameInput.clear();
 		for(int i = 0; i < students.length(); i++){
 			AppUserJson student = students.get(i);
 			nameInput.addItem(student.getName());

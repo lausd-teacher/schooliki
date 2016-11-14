@@ -5,15 +5,22 @@
 	<ui:style>
 	
 	</ui:style>
-	<m:MaterialCard ui:field="container">
-	   <m:MaterialCardContent>
-	   <m:MaterialLabel ui:field="cardTitle">
+	<g:HTMLPanel>
+		<m:MaterialCard ui:field="container" backgroundColor="WHITE" axis="HORIZONTAL">
+		<m:MaterialCardImage>
 	   
-	   </m:MaterialLabel> 
-	   <m:MaterialCardImage>
 	      <m:MaterialImage ui:field="incidentImage"></m:MaterialImage>
 	   
 	   </m:MaterialCardImage>
+	   <m:MaterialCardContent>
+	   <m:MaterialLabel ui:field="studentName" fontSize="1.5em">
+	   
+	   </m:MaterialLabel> 
+	   <m:MaterialLabel ui:field="incidentName"></m:MaterialLabel> 
 	   </m:MaterialCardContent>
+	     
+	   
+	   
 	</m:MaterialCard>
+	</g:HTMLPanel>
 </ui:UiBinder> 

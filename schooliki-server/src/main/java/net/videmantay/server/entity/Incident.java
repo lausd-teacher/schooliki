@@ -29,9 +29,7 @@ public class Incident implements Serializable {
 
 	public Integer value;
 	
-	public BehaviorType type = BehaviorType.INCIDENTAL;
-	
-	
+
 	public Incident() {
 		
 	}
@@ -47,9 +45,7 @@ public class Incident implements Serializable {
 	public Integer getValue() {
 		return this.value;
 	}
-	public BehaviorType getType() {
-		return this.type;
-	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -63,9 +59,7 @@ public class Incident implements Serializable {
 	public void setValue(Integer value) {
 		this.value = value;
 	}
-	public void setType(BehaviorType type) {
-		this.type = type;
-	}
+
 	public Long getIncidentTypeId() {
 		return this.incidentTypeId;
 	}
@@ -78,8 +72,7 @@ public class Incident implements Serializable {
 		incident.rosterId = incidentDTO.rosterId;
 		incident.name = incidentDTO.name;
 		incident.value = incidentDTO.value;
-		incident.type = incidentDTO.type;
-		
+		incident.incidentTypeId = incidentDTO.incidentTypeId;
 		return incident;
 	}
 }

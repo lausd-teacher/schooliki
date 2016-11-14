@@ -126,7 +126,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 									  e.stopPropagation();
 									  NativeEvent nativeEvent = e.cast();
 									  DivElement eventTarget = nativeEvent.getEventTarget().cast();
-									  SelectionManager.setCurrentlySelected(eventTarget);
+									  if(eventTarget.getClassName().contains("furnitureItem")){
+									        SelectionManager.setCurrentlySelected(eventTarget);
+									  }
 									}
 									  
 									  return true;

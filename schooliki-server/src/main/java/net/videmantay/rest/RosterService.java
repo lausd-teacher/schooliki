@@ -20,7 +20,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.VoidWork;
 
 import net.videmantay.rest.dto.AppUserDTO;
 import net.videmantay.rest.dto.ClassTimeDTO;
@@ -88,11 +87,8 @@ public class RosterService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createRoster(RosterDTO rosterDTO) throws Exception{
-
 		final Roster roster = Roster.createFromDTO(rosterDTO);
-
-				Long id = rosterDB.save(roster).getId();
-				
+		Long id = rosterDB.save(roster).getId();
 		
 
 		return Response.status(Status.CREATED).entity(id).build();
@@ -183,7 +179,7 @@ public class RosterService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createIncidentForStudent(@PathParam("id") Long id, IncidentDTO incidentDTO, @PathParam("studentId") Long studentId) {
-
+		
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {

@@ -70,7 +70,6 @@ public class IncidentItem extends Composite{
 		//set up the html
 		String html = "<svg viewBox='0 0 150 200' class='incidentIcon' style='width:7em; height:8em'>"
 				+"<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#" 
-				+ incident.getIconUrl() 
 				+"' /></svg>";
 		svgImage.setInnerHTML(html);
 	}

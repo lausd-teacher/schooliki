@@ -78,7 +78,6 @@ public class IncidentToastContent extends Composite {
 		
 		String html = "<svg class='incidentToastPic' viewBox='0 0 150 200' style='width:150px;height:200px'>"
 				+ "<use xlink:href='/img/allIcons.svg#"
-				+ report.getIncident().getIconUrl()
 				+"'/></svg>";
 		incidentImage.add(new HTML(html));
 		

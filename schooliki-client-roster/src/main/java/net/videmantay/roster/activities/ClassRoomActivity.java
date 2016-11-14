@@ -81,6 +81,7 @@ import net.videmantay.roster.views.classtime.ClassTimeGrid;
 import net.videmantay.roster.views.classtime.ClasstimeGridItem;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
+import net.videmantay.roster.views.components.StudentIncidentCard;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
 import net.videmantay.roster.views.incident.IncidentForm;
 import net.videmantay.roster.views.incident.IncidentMain;
@@ -167,13 +168,12 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			appPanel.getMainPanel().add(dashboard);
 		} else if (currentPlace instanceof AssignementPlace) {
 			getGradedWorkListAndDrawGrid();
-			//lazy loading
 			assignementDashboard = factory.getAssignementDashboard();
 			appPanel.getMainPanel().add(assignementDashboard);
 		} else if (currentPlace instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (currentPlace instanceof IncidentPlace) {
-			//getIncidentsAndDraw();
+			getIncidentsAndDraw();
 			appPanel.getMainPanel().add(incidentMainPage);
 		} else if (currentPlace instanceof GoalPlace) {
 			appPanel.getMainPanel().add(new Label("Goal view is under construction"));
@@ -494,7 +494,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		} else if (place instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (place instanceof IncidentPlace) {
-			//getIncidentsAndDraw();
+			getIncidentsAndDraw();
 			incidentForm.populateStudentsNamesList(students);
 			appPanel.getMainPanel().add(incidentMainPage);
 		} else if (place instanceof GoalPlace) {
@@ -589,13 +589,15 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			
 			//For seating chart grid
 			c2.add(seatingChartStudent);
-			row2.add(c2);
+			
 			   if( i != 0 && i % 3 == 0){
 				   row2 = new MaterialRow();
 				   //there is row above so make some space betwwen the two
 				   row2.setMarginTop(40);
-				   seatingChart.getStudentsPanel().add(row2);
+				  
 			   }
+			   seatingChart.getStudentsPanel().add(row2);
+			   row2.add(c2);
 		}
 		grid.getContainer().add(factory.getCreateStudentForm());
 		grid.getContainer().add(grid.getFab());
@@ -687,18 +689,19 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				
 				//For seating chart grid
 				c2.add(seatingChartStudent);
-				row2.add(c2);
+				
 				   if( i != 0 && i % 3 == 0){
 					   row2 = new MaterialRow();
-					   //there is row above so make some space betwwen the two
+					   //there is row above so make some space between the two
 					   row2.setMarginTop(40);
-					   seatingChart.getStudentsPanel().add(row2);
 				   }
+				   row2.add(c2);
+				   seatingChart.getStudentsPanel().add(row2);
 				
 			}
 		}
 		
-		
+		incidentForm.populateStudentsNamesList(students);
 	}
 
 	private void getGradedWorkListAndDrawGrid() {
@@ -950,16 +953,28 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			public void onClick(ClickEvent event) {
 
 				final IncidentJson newIncident = incidentForm.getFormData();
+				newIncident.setRosterId(factory.getCurrentRoster().getId());
+				AppUserJson student = findStudentByName(newIncident.getName());
 								
-
-				GQuery.ajax("/roster/" + factory.getCurrentRoster().getId() + "/incident/",
+				GQuery.ajax("/roster/" + factory.getCurrentRoster().getId() + "/student/"+student.getId()+"/incident/",
 						Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
 						.done(new Function() {
 							@Override
 							public void f() {
+								MaterialLoader.showLoading(false);
 								GWT.log(arguments(0).toString());
+								newIncident.setId(arguments(0).toString());
+								incidentsList.push(newIncident);
 								incidentMainPage.getIncidentForm().hide();
-								//getIncidentsAndDraw();
+								
+								MaterialColumn col = new MaterialColumn();
+								
+								IncidentTypeJson incidentType = findIncidentTypeById(newIncident.getIncidentTypeId());
+								
+								StudentIncidentCard studentIncidentCard = new StudentIncidentCard(newIncident.getName(), incidentType.getImageUrl(), incidentType.getName());
+								col.add(studentIncidentCard);
+							    incidentMainPage.getIncidentContainer().add(col);
+								
 								MaterialToast.fireToast("Incident saved");
 								MaterialLoader.showLoading(false);
 							}
@@ -996,40 +1011,37 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	}
 	
 	
-//	private void getIncidentsAndDraw() {
-//		Ajax.get("/roster/" + factory.getCurrentRoster().getId() + "/incident").done(new Function() {
-//			@Override
-//			public void f() {
-//				incidentMainPage.getNegativeIncidentRow().clear();
-//				incidentMainPage.getPositiveIncidentRow().clear();
-//				
-//				incidentsList = JsonUtils.safeEval(arguments(0).toString());
-//				for(int i = 0; i < incidentsList.length(); i++){
-//					IncidentJson incident = incidentsList.get(i);
-//					MaterialColumn col = new MaterialColumn();
-//					col.setGrid("s2 m4 l2");
-//					col.add(new MaterialLabel(incident.getName()));
-//					if(incident.getValue() < 0){
-//						incidentMainPage.getNegativeIncidentRow().add(col);
-//					}else{
-//						incidentMainPage.getPositiveIncidentRow().add(col);
-//					}
-//				}
-//			}
-//		}).progress(new Function() {
-//			@Override
-//			public void f() {
-//
-//			}
-//
-//		}).fail(new Function() {
-//			@Override
-//			public void f() {
-//				Window.alert("Incident List could not be fetched from the server");
-//			}
-//		});
-//
-//	}
+	private void getIncidentsAndDraw() {
+		Ajax.get("/roster/" + factory.getCurrentRoster().getId() + "/incident").done(new Function() {
+			@Override
+			public void f() {
+				incidentsList = JsonUtils.safeEval(arguments(0).toString());
+				incidentMainPage.getIncidentContainer().clear();
+			
+				for(int i = 0; i < incidentsList.length(); i++){
+					IncidentJson incident = incidentsList.get(i);
+					MaterialColumn col = new MaterialColumn();
+					IncidentTypeJson incidentType = findIncidentTypeById(incident.getIncidentTypeId());
+					GWT.log("found inside draw " + incidentType.getImageUrl());
+					StudentIncidentCard studentIncidentCard = new StudentIncidentCard(incident.getName(), incidentType.getImageUrl(), incidentType.getName());
+					col.add(studentIncidentCard);
+					incidentMainPage.getIncidentContainer().add(col);
+				}
+				
+			}
+		}).progress(new Function() {
+			@Override
+			public void f() {
+
+			}
+		}).fail(new Function() {
+			@Override
+			public void f() {
+				Window.alert("Incident List could not be fetched from the server");
+			}
+		});
+
+	}
 
 	@Override
 	public void manageClassTimeLinkClickEvent() {
@@ -1290,12 +1302,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			public void f() {
 				incidentTypesList = JsonUtils.safeEval(arguments(0).toString());
 				incidentForm.setIncidentsTypes(incidentTypesList);
-				GWT.log("received incident types");
-				    
-				
-				
-					}
-				
+					}	
 		}).progress(new Function() {
 			@Override
 			public void f() {
@@ -1311,6 +1318,27 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		
 		
 	}
-
-
+	
+	
+	private IncidentTypeJson findIncidentTypeById(String searched){
+		for(int i = 0; i < incidentTypesList.length(); i++){
+			 IncidentTypeJson incidentType = incidentTypesList.get(i);
+			 String incidentTypeId = incidentType.getId();
+			  if(searched.compareTo(incidentTypeId) == 0){
+				  GWT.log("found");
+				  return incidentType;
+			  }
+		}	
+		return null;
+	}
+	
+	private AppUserJson findStudentByName(String name){
+		for(int i = 0; i < students.length(); i++){
+			AppUserJson appUser = students.get(i);
+			if(appUser.getName().compareTo(name) == 0){
+				return appUser;
+			}
+		}
+		return null;
+	}
 }

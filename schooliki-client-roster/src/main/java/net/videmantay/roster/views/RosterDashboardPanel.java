@@ -24,6 +24,7 @@ import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
+import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 
@@ -72,10 +73,8 @@ public class RosterDashboardPanel extends Composite
 	@UiField
 	MaterialDropDown classtimeDrop;
 	
-   @UiField
+    @UiField
 	MaterialLink classDropDownManageLink;
-	
-
 	
 	@UiField
 	MaterialAnchorButton doneBtn;
@@ -95,10 +94,6 @@ public class RosterDashboardPanel extends Composite
 	@UiField
 	MaterialButton smUndoBtn;
 	
-//    @UiField
-//	Frame calFrame;
-
-
 	@UiField
 	MaterialTab tab;
 	
@@ -111,13 +106,9 @@ public class RosterDashboardPanel extends Composite
 	@UiField
 	MaterialTabItem dashboardTab;
 	
-//	@UiField
-//	MaterialFAB classEventFAB;
+	@UiField
+	HTMLPanel calendarContainer;
 	
-//	@UiField
-//	MaterialAnchorButton classEventAddBtn;
-	
-	//private RosterJson roster = JavaScriptObject.createObject().cast();
 	
 	private final Function resizeFunc = new Function(){
 		@Override
@@ -140,6 +131,7 @@ public class RosterDashboardPanel extends Composite
 	private State state = State.DASHBOARD;
 	
 	private HasRosterDashboardView display;
+	final ClientFactory factory;
 
 
 	//enum for state
@@ -147,94 +139,11 @@ public class RosterDashboardPanel extends Composite
 	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
-	public RosterDashboardPanel() {
+	public RosterDashboardPanel(ClientFactory factory) {
 		initWidget(uiBinder.createAndBindUi(this));
-		
+		this.factory = factory;
+		calendarContainer.add(factory.getGoogleCalendar());
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
-		
-		
-		////// toolbar buttons events//////////////////////
-		hwIcon.addClickHandler( new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.checkHW();
-				state = State.HW;
-				showDoneBar();
-			}});
-		rollIcon.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.takeRoll();
-				state = State.ROLL;
-				showDoneBar();
-			}});
-		groupsIcon.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.groups();
-				state = State.GROUP;
-				showDoneBar();
-			}});
-		randomIcon.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.pickRandom();
-				state = State.RANDOM;
-				
-			}});
-		multipleIcon.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.multipleSelect();
-				state = State.MULTIPLE_SELECT;
-			
-			}});
-		////////////
-		
-		smDoneBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				switch(state){
-				case FURNITURE_EDIT:display.doneArrangeFurniture(); break;
-				case STUDENT_EDIT: display.doneArrangeStudents(); break;
-				case STATIONS_EDIT: display.doneManageStations();break;
-				case HW: display.doneCheckHW();break;
-				case ROLL: display.doneTakeRoll();break;
-				case GROUP: display.doneGroups();break;
-				case RANDOM: display.donePickRandom(); break;
-				case MULTIPLE_SELECT: display.doneMultipleSelect(); break;
-				default: display.home();
-				}
-				display.home();
-				showToolBar();
-			}});
-		
-		
-		smUndoBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.undo();
-				
-			}});
-		
-		smDoneBarCancelBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.cancel(state.name());
-				display.home();
-				showToolBar();
-			}});
-		//add handler to div to render cal on resize
-		
-		
 	}
 	
 	public void showDoneBar(){
@@ -246,51 +155,6 @@ public class RosterDashboardPanel extends Composite
 		toolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
 	}
 
-	
-	@Override
-	public void onLoad(){
-	
-		
-		//JsArray<ClassTimeJson> classTimes = roster.getClassTimes();
-		
-		//set up classtimeDrop list
-//		classtimeDrop.clear();
-//		classtimeDrop2.clear();
-//		//set up first link as manager
-//		MaterialLink manageLink = new MaterialLink();
-//		manageLink.setText("Manage...");
-//		classtimeDrop.add(manageLink);
-//		for(int i = 0; i< classTimes.length(); i++){
-//			MaterialLink link = new MaterialLink();
-//			link.setText(classTimes.get(i).getTitle());
-//			link.setDataAttribute("data-index", ""+i);
-//			classtimeDrop.add(link);
-//			if(classTimes.get(i).getIsDefault()){
-//			classtimeBtn.setText(classTimes.get(i).getTitle());
-//			window.setPropertyJSO("classtime", classTimes.get(i));
-//			console.log("... window called from rosterdassh bord panel for classtime is .... ");
-//			console.log(window.getPropertyJSO("classtime"));
-//			}
-//		}//end for
-//		MaterialLink manageLink2 = new MaterialLink();
-//		manageLink2.setText("Manage...");
-//		classtimeDrop2.add(manageLink2);
-//		for(int i = 0; i< classTimes.length(); i++){
-//			MaterialLink link = new MaterialLink();
-//			link.setText(classTimes.get(i).getTitle());
-//			link.setDataAttribute("data-index", ""+i);
-//			classtimeDrop2.add(link);
-//			if(classTimes.get(i).getIsDefault()){
-//			classtimeBtn.setText(classTimes.get(i).getTitle());
-//			window.setPropertyJSO("classtime", classTimes.get(i));
-//			console.log("... window called from rosterdassh bord panel for classtime is .... ");
-//			console.log(window.getPropertyJSO("classtime"));
-//			}
-		}//end for
-		
-	
-	//$(window).resize(resizeFunc);
-	
 	
 	
 	public MaterialSwitch getGridSwitch() {
@@ -371,14 +235,6 @@ public class RosterDashboardPanel extends Composite
 		return this.tab;
 	}
 
-//	public MaterialFAB getClassEventFAB() {
-//		return this.classEventFAB;
-//	}
-
-//	public MaterialAnchorButton getClassEventAddBtn() {
-//		return this.classEventAddBtn;
-//	}
-
 	public State getState() {
 		return this.state;
 	}
@@ -423,7 +279,6 @@ public class RosterDashboardPanel extends Composite
     public void clearDropDown(){
     	     classtimeDrop.clear();
     	     classtimeDrop.add(classDropDownManageLink);
-    	
     }
 
 

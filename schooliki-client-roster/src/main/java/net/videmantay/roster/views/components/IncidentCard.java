@@ -31,28 +31,16 @@ public class IncidentCard extends Composite {
 	@UiField
 	MaterialImage incidentImage;
 	
-	@UiField
-	MaterialLabel studentName;
 
-
-
-
-
-	public IncidentCard(String incidentName, String imageUrl, String typeId, String studentName) {
+	public IncidentCard(String incidentName, String imageUrl, String typeId) {
 		initWidget(uiBinder.createAndBindUi(this));
 		container.setWidth("100px");
 		cardTitle.setText(incidentName);
 		cardTitle.setFontSize(12, Unit.PX);
 		incidentImage.setUrl(imageUrl);
 		container.getElement().addClassName("incidentCard");
-		container.setId(typeId);
+		container.getElement().setId(typeId);
 		
-		   if(studentName != null){
-			   this.studentName.setText(studentName);
-		   }
-		   
-
-		   
 		   container.addDomHandler(new ClickHandler(){
 				@Override
 				public void onClick(ClickEvent event) {

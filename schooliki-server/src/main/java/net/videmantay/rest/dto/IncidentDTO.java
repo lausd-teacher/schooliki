@@ -1,7 +1,6 @@
 package net.videmantay.rest.dto;
 
 import net.videmantay.server.entity.Incident;
-import net.videmantay.shared.BehaviorType;
 
 public class IncidentDTO {
 	
@@ -9,7 +8,7 @@ public class IncidentDTO {
 	public Long rosterId;
 	public String name;
 	public Integer value;
-	public BehaviorType type = BehaviorType.INCIDENTAL;
+	public Long incidentTypeId;
 	
 	
 	public IncidentDTO(Incident incident) {
@@ -17,7 +16,7 @@ public class IncidentDTO {
 		this.rosterId = incident.rosterId;
 		this.name = incident.name;
 		this.value = incident.value;
-		this.type = incident.type;
+		this.incidentTypeId = incident.incidentTypeId;
 	}
 	
 	public IncidentDTO() {
@@ -36,9 +35,6 @@ public class IncidentDTO {
 	public Integer getValue() {
 		return this.value;
 	}
-	public BehaviorType getType() {
-		return this.type;
-	}
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -51,7 +47,10 @@ public class IncidentDTO {
 	public void setValue(Integer value) {
 		this.value = value;
 	}
-	public void setType(BehaviorType type) {
-		this.type = type;
+	public Long getIncidentTypeId() {
+		return this.incidentTypeId;
+	}
+	public void setIncidentTypeId(Long incidentTypeId) {
+		this.incidentTypeId = incidentTypeId;
 	}
 }

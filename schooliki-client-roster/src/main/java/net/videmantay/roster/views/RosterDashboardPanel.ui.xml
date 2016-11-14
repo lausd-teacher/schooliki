@@ -7,7 +7,7 @@
 	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab" textColor="red"  height="2.5em" >
 			<m:MaterialTabItem addStyleNames="myTab" ui:field="dashboardTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Dashboard"  waves="RED"/></m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab" ui:field="calTab"><m:MaterialAnchorButton type="FLAT" href=".tab2" text="Calendar"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab" ui:field="calTab"><m:MaterialAnchorButton type="FLAT" href="#tab2" text="Calendar"  waves="RED"/></m:MaterialTabItem>
 			<m:MaterialTabItem addStyleNames="myTab" ui:field="reportsTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
 		</m:MaterialTab>
 		<div  id="tab1">
@@ -131,12 +131,11 @@
 			<g:HTMLPanel ui:field="tab1Main">
 			</g:HTMLPanel>
 		</div>
-		<m:MaterialColumn m:id="tab2">
-		<g:HTMLPanel>
+		<div id="tab2">
+		<g:HTMLPanel ui:field="calendarContainer">
 
-			<!-- <m:MaterialFAB ui:field="classEventFAB"><m:MaterialAnchorButton  ui:field="classEventAddBtn" type="FLOATING" iconType="ADD" size="LARGE"/></m:MaterialFAB> -->
 		</g:HTMLPanel>
-		</m:MaterialColumn>
+		</div>
 		<div  id="tab3">
 			<svg viewBox="0 0 150 200" style="width:200px; height:300px;">
 				<use xlink:href="../img/allIcons.svg#rocket" />

@@ -1,5 +1,6 @@
 package net.videmantay.roster.views.draganddrop;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 
@@ -72,7 +73,6 @@ public class SelectionManager {
 	public static void selectIncidentCard(MaterialCard card){
 		    incidentCard = card;
 		    incidentCard.getElement().addClassName("selectedIncidentCard");
-		
 	}
 	
 	public static void unSelectCurrentSelectedIncidentCard(){
@@ -80,7 +80,11 @@ public class SelectionManager {
 			incidentCard.getElement().removeClassName("selectedIncidentCard");
 		    incidentCard = null;
 		}
-}
+    }
+	
+	public static MaterialCard getSelectedIncidentCard(){
+		return incidentCard;
+	}
 	
 	
 	

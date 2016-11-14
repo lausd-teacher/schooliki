@@ -6,14 +6,6 @@
 			<g:HTMLPanel ui:field="formContainer">
 				<m:MaterialInput ui:field="iconUrl" type="TEXT"
 					visible="false" addStyleNames="valign-wrapper" />
-				<m:html.Div>
-					<m:MaterialPanel ui:field="iconPanel" m:id="iconFormIconPanel" />
-					<m:MaterialIcon iconPosition="RIGHT" iconType="ARROW_DROP_DOWN"
-						iconSize="TINY" activates="iconList" addStyleNames="valign bottom" />
-				</m:html.Div>
-				<m:MaterialDropDown ui:field="dropDown"
-					activator="iconList">
-				</m:MaterialDropDown>
 				<m:MaterialLabel ui:field="nameLabel" text="Name:" />
 				<m:MaterialListBox ui:field="nameInput">
 				</m:MaterialListBox>
@@ -26,16 +18,15 @@
 					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
 					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton  type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
 				</m:MaterialTab>
-				<m:MaterialColumn m:id="posIncidentGrid">
+				<div id="posIncidentGrid">
 	                <m:MaterialContainer ui:field="incidentsTypeContainer">
 	                 
 	                
-	                
 	                </m:MaterialContainer>
-                </m:MaterialColumn>
-                <m:MaterialColumn m:id="negIncidentGrid">
+                </div>
+                <div id="negIncidentGrid">
 	                <g:Label>No negative incidents for now</g:Label>
-                </m:MaterialColumn>
+                </div>
 			</g:HTMLPanel>
 		</m:MaterialModalContent>
 		<m:MaterialModalFooter>

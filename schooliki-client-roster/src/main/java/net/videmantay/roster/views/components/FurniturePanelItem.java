@@ -43,7 +43,7 @@ public class FurniturePanelItem extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		furnitureImage.getStyle().setBackgroundImage("url('" + imgUrl +"')");
 		furnitureImage.getStyle().setHeight(60, Unit.PX);
-		furnitureImage.getStyle().setWidth(60, Unit.PX);
+		furnitureImage.getStyle().setWidth(100, Unit.PX);
 		furnitureImage.getStyle().setPosition(Position.ABSOLUTE);
 		furnitureImage.addClassName("furnitureItem");
 		furnitureName.setText(funitureName);

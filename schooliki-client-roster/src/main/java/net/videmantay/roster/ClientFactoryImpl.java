@@ -34,7 +34,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	
 	RosterDisplay rosterDisplay = new RosterDisplay();
 	EventBus eventBus = new SimpleEventBus();
-	RosterDashboardPanel rosterDashBoardPanel = new RosterDashboardPanel();
+	RosterDashboardPanel rosterDashBoardPanel = null;
 	AppLayout appPanel = new AppLayout();
 	PlaceController placeController = new PlaceController(eventBus);
 	RosterJson currentRoster = JavaScriptObject.createArray().cast();
@@ -81,6 +81,10 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	@Override
 	public RosterDashboardPanel getRosterDashBoard(){
+		if(rosterDashBoardPanel == null ){
+			
+			rosterDashBoardPanel = new RosterDashboardPanel(this);
+		}
 		return rosterDashBoardPanel;
 	}
 

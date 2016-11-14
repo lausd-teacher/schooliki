@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialFAB;
 import gwt.material.design.client.ui.MaterialRow;
 
@@ -24,6 +25,9 @@ public class IncidentMain extends Composite {
 	@UiField
 	MaterialFAB addIncidentFAB;
 	
+	@UiField
+	MaterialRow incidentContainer;
+	
 	IncidentForm incidentForm;
 	
 	
@@ -39,6 +43,11 @@ public class IncidentMain extends Composite {
 
 	public IncidentForm getIncidentForm() {
 		return this.incidentForm;
+	}
+
+
+	public MaterialRow getIncidentContainer() {
+		return this.incidentContainer;
 	}
 
 
