@@ -13,6 +13,7 @@ import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialFAB;
+import gwt.material.design.client.ui.MaterialModal;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.student.CreateStudentForm;
@@ -32,6 +33,7 @@ public class ClassRoomGrid extends Composite implements HasRosterDashboardView {
 	private MaterialFAB fab = new MaterialFAB();
 	private MaterialAnchorButton addButton = new MaterialAnchorButton(ButtonType.FLOATING);
 
+    
 	public ClassRoomGrid(CreateStudentForm form, StudentActionModal modal) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.stuModal = modal;
@@ -41,7 +43,10 @@ public class ClassRoomGrid extends Composite implements HasRosterDashboardView {
 		addButton.setIconFontSize(2, Unit.EM);
 		fab.add(addButton);
 		container.add(fab);
+
+		container.add(stuModal);
 		container.add(createStudentFrom);
+		
 	}
 
 	@Override

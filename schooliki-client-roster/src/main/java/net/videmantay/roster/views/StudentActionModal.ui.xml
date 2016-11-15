@@ -2,14 +2,17 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
-		<m:MaterialModal ui:field="modal" type="FIXED_FOOTER">
+		<m:MaterialModal ui:field="modal" width="50%" height="100%">
 			<m:MaterialModalContent>
-			
+			    <m:MaterialTitle title="Incidents"></m:MaterialTitle>
+			    <m:MaterialContainer>
+			    <m:MaterialRow ui:field="incidentsContainer"> 
+			    
+			    </m:MaterialRow>
+			    </m:MaterialContainer>
 			</m:MaterialModalContent>
 			<m:MaterialModalFooter>
-				
-					
-				
+			<m:MaterialButton text="Ok" ui:field="studentActionModalOkButton"></m:MaterialButton>	
 			</m:MaterialModalFooter>
 		</m:MaterialModal>
 </ui:UiBinder> 

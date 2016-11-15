@@ -196,6 +196,8 @@ public class RosterService {
 					incident.setIncidentId(newId);
 					incident.setStudentId(studentId);
 					
+					studentIncidentDB.save(incident);
+					
 		
 					return Response.ok().entity(newId).build();
 			}

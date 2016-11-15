@@ -1,15 +1,18 @@
 package net.videmantay.roster;
 
 
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 
 import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDisplay;
+import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.AssignementDashboard;
@@ -41,6 +44,7 @@ public interface ClientFactory {
 	GradedWorkForm getGradedWorkForm();
 	GradedWorkMain getGradedWorkMain();
 	CreateStudentForm getCreateStudentForm();
+	StudentActionModal getStudentActionModal();
 	ClassRoomGrid getClassRoomGrid();
 	SeatingChartPanel getSettingChartPanel();
 	IncidentMain getIncidentMainPage();
@@ -56,5 +60,7 @@ public interface ClientFactory {
 	boolean isEditMode();
 	void setEditMode(boolean isEditMode);
 	AssignementDashboard getAssignementDashboard();
+	JsArray<IncidentTypeJson> getIncidentTypesList();
+	IncidentTypeJson findIncidentTypeById(String searched);
 
 }

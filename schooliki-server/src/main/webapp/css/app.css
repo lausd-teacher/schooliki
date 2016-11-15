@@ -106,7 +106,12 @@ div.item-student.ui-selecting { background: #FECA40;
 	 border: solid 2px blue;
 	}
 	
-	.selectedIncidentCard{
+	.rosterStudentPanel:hover{
+	   border: solid 2px blue;
+	   cursor: pointer;
+	}
+	
+	.selected{
 	   border: solid 2px blue;
 	}
 	

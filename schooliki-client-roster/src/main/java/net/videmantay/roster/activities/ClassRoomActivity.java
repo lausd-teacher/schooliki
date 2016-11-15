@@ -67,6 +67,7 @@ import net.videmantay.roster.places.JobPlace;
 import net.videmantay.roster.places.LessonPlanPlace;
 import net.videmantay.roster.places.RosterHomePlace;
 import net.videmantay.roster.views.AppLayout;
+import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDashboardPanel.View;
@@ -94,7 +95,8 @@ import net.videmantay.student.json.RosterStudentJson;
 public class ClassRoomActivity extends AbstractActivity implements ClassRoomSideNav.Presenter,
     RosterDashboardPanel.Presenter, ClassRoomGrid.Presenter, CreateStudentForm.Presenter, GradedWorkMain.Presenter,
 		GradedWorkForm.Presenter, IncidentMain.Presenter, IncidentForm.Presenter, 
-		ClassTimeGrid.Presenter, ClassTimeForm.Presenter,SeatingChartPanel.Presenter{
+		ClassTimeGrid.Presenter, ClassTimeForm.Presenter,
+		SeatingChartPanel.Presenter, StudentActionModal.Presenter {
 
 	final ClientFactory factory;
 
@@ -134,7 +136,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		this.classTimegrid = factory.getClassTimeGrid();
 		initializeEvents();
 		SelectionManager.registerDocumentClickEvent();
-		getIncidentTypes();
+		incidentTypesList = factory.getIncidentTypesList();
 
 	}
 
@@ -542,6 +544,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
         barDoneButtonClickEvent();
 	    barCancelButtonClickEvent();
 	    rotateActionButtonClickEvent();
+	    studentActionModalOkButtonClickEvent();
 	}
 
 	@Override
@@ -580,8 +583,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			MaterialColumn c = new MaterialColumn();
 			MaterialColumn c2 = new MaterialColumn();
 			
-			RosterStudentPanel rsp = new RosterStudentPanel(students.get(i), View.GRID);
-			RosterStudentPanel seatingChartStudent = new RosterStudentPanel(students.get(i), View.CHART);
+			RosterStudentPanel rsp = new RosterStudentPanel(students.get(i), View.GRID, this.factory);
+			RosterStudentPanel seatingChartStudent = new RosterStudentPanel(students.get(i), View.CHART, this.factory);
 			rsp.addStyleName("grid");
 			c.add(rsp);
 			i++;
@@ -600,6 +603,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			   row2.add(c2);
 		}
 		grid.getContainer().add(factory.getCreateStudentForm());
+		grid.getContainer().add(factory.getStudentActionModal());
 		grid.getContainer().add(grid.getFab());
 
 	}
@@ -613,6 +617,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		grid.getContainer().clear();
 		grid.getContainer().add(empty);
 		grid.getContainer().add(factory.getCreateStudentForm());
+		grid.getContainer().add(factory.getStudentActionModal());
 		grid.getContainer().add(grid.getFab());
 	}
 
@@ -661,12 +666,12 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			  
 		grid.getContainer().add(grid.getFab());
 		grid.getContainer().add(grid.getCreateStudentFrom());
+		grid.getContainer().add(grid.getStuModal());
 		
 		MaterialRow row = new MaterialRow();
 		MaterialRow row2 = new MaterialRow();
 		
 		grid.getContainer().add(row);
-		//seatingChart.getStudentsPanel().add(row2);
 		
 		
 		for(int i = 0; i < addedStudentsMasonery.getWidgetCount(); i++){
@@ -680,8 +685,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				MaterialColumn c = new MaterialColumn();
 				MaterialColumn c2 = new MaterialColumn();
 				
-				RosterStudentPanel rsp = new RosterStudentPanel(rosterStudent, View.GRID);
-				RosterStudentPanel seatingChartStudent = new RosterStudentPanel(rosterStudent, View.CHART);
+				RosterStudentPanel rsp = new RosterStudentPanel(rosterStudent, View.GRID, this.factory);
+				RosterStudentPanel seatingChartStudent = new RosterStudentPanel(rosterStudent, View.CHART, this.factory);
 				
 				rsp.addStyleName("grid");
 				c.add(rsp);
@@ -969,7 +974,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 								
 								MaterialColumn col = new MaterialColumn();
 								
-								IncidentTypeJson incidentType = findIncidentTypeById(newIncident.getIncidentTypeId());
+								IncidentTypeJson incidentType = factory.findIncidentTypeById(newIncident.getIncidentTypeId());
 								
 								StudentIncidentCard studentIncidentCard = new StudentIncidentCard(newIncident.getName(), incidentType.getImageUrl(), incidentType.getName());
 								col.add(studentIncidentCard);
@@ -1021,7 +1026,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				for(int i = 0; i < incidentsList.length(); i++){
 					IncidentJson incident = incidentsList.get(i);
 					MaterialColumn col = new MaterialColumn();
-					IncidentTypeJson incidentType = findIncidentTypeById(incident.getIncidentTypeId());
+					IncidentTypeJson incidentType = factory.findIncidentTypeById(incident.getIncidentTypeId());
 					GWT.log("found inside draw " + incidentType.getImageUrl());
 					StudentIncidentCard studentIncidentCard = new StudentIncidentCard(incident.getName(), incidentType.getImageUrl(), incidentType.getName());
 					col.add(studentIncidentCard);
@@ -1267,12 +1272,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 							int degrees = Integer.valueOf(transform);
 							if(degrees == 360){
 								degrees = 0;
-								
 							}
-								
 								degrees+=45;
-							
-							
 							 selected.getStyle().setProperty("transform", "rotate("+degrees+"deg)");
 						}
 					}else{
@@ -1296,41 +1297,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		
 	}
 	
-	private void getIncidentTypes(){
-		Ajax.get("/incidenttype").done(new Function() {
-			@Override
-			public void f() {
-				incidentTypesList = JsonUtils.safeEval(arguments(0).toString());
-				incidentForm.setIncidentsTypes(incidentTypesList);
-					}	
-		}).progress(new Function() {
-			@Override
-			public void f() {
-
-			}
-
-		}).fail(new Function() {
-			@Override
-			public void f() {
-				Window.alert("Incident Types could not be fetched from the server");
-			}
-		});
-		
-		
-	}
-	
-	
-	private IncidentTypeJson findIncidentTypeById(String searched){
-		for(int i = 0; i < incidentTypesList.length(); i++){
-			 IncidentTypeJson incidentType = incidentTypesList.get(i);
-			 String incidentTypeId = incidentType.getId();
-			  if(searched.compareTo(incidentTypeId) == 0){
-				  GWT.log("found");
-				  return incidentType;
-			  }
-		}	
-		return null;
-	}
 	
 	private AppUserJson findStudentByName(String name){
 		for(int i = 0; i < students.length(); i++){
@@ -1341,4 +1307,16 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		}
 		return null;
 	}
+
+	@Override
+	public void studentActionModalOkButtonClickEvent() {
+		factory.getStudentActionModal().getStudentActionModalOkButton().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				factory.getStudentActionModal().hide();
+			}
+		});
+		
+	}
+
 }

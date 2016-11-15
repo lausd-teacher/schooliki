@@ -12,7 +12,7 @@ public class AppUserJson extends JavaScriptObject {
 		
 	protected AppUserJson(){}
 	
-	public final  native Long getId() /*-{
+	public final  native String getId() /*-{
 		return this.id;
 	}-*/;
 
@@ -28,7 +28,7 @@ public class AppUserJson extends JavaScriptObject {
 		return this.eMail;
 	}-*/;
 
-	public final  native void setId(Long id) /*-{
+	public final  native void setId(String id) /*-{
 		this.id = id;
 	}-*/;
 

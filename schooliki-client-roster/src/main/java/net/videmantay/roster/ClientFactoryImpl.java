@@ -1,11 +1,18 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassRoomGrid;
@@ -58,6 +65,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	 ClassTimeForm classTimeForm = null;
 	 boolean isEditMode = false;
 	 AssignementDashboard assignementDashboard = null;
+	 JsArray<IncidentTypeJson> incidentTypeList = null;
 
 
 	@Override
@@ -214,10 +222,54 @@ public class ClientFactoryImpl implements ClientFactory {
 	public AssignementDashboard getAssignementDashboard() {
 		
 		if(assignementDashboard == null){
-		// TODO Auto-generated method stub
 			assignementDashboard = new AssignementDashboard(gradedWorkMain);
 		}
 		return assignementDashboard;
+	}
+	@Override
+	public StudentActionModal getStudentActionModal() {
+		return studentModal;
+	}
+	@Override
+	public JsArray<IncidentTypeJson> getIncidentTypesList() {
+		if(incidentTypeList == null){
+			Ajax.get("/incidenttype").done(new Function() {
+				@Override
+				public void f() {
+					incidentTypeList = JsonUtils.safeEval(arguments(0).toString());
+					incidentForm.setIncidentsTypes(incidentTypeList);
+						}	
+			}).progress(new Function() {
+				@Override
+				public void f() {
+
+				}
+
+			}).fail(new Function() {
+				@Override
+				public void f() {
+					Window.alert("Incident Types could not be fetched from the server");
+				}
+			});
+			
+			
+			
+		}
+		return incidentTypeList;
+	}
+	
+	@Override
+	public IncidentTypeJson findIncidentTypeById(String searched) {
+		for(int i = 0; i < incidentTypeList.length(); i++){
+			 IncidentTypeJson incidentType = incidentTypeList.get(i);
+			 String incidentTypeId = incidentType.getId();
+			  if(searched.compareTo(incidentTypeId) == 0){
+				  return incidentType;
+			  }
+		}	
+		return null;
+		
+		
 	}
 
 	

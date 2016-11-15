@@ -30,9 +30,9 @@ public class StudentCard extends Composite {
     @UiField
 	MaterialLabel studentEmailLabel;
     
-    private Long userId;
+    private String userId;
 	
-	public StudentCard(String studentProfileImageUrl, String studentName, String studentEmail, Long id) {
+	public StudentCard(String studentProfileImageUrl, String studentName, String studentEmail, String id) {
 		initWidget(uiBinder.createAndBindUi(this));
 		studentProfileImage.setUrl(studentProfileImageUrl);
 		studentNameLabel.setText(studentName);
@@ -49,7 +49,7 @@ public class StudentCard extends Composite {
 		return this.removeButton;
 	}
 
-	public Long getUserId() {
+	public String getUserId() {
 		return this.userId;
 	}
 

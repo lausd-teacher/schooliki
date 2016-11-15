@@ -1,8 +1,8 @@
 package net.videmantay.roster.views.draganddrop;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.HTMLPanel;
 
 import gwt.material.design.client.ui.MaterialCard;
 
@@ -13,6 +13,8 @@ public class SelectionManager {
 	static DivElement previouslySelected = null;
 	
 	static MaterialCard incidentCard = null;
+	
+	static HTMLPanel selectedStudent = null;
 	
 	
 	public static void setCurrentlySelected(DivElement selected){
@@ -30,8 +32,6 @@ public class SelectionManager {
 	}
 	
 	public static void unSelect(Element parent){
-		
-		//GWT.log("unselected " + parent.getClassName());
 	 if(isElementNull(parent)){
 		  currentlySelected.getStyle().setProperty("border", "");
 	      previouslySelected = currentlySelected;
@@ -72,18 +72,26 @@ public class SelectionManager {
 	
 	public static void selectIncidentCard(MaterialCard card){
 		    incidentCard = card;
-		    incidentCard.getElement().addClassName("selectedIncidentCard");
+		    incidentCard.getElement().addClassName("selected");
 	}
-	
 	public static void unSelectCurrentSelectedIncidentCard(){
 		if(incidentCard != null){
-			incidentCard.getElement().removeClassName("selectedIncidentCard");
+			incidentCard.getElement().removeClassName("selected");
 		    incidentCard = null;
 		}
     }
-	
 	public static MaterialCard getSelectedIncidentCard(){
 		return incidentCard;
+	}
+	public static void selectStudent(HTMLPanel studentPanel){
+		selectedStudent = studentPanel;
+		selectedStudent.getElement().addClassName("selected");
+	}
+	public static void unselectCurrentlySelectedStudent(){
+		if(selectedStudent != null){
+			selectedStudent.getElement().removeClassName("selected");
+			selectedStudent = null;
+		}
 	}
 	
 	
