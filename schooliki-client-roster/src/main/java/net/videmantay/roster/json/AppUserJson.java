@@ -79,18 +79,6 @@ public class AppUserJson extends JavaScriptObject {
     }-*/;
 
 
-	public final  native String getPassword() /*-{
-		return this.password;
-	}-*/;
-
-
-
-	public final  native void setPassword(String password) /*-{
-		this.password = password;
-	}-*/;
-
-
-
 	public final  native boolean isFirstLogin() /*-{
 		return this.firstLogin;
 	}-*/;

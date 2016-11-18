@@ -59,30 +59,37 @@ public class DemoDataServlet extends HttpServlet {
 		IncidentType type = new IncidentType();
 		type.setImageUrl("img/1.png");
 		type.setName("Helping others");
+		type.setPoints(2);
 		
 		IncidentType type2 = new IncidentType();
 		type2.setImageUrl("img/32.png");
 		type2.setName("On task");
+		type2.setPoints(1);
 		
 		IncidentType type3 = new IncidentType();
 		type3.setImageUrl("img/5.png");
 		type3.setName("Participating");
+		type3.setPoints(3);
 		
 		IncidentType type4 = new IncidentType();
 		type4.setImageUrl("img/6.png");
 		type4.setName("Persistence");
+		type4.setPoints(1);
 		
 		IncidentType type5 = new IncidentType();
 		type5.setImageUrl("img/7.png");
 		type5.setName("Teamwork");
+		type5.setPoints(2);
 		
 		IncidentType type6 = new IncidentType();
 		type6.setImageUrl("img/9.png");
 		type6.setName("Test");
+		type6.setPoints(3);
 		
 		IncidentType type7 = new IncidentType();
 		type7.setImageUrl("img/10.png");
 		type7.setName("Working hard");
+		type7.setPoints(2);
 		
 		appUserDB.save(demoUser);
 		appUserDB.save(demoUser2);

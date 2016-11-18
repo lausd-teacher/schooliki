@@ -31,7 +31,6 @@ public class RosterStudentCollection extends Composite {
 	
 	private final RosterJson roster = window.getPropertyJSO("roster").cast();
 	
-	private final JsArray<RosterStudentJson> students = roster.getRosterStudents();
 	
 	public RosterStudentCollection() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -50,18 +49,7 @@ public class RosterStudentCollection extends Composite {
 	public void drawList(){
 		studentCollection.clear();
 		console.log("Draw chart called");
-				//if its empty show empty content
-				if(students == null ||students.length() < 1){
-					showEmpty();
-					return;
-				}
-				
-				for(int i = 0; i < students.length(); i++){
-					RosterStudentItem rsi = new RosterStudentItem(students.get(i));
-					
-					studentCollection.add(rsi);
-					
-				}
+
 				$(emptyStudentList).hide();
 				$(studentCollection).show();
 	}

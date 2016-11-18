@@ -2,6 +2,7 @@ package net.videmantay.roster.views.draganddrop;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
 import gwt.material.design.client.ui.MaterialCard;
@@ -14,7 +15,9 @@ public class SelectionManager {
 	
 	static MaterialCard incidentCard = null;
 	
-	static HTMLPanel selectedStudent = null;
+	static MaterialCard selectedStudent = null;
+	
+	static ImageElement selectedIncidentType = null;
 	
 	
 	public static void setCurrentlySelected(DivElement selected){
@@ -83,7 +86,7 @@ public class SelectionManager {
 	public static MaterialCard getSelectedIncidentCard(){
 		return incidentCard;
 	}
-	public static void selectStudent(HTMLPanel studentPanel){
+	public static void selectStudent(MaterialCard studentPanel){
 		selectedStudent = studentPanel;
 		selectedStudent.getElement().addClassName("selected");
 	}
@@ -94,7 +97,19 @@ public class SelectionManager {
 		}
 	}
 	
+	public static String getSelectedStudentId(){
+		
+		return selectedStudent.getElement().getId();
+	}
 	
+	public static void selectIncidentType(ImageElement incidentType){
+		selectedIncidentType = incidentType;
+	}
 	
-
+	public static void unselectCurrentlySelectedIncidentType(){
+		if(selectedIncidentType != null){
+			selectedIncidentType = null;
+		}
+	}
+	
 }

@@ -9,7 +9,7 @@
 	<g:HTMLPanel ui:field="container">
 		<m:MaterialTitle title="Manage classroom expectations by creating positive and negative incidents" description="Incidents are events you want to encourage like 'Turned in Homework', 'Shared with a friend'" />
 		<m:MaterialContainer>
-		   <m:MaterialRow ui:field="incidentContainer">
+		   <m:MaterialRow ui:field="incidentTypeContainer">
 		   
 		   </m:MaterialRow>
 		</m:MaterialContainer>

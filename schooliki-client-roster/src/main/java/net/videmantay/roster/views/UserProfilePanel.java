@@ -3,6 +3,7 @@ package net.videmantay.roster.views;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,14 +30,30 @@ public class UserProfilePanel extends Composite{
 	MaterialLabel name;
 	@UiField
 	MaterialImage img;
+	@UiField
+	MaterialSideProfile sideUserProfile;
 
 	
-	public UserProfilePanel(String username, String imgUrl) {
+	public UserProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
+		sideUserProfile.getElement().getStyle().setCursor(Cursor.POINTER);
+	
+	}
+	
+	public void setProfileInfo(String username, String imgUrl){
 		name.setText(username);
 		img.setUrl(imgUrl);
 		
-		
+	}
+	
+	
+	public MaterialSideProfile getSideUserProfile() {
+		return this.sideUserProfile;
+	}
+
+
+	public interface Presenter{
+		void userProfileClickeEvent();
 	}
 
 }

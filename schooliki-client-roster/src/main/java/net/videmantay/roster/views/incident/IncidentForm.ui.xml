@@ -4,38 +4,31 @@
 	<m:MaterialModal ui:field="modal">
 		<m:MaterialModalContent>
 			<g:HTMLPanel ui:field="formContainer">
-				<m:MaterialInput ui:field="iconUrl" type="TEXT"
-					visible="false" addStyleNames="valign-wrapper" />
-				<m:MaterialLabel ui:field="nameLabel" text="Name:" />
-				<m:MaterialListBox ui:field="nameInput">
-				</m:MaterialListBox>
+			
+			<m:MaterialLabel text="Icon:" />
+			<g:HTMLPanel ui:field="iconInputContainer">
+			    
+		     </g:HTMLPanel>
+			
+			   <m:MaterialLabel text="Name:" />
+				<m:MaterialInput ui:field="nameInput" type="TEXT" required="true"/>
+				
 				<m:html.Label styleName="errorLabel" text="You must include a name"
 					textColor="red lighten-1" />
+					
 				<m:MaterialChip ui:field="valueLabel" text="Points:" />
 				<m:MaterialIntegerBox ui:field="valueInput" />
-				<m:MaterialLabel text="Type:" />
-				<m:MaterialTab>
-					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
-					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton  type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
-				</m:MaterialTab>
-				<div id="posIncidentGrid">
-	                <m:MaterialContainer ui:field="incidentsTypeContainer">
-	                 
-	                
-	                </m:MaterialContainer>
-                </div>
-                <div id="negIncidentGrid">
-	                <g:Label>No negative incidents for now</g:Label>
-                </div>
-			</g:HTMLPanel>
+				<m:html.Label styleName="errorLabel" text="You must include points"
+					textColor="red lighten-1" />
+				</g:HTMLPanel>
 		</m:MaterialModalContent>
 		<m:MaterialModalFooter>
 			<m:MaterialRow ui:field="doneCancelRow">
 				<m:MaterialColumn>
-					<m:MaterialIcon ui:field="doneBtn" iconType="DONE" />
+					<m:MaterialButton ui:field="doneBtn" text="ADD" />
 				</m:MaterialColumn>
 				<m:MaterialColumn>
-					<m:MaterialIcon ui:field="cancelBtn" iconType="CANCEL" />
+					<m:MaterialButton ui:field="cancelBtn" text="CANCEL"/>
 				</m:MaterialColumn>
 			</m:MaterialRow>
 		</m:MaterialModalFooter>

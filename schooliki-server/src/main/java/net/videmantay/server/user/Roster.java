@@ -40,17 +40,10 @@ import com.googlecode.objectify.annotation.Serialize;
 @ValidDateRange
 public class Roster implements Serializable{
 	
-	/**
-	 * 
-	 */
-	public static final long serialVersionUID = 1L;
-
 	@Id
 	public Long id;
 	
 	@Index
-	//@NotNull -when creating a new one this isn't set
-	//i think of it as a security risk but maybe it isn't
 	public transient String ownerId;
 	
 	@NotNull
@@ -62,12 +55,6 @@ public class Roster implements Serializable{
 	
 	@SafeHtml
 	public String roomNum;
-
-	//@NotNull
-	@Serialize
-	public TeacherInfo teacherInfo;
-	
-	public GradeLevel gradeLevel;
 	
 	@NotNull
 	public Date startDate;
@@ -75,25 +62,7 @@ public class Roster implements Serializable{
 	@NotNull
 	public Date endDate;
 	
-	//all map to a spreadsheet
-	@SafeHtml
-	public String rollBook;
-	@SafeHtml
-	public String gradeBook;
-	@SafeHtml
-	public String behaviorReport;
 
-	
-	@Serialize
-	public List<GoogleService> googleCalendars = new ArrayList<GoogleService>();
-	
-	@Serialize 
-	public List<GoogleService> googleTasks = new ArrayList<GoogleService>();
-	
-	@Serialize
-	public List<GoogleService> googleFolders = new ArrayList<GoogleService>();
-
-	
 	public Roster(){
 		
 	}
@@ -153,84 +122,6 @@ public class Roster implements Serializable{
 	public void setRoomNum(String roomNum) {
 		this.roomNum = roomNum;
 	}
-
-	public TeacherInfo getTeacherInfo() {
-		return teacherInfo;
-	}
-
-	public void setTeacherInfo(TeacherInfo teacherInfo) {
-		this.teacherInfo = teacherInfo;
-	}
-	
-	public GradeLevel getGradeLevel(){
-		return this.gradeLevel;
-	}
-	
-	public void setGradeLevel(GradeLevel grdLvl){
-		this.gradeLevel = grdLvl;
-	}
-	
-	public List<GoogleService> getGoogleFolders(){
-		return this.googleFolders;
-	}
-	
-	public void setGoogleFolders(List<GoogleService> folders){
-		this.googleFolders = folders;
-		
-	}
-	
-	public List<GoogleService> getGoogleCalendars(){
-		return this.googleCalendars;
-	}
-	
-	public void setGoogleCalendars(List<GoogleService> googleCals){
-		this.googleCalendars = googleCals;
-	}
-	
-	public List<GoogleService> getGoogleTasks(){
-		return this.googleTasks;
-	}
-	
-	public void setGoogleTasks(List<GoogleService> googleTasks){
-		this.googleTasks = googleTasks;
-	}
-
-	public String getRollBook() {
-		return rollBook;
-	}
-
-	public void setRollBook(String rollBook) {
-		this.rollBook = rollBook;
-	}
-
-	public String getGradeBook() {
-		return gradeBook;
-	}
-
-	public void setGradeBook(String gradeBook) {
-		this.gradeBook = gradeBook;
-	}
-
-	public String getBehaviorReport() {
-		return behaviorReport;
-	}
-
-	public void setBehaviorReport(String behaviorReport) {
-		this.behaviorReport = behaviorReport;
-	}
-
-
-	public RosterDetail createDetail(){
-		RosterDetail detail = new RosterDetail();
-		detail.setDescription(this.description);
-		detail.setTitle(this.title);
-		detail.setGradeLevel(this.gradeLevel);
-		detail.setTeacherInfo(this.teacherInfo);
-		detail.setOwnerId(this.getOwnerId());
-		return detail;
-	}
-	
-
 	
 	public static Roster createFromDTO(RosterDTO dto) throws ParseException{
 		
@@ -243,16 +134,8 @@ public class Roster implements Serializable{
 		roster.title = dto.title;
 		roster.description = dto.description;
 		roster.roomNum = dto.roomNum;
-		roster.teacherInfo = dto.teacherInfo;
-		roster.gradeLevel = dto.gradeLevel;
 		roster.startDate = sDateFormat.parse(dto.startDate);
 		roster.endDate = sDateFormat.parse(dto.endDate);
-		roster.rollBook = dto.rollBook;
-		roster.gradeBook = dto.gradeBook;
-		roster.behaviorReport = dto.behaviorReport;
-		roster.googleCalendars = dto.googleCalendars;
-		roster.googleTasks = dto.googleTasks;
-		roster.googleFolders = dto.googleFolders;
 		
 		 return roster;
 	}

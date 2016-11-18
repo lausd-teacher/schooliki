@@ -9,9 +9,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.ui.MaterialBadge;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
+import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
 
 public class IncidentCard extends Composite {
@@ -31,26 +33,25 @@ public class IncidentCard extends Composite {
 	@UiField
 	MaterialImage incidentImage;
 	
+	@UiField
+	MaterialBadge pointsBadge;
+	
 
-	public IncidentCard(String incidentName, String imageUrl, String typeId) {
+	public IncidentCard(IncidentTypeJson incidentTypeJson) {
 		initWidget(uiBinder.createAndBindUi(this));
 		container.setWidth("100px");
-		cardTitle.setText(incidentName);
+		cardTitle.setText(incidentTypeJson.getName());
 		cardTitle.setFontSize(12, Unit.PX);
-		incidentImage.setUrl(imageUrl);
-		container.getElement().addClassName("incidentCard");
-		container.getElement().setId(typeId);
+		incidentImage.setUrl(incidentTypeJson.getImageUrl());
+		pointsBadge.setText(String.valueOf(incidentTypeJson.getPoints()));
 		
-		   container.addDomHandler(new ClickHandler(){
-				@Override
-				public void onClick(ClickEvent event) {
-					GWT.log("clicking on card");
-					SelectionManager.unSelectCurrentSelectedIncidentCard();
-					SelectionManager.selectIncidentCard(container);
-					
-				}
-			   }, ClickEvent.getType());
-		   
+		  if(incidentTypeJson.getPoints() > 0){
+			  pointsBadge.getElement().getStyle().setBackgroundColor("green");
+		  }else {
+			  pointsBadge.getElement().getStyle().setBackgroundColor("red");
+		  }
+		container.getElement().addClassName("incidentCard");
+		container.getElement().setId(incidentTypeJson.getId());   
 	}
 	
 	

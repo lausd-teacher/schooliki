@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,6 +17,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -52,21 +56,28 @@ public class RosterService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listRosters() {
+	public Response listRosters(@Context HttpServletRequest request) {
 		ofy().clear();
+		
+		Object currentUserId = request.getSession(false).getAttribute(LoginService.CURRENTUSERID_SESSION_ATTRIBUTE);
 
-		log.log(Level.INFO, "List rosters is called");
+		if(currentUserId != null){
+			String ownerId = currentUserId.toString();
+			log.log(Level.INFO, "List rosters is called");
 
-		List<Roster> rosterList = db().load().type(Roster.class).list();
-
-		List<RosterDTO> rosterDTOList = new ArrayList<RosterDTO>();
-		for (Roster roster : rosterList) {
-			RosterDTO dto = new RosterDTO(roster);
-			rosterDTOList.add(dto);
+				List<Roster> rosterList = db().load().type(Roster.class).filter("ownerId", ownerId).list();
+		
+				List<RosterDTO> rosterDTOList = new ArrayList<RosterDTO>();
+				for (Roster roster : rosterList) {
+					RosterDTO dto = new RosterDTO(roster);
+					rosterDTOList.add(dto);
+				}
+				return Response.ok().entity(rosterDTOList).build();
 		}
 
-		return Response.ok().entity(rosterDTOList).build();
+		return Response.ok().build();
 	}
+	
 
 	@GET
 	@Path("/{id}")
@@ -86,12 +97,20 @@ public class RosterService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createRoster(RosterDTO rosterDTO) throws Exception{
-		final Roster roster = Roster.createFromDTO(rosterDTO);
-		Long id = rosterDB.save(roster).getId();
+	public Response createRoster(RosterDTO rosterDTO, @Context HttpServletRequest request) throws Exception{
+		
+		Object currentUserId = request.getSession(false).getAttribute(LoginService.CURRENTUSERID_SESSION_ATTRIBUTE);
+		
+		if(currentUserId != null){
+			String ownerId = currentUserId.toString();
+				final Roster roster = Roster.createFromDTO(rosterDTO);
+				roster.setOwnerId(ownerId);
+		        Long id = rosterDB.save(roster).getId();
+		        return Response.status(Status.CREATED).entity(id).build();
+		}
 		
 
-		return Response.status(Status.CREATED).entity(id).build();
+		return Response.status(Status.UNAUTHORIZED).build();
 	}
 
 	@DELETE

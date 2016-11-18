@@ -4,28 +4,26 @@ import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import gwt.material.design.client.ui.MaterialColumn;
-import gwt.material.design.client.ui.MaterialContainer;
-import gwt.material.design.client.ui.MaterialDropDown;
+import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialIcon;
+import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialIntegerBox;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
-import gwt.material.design.client.ui.MaterialPanel;
-import gwt.material.design.client.ui.MaterialRow;
-import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentTypeJson;
-import net.videmantay.roster.views.components.IncidentCard;
+import net.videmantay.roster.views.components.IncidentFormIconInput;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
 
 public class IncidentForm extends Composite {
@@ -43,70 +41,52 @@ public class IncidentForm extends Composite {
 	MaterialModal modal;
 
 	@UiField
-	MaterialListBox nameInput;
+	HTMLPanel iconInputContainer;
+    
+	@UiField
+    MaterialInput nameInput;
 
 	@UiField
 	MaterialIntegerBox valueInput;
 
+	@UiField
+	MaterialButton doneBtn;
 
 	@UiField
-	MaterialIcon doneBtn;
-
-	@UiField
-	MaterialIcon cancelBtn;
+	MaterialButton cancelBtn;
 	
-	@UiField
-	MaterialContainer incidentsTypeContainer;
+	final IncidentFormIconInput incidentFormIconInput;
+	
 
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
 
-	public IncidentForm() {
+	public IncidentForm(IncidentFormIconInput iconInput) {
 		initWidget(uiBinder.createAndBindUi(this));
-		formContainer.getElement().setId("incidentFrom");
+		this.incidentFormIconInput = iconInput;
+		iconInputContainer.add(incidentFormIconInput);
+		formContainer.getElement().setId("incidentForm");
 		valueInput.setValue(0);
 	}
 	
-	public IncidentJson getFormData(){
+	public IncidentTypeJson getFormData(){
+		IncidentTypeJson newIncident = JavaScriptObject.createObject().cast();
+		newIncident.setName(nameInput.getText());
+		newIncident.setImageUrl(incidentFormIconInput.getSelectedIcon().getSrc());
 		
-		IncidentJson newIncident = JavaScriptObject.createObject().cast();
-		newIncident.setName(nameInput.getSelectedItemText());
-		newIncident.setValue(valueInput.getValue());
-		newIncident.setIncidentTypeId(SelectionManager.getSelectedIncidentCard().getElement().getId());
+		if(valueInput.getText().isEmpty() || valueInput.getText() == null )
+		      newIncident.setPoints(0);
+		else
+			newIncident.setPoints(valueInput.getValue());
 		
 		return newIncident;
 	}
 	
-	public void setIncidentsTypes(JsArray<IncidentTypeJson> incidentTypes){
-		MaterialRow incidentRow = new MaterialRow();
-		for(int i = 0; i < incidentTypes.length(); i++){
-			IncidentTypeJson incidentType = incidentTypes.get(i);
-			IncidentCard card = new IncidentCard(incidentType.getName(), incidentType.getImageUrl(), incidentType.getId());
-			
-			MaterialColumn column = new MaterialColumn();
-			column.add(card);
-			
-			incidentRow.add(column);
-			//always select the first incident
-			if(i == 0)
-				 SelectionManager.selectIncidentCard(card.getContainer());
-		}
-		incidentsTypeContainer.add(incidentRow);
-		
-	}
+	
 
 	@Override
 	public void onLoad() {
-		$("#incidentFrom input").blur(getValidationFunction());
+		$("#incidentForm input").blur(getValidationFunction());
 		$(".errorLabel").hide();
-	}
-	
-	public void populateStudentsNamesList(JsArray<AppUserJson> students){
-		nameInput.clear();
-		for(int i = 0; i < students.length(); i++){
-			AppUserJson student = students.get(i);
-			nameInput.addItem(student.getName());
-		}
-		
 	}
 
 
@@ -122,25 +102,31 @@ public class IncidentForm extends Composite {
 
 		return new Function() {
 			@Override
-			public void f() {
-				GWT.log("event" + $(this).id());
-				if ($(this).is(":invalid")) {
-					$(this).next(".errorLabel").show();
-					$(this).addClass("inputError");
+			public boolean f(Event e, Object...o) {
+				NativeEvent nEvent = e.cast();
+				EventTarget target = nEvent.getEventTarget();
+				
+				if ($(target).is(":invalid")) {
+					$(target).next(".errorLabel").show();
+					$(target).addClass("inputError");
+					doneBtn.setEnabled(false);
 				} else {
-					$(this).next(".errorLabel").hide();
+					$(target).next(".errorLabel").hide();
+					doneBtn.setEnabled(true);
 				}
+				
+				return true;
 			}
 		};
 
 	}
 	
 	
-	public MaterialIcon getDoneBtn() {
+	public MaterialButton getDoneBtn() {
 		return this.doneBtn;
 	}
 
-	public MaterialIcon getCancelBtn() {
+	public MaterialButton getCancelBtn() {
 		return this.cancelBtn;
 	}
 

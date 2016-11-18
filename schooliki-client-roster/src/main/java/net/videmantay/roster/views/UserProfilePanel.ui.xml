@@ -4,10 +4,10 @@
 	xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:a="urn:import:gwt.material.design.addins.client.sideprofile">
 
-		<a:MaterialSideProfile url="../img/safeResponsibleRespectBG.png">
-			<m:html.Div float="RIGHT" >
-			<m:MaterialImage ui:field="img" addStyleNames="profileImg" type="CIRCLE"/>
-			<m:MaterialLabel ui:field="name" textColor="white" addStyleNames="profileName" />
-			</m:html.Div>
+		<a:MaterialSideProfile ui:field="sideUserProfile" url="../img/safeResponsibleRespectBG.png">
+			<g:HTMLPanel addStyleNames="userProfileContainer"> 
+				<m:MaterialImage ui:field="img" type="CIRCLE"/>
+				<m:MaterialLabel ui:field="name" textColor="white" addStyleNames="profileName" />
+			</g:HTMLPanel>
 		</a:MaterialSideProfile>
 </ui:UiBinder> 

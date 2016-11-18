@@ -12,15 +12,17 @@ public class IncidentType {
     Long id;
 	String name;
 	String imageUrl;
+	int points;
 	
 	public IncidentType() {
 
 	}
 
-	public IncidentType(Long id, String name, String imageUrl) {
+	public IncidentType(Long id, String name, String imageUrl, int points) {
 		this.id = id;
 		this.name = name;
 		this.imageUrl = imageUrl;
+		this.points = points;
 	}
 
 	public Long getId() {
@@ -48,11 +50,20 @@ public class IncidentType {
 	}
 	
 	
+	public int getPoints() {
+		return this.points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
 	public static IncidentType createFromDTO(IncidentTypeDTO incidentTypeDTO) {
 		IncidentType incidentType = new IncidentType();
 		incidentType.id = incidentTypeDTO.getId();
 		incidentType.name = incidentTypeDTO.getName();
 		incidentType.imageUrl = incidentTypeDTO.getImageUrl();
+		incidentType.points = incidentTypeDTO.getPoints();
 		return incidentType;
 	}
 

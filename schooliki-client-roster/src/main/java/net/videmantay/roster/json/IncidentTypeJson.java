@@ -29,6 +29,13 @@ public final native String getImageUrl() /*-{
 public final native void setImageUrl(String imageUrl) /*-{
 	this.imageUrl = imageUrl;
 }-*/;
+
+public final native int getPoints() /*-{
+   return this.points;
+}-*/;
+public final native void setPoints(int incidentPoints) /*-{
+   this.points = incidentPoints;
+}-*/;
 	
 
 }

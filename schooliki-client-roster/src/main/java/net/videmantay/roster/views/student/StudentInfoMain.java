@@ -19,7 +19,6 @@ public class StudentInfoMain extends Composite {
 	}
 
 	private  RosterStudentJson student = null;
-	private final RosterJson roster = window.getPropertyJSO("roster").cast();
 	
 	@UiField
 	StudentPage studentPage;
@@ -34,12 +33,12 @@ public class StudentInfoMain extends Composite {
 	}
 	
 	public StudentInfoMain setStudent(Long studentId){
-		for(int i = 0; i < roster.getRosterStudents().length(); i++){
-			if(roster.getRosterStudents().get(i).getId().equals(studentId.toString())){
-				student = roster.getRosterStudents().get(i);
-				break;
-			}
-		}
+//		for(int i = 0; i < roster.getRosterStudents().length(); i++){
+//			if(roster.getRosterStudents().get(i).getId().equals(studentId.toString())){
+//				student = roster.getRosterStudents().get(i);
+//				break;
+//			}
+//		}
 		
 		return this;
 	}

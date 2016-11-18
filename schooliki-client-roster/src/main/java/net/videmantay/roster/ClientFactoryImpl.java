@@ -29,6 +29,7 @@ import net.videmantay.roster.views.classtime.ClassTimeForm;
 import net.videmantay.roster.views.classtime.ClassTimeGrid;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
+import net.videmantay.roster.views.components.IncidentFormIconInput;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
 import net.videmantay.roster.views.incident.IncidentForm;
@@ -47,17 +48,15 @@ public class ClientFactoryImpl implements ClientFactory {
 	RosterJson currentRoster = JavaScriptObject.createArray().cast();
 	MainRosterSideNav mainRosterSideNav = new MainRosterSideNav();
 	MainRosterNavBar mainRosterNavBar = new MainRosterNavBar();
-	UserProfilePage profilePage = new UserProfilePage(appPanel.getNavBartitle());
 	UserProfilePanel userProfile = null;
+	UserProfilePage profilePage = null;
 	ClassRoomSideNav classRoomSideNav = new ClassRoomSideNav();
 	GradedWorkForm gradedWorkForm = new GradedWorkForm();
 	GradedWorkMain gradedWorkMain = new GradedWorkMain(gradedWorkForm);
 	CreateStudentForm studentForm = new CreateStudentForm();
-	StudentActionModal studentModal = new StudentActionModal();
+	StudentActionModal studentModal = new StudentActionModal(this);
 	ClassRoomGrid grid = new ClassRoomGrid(studentForm, studentModal);
 	SeatingChartPanel seatingChartPanel = null;
-	IncidentForm incidentForm = new IncidentForm();
-	IncidentMain incidentMain = new IncidentMain(incidentForm);
 	GoogleCalendar googleCalendar = null;
 	 String token = null;
 	 ClassTimeJson selectedClassTime = null;
@@ -66,6 +65,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	 boolean isEditMode = false;
 	 AssignementDashboard assignementDashboard = null;
 	 JsArray<IncidentTypeJson> incidentTypeList = null;
+	 IncidentFormIconInput incidentFromIconInput = new IncidentFormIconInput();
+	 IncidentForm incidentForm = new IncidentForm(incidentFromIconInput);
+	 IncidentMain incidentMain = new IncidentMain(incidentForm);
 
 
 	@Override
@@ -118,7 +120,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public UserProfilePanel userProfile() {
 		if(userProfile == null){
-			userProfile = new UserProfilePanel(getCurrentUserName(), getCurrentUserProfileImageUrl());
+			userProfile = new UserProfilePanel();
 		}
 		return userProfile;
 	}
@@ -158,6 +160,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	@Override
 	public UserProfilePage getUserProfilePage() {
+		if(profilePage == null){
+			profilePage = new UserProfilePage(appPanel.getNavBartitle(), userProfile());
+		}
 		return profilePage;
 	}
 	@Override
@@ -237,7 +242,10 @@ public class ClientFactoryImpl implements ClientFactory {
 				@Override
 				public void f() {
 					incidentTypeList = JsonUtils.safeEval(arguments(0).toString());
-					incidentForm.setIncidentsTypes(incidentTypeList);
+					GWT.log("Received Incidents " + arguments(0).toString());
+					incidentMain.setIncidentsTypes(incidentTypeList);
+					incidentFromIconInput.setIcons(incidentTypeList);
+					studentModal.setUpIncidents(incidentTypeList);
 						}	
 			}).progress(new Function() {
 				@Override
@@ -270,6 +278,12 @@ public class ClientFactoryImpl implements ClientFactory {
 		return null;
 		
 		
+	}
+	@Override
+	public IncidentFormIconInput getIncidentFormInput() {
+		
+		
+		return incidentFromIconInput;
 	}
 
 	

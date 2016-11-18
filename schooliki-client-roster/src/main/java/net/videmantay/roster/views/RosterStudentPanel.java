@@ -20,6 +20,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.ui.MaterialBadge;
+import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwtquery.plugins.ui.interactions.Draggable;
 import net.videmantay.roster.ClientFactory;
@@ -38,7 +40,7 @@ public class RosterStudentPanel extends Composite {
 	}
 	
 	@UiField
-	HTMLPanel rosterStudentPanel;
+	MaterialCard rosterStudentPanel;
 	
 	@UiField
 	DivElement studentImg;
@@ -46,17 +48,26 @@ public class RosterStudentPanel extends Composite {
 	@UiField
 	MaterialLabel studentName;
 	
+	@UiField
+	MaterialBadge pointsBadge;
+	
+	@UiField
+	MaterialBadge attendenceBadge;
+	
 	final StudentActionModal studentActionModal;
 	
 	final AppUserJson currentStudent;
 	
 	final Long currentRosterId; 
-	
+		
 	final ClientFactory clientFactory;
 	
 
 	public RosterStudentPanel(AppUserJson student, View viewType, ClientFactory factory) {
 		initWidget(uiBinder.createAndBindUi(this));
+		attendenceBadge.setVisible(false);
+		pointsBadge.getElement().getStyle().setBackgroundColor("green");
+		pointsBadge.setText("x");
 		
 		this.studentActionModal = factory.getStudentActionModal();
 		currentStudent = student;
@@ -64,43 +75,7 @@ public class RosterStudentPanel extends Composite {
 		setData(currentStudent, viewType);
 		this.currentRosterId = factory.getCurrentRoster().getId();
 		this.clientFactory = factory;
-		rosterStudentPanel.addDomHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				SelectionManager.unselectCurrentlySelectedStudent();
-				SelectionManager.selectStudent(rosterStudentPanel);
-				Ajax.get("/roster/"+currentRosterId+"/student/"+currentStudent.getId()+"/incident").done(new Function() {
-					@Override
-					public void f() {
-						JsArray<IncidentJson> incidents = JsonUtils.safeEval(arguments(0).toString());
-						studentActionModal.getIncidentsContainer().clear();
-						  for(int i = 0; i <incidents.length(); i++){
-							  IncidentJson incident = incidents.get(i);
-							  IncidentTypeJson type = clientFactory.findIncidentTypeById(incident.getIncidentTypeId());
-							  StudentIncidentCard card = new StudentIncidentCard(currentStudent.getName(), type.getImageUrl() ,incident.getName());
-							  studentActionModal.getIncidentsContainer().add(card);
-							  
-						  }
-						studentActionModal.show();
-							}	
-				}).progress(new Function() {
-					@Override
-					public void f() {
-
-					}
-
-				}).fail(new Function() {
-					@Override
-					public void f() {
-						Window.alert("Could not load student incidents");
-					}
-				});
-				
-				
-				
-				
-			}
-		}, ClickEvent.getType());
+	
 	}
 
 	
@@ -127,7 +102,6 @@ public class RosterStudentPanel extends Composite {
 		studentImg.getStyle().setWidth(40, Unit.PX);
 		studentImg.addClassName("studentDraggable");
 		studentImg.getStyle().setPosition(Position.ABSOLUTE);
-		
 		//studentImg.setDraggable("false");
 		rosterStudentPanel.getElement().getStyle().setWidth(60, Unit.PX);
 		rosterStudentPanel.getElement().getStyle().setHeight(60, Unit.PX);
@@ -139,6 +113,47 @@ public class RosterStudentPanel extends Composite {
 	}
 	
 	private void setupPanelForGrid(){
+		rosterStudentPanel.addDomHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				SelectionManager.unselectCurrentlySelectedStudent();
+				SelectionManager.selectStudent(rosterStudentPanel);
+				studentActionModal.show();
+				
+				
+				
+//				Ajax.get("/roster/"+currentRosterId+"/student/"+currentStudent.getId()+"/incident").done(new Function() {
+//					@Override
+//					public void f() {
+//						JsArray<IncidentJson> incidents = JsonUtils.safeEval(arguments(0).toString());
+//						studentActionModal.getIncidentsContainer().clear();
+//						  for(int i = 0; i <incidents.length(); i++){
+//							  IncidentJson incident = incidents.get(i);
+//							  IncidentTypeJson type = clientFactory.findIncidentTypeById(incident.getIncidentTypeId());
+//							  StudentIncidentCard card = new StudentIncidentCard(currentStudent.getName(), type.getImageUrl() ,incident.getName());
+//							  studentActionModal.getIncidentsContainer().add(card);
+//							  
+//						  }
+//						studentActionModal.show();
+//							}	
+//				}).progress(new Function() {
+//					@Override
+//					public void f() {
+//
+//					}
+//
+//				}).fail(new Function() {
+//					@Override
+//					public void f() {
+//						Window.alert("Could not load student incidents");
+//					}
+//				});
+				
+				
+				
+				
+			}
+		}, ClickEvent.getType());
 		studentImg.getStyle().setHeight(70, Unit.PX);
 		studentImg.getStyle().setWidth(70, Unit.PX);
 		//We are not doing anything right now, probably will be adding some event here

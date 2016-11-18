@@ -33,11 +33,13 @@ public class UserProfilePage extends Composite {
 	
 	static MaterialNavBrand title;
 	
+	static UserProfilePanel userProfilePanel;
 
 
-	public UserProfilePage(MaterialNavBrand appTitle) {
+	public UserProfilePage(MaterialNavBrand appTitle, UserProfilePanel profilePanel) {
 		initWidget(uiBinder.createAndBindUi(this));
 		title = appTitle;
+		userProfilePanel = profilePanel;
 		renderProfileIfSuccessfull();
 	}
 	
@@ -60,6 +62,7 @@ public class UserProfilePage extends Composite {
 		profileFirstName.setInnerText(givenName);
 		profileLastName.setInnerHTML(familyName);
 		profileEmail.setInnerHTML(eMail);
+		userProfilePanel.setProfileInfo(givenName + " " + familyName, profilePictureUrl);
 		title.setText(givenName + " " + familyName);
 	}
 	
@@ -70,6 +73,5 @@ public class UserProfilePage extends Composite {
 	
     public String getProfilePictureUrl(){
 		return profileImage.getSrc();
-		
 	}
 }

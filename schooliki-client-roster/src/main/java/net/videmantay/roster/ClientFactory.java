@@ -23,6 +23,7 @@ import net.videmantay.roster.views.classtime.ClassTimeForm;
 import net.videmantay.roster.views.classtime.ClassTimeGrid;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
+import net.videmantay.roster.views.components.IncidentFormIconInput;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
 import net.videmantay.roster.views.incident.IncidentMain;
@@ -62,5 +63,6 @@ public interface ClientFactory {
 	AssignementDashboard getAssignementDashboard();
 	JsArray<IncidentTypeJson> getIncidentTypesList();
 	IncidentTypeJson findIncidentTypeById(String searched);
+	IncidentFormIconInput getIncidentFormInput();
 
 }

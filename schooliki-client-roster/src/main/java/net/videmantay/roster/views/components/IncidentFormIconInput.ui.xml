@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		  <g:HTMLPanel ui:field="selectedIconContainer">
+		    <img ui:field="selectedIcon" style="width: 5.6rem;
+    height: 5.6rem;"></img>
+		      <span style="bottom:0.3rem;right:0.4rem;position:absolute;width:0;height:0;border:0.4rem solid transparent;border-top:0.4rem solid #8C8C8C;"></span>
+		  </g:HTMLPanel>
+			<g:HTMLPanel ui:field="iconsContainer">
+			      
+				  
+			</g:HTMLPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

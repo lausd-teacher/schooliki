@@ -37,6 +37,7 @@ public class LoginService extends HttpServlet {
 	private final Logger log = Logger.getLogger("logger");
 	
 	public static final String TOKEN_SESSION_ATTRIBUTE = "OAuth_TOKEN";
+	public static final String CURRENTUSERID_SESSION_ATTRIBUTE = "currentUserId";
 	
 	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 	
@@ -146,20 +147,20 @@ public class LoginService extends HttpServlet {
 									   if(appUser.isActive()){
 										   if(Boolean.parseBoolean(isAdmin)){
 											   if(appUser.hasRole(UserRoles.ADMIN)){
-												   login(email, req, token);
+												   login(email, req, token, appUser.getId());
 												   res.sendRedirect("/admin");
 											   }else{
 												   res.sendRedirect("/login?error=3");
 											   }   
 										   }else{
 											   if(appUser.hasRole(UserRoles.TEACHER)){
-												   login(email, req, token);
+												   login(email, req, token, appUser.getId());
 												   res.sendRedirect("/teacher");
 											   }else if (appUser.hasRole(UserRoles.FACULTY)){
-												   login(email, req, token);
+												   login(email, req, token, appUser.getId());
 												   res.sendRedirect("/faculty");
 											   }else if(appUser.hasRole(UserRoles.STUDENT)){
-												   login(email, req, token);
+												   login(email, req, token, appUser.getId());
 												   res.sendRedirect("/student");
 											   }
 										   }
@@ -185,7 +186,7 @@ public class LoginService extends HttpServlet {
 	}
 	
 	
-	private void login(String username, HttpServletRequest request, String authToken){
+	private void login(String username, HttpServletRequest request, String authToken, Long currentUserId){
 		
 		   UserDetails userDetails = schoolikiUserDetailsServices.loadUserByUsername(username);
 		   UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
@@ -199,6 +200,7 @@ public class LoginService extends HttpServlet {
 		    // Create a new session and add the security context.
 		    HttpSession session = request.getSession(true);
 		    session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+		    session.setAttribute(CURRENTUSERID_SESSION_ATTRIBUTE, currentUserId);
 		    session.setAttribute(TOKEN_SESSION_ATTRIBUTE, authToken);
 		    
 		    log.log(Level.INFO, "User successfully authenticated");

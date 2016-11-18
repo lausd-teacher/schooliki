@@ -7,11 +7,17 @@ public class IncidentTypeDTO {
 	Long id;
 	String name;
 	String imageUrl;
+	int points;
 	
 	public IncidentTypeDTO(IncidentType type) {
 		this.id = type.getId();
 		this.name = type.getName();
 		this.imageUrl = type.getImageUrl();
+		this.points = type.getPoints();
+	}
+	
+	public IncidentTypeDTO() {
+
 	}
 
 	public Long getId() {
@@ -36,6 +42,14 @@ public class IncidentTypeDTO {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public int getPoints() {
+		return this.points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 	
 	

@@ -28,25 +28,10 @@ public class RosterDTO implements Serializable {
 
 	public String roomNum;
 
-	public TeacherInfo teacherInfo;
-
-	public GradeLevel gradeLevel;
 
 	public String startDate;
 
 	public String endDate;
-
-	public String rollBook;
-
-	public String gradeBook;
-
-	public String behaviorReport;
-
-	public List<GoogleService> googleCalendars = new ArrayList<GoogleService>();
-
-	public List<GoogleService> googleTasks = new ArrayList<GoogleService>();
-
-	public List<GoogleService> googleFolders = new ArrayList<GoogleService>();
 
 
 	public RosterDTO() {
@@ -54,22 +39,13 @@ public class RosterDTO implements Serializable {
 	}
 
 	public RosterDTO(Roster roster) {
-		
 		this.id = roster.id;
 		this.ownerId = roster.ownerId;
 		this.title = roster.title;
 		this.description = roster.description;
 		this.roomNum = roster.roomNum;
-		this.teacherInfo = roster.teacherInfo;
-		this.gradeLevel = roster.gradeLevel;
 		this.startDate = roster.startDate.toString();
 		this.endDate = roster.endDate.toString();
-		this.rollBook = roster.rollBook;
-		this.gradeBook = roster.gradeBook;
-		this.behaviorReport = roster.behaviorReport;
-		this.googleCalendars = roster.googleCalendars;
-		this.googleTasks = roster.googleTasks;
-		this.googleFolders = roster.googleFolders;
 	}
 
 	public Long getId() {
@@ -127,72 +103,5 @@ public class RosterDTO implements Serializable {
 	public void setRoomNum(String roomNum) {
 		this.roomNum = roomNum;
 	}
-
-	public TeacherInfo getTeacherInfo() {
-		return teacherInfo;
-	}
-
-	public void setTeacherInfo(TeacherInfo teacherInfo) {
-		this.teacherInfo = teacherInfo;
-	}
-
-	public GradeLevel getGradeLevel() {
-		return this.gradeLevel;
-	}
-
-	public void setGradeLevel(GradeLevel grdLvl) {
-		this.gradeLevel = grdLvl;
-	}
-
-	public List<GoogleService> getGoogleFolders() {
-		return this.googleFolders;
-	}
-
-	public void setGoogleFolders(List<GoogleService> folders) {
-		this.googleFolders = folders;
-
-	}
-
-	public List<GoogleService> getGoogleCalendars() {
-		return this.googleCalendars;
-	}
-
-	public void setGoogleCalendars(List<GoogleService> googleCals) {
-		this.googleCalendars = googleCals;
-	}
-
-	public List<GoogleService> getGoogleTasks() {
-		return this.googleTasks;
-	}
-
-	public void setGoogleTasks(List<GoogleService> googleTasks) {
-		this.googleTasks = googleTasks;
-	}
-
-
-	public String getRollBook() {
-		return rollBook;
-	}
-
-	public void setRollBook(String rollBook) {
-		this.rollBook = rollBook;
-	}
-
-	public String getGradeBook() {
-		return gradeBook;
-	}
-
-	public void setGradeBook(String gradeBook) {
-		this.gradeBook = gradeBook;
-	}
-
-	public String getBehaviorReport() {
-		return behaviorReport;
-	}
-
-	public void setBehaviorReport(String behaviorReport) {
-		this.behaviorReport = behaviorReport;
-	}
-
 
 }

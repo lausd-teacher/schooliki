@@ -5,11 +5,26 @@
 		<m:MaterialModal ui:field="modal" width="50%" height="100%">
 			<m:MaterialModalContent>
 			    <m:MaterialTitle title="Incidents"></m:MaterialTitle>
-			    <m:MaterialContainer>
-			    <m:MaterialRow ui:field="incidentsContainer"> 
+			    <m:MaterialTab>
+					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
+					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton  type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
+				</m:MaterialTab>
+				<g:HTMLPanel>
+					<div id="posIncidentGrid">
+		                <m:MaterialContainer>
+		                      <m:MaterialRow ui:field="positiveIncidentsTypeContainer"> 
 			    
-			    </m:MaterialRow>
-			    </m:MaterialContainer>
+			                   </m:MaterialRow>
+		                </m:MaterialContainer>
+	                </div>
+	                <div id="negIncidentGrid">
+		                <m:MaterialContainer>
+		                      <m:MaterialRow ui:field="negativeIncidentsTypeContainer"> 
+			    
+			                   </m:MaterialRow>
+		                </m:MaterialContainer>
+	                </div>
+			   </g:HTMLPanel>
 			</m:MaterialModalContent>
 			<m:MaterialModalFooter>
 			<m:MaterialButton text="Ok" ui:field="studentActionModalOkButton"></m:MaterialButton>	

@@ -16,6 +16,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -45,7 +46,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import gwt.material.design.addins.client.masonry.MaterialMasonry;
 import gwt.material.design.client.ui.MaterialColumn;
-import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
@@ -67,11 +67,11 @@ import net.videmantay.roster.places.JobPlace;
 import net.videmantay.roster.places.LessonPlanPlace;
 import net.videmantay.roster.places.RosterHomePlace;
 import net.videmantay.roster.views.AppLayout;
-import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDashboardPanel.View;
 import net.videmantay.roster.views.RosterStudentPanel;
+import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.assignment.AssignementDashboard;
 import net.videmantay.roster.views.assignment.AssignmentGrid;
 import net.videmantay.roster.views.assignment.EmptyAssignmentGrid;
@@ -82,6 +82,7 @@ import net.videmantay.roster.views.classtime.ClassTimeGrid;
 import net.videmantay.roster.views.classtime.ClasstimeGridItem;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 import net.videmantay.roster.views.components.ClassRoomSideNav;
+import net.videmantay.roster.views.components.IncidentFormIconInput;
 import net.videmantay.roster.views.components.StudentIncidentCard;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
 import net.videmantay.roster.views.incident.IncidentForm;
@@ -96,7 +97,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
     RosterDashboardPanel.Presenter, ClassRoomGrid.Presenter, CreateStudentForm.Presenter, GradedWorkMain.Presenter,
 		GradedWorkForm.Presenter, IncidentMain.Presenter, IncidentForm.Presenter, 
 		ClassTimeGrid.Presenter, ClassTimeForm.Presenter,
-		SeatingChartPanel.Presenter, StudentActionModal.Presenter {
+		SeatingChartPanel.Presenter, StudentActionModal.Presenter
+		,IncidentFormIconInput.Presenter  {
 
 	final ClientFactory factory;
 
@@ -119,6 +121,9 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	ClassTimeGrid classTimegrid;
 	AssignementDashboard assignementDashboard;
 	boolean isGridEmpty = true;
+	boolean isIconsInputDisplayed = false;
+	IncidentFormIconInput iconInput = null;
+	StudentActionModal studentActionModal;
 
 	public ClassRoomActivity(ClientFactory factory, Place place) {
 		this.factory = factory;
@@ -134,9 +139,12 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		this.incidentMainPage = factory.getIncidentMainPage();
 		this.incidentForm = incidentMainPage.getIncidentForm();
 		this.classTimegrid = factory.getClassTimeGrid();
-		initializeEvents();
 		SelectionManager.registerDocumentClickEvent();
+		iconInput = factory.getIncidentFormInput();
 		incidentTypesList = factory.getIncidentTypesList();
+		studentActionModal = factory.getStudentActionModal();
+		initializeEvents();
+		
 
 	}
 
@@ -175,7 +183,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		} else if (currentPlace instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (currentPlace instanceof IncidentPlace) {
-			getIncidentsAndDraw();
+			//getIncidentsAndDraw();
 			appPanel.getMainPanel().add(incidentMainPage);
 		} else if (currentPlace instanceof GoalPlace) {
 			appPanel.getMainPanel().add(new Label("Goal view is under construction"));
@@ -496,8 +504,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		} else if (place instanceof LessonPlanPlace) {
 			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
 		} else if (place instanceof IncidentPlace) {
-			getIncidentsAndDraw();
-			incidentForm.populateStudentsNamesList(students);
+			//getIncidentsAndDraw();
 			appPanel.getMainPanel().add(incidentMainPage);
 		} else if (place instanceof GoalPlace) {
 			appPanel.getMainPanel().add(new Label("Goal view is not implemented yet"));
@@ -545,6 +552,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	    barCancelButtonClickEvent();
 	    rotateActionButtonClickEvent();
 	    studentActionModalOkButtonClickEvent();
+	    incidentFormSelectedIconClickEvent();
 	}
 
 	@Override
@@ -681,6 +689,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				AppUserJson rosterStudent = JavaScriptObject.createObject().cast();
 				rosterStudent.setName(card.getStudentNameLabel().getText());
 				rosterStudent.setImageUrl(card.getStudentProfileImage().getUrl());
+				rosterStudent.setId(card.getUserId());
 				students.push(rosterStudent);  
 				MaterialColumn c = new MaterialColumn();
 				MaterialColumn c2 = new MaterialColumn();
@@ -705,8 +714,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				
 			}
 		}
-		
-		incidentForm.populateStudentsNamesList(students);
 	}
 
 	private void getGradedWorkListAndDrawGrid() {
@@ -944,9 +951,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			@Override
 			public void onClick(ClickEvent event) {
 				incidentMainPage.getIncidentForm().show();
-
 			}
-
 		});
 
 	}
@@ -956,31 +961,17 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		incidentForm.getDoneBtn().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-
-				final IncidentJson newIncident = incidentForm.getFormData();
-				newIncident.setRosterId(factory.getCurrentRoster().getId());
-				AppUserJson student = findStudentByName(newIncident.getName());
-								
-				GQuery.ajax("/roster/" + factory.getCurrentRoster().getId() + "/student/"+student.getId()+"/incident/",
-						Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
+				final IncidentTypeJson newIncidentType = incidentForm.getFormData();		
+				GQuery.ajax("/incidenttype",
+						Ajax.createSettings().setData(newIncidentType).setType("POST").setDataType("json"))
 						.done(new Function() {
 							@Override
 							public void f() {
-								MaterialLoader.showLoading(false);
-								GWT.log(arguments(0).toString());
-								newIncident.setId(arguments(0).toString());
-								incidentsList.push(newIncident);
-								incidentMainPage.getIncidentForm().hide();
-								
-								MaterialColumn col = new MaterialColumn();
-								
-								IncidentTypeJson incidentType = factory.findIncidentTypeById(newIncident.getIncidentTypeId());
-								
-								StudentIncidentCard studentIncidentCard = new StudentIncidentCard(newIncident.getName(), incidentType.getImageUrl(), incidentType.getName());
-								col.add(studentIncidentCard);
-							    incidentMainPage.getIncidentContainer().add(col);
-								
-								MaterialToast.fireToast("Incident saved");
+								String id = arguments(0).toString();
+								newIncidentType.setId(id);
+								incidentMainPage.addIncidentType(newIncidentType);
+								studentActionModal.addnewIncidentType(newIncidentType);
+								incidentForm.hide();
 								MaterialLoader.showLoading(false);
 							}
 						}).progress(new Function() {
@@ -995,11 +986,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 								Window.alert("failed to create incident");
 							}
 						});
-				
-				
-
 			}
-
 		});
 
 	}
@@ -1009,7 +996,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		incidentForm.getCancelBtn().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-
 				incidentMainPage.getIncidentForm().hide();
 			}
 		});
@@ -1318,5 +1304,28 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		});
 		
 	}
+
+
+	@Override
+	public void incidentFormSelectedIconClickEvent() {	
+		iconInput.getSelectedIconContainer().addDomHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				if(isIconsInputDisplayed){
+					isIconsInputDisplayed = false;
+				    iconInput.getIconsContainer().getElement().removeClassName("iconFormInputContainer");
+				    iconInput.getIconsContainer().getElement().getStyle().setDisplay(Display.NONE);
+				}else{
+					isIconsInputDisplayed = true;
+					iconInput.getIconsContainer().getElement().addClassName("iconFormInputContainer");
+					iconInput.getIconsContainer().getElement().getStyle().setProperty("display", "flex");
+				}
+			}
+		}, ClickEvent.getType());
+		
+		
+		
+	}
+
 
 }

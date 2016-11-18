@@ -14,6 +14,7 @@
 	      <m:MaterialImage ui:field="incidentImage"></m:MaterialImage>
 	   
 	   </m:MaterialCardImage>
+	   <m:MaterialBadge ui:field="pointsBadge" textColor="WHITE" circle="true"/>
 	   </m:MaterialCardContent>
 	</m:MaterialCard>
 </ui:UiBinder> 

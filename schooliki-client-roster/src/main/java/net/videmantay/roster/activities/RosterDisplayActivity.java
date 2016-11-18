@@ -390,7 +390,7 @@ public class RosterDisplayActivity extends AbstractActivity
 			@Override
 			public void run() {
 				appPanel.getSideNav().hide();
-			}}.schedule(250);
+			}}.schedule(100);
 	}
 
 	@Override

@@ -111,6 +111,31 @@ div.item-student.ui-selecting { background: #FECA40;
 	   cursor: pointer;
 	}
 	
+	.iconFormInputContainer{
+	  display:flex;
+	  flex-direction:row;
+	
+	}
+	
+	.incidentFormIcon{
+	  width: 6.6rem;
+	  vertical-align: top;
+	  display: inline-block;
+	  margin: 0.5rem;
+	}
+	
+	.incidentFormIcon:hover{
+	  background:#ead4ec;
+	
+	}
+	
+	
+	.userProfileContainer{
+	    display:flex; 
+	    flex-direction:row; 
+	    margin-top:30%;
+	}
+	
 	.selected{
 	   border: solid 2px blue;
 	}
