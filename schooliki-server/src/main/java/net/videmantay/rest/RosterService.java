@@ -44,6 +44,8 @@ public class RosterService {
 	private final Logger log = Logger.getLogger("Roster Service");
 
 	DB<Roster> rosterDB = new DB<Roster>(Roster.class);
+	
+	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 
 	DB<RosterStudent> rosterStudentDB = new DB<RosterStudent>(RosterStudent.class);
 	
@@ -217,6 +219,12 @@ public class RosterService {
 					
 					studentIncidentDB.save(incident);
 					
+					int newIncidentPoints = incidentDTO.getValue() + student.getIncidentPointsAggregate();
+					
+					student.setIncidentPointsAggregate(newIncidentPoints);
+					//update points aggregate
+					appUserDB.save(student);
+					
 		
 					return Response.ok().entity(newId).build();
 			}
@@ -255,20 +263,20 @@ public class RosterService {
 	}
 
 	
-	@GET
-	@Path("/{id}/incident")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getIncidentList(@PathParam("id") Long id) {
-		List<Incident> incidentList = ofy().load().type(Incident.class).filter("rosterId", id).list();
-		List<IncidentDTO> incidentDTOList = new ArrayList<IncidentDTO>();
-
-		for (Incident incident : incidentList) {
-			IncidentDTO dto = new IncidentDTO(incident);
-			incidentDTOList.add(dto);
-		}
-
-		return Response.ok().entity(incidentDTOList).build();
-	}
+//	@GET
+//	@Path("/{id}/incident")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response getIncidentList(@PathParam("id") Long id) {
+//		List<Incident> incidentList = ofy().load().type(Incident.class).filter("rosterId", id).list();
+//		List<IncidentDTO> incidentDTOList = new ArrayList<IncidentDTO>();
+//
+//		for (Incident incident : incidentList) {
+//			IncidentDTO dto = new IncidentDTO(incident);
+//			incidentDTOList.add(dto);
+//		}
+//
+//		return Response.ok().entity(incidentDTOList).build();
+//	}
 	
 
 	@GET

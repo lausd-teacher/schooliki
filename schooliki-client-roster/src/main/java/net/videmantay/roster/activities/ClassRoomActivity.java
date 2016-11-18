@@ -70,6 +70,7 @@ import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
 import net.videmantay.roster.views.RosterDashboardPanel.View;
+import net.videmantay.roster.views.RosterStudentCard;
 import net.videmantay.roster.views.RosterStudentPanel;
 import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.assignment.AssignementDashboard;
@@ -109,7 +110,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	GradedWorkMain gradedWorkMain;
 	ClassRoomGrid grid;
 	SeatingChartPanel seatingChart;
-	JsArray<AppUserJson> students = JavaScriptObject.createObject().cast();
 	JsArray<GradedWorkJson> gradedWorkList = JavaScriptObject.createObject().cast();
 	JsArray<IncidentJson> incidentsList = JavaScriptObject.createObject().cast();
 	JsArray<ClassTimeJson> currentRosterClassTimesList = JavaScriptObject.createObject().cast();
@@ -224,6 +224,18 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	}
 
 	private void goTo(Place place) {
+		  if(SelectionManager.isSelectionActive()){
+			  SelectionManager.unSelect(SelectionManager.getSelection());
+		  }
+		  if(factory.isEditMode()){
+				if(Window.confirm("are you sure you want to quit the seating chart with exiting the edit mode, "
+						+ "you will lose all your changes next time? ")){
+					
+					
+					dashboard.showToolBar();
+					factory.setEditMode(false);
+				}
+			}
 		factory.getPlaceController().goTo(place);
 	}
 
@@ -550,9 +562,12 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
     	seatingChartEditClickEvent();
         barDoneButtonClickEvent();
 	    barCancelButtonClickEvent();
-	    rotateActionButtonClickEvent();
 	    studentActionModalOkButtonClickEvent();
 	    incidentFormSelectedIconClickEvent();
+	    removeSeatingChartActionButtonClickEvent();
+	    rollIconClick();
+	    saveRollButtonClick();
+	    cancelRollButtonClick();
 	}
 
 	@Override
@@ -565,6 +580,13 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 					dashboard.setViewType(RosterDashboardPanel.View.CHART);
 					dashboard.setDisplayInTab1(seatingChart);
 				} else {
+					if(factory.isEditMode()){
+						if(Window.confirm("are you sure you want to quit the seating chart with exiting the edit mode, "
+								+ "you will lose all your changes next time? ")){
+							dashboard.showToolBar();
+							factory.setEditMode(false);
+						}
+					}
 					dashboard.setViewType(RosterDashboardPanel.View.GRID);
 					dashboard.setDisplayInTab1(grid);
 				}
@@ -584,15 +606,14 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		grid.getContainer().add(row);
 		seatingChart.getStudentsPanel().add(row2);
 		
-
 		int i = 0;
 		//add students to both seating chart and grid
-		while (i < students.length()) {
+		while (i < factory.getCurrentRosterStudentList().length()) {
 			MaterialColumn c = new MaterialColumn();
 			MaterialColumn c2 = new MaterialColumn();
 			
-			RosterStudentPanel rsp = new RosterStudentPanel(students.get(i), View.GRID, this.factory);
-			RosterStudentPanel seatingChartStudent = new RosterStudentPanel(students.get(i), View.CHART, this.factory);
+			RosterStudentCard rsp = new RosterStudentCard(factory.getCurrentRosterStudentList().get(i), this.factory);
+			RosterStudentPanel seatingChartStudent = new RosterStudentPanel(factory.getCurrentRosterStudentList().get(i));
 			rsp.addStyleName("grid");
 			c.add(rsp);
 			i++;
@@ -638,7 +659,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				if (arguments(0).toString().equals("[]")) {
 					showEmpty();
 				} else {
-					students = JsonUtils.safeEval(arguments(0).toString());
+					JsArray<AppUserJson> students = JsonUtils.safeEval(arguments(0).toString());
+					factory.setCurrentRosterStudentList(students);
 					drawGrid(true);
 				}
 			}
@@ -663,7 +685,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		
 		MaterialMasonry addedStudentsMasonery = grid.getCreateStudentFrom().getAddedStudentsMasonery();
 		
-		GWT.log("students length"+students.length());
 		
 		//There is usually a Material Row, which counts for 1, this is a security check
 		if(addedStudentsMasonery.getWidgetCount() == 1 || addedStudentsMasonery.getWidgetCount() == 0){
@@ -690,12 +711,13 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				rosterStudent.setName(card.getStudentNameLabel().getText());
 				rosterStudent.setImageUrl(card.getStudentProfileImage().getUrl());
 				rosterStudent.setId(card.getUserId());
-				students.push(rosterStudent);  
+				rosterStudent.setIncidentPointsAggregate(0);
+				factory.addNewStudent(rosterStudent);  
 				MaterialColumn c = new MaterialColumn();
 				MaterialColumn c2 = new MaterialColumn();
 				
-				RosterStudentPanel rsp = new RosterStudentPanel(rosterStudent, View.GRID, this.factory);
-				RosterStudentPanel seatingChartStudent = new RosterStudentPanel(rosterStudent, View.CHART, this.factory);
+				RosterStudentCard rsp = new RosterStudentCard(rosterStudent, this.factory);
+				RosterStudentPanel seatingChartStudent = new RosterStudentPanel(rosterStudent);
 				
 				rsp.addStyleName("grid");
 				c.add(rsp);
@@ -1239,44 +1261,11 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		
 	}
 
-	@Override
-	public void rotateActionButtonClickEvent() {
-		seatingChart.getRotateButton().addClickHandler(new ClickHandler(){
-			@Override
-			public void onClick(ClickEvent event) {
-				event.stopPropagation();
-				if(factory.isEditMode()){
-					if(SelectionManager.isSelectionActive()){
-						DivElement selected = SelectionManager.getSelection();
-						if(selected.getStyle().getProperty("transform").isEmpty()){
-						     selected.getStyle().setProperty("transform", "rotate(45deg)");
-						}else{
-							//Extracting the current rotation and adding 45 degrees
-							String transform = selected.getStyle().getProperty("transform");
-							transform = transform.replace("rotate(", "");
-							transform = transform.replace("deg)", "");
-							int degrees = Integer.valueOf(transform);
-							if(degrees == 360){
-								degrees = 0;
-							}
-								degrees+=45;
-							 selected.getStyle().setProperty("transform", "rotate("+degrees+"deg)");
-						}
-					}else{
-						MaterialToast.fireToast("No Element to rotate, please select an element", 3000);
-					}
-				}else{
-					MaterialToast.fireToast("Cannot apply action while not in edit mode, please activate edit mode before taking an action", 3000);	
-				}
-				
-			}
-		});
-		
-	}
 	
 	
 	public void resetRosterDataLists(){
-		students = JavaScriptObject.createObject().cast();
+		JsArray<AppUserJson> emptyStudents = JavaScriptObject.createObject().cast();
+		factory.setCurrentRosterStudentList(emptyStudents);
 		gradedWorkList = JavaScriptObject.createObject().cast();
 		incidentsList = JavaScriptObject.createObject().cast();
 		currentRosterClassTimesList = JavaScriptObject.createObject().cast();
@@ -1284,10 +1273,10 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	}
 	
 	
-	private AppUserJson findStudentByName(String name){
-		for(int i = 0; i < students.length(); i++){
-			AppUserJson appUser = students.get(i);
-			if(appUser.getName().compareTo(name) == 0){
+	public AppUserJson findStudentById(String id){
+		for(int i = 0; i < factory.getCurrentRosterStudentList().length(); i++){
+			AppUserJson appUser = factory.getCurrentRosterStudentList().get(i);
+			if(appUser.getId().compareTo(id) == 0){
 				return appUser;
 			}
 		}
@@ -1327,5 +1316,58 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		
 	}
 
+	@Override
+	public void removeSeatingChartActionButtonClickEvent() {
+		seatingChart.getRemoveButton().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				if(SelectionManager.isSelectionActive() && factory.isEditMode()){
+					Element selectedElement = SelectionManager.getSelection();
+					SelectionManager.unSelect(selectedElement);
+					selectedElement.removeFromParent();
+				}
+				
+			}
+			
+			
+		});
+		
+	}
 
+	@Override
+	public void rollIconClick() {
+		dashboard.getRollIcon().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.showRollBar();
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void saveRollButtonClick() {
+		dashboard.getSaveRollBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				dashboard.showToolBar();
+			}
+		});
+		
+	}
+
+	@Override
+	public void cancelRollButtonClick() {
+		dashboard.getCancelBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.showToolBar();
+				GWT.log("Cancel Roll Button");
+				
+				
+			}
+		});
+	}
 }

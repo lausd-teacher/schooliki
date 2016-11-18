@@ -113,23 +113,25 @@
 					<m:MaterialAnchorButton ui:field="CancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="red darken-1"></m:MaterialAnchorButton>
 				</m:MaterialColumn>
 			</m:MaterialColumn>
-			<m:MaterialColumn ui:field="smDoneToolbar" hideOn="HIDE_ON_MED_UP">
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton ui:field="smDoneBtn"  iconType="DONE" backgroundColor="amber darken-2"></m:MaterialButton>
+			</m:MaterialRow>
+			<m:MaterialRow ui:field="rollToolbar" visible="false" backgroundColor="deep-orange darken-3" > 
+			<m:MaterialColumn hideOn="HIDE_ON_SMALL" grid="s12 m12 l12">
+				<m:MaterialColumn grid="m3">
+					<m:MaterialAnchorButton  ui:field="saveRollBtn" text="Save Roll" iconType="DONE" backgroundColor="amber darken-4"></m:MaterialAnchorButton>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton ui:field="smUndoBtn" iconType="UNDO" backgroundColor="orange darken-4"/>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton ui:field="smDoneBarCancelBtn" iconType="CLEAR" backgroundColor="red darken-2"></m:MaterialButton>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton type="FLAT"  iconType="MORE_VERT" textColor="white"/>
+				<m:MaterialColumn grid="m3">
+					<m:MaterialButton ui:field="cancelRollBtn" text="Cancel" iconType="UNDO" backgroundColor="orange darken-4" />
 				</m:MaterialColumn>
 			</m:MaterialColumn>
 			</m:MaterialRow>
 			<g:HTMLPanel ui:field="tab1Main">
 			</g:HTMLPanel>
+			<audio id="badNewsAudio" style="display:none;">
+			  <source src="audio/badNews.mp3" type="audio/mpeg" />
+             </audio>
+            <audio id="goodNewsAudio" style="display:none;">
+			 <source src="audio/HooHooHoo2.mp3" type="audio/mpeg" />
+       </audio>
 		</div>
 		<div id="tab2">
 		<g:HTMLPanel ui:field="calendarContainer">

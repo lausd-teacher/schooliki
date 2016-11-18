@@ -2,13 +2,18 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<ui:style>
-	
-	</ui:style>
-	<g:HTMLPanel addStyleNames="rosterStudentPanel" ui:field="rosterStudentPanel">
+	<m:MaterialCard addStyleNames="rosterStudentPanel" ui:field="rosterStudentPanel">
+	    <m:MaterialCardContent>
+          <m:MaterialBadge ui:field="pointsBadge" textColor="WHITE" circle="true"/>
+	      
+	      <g:HTMLPanel>
 			<div  ui:field="studentImg" class="seatingChartImageDiv">
 			
 			</div>
+		 </g:HTMLPanel> 
+			
+			 <m:MaterialBadge ui:field="attendenceBadge" textColor="WHITE" circle="true"/>
 			<m:MaterialLabel ui:field="studentName"></m:MaterialLabel>
-	   </g:HTMLPanel>
+			</m:MaterialCardContent>
+	</m:MaterialCard>
 </ui:UiBinder> 

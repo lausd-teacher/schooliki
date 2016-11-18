@@ -12,6 +12,9 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.json.AppUserJson;
+import net.videmantay.roster.json.GradedWorkJson;
+import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.AppLayout;
@@ -64,7 +67,11 @@ public class ClientFactoryImpl implements ClientFactory {
 	 ClassTimeForm classTimeForm = null;
 	 boolean isEditMode = false;
 	 AssignementDashboard assignementDashboard = null;
+	 
 	 JsArray<IncidentTypeJson> incidentTypeList = null;
+	 JsArray<AppUserJson> students = JavaScriptObject.createObject().cast();
+
+	 
 	 IncidentFormIconInput incidentFromIconInput = new IncidentFormIconInput();
 	 IncidentForm incidentForm = new IncidentForm(incidentFromIconInput);
 	 IncidentMain incidentMain = new IncidentMain(incidentForm);
@@ -259,9 +266,6 @@ public class ClientFactoryImpl implements ClientFactory {
 					Window.alert("Incident Types could not be fetched from the server");
 				}
 			});
-			
-			
-			
 		}
 		return incidentTypeList;
 	}
@@ -276,15 +280,36 @@ public class ClientFactoryImpl implements ClientFactory {
 			  }
 		}	
 		return null;
-		
-		
 	}
 	@Override
 	public IncidentFormIconInput getIncidentFormInput() {
-		
-		
 		return incidentFromIconInput;
 	}
+	@Override
+	public JsArray<AppUserJson> getCurrentRosterStudentList() {
+		return students;
+	}
+	@Override
+	public void addNewStudent(AppUserJson newStudent) {
+		students.push(newStudent);	
+	}
+	@Override
+	public void setCurrentRosterStudentList(JsArray<AppUserJson> studentsList) {
+		this.students = studentsList;
+		
+	}
+	@Override
+	public AppUserJson findStudentById(String id){
+		for(int i = 0; i < students.length(); i++){
+			AppUserJson appUser = students.get(i);
+			if(appUser.getId().compareTo(id) == 0){
+				return appUser;
+			}
+		}
+		return null;
+	}
+	
+	
 
 	
 }

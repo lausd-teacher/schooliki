@@ -11,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialColumn;
@@ -51,9 +53,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	@UiField
 	HTMLPanel studentsPanel;
 	
-	@UiField
-	MaterialButton rotateButton;
-	
+
 	@UiField
     MaterialButton removeButton; 
 	
@@ -110,16 +110,13 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 					 if(factory.isEditMode()){
 						 Droppable.Options dropOptions = Droppable.Options.create();
 							dropOptions.accept(".studentDraggable");
-							
-							
-							
 						  if(eventTarget.getClassName().contains("floorPlan") &&  !droppedElement.getParentElement().getClassName().contains("floorPlan")){
 							  Draggable.Options dragOptions = Draggable.Options.create();
 								dragOptions.containment("parent");
 								
-								
-								
-							  $(ui.helper()).clone().as(Ui).draggable(dragOptions).droppable(dropOptions).appendTo($(floorPlan).as(Ui)).on("focus click", new Function(){
+							  $(ui.helper()).clone().as(Ui).draggable(dragOptions).droppable(dropOptions)
+							  
+							  .rotatable().css("height", "60px").css("width", "100px").appendTo($(floorPlan).as(Ui)).on("focus click", new Function(){
 								  public boolean f(Event e, Object...o){
 									 
 									if(factory.isEditMode()){
@@ -149,9 +146,18 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 							  Draggable.Options dragOptions = Draggable.Options.create();
 								dragOptions.helper("original");
 								dragOptions.containment("parent");
-								
+								//
 							 $(ui.helper()).clone().css("left", "0").css("top", "0").as(Ui).draggable(dragOptions).appendTo($(eventTarget).as(Ui));
 							  
+						  }else{
+							  if(droppedElement.getClassName().contains("furnitureItem")){
+							  droppedElement.getStyle().setWidth(100, Unit.PX);
+							  droppedElement.getStyle().setHeight(60, Unit.PX);
+							  }else if(droppedElement.getClassName().contains("studentDraggable")){
+								  droppedElement.getStyle().setWidth(40, Unit.PX);
+								  droppedElement.getStyle().setHeight(40, Unit.PX);
+							  }
+							  GWT.log("case 3" + droppedElement.getClassName());
 						  }
 					 }else{
 						MaterialToast.fireToast("Please activate editing before dropping anything on the class plan", 2000); 
@@ -316,12 +322,14 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		return this.studentsPanel;
 	}
 	
-	public MaterialButton getRotateButton() {
-		return this.rotateButton;
+
+	public MaterialButton getRemoveButton() {
+		return this.removeButton;
 	}
-	
+
+
 	public interface Presenter{
-		void rotateActionButtonClickEvent();
+		void removeSeatingChartActionButtonClickEvent();
 	}
 	
 

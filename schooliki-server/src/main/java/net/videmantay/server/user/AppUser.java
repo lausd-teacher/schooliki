@@ -39,6 +39,8 @@ public  class AppUser  implements Serializable {
     String[] roles;
     
     String password;
+    
+    int incidentPointsAggregate = 0;
 
 	public AppUser() {
 
@@ -180,6 +182,18 @@ public  class AppUser  implements Serializable {
 
 
 
+	public int getIncidentPointsAggregate() {
+		return this.incidentPointsAggregate;
+	}
+
+
+
+	public void setIncidentPointsAggregate(int incidentPointsAggregate) {
+		this.incidentPointsAggregate = incidentPointsAggregate;
+	}
+
+
+
 	public static AppUser createFromDTO(AppUserDTO appuserDTO) {
 		AppUser appUser = new AppUser();
 		appUser.id = appuserDTO.getId();
@@ -193,6 +207,7 @@ public  class AppUser  implements Serializable {
 		appUser.lastName = appuserDTO.getLastName();
 		appUser.firstLogin = appuserDTO.isFirstLogin();
 		appUser.setRoles(appuserDTO.getRoles());
+		appUser.incidentPointsAggregate = appuserDTO.getIncidentPointsAggregate();
 		return appUser;
 	}
 	

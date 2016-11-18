@@ -29,6 +29,8 @@ public class AppUserDTO {
     
     @JsonIgnore
     String password;
+    
+    int incidentPointsAggregate;
 
 	public AppUserDTO() {
 
@@ -46,6 +48,7 @@ public class AppUserDTO {
 		this.firstLogin = appuser.isFirstLogin();
 		this.firstName = appuser.getFirstName();
 		this.lastName = appuser.getLastName();
+		this.incidentPointsAggregate = appuser.getIncidentPointsAggregate();
 	}
 
 
@@ -159,5 +162,13 @@ public class AppUserDTO {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public int getIncidentPointsAggregate() {
+		return this.incidentPointsAggregate;
+	}
+
+	public void setIncidentPointsAggregate(int incidentPointsAggregate) {
+		this.incidentPointsAggregate = incidentPointsAggregate;
 	}
 }

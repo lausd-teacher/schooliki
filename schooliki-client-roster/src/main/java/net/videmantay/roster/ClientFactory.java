@@ -6,6 +6,7 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 
 import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.AppLayout;
@@ -64,5 +65,9 @@ public interface ClientFactory {
 	JsArray<IncidentTypeJson> getIncidentTypesList();
 	IncidentTypeJson findIncidentTypeById(String searched);
 	IncidentFormIconInput getIncidentFormInput();
+	JsArray<AppUserJson> getCurrentRosterStudentList();
+	void addNewStudent(AppUserJson newStudent);
+	void setCurrentRosterStudentList(JsArray<AppUserJson> studentsList);
+	AppUserJson findStudentById(String id);
 
 }

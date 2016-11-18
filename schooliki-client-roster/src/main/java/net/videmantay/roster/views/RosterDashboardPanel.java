@@ -5,8 +5,6 @@ import static com.google.gwt.query.client.GQuery.console;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -80,19 +78,19 @@ public class RosterDashboardPanel extends Composite
 	MaterialAnchorButton doneBtn;
 	
 	@UiField
-	MaterialButton smDoneBtn;
-	
-	@UiField
 	MaterialAnchorButton CancelBtn;
-	
-	@UiField
-	MaterialButton smDoneBarCancelBtn;
-	
+		
 	@UiField
 	MaterialButton undoBtn;
 	
 	@UiField
-	MaterialButton smUndoBtn;
+	MaterialRow rollToolbar;
+	
+	@UiField
+	MaterialAnchorButton saveRollBtn;
+	
+	@UiField
+	MaterialButton cancelRollBtn;
 	
 	@UiField
 	MaterialTab tab;
@@ -115,7 +113,7 @@ public class RosterDashboardPanel extends Composite
 		public boolean f(Event e){
 			console.log("window resized, Body size: " + body.getClientWidth() + " and view state is " + getViewType().name());
 			if(body.getClientWidth() < 768 && getViewType() == View.CHART){
-				//showDisplay();
+				
 			}
 			
 			if(body.getClientWidth() > 767 && getViewType() == View.CHART){
@@ -152,7 +150,13 @@ public class RosterDashboardPanel extends Composite
 	}
 	public void showToolBar(){
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		rollToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		toolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+	}
+	
+	public void showRollBar(){
+		toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		rollToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
 	}
 
 	
@@ -210,25 +214,17 @@ public class RosterDashboardPanel extends Composite
 		return this.doneBtn;
 	}
 
-	public MaterialButton getSmDoneBtn() {
-		return this.smDoneBtn;
-	}
 
 	public MaterialAnchorButton getCancelBtn() {
 		return this.CancelBtn;
 	}
 
-	public MaterialButton getSmDoneBarCancelBtn() {
-		return this.smDoneBarCancelBtn;
-	}
 
 	public MaterialButton getUndoBtn() {
 		return this.undoBtn;
 	}
 
-	public MaterialButton getSmUndoBtn() {
-		return this.smUndoBtn;
-	}
+
 
 
 	public MaterialTab getTab() {
@@ -294,6 +290,14 @@ public class RosterDashboardPanel extends Composite
 		return this.classDropDownManageLink;
 	}
 
+	public MaterialAnchorButton getSaveRollBtn() {
+		return this.saveRollBtn;
+	}
+
+	public MaterialButton getCancelRollBtn() {
+		return this.cancelRollBtn;
+	}
+
 	public interface Presenter{
 		void gridSwitchClickEvent();
 		void homeworkIconClickEvent();
@@ -302,6 +306,9 @@ public class RosterDashboardPanel extends Composite
 		void seatingChartEditClickEvent();
 		void barDoneButtonClickEvent();
 		void barCancelButtonClickEvent();
+		void rollIconClick();
+		void saveRollButtonClick();
+		void cancelRollButtonClick();
 	}
 
 

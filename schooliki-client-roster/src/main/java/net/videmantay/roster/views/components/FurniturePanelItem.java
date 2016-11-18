@@ -23,6 +23,7 @@ import gwtquery.plugins.ui.DraggableUi;
 import gwtquery.plugins.ui.DroppableUi;
 import gwtquery.plugins.ui.interactions.Draggable;
 import gwtquery.plugins.ui.interactions.Droppable;
+import gwtquery.plugins.ui.interactions.Rotatable;
 
 public class FurniturePanelItem extends Composite {
 
@@ -56,12 +57,16 @@ public class FurniturePanelItem extends Composite {
 		Draggable.Options options = Draggable.Options.create();
 		options.revert("invalid");
 		options.helper("clone");
-		options.grid(20, 20);
+		//options.grid(20, 20);
 		options.containment(".floorPlan");
+		options.scroll(true);
+		
 		
 		Droppable.Options options2 = Droppable.Options.create();
 		options2.accept(".studentDraggable");
 		options2.greedy(true);
+		
+		
 		
 		
 		$(furnitureImage).as(Ui).draggable(options);

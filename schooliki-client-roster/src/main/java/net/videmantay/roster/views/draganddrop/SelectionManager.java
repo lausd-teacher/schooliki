@@ -97,9 +97,8 @@ public class SelectionManager {
 		}
 	}
 	
-	public static String getSelectedStudentId(){
-		
-		return selectedStudent.getElement().getId();
+	public static MaterialCard getSelectedStudentCard(){
+		return selectedStudent;
 	}
 	
 	public static void selectIncidentType(ImageElement incidentType){

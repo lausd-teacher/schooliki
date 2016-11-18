@@ -4,7 +4,7 @@
 	xmlns:m="urn:import:gwt.material.design.client.ui">
 		<m:MaterialModal ui:field="modal" width="50%" height="100%">
 			<m:MaterialModalContent>
-			    <m:MaterialTitle title="Incidents"></m:MaterialTitle>
+			    <m:MaterialTitle ui:field="title"></m:MaterialTitle>
 			    <m:MaterialTab>
 					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
 					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton  type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>

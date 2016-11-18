@@ -111,4 +111,16 @@ public class AppUserJson extends JavaScriptObject {
 		this.lastName = lastName;
 	}-*/;
 	
+	public final native int getIncidentPointsAggregate()/*-{
+		return this.incidentPointsAggregate;
+	}-*/;
+	
+	public final native int setIncidentPointsAggregate(int aggregate)/*-{
+	this.incidentPointsAggregate = aggregate;
+    }-*/;
+	
+	public final native int addPointsToAggregate(int points)/*-{
+	    this.incidentPointsAggregate += points;
+    }-*/;
+	
 }

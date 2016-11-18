@@ -3,6 +3,9 @@ package net.videmantay.roster.views;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.dom.client.AudioElement;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
@@ -15,11 +18,15 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
+import gwt.material.design.client.ui.MaterialTitle;
+import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.ClientFactory;
+import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.views.components.IncidentCard;
@@ -31,6 +38,9 @@ public class StudentActionModal extends Composite {
 
 	interface StudentActionModalUiBinder extends UiBinder<Widget, StudentActionModal> {
 	}
+	
+	public static final String GOOD_NEWS_AUDIO_ID = "goodNewsAudio";
+	public static final String BAD_NEWS_AUDIO_ID = "badNewsAudio";
 	
 	@UiField
 	MaterialModal modal;
@@ -44,6 +54,13 @@ public class StudentActionModal extends Composite {
 	@UiField
 	MaterialButton studentActionModalOkButton;
 	
+	@UiField
+	MaterialTitle title;
+	
+	
+	
+	
+	
 	final ClientFactory factory;
 	
 	public StudentActionModal(ClientFactory clientFactory) {
@@ -53,7 +70,6 @@ public class StudentActionModal extends Composite {
 	
 	
 	public void addnewIncidentType(IncidentTypeJson incidentType){
-		
 		IncidentCard card = new IncidentCard(incidentType);
 		MaterialColumn column = new MaterialColumn();
 		column.add(card);
@@ -87,8 +103,12 @@ public class StudentActionModal extends Composite {
 						newIncident.setName(incidentType.getName());
 						newIncident.setRosterId(currentRosterId);
 						newIncident.setValue(incidentType.getPoints());
+						final MaterialCard selectedCard = SelectionManager.getSelectedStudentCard();				
+						String studentId = selectedCard.getElement().getId();
+						final AppUserJson currentStudent = factory.findStudentById(studentId);
+						title.setTitle("Assign Incident to " + currentStudent.getName());
 						
-						GQuery.ajax("/roster/" +factory.getCurrentRoster().getId() +"/student/"+SelectionManager.getSelectedStudentId()+"/incident",
+						GQuery.ajax("/roster/" +factory.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
 								Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
 								.done(new Function() {
 									@Override
@@ -96,6 +116,29 @@ public class StudentActionModal extends Composite {
 										String id = arguments(0).toString();
 										newIncident.setId(id);
 										MaterialLoader.showLoading(false);
+										Element pointsBadge = selectedCard.getElement().getElementsByTagName("span").getItem(0);
+										int currentValue = Integer.parseInt(pointsBadge.getInnerText());
+										int aggregate = currentValue + newIncident.getValue();
+										
+										if(aggregate >= 0){
+											pointsBadge.getStyle().setBackgroundColor("green");
+										}else{
+											pointsBadge.getStyle().setBackgroundColor("red");
+										}
+										
+										String audioId  = BAD_NEWS_AUDIO_ID;
+										String operator = "-";
+										
+										if(newIncident.getValue() >= 0){
+											audioId = GOOD_NEWS_AUDIO_ID;
+											operator = "+";
+										}
+										
+										AudioElement audio = Document.get().getElementById(audioId).cast();
+										audio.play();
+										
+										pointsBadge.setInnerText(aggregate+"");
+										MaterialToast.fireToast(operator + " for " + currentStudent.getName(), 1500);
 										hide();
 									}
 								}).progress(new Function() {
