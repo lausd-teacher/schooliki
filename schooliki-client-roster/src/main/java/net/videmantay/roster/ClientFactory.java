@@ -69,5 +69,7 @@ public interface ClientFactory {
 	void addNewStudent(AppUserJson newStudent);
 	void setCurrentRosterStudentList(JsArray<AppUserJson> studentsList);
 	AppUserJson findStudentById(String id);
+	boolean isRollMode();
+	void setRollMode(boolean isHomeWorkMode);
 
 }

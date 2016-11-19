@@ -30,9 +30,11 @@ import net.videmantay.rest.dto.ClassTimeDTO;
 import net.videmantay.rest.dto.IncidentDTO;
 import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
+import net.videmantay.rest.dto.StudentRollDTO;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Incident;
 import net.videmantay.server.entity.StudentIncident;
+import net.videmantay.server.entity.StudentRoll;
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
 import net.videmantay.server.user.Roster;
@@ -54,6 +56,8 @@ public class RosterService {
 	DB<StudentIncident> studentIncidentDB = new DB<StudentIncident>(StudentIncident.class);
 	
 	DB<ClassTime> classTimeDB = new DB<ClassTime>(ClassTime.class);
+	
+	DB<StudentRoll> studentRollDB = new DB<StudentRoll>(StudentRoll.class);
 
 
 	@GET
@@ -232,6 +236,54 @@ public class RosterService {
 
 		return Response.status(Status.NOT_FOUND).build();
 	}
+	
+	@POST
+	@Path("/{id}/student/{studentId}/roll")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response takeRollForStudent(@PathParam("id") Long id, StudentRollDTO incidentDTO, @PathParam("studentId") Long studentId) {
+		
+		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+
+		if (result != null) {
+
+			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
+			
+			if(student != null){
+					final StudentRoll newRoll = StudentRoll.createFromDTO(incidentDTO);
+				
+					Long newId = studentRollDB.save(newRoll).getId();
+						
+					return Response.ok().entity(newId).build();
+			}
+		}
+
+		return Response.status(Status.NOT_FOUND).build();
+	}
+	
+//	@GET
+//	@Path("/{id}/student/{studentId}/roll")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response takeRollForStudent(@PathParam("id") Long id, @PathParam("studentId") Long studentId) {
+//		
+//		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+//
+//		if (result != null) {
+//
+//			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
+//			
+//			if(student != null){
+//					final StudentRoll newRoll = StudentRoll.createFromDTO(incidentDTO);
+//				
+//					Long newId = studentRollDB.save(newRoll).getId();
+//						
+//					return Response.ok().entity(newId).build();
+//			}
+//		}
+//
+//		return Response.status(Status.NOT_FOUND).build();
+//	}
 	
 	
 	@GET

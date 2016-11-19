@@ -22,19 +22,19 @@ public class DemoDataServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		AppUser demoUser = new AppUser();
-		demoUser.seteMail("zakariaamine26@gmail.com");
-		demoUser.setPassword(UserPasswordGenerator.nextPassword());
-		demoUser.setActive(true);
-		demoUser.setRoles(new String[]{"TEACHER", "ADMIN"});
-		demoUser.setFirstLogin(true);
+//		AppUser demoUser = new AppUser();
+//		demoUser.seteMail("zakariaamine26@gmail.com");
+//		demoUser.setPassword(UserPasswordGenerator.nextPassword());
+//		demoUser.setActive(true);
+//		demoUser.setRoles(new String[]{"TEACHER", "ADMIN"});
+//		demoUser.setFirstLogin(true);
 		
 		AppUser demoUser2 = new AppUser();
 		demoUser2.seteMail("test1@test1.com");
 		demoUser2.setActive(true);
 		demoUser2.setImageUrl("https://lh5.googleusercontent.com/-J2k22BcSKq4/AAAAAAAAAAI/AAAAAAAAAAA/AKTaeK8wzWVw8lWF-_0MRZmAL0LpSNpiHA/s96-c/photo.jpg");
-		demoUser2.setFirstName("tester 1");
-		demoUser2.setLastName("student 1");
+		demoUser2.setFirstName("dummy");
+		demoUser2.setLastName("student");
 		demoUser2.setRoles(new String[]{"STUDENT"});
 		demoUser2.setFirstLogin(true);
 		
@@ -42,8 +42,8 @@ public class DemoDataServlet extends HttpServlet {
 		demoUser3.seteMail("test2@test2.com");
 		demoUser3.setActive(true);
 		demoUser3.setImageUrl("https://lh5.googleusercontent.com/-J2k22BcSKq4/AAAAAAAAAAI/AAAAAAAAAAA/AKTaeK8wzWVw8lWF-_0MRZmAL0LpSNpiHA/s96-c/photo.jpg");
-		demoUser3.setFirstName("tester 2");
-		demoUser3.setLastName("student 2");
+		demoUser3.setFirstName("john");
+		demoUser3.setLastName("doe");
 		demoUser3.setRoles(new String[]{"STUDENT"});
 		demoUser3.setFirstLogin(true);
 		
@@ -51,8 +51,8 @@ public class DemoDataServlet extends HttpServlet {
 		demoUser4.seteMail("test3@test3.com");
 		demoUser4.setActive(true);
 		demoUser4.setImageUrl("https://lh5.googleusercontent.com/-J2k22BcSKq4/AAAAAAAAAAI/AAAAAAAAAAA/AKTaeK8wzWVw8lWF-_0MRZmAL0LpSNpiHA/s96-c/photo.jpg");
-		demoUser4.setFirstName("tester 3");
-		demoUser4.setLastName("student 3");
+		demoUser4.setFirstName("Foo");
+		demoUser4.setLastName("bar");
 		demoUser4.setRoles(new String[]{"STUDENT"});
 		demoUser4.setFirstLogin(true);
 		
@@ -91,7 +91,7 @@ public class DemoDataServlet extends HttpServlet {
 		type7.setName("Working hard");
 		type7.setPoints(2);
 		
-		appUserDB.save(demoUser);
+	//	appUserDB.save(demoUser);
 		appUserDB.save(demoUser2);
 		appUserDB.save(demoUser3);
 		appUserDB.save(demoUser4);
