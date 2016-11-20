@@ -10,7 +10,7 @@ public class GoogleJs {
     	//usually the case, because it's done on another page than the main login page
             $wnd.gapi.load('auth2', function(){
                 auth2 = $wnd.gapi.auth2.init({
-                    client_id: '535909648993-7nfaqivi206q2phmicubas1hjri084eb.apps.googleusercontent.com'
+                    client_id: '342098051221-q0t02hqffb9pq193k1jrkeojj13667fg.apps.googleusercontent.com'
                 }).then(function(){
 		            	 var instance = $wnd.gapi.auth2.getAuthInstance();
 		            	 var token = instance.currentUser.get().getAuthResponse().id_token;
@@ -37,7 +37,7 @@ public class GoogleJs {
 	  
 			$wnd.gapi.load('auth2', function(){
 		        var auth2 = $wnd.gapi.auth2.init({
-		            client_id: '535909648993-7nfaqivi206q2phmicubas1hjri084eb.apps.googleusercontent.com'
+		            client_id: '342098051221-q0t02hqffb9pq193k1jrkeojj13667fg.apps.googleusercontent.com'
 		        }).then(function(){
 		       	         var instance = $wnd.gapi.auth2.getAuthInstance();
 			            	 instance.isSignedIn.listen(function(isSignedIn){
