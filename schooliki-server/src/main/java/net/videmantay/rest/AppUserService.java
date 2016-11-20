@@ -7,6 +7,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -61,9 +62,9 @@ public class AppUserService {
 
 		ofy().clear();
 
-		log.log(Level.INFO, "List users is called");
+		List<AppUser> userAcctList = new ArrayList<AppUser>();
 
-		List<AppUser> userAcctList = db().load().type(AppUser.class).list();
+		 userAcctList = db().load().type(AppUser.class).list();
 		
 		List<AppUserDTO> appUserDTOList = new ArrayList<AppUserDTO>();
 		   
@@ -72,6 +73,9 @@ public class AppUserService {
 
 		return Response.ok().entity(appUserDTOList).build();
 	}
+	
+	
+	
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -66,6 +66,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	 ClassTimeGrid classTimeGrid = null;
 	 ClassTimeForm classTimeForm = null;
 	 boolean isEditMode = false;
+	 boolean isRollMode = false;
 	 AssignementDashboard assignementDashboard = null;
 	 
 	 JsArray<IncidentTypeJson> incidentTypeList = null;
@@ -308,6 +309,16 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 		return null;
 	}
+	@Override
+	public boolean isRollMode() {
+		return isRollMode;
+	}
+	
+	@Override
+	public void setRollMode(boolean rollMode) {
+		this.isRollMode = rollMode;
+	}
+
 	
 	
 

@@ -3,6 +3,7 @@ package net.videmantay.roster.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.NumberCell;
@@ -12,7 +13,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
@@ -1340,6 +1340,9 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			@Override
 			public void onClick(ClickEvent event) {
 				dashboard.showRollBar();
+				factory.setRollMode(true);
+				$(".attendenceBadge").css("visibility", "visible");
+				$(".pointsBadge").css("visibility", "hidden");
 				
 			}
 		});
@@ -1351,21 +1354,25 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getSaveRollBtn().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
-				
 				dashboard.showToolBar();
+				factory.setRollMode(false);
+				$(".attendenceBadge").css("visibility", "hidden");
+				$(".pointsBadge").css("visibility", "visible");
 			}
 		});
+		
 		
 	}
 
 	@Override
 	public void cancelRollButtonClick() {
-		dashboard.getCancelBtn().addClickHandler(new ClickHandler(){
+		dashboard.getCancelRollBtn().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
 				dashboard.showToolBar();
-				GWT.log("Cancel Roll Button");
-				
+				factory.setRollMode(false);
+				$(".attendenceBadge").css("visibility", "hidden");
+				$(".pointsBadge").css("visibility", "visible");
 				
 			}
 		});
