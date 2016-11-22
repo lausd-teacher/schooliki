@@ -22,12 +22,12 @@ public class DemoDataServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		AppUser demoUser = new AppUser();
-//		demoUser.seteMail("zakariaamine26@gmail.com");
-//		demoUser.setPassword(UserPasswordGenerator.nextPassword());
-//		demoUser.setActive(true);
-//		demoUser.setRoles(new String[]{"TEACHER", "ADMIN"});
-//		demoUser.setFirstLogin(true);
+		AppUser demoUser = new AppUser();
+		demoUser.seteMail("zakariaamine26@gmail.com");
+		demoUser.setPassword(UserPasswordGenerator.nextPassword());
+		demoUser.setActive(true);
+		demoUser.setRoles(new String[]{"TEACHER", "ADMIN"});
+		demoUser.setFirstLogin(true);
 		
 		AppUser demoUser2 = new AppUser();
 		demoUser2.seteMail("test1@test1.com");
@@ -91,7 +91,7 @@ public class DemoDataServlet extends HttpServlet {
 		type7.setName("Working hard");
 		type7.setPoints(2);
 		
-	//	appUserDB.save(demoUser);
+		appUserDB.save(demoUser);
 		appUserDB.save(demoUser2);
 		appUserDB.save(demoUser3);
 		appUserDB.save(demoUser4);

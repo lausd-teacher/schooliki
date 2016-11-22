@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.ui.Ui.Ui;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.NumberCell;
@@ -13,12 +15,18 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -34,6 +42,8 @@ import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagin
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -50,6 +60,10 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialToast;
+import gwtquery.plugins.ui.DroppableUi;
+import gwtquery.plugins.ui.interactions.Draggable;
+import gwtquery.plugins.ui.interactions.Droppable;
+import gwtquery.plugins.ui.interactions.Rotatable;
 import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.AppUserJson;
@@ -234,6 +248,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 					
 					dashboard.showToolBar();
 					factory.setEditMode(false);
+					disableEditingInSeatingChart();
+					
 				}
 			}
 		factory.getPlaceController().goTo(place);
@@ -534,6 +550,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	}
 
 	private void initializeEvents() {
+		WindowResizeHandler();
 		dashboardLinkClickEvent();
 		assignmentLinkClickEvent();
 		lessonPlanLinkClickEvent();
@@ -568,6 +585,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	    rollIconClick();
 	    saveRollButtonClick();
 	    cancelRollButtonClick();
+	    editingDivClickEvent();
 	}
 
 	@Override
@@ -585,6 +603,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 								+ "you will lose all your changes next time? ")){
 							dashboard.showToolBar();
 							factory.setEditMode(false);
+							disableEditingInSeatingChart();
 						}
 					}
 					dashboard.setViewType(RosterDashboardPanel.View.GRID);
@@ -1231,6 +1250,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			public void onClick(ClickEvent event) {
 				dashboard.showDoneBar();
 				factory.setEditMode(true);
+				enableEditingInSeatingChart();
 				
 			}
 		});
@@ -1242,6 +1262,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getDoneBtn().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
+				//disableDragAndDropAndRotationInFloorPlan();
+				disableEditingInSeatingChart();
 				dashboard.showToolBar();
 				factory.setEditMode(false);
 			}
@@ -1254,6 +1276,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getCancelBtn().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
+				disableEditingInSeatingChart();
 				dashboard.showToolBar();
 				factory.setEditMode(false);
 			}
@@ -1324,6 +1347,15 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				if(SelectionManager.isSelectionActive() && factory.isEditMode()){
 					Element selectedElement = SelectionManager.getSelection();
 					SelectionManager.unSelect(selectedElement);
+					NodeList<Element> studentDraggables = $(selectedElement).find(".studentDraggable").get();
+					
+					   for(int i = 0; i < studentDraggables.getLength(); i++){
+						   Element studentDraggable = studentDraggables.getItem(i);
+						   String studentId = studentDraggable.getAttribute("studentid");
+							$("#"+studentId+" .rosterPanelSeatedDiv").css("visibility", "hidden");
+					   }
+					
+					
 					selectedElement.removeFromParent();
 				}
 				
@@ -1343,6 +1375,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				factory.setRollMode(true);
 				$(".attendenceBadge").css("visibility", "visible");
 				$(".pointsBadge").css("visibility", "hidden");
+				
 				
 			}
 		});
@@ -1373,8 +1406,41 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 				factory.setRollMode(false);
 				$(".attendenceBadge").css("visibility", "hidden");
 				$(".pointsBadge").css("visibility", "visible");
-				
 			}
 		});
+	}
+	
+	
+	private void disableEditingInSeatingChart(){
+		$("#editing").css("visibility", "visible");
+	}
+	
+    private void enableEditingInSeatingChart(){
+		$("#editing").css("visibility", "hidden");
+	}
+
+	@Override
+	public void editingDivClickEvent() {
+		Event.sinkEvents(seatingChart.getEditingDiv(), Event.ONCLICK);
+		Event.setEventListener(seatingChart.getEditingDiv(), new EventListener(){
+			@Override
+			public void onBrowserEvent(Event event) {
+				MaterialToast.fireToast("You need to activate edit mode before editing the floor plan", 2000);
+			}
+		});
+		
+	}
+	
+	
+	private void WindowResizeHandler(){
+		Window.addResizeHandler(new ResizeHandler() {
+			@Override
+			public void onResize(ResizeEvent event) {
+				if(Window.getClientWidth() < 768){
+				dashboard.getGridSwitch().setValue(false);
+				}
+			}
+		});
+		
 	}
 }

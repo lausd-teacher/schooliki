@@ -114,6 +114,8 @@ public class RosterDashboardPanel extends Composite
 			console.log("window resized, Body size: " + body.getClientWidth() + " and view state is " + getViewType().name());
 			if(body.getClientWidth() < 768 && getViewType() == View.CHART){
 				
+				
+				
 			}
 			
 			if(body.getClientWidth() > 767 && getViewType() == View.CHART){

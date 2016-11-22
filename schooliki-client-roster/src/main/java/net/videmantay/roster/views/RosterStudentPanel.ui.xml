@@ -6,9 +6,16 @@
 	
 	</ui:style>
 	<g:HTMLPanel addStyleNames="rosterStudentPanel" ui:field="rosterStudentPanel">
+	      
 			<div  ui:field="studentImg" class="seatingChartImageDiv">
-			
 			</div>
 			<m:MaterialLabel ui:field="studentName"></m:MaterialLabel>
+			<div class="rosterPanelSeatedDiv">
+			   <g:HTMLPanel>
+			      <m:MaterialLink>
+			          <m:MaterialBadge text="seated" backgroundColor="green" textColor="WHITE"/>
+			  </m:MaterialLink>
+			   </g:HTMLPanel>
+			</div>
 	   </g:HTMLPanel>
 </ui:UiBinder> 

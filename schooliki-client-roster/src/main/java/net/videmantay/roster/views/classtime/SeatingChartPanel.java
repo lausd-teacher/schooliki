@@ -52,13 +52,17 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	@UiField
 	HTMLPanel studentsPanel;
-	
 
 	@UiField
     MaterialButton removeButton; 
 	
+	@UiField
+	HTMLPanel seatingChart;
+	
+	@UiField
+	DivElement editingDiv;
 
-	private final Stack<Action> stack = new Stack<Action>();
+	
 	
 	ClientFactory factory;
 	
@@ -67,7 +71,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	public SeatingChartPanel(ClientFactory factory) {
 		initWidget(uiBinder.createAndBindUi(this));
         this.factory = factory;
-       
+        editingDiv.setId("editing");
+       // seatingChart.getElement().setId("stChart");
         enableDragAndDrop();
         
         List<FurniturePanelItem> furnitureList = DragAndDropManager.getFurnitureItems();
@@ -148,11 +153,13 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 								dragOptions.containment("parent");
 								//
 							 $(ui.helper()).clone().css("left", "0").css("top", "0").as(Ui).draggable(dragOptions).appendTo($(eventTarget).as(Ui));
+							 String studentId = droppedElement.getAttribute("studentid");
+							 $("#"+studentId+" .rosterPanelSeatedDiv").css("visibility", "visible");
 							  
 						  }else{
 							  if(droppedElement.getClassName().contains("furnitureItem")){
-							  droppedElement.getStyle().setWidth(100, Unit.PX);
-							  droppedElement.getStyle().setHeight(60, Unit.PX);
+								  droppedElement.getStyle().setWidth(100, Unit.PX);
+								  droppedElement.getStyle().setHeight(60, Unit.PX);
 							  }else if(droppedElement.getClassName().contains("studentDraggable")){
 								  droppedElement.getStyle().setWidth(40, Unit.PX);
 								  droppedElement.getStyle().setHeight(40, Unit.PX);
@@ -328,8 +335,14 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	}
 
 
+	public DivElement getEditingDiv() {
+		return this.editingDiv;
+	}
+
+
 	public interface Presenter{
 		void removeSeatingChartActionButtonClickEvent();
+		void editingDivClickEvent();
 	}
 	
 

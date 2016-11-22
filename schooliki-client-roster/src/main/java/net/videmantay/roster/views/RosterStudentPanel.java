@@ -45,18 +45,17 @@ public class RosterStudentPanel extends Composite {
 		studentImg.getStyle().setWidth(40, Unit.PX);
 		studentImg.addClassName("studentDraggable");
 		studentImg.getStyle().setPosition(Position.ABSOLUTE);
-		//studentImg.setDraggable("false");
 		rosterStudentPanel.getElement().getStyle().setWidth(60, Unit.PX);
 		rosterStudentPanel.getElement().getStyle().setHeight(60, Unit.PX);
-		//rosterStudentPanel.
+		rosterStudentPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		studentName.getElement().getStyle().setPaddingTop(40, Unit.PX);
 		studentName.getElement().getStyle().setFontSize(12, Unit.PX);
 		setUpDragAndDrop();
-		
 	}
 	
 	public void setData(AppUserJson student){
 		this.getElement().setId(student.getId());
+		studentImg.setAttribute("studentId", student.getId());
 		studentName.setText(student.getName());
 		String url= student.getImageUrl();
 		studentImg.getStyle().setBackgroundImage("url('" + url +"')");
@@ -72,10 +71,6 @@ public class RosterStudentPanel extends Composite {
 		$(studentImg).as(Ui).draggable(options);
 	}
 	
-	public void disableDragAndDrop(){
-		Draggable.Options options = Draggable.Options.create();
-		options.disabled();
-		$(studentImg).as(Ui).draggable(options);
-	}
+
 
 }

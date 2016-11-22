@@ -21,5 +21,6 @@
 		<g:HTMLPanel ui:field="studentsPanel" addStyleNames="studentsPanel">
 		       <div style="background:white;"><span class="seatingChartSectionTitle">Students</span></div>
 		</g:HTMLPanel>
+		<div ui:field="editingDiv" style="position:absolute;width:100%;height:100%;visibility:visibile;z-index:30;"></div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

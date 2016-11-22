@@ -146,6 +146,15 @@ div.item-student.ui-selecting { background: #FECA40;
 		border:1px dotted Red;
 	}
 	
+   .rosterPanelSeatedDiv{
+		 position:absolute;
+		 width:40px;
+		 height:40px;
+		 top:0;
+		 visibility:hidden;
+		 z-index:40;
+	}	
+	
 	.seatingChartSectionTitle{
 	  font-size: 26px;
 	  display:block;

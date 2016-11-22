@@ -74,6 +74,8 @@ public class RosterStudentCard extends Composite {
 		setData(currentStudent);
 		this.currentRosterId = factory.getCurrentRoster().getId();
 		this.clientFactory = factory;
+		//depends on what we load from the server
+		rosterStudentPanel.getElement().getStyle().setOpacity(0.5);
 	
 	}
 
@@ -124,10 +126,12 @@ public class RosterStudentCard extends Composite {
 		
 		if(attendenceBadge.getStyle().getBackgroundColor().equals("red")){
 			attendenceBadge.getStyle().setBackgroundColor("green");
+			rosterStudentPanel.getElement().getStyle().setOpacity(1);
 			attendenceBadge.setInnerHTML(PRESENT_HTML_SYMBOL);
 		}else{
 			attendenceBadge.getStyle().setBackgroundColor("red");
 			attendenceBadge.setInnerHTML(ABSENT_HTML_SYMBOL);
+			rosterStudentPanel.getElement().getStyle().setOpacity(0.5);
 		}
 		
 		

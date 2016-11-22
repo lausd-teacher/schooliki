@@ -62,6 +62,7 @@ public class FurniturePanelItem extends Composite {
 		options.scroll(true);
 		
 		
+		
 		Droppable.Options options2 = Droppable.Options.create();
 		options2.accept(".studentDraggable");
 		options2.greedy(true);

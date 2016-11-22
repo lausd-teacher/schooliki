@@ -71,8 +71,11 @@ public class StudentActionModal extends Composite {
 	
 	public void addnewIncidentType(IncidentTypeJson incidentType){
 		IncidentCard card = new IncidentCard(incidentType);
+		addIncidentCardClickEvent(card, incidentType);
 		MaterialColumn column = new MaterialColumn();
 		column.add(card);
+		
+		
 		
 		if(incidentType.getPoints() >= 0){
 			positiveIncidentsTypeContainer.add(column);
@@ -91,72 +94,8 @@ public class StudentActionModal extends Composite {
 			 final IncidentTypeJson incidentType = incidentTypes.get(i);
 			 final IncidentCard card = new IncidentCard(incidentType);
 			 
-			 card.getContainer().addDomHandler(new ClickHandler(){
-					@Override
-					public void onClick(ClickEvent event) {
-						GWT.log("clicking on card in student action modal");
-						SelectionManager.unSelectCurrentSelectedIncidentCard();
-						SelectionManager.selectIncidentCard(card.getContainer());
-						Long currentRosterId = factory.getCurrentRoster().getId();
-						final IncidentJson newIncident = JavaScriptObject.createObject().cast();
-						newIncident.setIncidentTypeId(incidentType.getId());
-						newIncident.setName(incidentType.getName());
-						newIncident.setRosterId(currentRosterId);
-						newIncident.setValue(incidentType.getPoints());
-						final MaterialCard selectedCard = SelectionManager.getSelectedStudentCard();				
-						String studentId = selectedCard.getElement().getId();
-						final AppUserJson currentStudent = factory.findStudentById(studentId);
-						title.setTitle("Assign Incident to " + currentStudent.getName());
-						
-						GQuery.ajax("/roster/" +factory.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
-								Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
-								.done(new Function() {
-									@Override
-									public void f() {
-										String id = arguments(0).toString();
-										newIncident.setId(id);
-										MaterialLoader.showLoading(false);
-										Element pointsBadge = selectedCard.getElement().getElementsByTagName("span").getItem(0);
-										int currentValue = Integer.parseInt(pointsBadge.getInnerText());
-										int aggregate = currentValue + newIncident.getValue();
-										
-										if(aggregate >= 0){
-											pointsBadge.getStyle().setBackgroundColor("green");
-										}else{
-											pointsBadge.getStyle().setBackgroundColor("red");
-										}
-										
-										String audioId  = BAD_NEWS_AUDIO_ID;
-										String operator = "-";
-										
-										if(newIncident.getValue() >= 0){
-											audioId = GOOD_NEWS_AUDIO_ID;
-											operator = "+";
-										}
-										
-										AudioElement audio = Document.get().getElementById(audioId).cast();
-										audio.play();
-										
-										pointsBadge.setInnerText(aggregate+"");
-										MaterialToast.fireToast(operator + " for " + currentStudent.getName(), 1500);
-										hide();
-									}
-								}).progress(new Function() {
-									@Override
-									public void f() {
-										MaterialLoader.showLoading(true);
-									}
-								}).fail(new Function() {
-									@Override
-									public void f() {
-										MaterialLoader.showLoading(false);
-										Window.alert("failed to create incident");
-									}
-								});
-						
-					}
-				   }, ClickEvent.getType());
-				
+			 addIncidentCardClickEvent(card, incidentType);
+			 
 				MaterialColumn column = new MaterialColumn();
 				column.add(card);
 				
@@ -189,6 +128,81 @@ public class StudentActionModal extends Composite {
 	public interface Presenter{
 		
 		public void studentActionModalOkButtonClickEvent();
+	}
+	
+	
+	private void addIncidentCardClickEvent(final IncidentCard card, final IncidentTypeJson incidentType){
+		
+		 card.getContainer().addDomHandler(new ClickHandler(){
+				@Override
+				public void onClick(ClickEvent event) {
+					GWT.log("clicking on card in student action modal");
+					SelectionManager.unSelectCurrentSelectedIncidentCard();
+					SelectionManager.selectIncidentCard(card.getContainer());
+					Long currentRosterId = factory.getCurrentRoster().getId();
+					final IncidentJson newIncident = JavaScriptObject.createObject().cast();
+					newIncident.setIncidentTypeId(incidentType.getId());
+					newIncident.setName(incidentType.getName());
+					newIncident.setRosterId(currentRosterId);
+					newIncident.setValue(incidentType.getPoints());
+					final MaterialCard selectedCard = SelectionManager.getSelectedStudentCard();				
+					String studentId = selectedCard.getElement().getId();
+					final AppUserJson currentStudent = factory.findStudentById(studentId);
+					//title.setTitle("Assign Incident to " + currentStudent.getName());
+					title.setTitle("Assign Incidents");
+					
+					GQuery.ajax("/roster/" +factory.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
+							Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
+							.done(new Function() {
+								@Override
+								public void f() {
+									String id = arguments(0).toString();
+									newIncident.setId(id);
+									MaterialLoader.showLoading(false);
+									Element pointsBadge = selectedCard.getElement().getElementsByTagName("span").getItem(0);
+									int currentValue = Integer.parseInt(pointsBadge.getInnerText());
+									int aggregate = currentValue + newIncident.getValue();
+									
+									if(aggregate >= 0){
+										pointsBadge.getStyle().setBackgroundColor("green");
+									}else{
+										pointsBadge.getStyle().setBackgroundColor("red");
+									}
+									
+									String audioId  = BAD_NEWS_AUDIO_ID;
+									String operator = "-";
+									
+									if(newIncident.getValue() >= 0){
+										audioId = GOOD_NEWS_AUDIO_ID;
+										operator = "+";
+									}
+									
+									AudioElement audio = Document.get().getElementById(audioId).cast();
+									audio.play();
+									
+									pointsBadge.setInnerText(aggregate+"");
+									MaterialToast.fireToast(operator + " for " + currentStudent.getName(), 1500);
+									hide();
+								}
+							}).progress(new Function() {
+								@Override
+								public void f() {
+									MaterialLoader.showLoading(true);
+								}
+							}).fail(new Function() {
+								@Override
+								public void f() {
+									MaterialLoader.showLoading(false);
+									Window.alert("failed to create incident");
+								}
+							});
+					
+				}
+			   }, ClickEvent.getType());
+			
+		
+		
+		
 	}
 
 
