@@ -35,6 +35,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		
  });
 
+window.addEventListener("beforeunload", function(event){
+	 var loader = document.getElementById("loader");
+	 loader.style.visibility="visible";
+	
+});
+
 function login(googleuser){
 
         var profile = googleuser.getBasicProfile();

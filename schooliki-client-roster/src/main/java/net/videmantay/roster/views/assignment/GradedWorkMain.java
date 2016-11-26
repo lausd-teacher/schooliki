@@ -38,19 +38,17 @@ public class GradedWorkMain extends Composite {
 	public GradedWorkMain(GradedWorkForm gradedWorkForm) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.form = gradedWorkForm;
-		
 		gradedWorkPager.add(pager);
 		wrapper.add(form);
 	}
 	
 	
-	public void setAssignementGrid(AssignmentGrid assignmentGrid){
-		pager.setDisplay(assignmentGrid);
+	public void setAssignementGrid(AssignementTable table){
+		//pager.setDisplay(assignmentGrid);
 		gradedWorkViz.clear();
-		gradedWorkViz.add(assignmentGrid);
-		assignmentGrid.setSize("100%","100%");
+		gradedWorkViz.add(table);
+		table.setSize("100%","100%");
 		gradedWorkViz.setSize("100%", "35em");
-		assignmentGrid.setRowCount(0);
 	}
 	
      public MaterialAnchorButton getFab() {
@@ -63,7 +61,5 @@ public class GradedWorkMain extends Composite {
 
 	public interface Presenter{
     	 void assignementGridFabClick();
-    	 
-    	 
      }
 }

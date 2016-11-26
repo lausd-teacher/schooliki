@@ -35,6 +35,7 @@ import net.videmantay.roster.views.components.ClassRoomSideNav;
 import net.videmantay.roster.views.components.IncidentFormIconInput;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
+import net.videmantay.roster.views.draganddrop.UndoRedoManager;
 import net.videmantay.roster.views.incident.IncidentForm;
 import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
@@ -76,6 +77,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	 IncidentFormIconInput incidentFromIconInput = new IncidentFormIconInput();
 	 IncidentForm incidentForm = new IncidentForm(incidentFromIconInput);
 	 IncidentMain incidentMain = new IncidentMain(incidentForm);
+	 UndoRedoManager undoRedoManager;
 
 
 	@Override
@@ -317,6 +319,19 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public void setRollMode(boolean rollMode) {
 		this.isRollMode = rollMode;
+	}
+	
+	
+	@Override
+	public UndoRedoManager getUndoRedoManager() {
+		if(undoRedoManager == null){
+			
+			undoRedoManager = new UndoRedoManager();
+			
+			
+		}
+		
+		return undoRedoManager;
 	}
 
 	

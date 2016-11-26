@@ -21,7 +21,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.addins.client.masonry.MaterialMasonry;
 import gwt.material.design.client.constants.Display;
+import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialChip;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
@@ -81,7 +83,7 @@ public class CreateStudentForm extends Composite{
 			@Override
 			public void f() {
 				MaterialLoader.showLoading(false);
-				Window.alert("Error connecting to the Server, Please try again later");
+				Window.alert("Error getting the list of students, Please try again later");
 			}
 		});
 	}
@@ -123,6 +125,9 @@ private void renderStudentList(){
 		availableStudentContainer.add(card);
 		
 		
+		//Very weird behavior, when there is these two handlers the click works, when there is only one of them click does not work
+		
+		
 		$(card).dblclick(new Function(){
 			@Override
 			public void f() {
@@ -135,8 +140,7 @@ private void renderStudentList(){
 		 card.addHandler(new DoubleClickHandler(){
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
-                    GWT.log("double clicked");
-               
+				
 				addedStudentsMasonery.add(card);
 				availableStudentContainer.remove(card);
 				 card.getRemoveButton().setDisplay(Display.BLOCK);

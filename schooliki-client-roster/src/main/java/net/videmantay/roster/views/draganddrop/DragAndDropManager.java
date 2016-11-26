@@ -8,8 +8,6 @@ import net.videmantay.roster.views.components.FurniturePanelItem;
 public class DragAndDropManager {
 	
 	
-	
-	
 	static final String SINGLE_DESK = "single desk";
 	static final String DOUBLE_DESK = "double desk";
 	

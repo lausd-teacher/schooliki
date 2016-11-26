@@ -45,7 +45,7 @@ public class FurniturePanelItem extends Composite {
 		furnitureImage.getStyle().setBackgroundImage("url('" + imgUrl +"')");
 		furnitureImage.getStyle().setHeight(60, Unit.PX);
 		furnitureImage.getStyle().setWidth(100, Unit.PX);
-		furnitureImage.getStyle().setPosition(Position.ABSOLUTE);
+		furnitureImage.getStyle().setPosition(Position.RELATIVE);
 		furnitureImage.addClassName("furnitureItem");
 		furnitureName.setText(funitureName);
 		furnitureName.setPaddingTop(60);

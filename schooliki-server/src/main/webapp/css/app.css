@@ -88,6 +88,7 @@ div.item-student.ui-selecting { background: #FECA40;
 		height:665px;
 		display:flex;
 		flex-direction: row;
+		position:absolute;
 	}
 	.floorPlan{
 		width:60%;

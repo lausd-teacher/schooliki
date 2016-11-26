@@ -110,6 +110,9 @@
 					<m:MaterialButton  ui:field="undoBtn" text="Undo" iconType="UNDO" backgroundColor="orange darken-4" />
 				</m:MaterialColumn>
 				<m:MaterialColumn grid="m3">
+					<m:MaterialButton  ui:field="redoBtn" text="redo" iconType="REDO" backgroundColor="orange darken-4" />
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="m3">
 					<m:MaterialAnchorButton ui:field="CancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="red darken-1"></m:MaterialAnchorButton>
 				</m:MaterialColumn>
 			</m:MaterialColumn>

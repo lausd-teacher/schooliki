@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
@@ -33,7 +35,9 @@ import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.views.components.FurniturePanelItem;
 import net.videmantay.roster.views.draganddrop.DragAndDropManager;
+import net.videmantay.roster.views.draganddrop.FurnitureAddAction;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
+import net.videmantay.roster.views.draganddrop.UndoRedoManager;
 import net.videmantay.shared.Action;
 
 public class SeatingChartPanel extends Composite implements HasRosterDashboardView {
@@ -66,13 +70,17 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	ClientFactory factory;
 	
+	UndoRedoManager undoRedoManager;
+	
 	
 	
 	public SeatingChartPanel(ClientFactory factory) {
 		initWidget(uiBinder.createAndBindUi(this));
         this.factory = factory;
         editingDiv.setId("editing");
-       // seatingChart.getElement().setId("stChart");
+        floorPlan.setId("flrPlan");
+        undoRedoManager = factory.getUndoRedoManager();
+        
         enableDragAndDrop();
         
         List<FurniturePanelItem> furnitureList = DragAndDropManager.getFurnitureItems();
@@ -119,7 +127,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 							  Draggable.Options dragOptions = Draggable.Options.create();
 								dragOptions.containment("parent");
 								
-							  $(ui.helper()).clone().as(Ui).draggable(dragOptions).droppable(dropOptions)
+							 DivElement adjustedDroppedElement =  $(ui.helper()).clone().as(Ui).draggable(dragOptions).droppable(dropOptions)
 							  
 							  .rotatable().css("height", "60px").css("width", "100px").appendTo($(floorPlan).as(Ui)).on("focus click", new Function(){
 								  public boolean f(Event e, Object...o){
@@ -144,8 +152,15 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 									  
 									  return true;
 								  }
-							  });
+							  }).get().getItem(1).cast();
+							 
+							
 							  
+							 
+							  
+							 // DivElement dElement = droppedElement.cast();
+						
+							  undoRedoManager.recordAction(new FurnitureAddAction(adjustedDroppedElement));
 							  
 						  }else if(eventTarget.getClassName().contains("furnitureItem") && droppedElement.getParentElement().getClassName().contains("rosterStudentPanel")){
 							  Draggable.Options dragOptions = Draggable.Options.create();

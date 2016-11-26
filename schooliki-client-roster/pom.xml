@@ -25,21 +25,9 @@
 			<artifactId>schooliki-shared</artifactId>
 			<version>1.0</version>
 		</dependency>
-
-		<dependency>
-			<groupId>goog.appengine</groupId>
-			<artifactId>channel</artifactId>
-			<version>1.0</version>
-
-		</dependency>
 		<dependency>
 			<groupId>gwtquery.plugins</groupId>
 			<artifactId>gwtquery-ui-plugin</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.floreysoft</groupId>
-			<artifactId>picker</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>

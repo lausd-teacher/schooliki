@@ -4,13 +4,11 @@
 	<inherits name="com.google.gwt.query.Query" />
 	<inherits name="gwtquery.plugins.Ui" />
 	<inherits name="com.google.common.collect.Collect" />
-	<inherits name="com.floreysoft.gwt.picker.Picker" />
 	<inherits name='com.google.gwt.place.Place' />
 	<inherits name='com.google.gwt.activity.Activity' />
 	<inherits name="gwt.material.design.GwtMaterialDesignBasic" />
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeRed" />
 	<inherits name="gwt.material.design.addins.GwtMaterialAddins" />
-	<inherits name="goog.appengine.channel.Channel" />
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name="net.videmantay.SchoolikiShared" />
 	<source path="roster" />

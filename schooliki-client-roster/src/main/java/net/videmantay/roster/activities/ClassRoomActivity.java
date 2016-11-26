@@ -1,10 +1,9 @@
 package net.videmantay.roster.activities;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.ui.Ui.Ui;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.cell.client.AbstractCell;
@@ -14,12 +13,9 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Document;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Display;
@@ -60,10 +56,6 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialToast;
-import gwtquery.plugins.ui.DroppableUi;
-import gwtquery.plugins.ui.interactions.Draggable;
-import gwtquery.plugins.ui.interactions.Droppable;
-import gwtquery.plugins.ui.interactions.Rotatable;
 import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.AppUserJson;
@@ -83,11 +75,11 @@ import net.videmantay.roster.places.RosterHomePlace;
 import net.videmantay.roster.views.AppLayout;
 import net.videmantay.roster.views.ClassRoomGrid;
 import net.videmantay.roster.views.RosterDashboardPanel;
-import net.videmantay.roster.views.RosterDashboardPanel.View;
 import net.videmantay.roster.views.RosterStudentCard;
 import net.videmantay.roster.views.RosterStudentPanel;
 import net.videmantay.roster.views.StudentActionModal;
 import net.videmantay.roster.views.assignment.AssignementDashboard;
+import net.videmantay.roster.views.assignment.AssignementTable;
 import net.videmantay.roster.views.assignment.AssignmentGrid;
 import net.videmantay.roster.views.assignment.EmptyAssignmentGrid;
 import net.videmantay.roster.views.assignment.GradedWorkForm;
@@ -138,6 +130,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	boolean isIconsInputDisplayed = false;
 	IncidentFormIconInput iconInput = null;
 	StudentActionModal studentActionModal;
+	boolean firstCalendarLoad = true;
+
 
 	public ClassRoomActivity(ClientFactory factory, Place place) {
 		this.factory = factory;
@@ -149,7 +143,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		this.gradedWorkMain = factory.getGradedWorkMain();
 		this.seatingChart = factory.getSettingChartPanel();
 		this.assignementGrid = consctructAssignementGridTable();
-		gradedWorkMain.setAssignementGrid(assignementGrid);
+		gradedWorkMain.setAssignementGrid(new AssignementTable());
 		this.incidentMainPage = factory.getIncidentMainPage();
 		this.incidentForm = incidentMainPage.getIncidentForm();
 		this.classTimegrid = factory.getClassTimeGrid();
@@ -158,8 +152,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		incidentTypesList = factory.getIncidentTypesList();
 		studentActionModal = factory.getStudentActionModal();
 		initializeEvents();
-		
-
 	}
 
 	@Override
@@ -398,7 +390,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		};
 
 		TextColumn<GradedWorkJson> subjectCol = new TextColumn<GradedWorkJson>() {
-
 			@Override
 			public String getValue(GradedWorkJson object) {
 				return object.getSubject();
@@ -432,7 +423,6 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 
 		SafeHtmlCell isGradedCell = new SafeHtmlCell();
 		Column<GradedWorkJson, SafeHtml> isGradedCol = new Column<GradedWorkJson, SafeHtml>(isGradedCell) {
-
 			@Override
 			public SafeHtml getValue(GradedWorkJson object) {
 				SafeHtml html = SafeHtmlUtils.fromString("<i class='material-icons'>done</i>");
@@ -586,6 +576,8 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	    saveRollButtonClick();
 	    cancelRollButtonClick();
 	    editingDivClickEvent();
+	    undoButtonClickEvent();
+	    redoButtonClickEvent();
 	}
 
 	@Override
@@ -670,7 +662,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 	}
 
 	private void getRosterStudentsListAndDrawGrid() {
-		GWT.log(factory.getCurrentRoster().getId()+"");
+		
 		Ajax.get("/roster/" + factory.getCurrentRoster().getId() + "/student").done(new Function() {
 			@Override
 			public void f() {
@@ -907,8 +899,11 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getCalTab().addDomHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-			
-
+				//Lazy loading calendar, only once, we do need to load it on each tab switch
+				if(firstCalendarLoad){
+				    dashboard.getCalendarContainer().add(factory.getGoogleCalendar());
+				    firstCalendarLoad = false;
+				}
 			}
 		}, ClickEvent.getType());
 
@@ -1371,6 +1366,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 		dashboard.getRollIcon().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
+				//changeHash();
 				dashboard.showRollBar();
 				factory.setRollMode(true);
 				$(".attendenceBadge").css("visibility", "visible");
@@ -1442,5 +1438,27 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			}
 		});
 		
+	}
+	
+
+
+	@Override
+	public void undoButtonClickEvent() {
+		dashboard.getUndoBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				factory.getUndoRedoManager().undoLastAction();
+			}
+		});
+	}
+
+	@Override
+	public void redoButtonClickEvent() {
+		dashboard.getRedoBtn().addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				factory.getUndoRedoManager().redoLastAction();
+			}
+		});
 	}
 }

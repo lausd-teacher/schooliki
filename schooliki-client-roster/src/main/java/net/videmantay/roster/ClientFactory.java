@@ -27,6 +27,7 @@ import net.videmantay.roster.views.components.ClassRoomSideNav;
 import net.videmantay.roster.views.components.IncidentFormIconInput;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
+import net.videmantay.roster.views.draganddrop.UndoRedoManager;
 import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
 
@@ -71,5 +72,6 @@ public interface ClientFactory {
 	AppUserJson findStudentById(String id);
 	boolean isRollMode();
 	void setRollMode(boolean isHomeWorkMode);
+	UndoRedoManager getUndoRedoManager();
 
 }

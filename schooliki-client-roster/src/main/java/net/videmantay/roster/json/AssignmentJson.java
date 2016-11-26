@@ -3,11 +3,7 @@ package net.videmantay.roster.json;
 import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArrayString;
-
-
 import net.videmantay.shared.GradeLevel;
-import net.videmantay.shared.SubjectType;
 
 public class AssignmentJson extends JavaScriptObject {
 
@@ -27,14 +23,6 @@ public class AssignmentJson extends JavaScriptObject {
 
 	public final native void setTitle(String title)/*-{
 		this.title = title;
-	}-*/;
-
-	public final native JsArrayString getStandards()/*-{
-		return this.standards;
-	}-*/;
-
-	public final native void setStandards(JsArrayString standards)/*-{
-		this.standards = standards;
 	}-*/;
 
 	public final native Set<GradeLevel> getGradeLevels()/*-{
@@ -69,11 +57,4 @@ public class AssignmentJson extends JavaScriptObject {
 		this.subject = subject;
 	}-*/;
 
-//	public final native Set<EducationalLink> getLinks()/*-{
-//		return this.links;
-//	}-*/; 
-//
-//	public final native void setLinks(Set<EducationalLink> links)/*-{
-//		this.links = links;
-//	}-*/; 
 }

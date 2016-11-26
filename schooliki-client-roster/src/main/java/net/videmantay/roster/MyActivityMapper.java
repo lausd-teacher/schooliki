@@ -12,6 +12,8 @@ public class MyActivityMapper implements ActivityMapper {
 	ClientFactory factory;
 	static RosterDisplayActivity rosterActivity = null;
 	static ClassRoomActivity classRoomActivity = null;
+	Place currentPlace = null;
+	boolean firstPlace = true;
 
 	public MyActivityMapper(ClientFactory factory) {
 		this.factory = factory;
@@ -22,30 +24,44 @@ public class MyActivityMapper implements ActivityMapper {
 	public Activity getActivity(Place place) {
 		
 		
-		
 		if (place instanceof RosterHomePlace || place instanceof CalendarPlace ||  place instanceof LessonsPlace || place instanceof LibraryPlace || place instanceof SettingsPlace || place instanceof UserProfilePlace) {
-		
+		    
 			if(rosterActivity == null){
 				 rosterActivity = new RosterDisplayActivity(factory, place);
+				 firstPlace = false;
 			 }else{
 				 if(classRoomActivity != null)
 				     classRoomActivity.resetRosterDataLists();
 				 
 				 rosterActivity.setPlace(place);
 			 }
+			
 			return rosterActivity;
 		} else {
 			if(classRoomActivity == null){
+				if(!firstPlace){
 				classRoomActivity = new ClassRoomActivity(factory, place);
+				firstPlace = false;
+				}else{
+					rosterActivity = new RosterDisplayActivity(factory, new RosterHomePlace("rosters"));
+					firstPlace = false;
+					return rosterActivity;
+				}
+				
 			 }else{
-				 
 				 classRoomActivity.setPlace(place);
 			 }
+			
 			return classRoomActivity;
-
 		}
+		
+		
+		
 		
 	
 
 	}
+	
+		
+	
 }

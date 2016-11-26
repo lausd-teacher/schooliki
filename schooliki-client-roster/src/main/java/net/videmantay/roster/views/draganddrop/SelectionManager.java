@@ -9,7 +9,6 @@ import gwt.material.design.client.ui.MaterialCard;
 
 public class SelectionManager {
 	
-	
 	static DivElement currentlySelected = null;
 	static DivElement previouslySelected = null;
 	

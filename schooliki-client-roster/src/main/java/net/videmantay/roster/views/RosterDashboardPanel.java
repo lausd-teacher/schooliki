@@ -84,6 +84,9 @@ public class RosterDashboardPanel extends Composite
 	MaterialButton undoBtn;
 	
 	@UiField
+	MaterialButton redoBtn;
+
+	@UiField
 	MaterialRow rollToolbar;
 	
 	@UiField
@@ -106,26 +109,7 @@ public class RosterDashboardPanel extends Composite
 	
 	@UiField
 	HTMLPanel calendarContainer;
-	
-	
-	private final Function resizeFunc = new Function(){
-		@Override
-		public boolean f(Event e){
-			console.log("window resized, Body size: " + body.getClientWidth() + " and view state is " + getViewType().name());
-			if(body.getClientWidth() < 768 && getViewType() == View.CHART){
-				
-				
-				
-			}
-			
-			if(body.getClientWidth() > 767 && getViewType() == View.CHART){
-				console.log("window is greater 767 and view is chart");
-			//	showChart();
-			}
-			return true;
-		}
-	};
-	
+		
 	
 	private View viewType = View.GRID;
 	private State state = State.DASHBOARD;
@@ -142,7 +126,6 @@ public class RosterDashboardPanel extends Composite
 	public RosterDashboardPanel(ClientFactory factory) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.factory = factory;
-		calendarContainer.add(factory.getGoogleCalendar());
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 	}
 	
@@ -300,6 +283,14 @@ public class RosterDashboardPanel extends Composite
 		return this.cancelRollBtn;
 	}
 
+	public HTMLPanel getCalendarContainer() {
+		return this.calendarContainer;
+	}
+	
+	public MaterialButton getRedoBtn() {
+		return this.redoBtn;
+	}
+
 	public interface Presenter{
 		void gridSwitchClickEvent();
 		void homeworkIconClickEvent();
@@ -311,6 +302,8 @@ public class RosterDashboardPanel extends Composite
 		void rollIconClick();
 		void saveRollButtonClick();
 		void cancelRollButtonClick();
+		void undoButtonClickEvent();
+		void redoButtonClickEvent();
 	}
 
 
