@@ -94,6 +94,7 @@ import net.videmantay.roster.views.components.StudentIncidentCard;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
 import net.videmantay.roster.views.incident.IncidentForm;
 import net.videmantay.roster.views.incident.IncidentMain;
+import net.videmantay.roster.views.lessonPlan.LessonPlanMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
 import net.videmantay.roster.views.student.StudentCard;
 import net.videmantay.student.json.RosterStudentJson;
@@ -520,7 +521,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			assignementDashboard = factory.getAssignementDashboard();
 			appPanel.getMainPanel().add(assignementDashboard);
 		} else if (place instanceof LessonPlanPlace) {
-			appPanel.getMainPanel().add(new Label("LessonPlan view is not implemented yet"));
+			appPanel.getMainPanel().add(new  LessonPlanMain());
 		} else if (place instanceof IncidentPlace) {
 			//getIncidentsAndDraw();
 			appPanel.getMainPanel().add(incidentMainPage);
@@ -1116,7 +1117,7 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			@Override
 			public void f() {
 				MaterialLoader.showLoading(false);
-				Window.alert("Incident List could not be fetched from the server");
+				Window.alert("Classtime List could not be fetched from the server");
 			}
 		});
 		
@@ -1461,4 +1462,5 @@ public class ClassRoomActivity extends AbstractActivity implements ClassRoomSide
 			}
 		});
 	}
+	
 }

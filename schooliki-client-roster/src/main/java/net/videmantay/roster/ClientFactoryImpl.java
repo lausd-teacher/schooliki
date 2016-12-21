@@ -40,7 +40,7 @@ import net.videmantay.roster.views.incident.IncidentForm;
 import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.student.CreateStudentForm;
 import net.videmantay.shared.util.GoogleJs;
-
+import static com.google.gwt.query.client.GQuery.*;
 
 public class ClientFactoryImpl implements ClientFactory {
 	
@@ -210,6 +210,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public void setSelectedClassTime(ClassTimeJson selectedClassTime) {
 		this.selectedClassTime = selectedClassTime;
+		$(window).prop("selectedClassTime", selectedClassTime);
+		//this must also change the classtime button text to the current class time
+		
 	}
 	@Override
 	public ClassTimeGrid getClassTimeGrid() {

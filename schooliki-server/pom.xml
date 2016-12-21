@@ -15,7 +15,7 @@
 	<properties>
 		<app.id>schooliki-dev</app.id>
 		<app.version>2</app.version>
-		<appengine.version>1.9.42</appengine.version>
+		<appengine.version>1.9.48</appengine.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>

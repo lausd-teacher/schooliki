@@ -17,10 +17,11 @@ public class GoogleTokenVerifier {
     private static final JsonFactory jsonFactory = new JacksonFactory();
 
     // Verifier that checks that the token has the proper issuer and audience
+    //this is being changed to personlized client id per server basis
     private static GoogleIdTokenVerifier verifier =
             new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
                     .setIssuer("accounts.google.com")
-                    .setAudience(Arrays.asList("535909648993-7nfaqivi206q2phmicubas1hjri084eb.apps.googleusercontent.com"))
+                    .setAudience(Arrays.asList(ClientToken.getToken()))
             .build();
 	
 	public static boolean verifyToken(String token) throws GeneralSecurityException, IOException{

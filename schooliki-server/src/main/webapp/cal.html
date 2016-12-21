@@ -3,86 +3,125 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/fullcalendar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
+    <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <title>calendar</title>
    <style>
      /*body should have fixed width now scroll */
    body{
    	overflow:hidden;
-   	height:580px;
+   	height:100%;
    	width:100%;
    	position:absolute;
    	color:DimGray;
    	font-family:"Roboto", "San Serif";
-   	font-size:0.8em;
-   	top:-4.5%;
    }
-   
-   body > div#cal{
-   position:relative;
-   height:575px;
-   width:90%;
-  margin:auto;
-  overflow:hidden;
-  color:inherit;
+   body> div.container{
+   	height:100%;
+   	width:95%;
    }
-   
-   .fc-toolbar{
-   	font-size:0.95em;
-   	color:inherit;
-   }
-   h2.cal-title{
+
+   h2{
    	text-align:center;
-   	color:DimGray;
-   	font-family:"Roboto", Verdana;
-   	margin-top:1em;
+   	font-size:1.75em;
    }
-  div.fab {
-    position: fixed;
-    height: 5em;
-    width: 5em;
-    top: 85%;
-    left: 85%;
-    z-index: 10; 
-    padding:1em;
-}
-   div.fab > span{
-   position:relative;
-   margin:1em;
-   	background-color:rgba(0,255,0, 0.8);
-   	border:1px solid Green;
-   	box-shadow:2px 2px 2px rgba(0,0,0,0.5);
-   	font-size:2em;
-   	border-radius:100%;
-   	color: white;
-   	height:2em;
-   	width:2em;
-   	text-align:center;
-   }
+   /*hide the schedule onstrart */
+   #schedule{display:none}
    </style>
   </head>
 
   <body>
-  <h2 class="cal-title" >Class Calendar</h2>
-  
-	<div id="cal"></div>
-	<!--  <div class="fab"><span class="material-icons">add</span></div>-->
-<script src="jquery-2.1.4.min.js"></script>
- <script src="loader.js"></script>
+   <div class="container">
+   <br>
+ 	<section id="scheduleLegend">
+ 		<label  id="clicker" class="chip amber darken-2">Click</label><b>schedule:&nbsp;</b></label>
+ 		<span>You haven't created a schedule yet.  </span><a>Let's get started!</a>
+ 	</section>
+  <hr/>
+  	<br/>
+			<div id="lessonPlans"></div>
+		<div id="schedulePanel" >
+			<div id="scheduleTilte">Weekly Schedule</div>
+			<div id="schedule"></div>
+		</div>
+	</div><!-- end container -->
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
   <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.0/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
    <script>
-   		$('#cal').fullCalendar({defaultView:'agendaWeek',height:520,firstDay:0,
-   			minTime:"05:00:00",maxTime:"21:00:00",
+   
+   //what we need here is the calendar events from google
+   var eventListJson;
+   /// an object where we store the schedule
+   var scheduleJson;
+   //initialize the lessonPlanCalendar
+   	$('#lessonPlans').fullCalendar({defaultView:'agendaDay',firstDay:0,
+   			minTime:"07:00:00",maxTime:"21:00:00",slotDuration: '00:05:00',
+   			contentHeight:function(){return Math.floor($(window).height() * 0.8);},
    			scrollTime:"07:30:00",
    			header:{center:'title', left:'today prev,next', right:"month,agendaWeek,agendaDay"}, 
-   			businessHours:{start:"07:30", end:"15:30", dow:[1,2,3,4,5]}});
-   	
+   			businessHours:{start:"07:00", end:"16:30", dow:[1,2,3,4,5]},
+   			//now to write up the handlers
+   			editable:true,
+   			eventClick:function(event, jsEvent, view){},
+   			dayClick:function(day, jsEvent, view){
+   			}
+   			}); 
+   
+  //initialize the schedule
+  $('#schedule').fullCalendar({
+	  defaultView:'agendaWeek', firstDay:1, minTime:"07:00:00", maxTime:"17:00:00",
+	  contentHeight:function(){return Math.floor($(window).height() * 0.8);},
+	  header:{center:'agendaWeek,agendaDay,listWeek' },columnFormat:'dddd',
+	  editable:true,
+	  //now handle view change call backs
+	  viewRender:function(view, element){
+		  if(view.name=="agendaWeek"){
+			  $('#schedule').text("Weekly Schedule");
+		  }else if(view.name=="agendaDay"){
+			  $('#schedule').text("Daily Schedule");
+		  }else{
+			  $('#schedule').text("Schedule");
+		  }
+		  
+	  },
+	  //now handle object update events
+	  eventDrop:function(){},
+	  eventResize:function(){},
+	  //create a new event on dayClick
+	  dayClick:function(date, jsEvent, view){
+		 
+	  }
+	  
+  });
+   
+   //parent access test has passed 12/16/16
+   $('#clicker').click(function(){ parent.testThis()});
+   
+   //initialize the schedule calendar
+   //show only week agenda or day  agenda with only days in the heading
+   //title can go from weekly schedule to daily schedule according to the view
+   
+    function showSchedule(){
+	   
+   };
+   
+   function hideSchedule(){
+	   
+   };
+   
+
+   
+
+   			
    </script>
+   
   </body>
 </html>

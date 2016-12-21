@@ -30,9 +30,13 @@ import net.videmantay.rest.dto.ClassTimeDTO;
 import net.videmantay.rest.dto.IncidentDTO;
 import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
+import net.videmantay.rest.dto.ScheduleDTO;
+import net.videmantay.rest.dto.ScheduleItemDTO;
 import net.videmantay.rest.dto.StudentRollDTO;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Incident;
+import net.videmantay.server.entity.Schedule;
+import net.videmantay.server.entity.ScheduleItem;
 import net.videmantay.server.entity.StudentIncident;
 import net.videmantay.server.entity.StudentRoll;
 import net.videmantay.server.user.AppUser;
@@ -391,6 +395,67 @@ public class RosterService {
 		}
 		
 		return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	@GET
+	@Path("/{id}/schedule")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSchedule(@PathParam("id") Long id){
+		Schedule scheduleDB = db().load().type(Schedule.class).ancestor(Key.create(Roster.class, id)).first().now();
+		
+		ScheduleDTO retrieve = new ScheduleDTO(scheduleDB);
+		return Response.ok().entity(retrieve).build();
+		
+	}
+		
+	
+	
+	@POST
+	@Path("/{id}/schedule")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response saveSchedule(@PathParam("id") Long id, ScheduleDTO schedule){
+		//do validation here
+		Schedule update = Schedule.fromDTO(schedule);
+		
+		//create key to persist the entity
+		Key<Roster> parent = Key.create(Roster.class, id);
+		Key<Schedule> sKey = Key.create(parent, Schedule.class, schedule.id);
+		
+		update.parent = parent;
+			//1. try and retrieve
+			if(schedule.id != null){
+			
+			Schedule scheCheck = db().load().key(sKey).now();
+			
+					if(scheCheck != null){// this is a valid schedule now update
+					
+						return Response.ok().entity(update).build();
+						
+					}else{//error so return an error response!
+						return Response.status(Status.BAD_REQUEST).build();
+					}
+					
+					
+			}else{//this is just a first save
+				
+				Long scheId = db().save().entity(update).now().getId();
+				
+				return Response.ok().entity(scheId).build();
+				
+			}
+		
+	}
+	
+	@DELETE
+	@Path("/{id}/schedule/{scheduleId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteSchedule(@PathParam("id") Long id, @PathParam("scheduleId") Long scheduleId){
+		Key<Roster> rosKey = Key.create(Roster.class, id);
+		Key<Schedule> sKey = Key.create(rosKey, Schedule.class, scheduleId);
+		db().delete().key(sKey);
+		
+		return Response.ok().build();
 	}
 
 }
