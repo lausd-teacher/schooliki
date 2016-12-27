@@ -214,6 +214,7 @@
 	
 		  //access to Schedule object
 		  function Schedule(){
+			  "use strict"
 			  this.id;
 			  this.items = new Array();
 			  this.type = 'weekly'; // weekly or daily
@@ -223,6 +224,7 @@
 		  }
 		  //access to ScheduleItem
 		  function ScheduleItem(){
+			  "use strict"
 			 	this.id = new Date().valueOf();
 				this.title = '';
 				this.start = '';
@@ -233,7 +235,11 @@
 				this.className =['schedule-item'];
 				this.textColor = '';
 				this.color = '';
-				this.update = function(event){  this.title = event.title;
+				this.update = function(event){ 
+					 			"use strict"
+					 			console.log(event);
+					 			if(event  === undefined || event === null){return;}
+								this.title = event.title;
 								this.start = event.start.toISOString(); this.end = event.end.toISOString();
 								this.color = event.color
 								console.log(this);
