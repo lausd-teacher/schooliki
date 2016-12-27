@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
+    <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css" />
+<style>
+	.fc-widget-header{
+		font-size:1.25em;
+		font-family: ;
+		color:DarkRed;
+	}
+	.fc-widget-content{
+		font-size:0.99em;
+	}
+	
+	input[type=text]{
+		font-size:1.1em;
+		font-style:Roboto, Verdana;
+		color:White;
+	}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row valign-wrapper">
+		<div  class="col s12 m8 l8 valign">
+		<h2 class="title" >Schedule</h2>
+		</div>
+		<div class="col s12 m4 l4 valign">
+			<div id="updateScheduleBtn" style="color:white"class="waves-effect waves-light btn disabled red darken-2 right">Update</div>
+		</div>
+		</div>
+		<hr/>
+		<div id="scheduleCal"><!-- This is the fullcalendar wrapper --></div>
+		
+		<!--  Page Loader  -->
+		 <div id="scheduleLoader" class="preloader-wrapper big">
+    		<div class="spinner-layer spinner-blue-only">
+      		<div class="circle-clipper left">
+        	<div class="circle"></div>
+      		</div><div class="gap-patch">
+        	<div class="circle"></div>
+      		</div>
+      		<div class="circle-clipper right">
+        		<div class="circle"></div>
+      		</div>
+    		</div>
+  		</div><!--  end loader -->
+  		
+  		<!--  Schedule Modal Form -->
+		<!-- Modal Structure -->
+	<div id="modalManager" class="modal modal-fixed-footer" style="height:200px">
+	<!--  first content  in modal -->
+  <div id="scheduleModal" >
+    <form id="scheduleForm" style="height:100%; background-color:Gray; font-size: 1.5em; padding:1.5em">
+    <div class="row">
+    	<div class='col s8 m8 l8'>
+    	<input id="scheduleTitleInput" type="text" placeholder="title" />
+    	</div>
+    	&nbsp;&nbsp;
+    	<div class='col s4 m4 l4'>
+ 		
+    	<input id="scheduleColorInput" type="color" />
+    	</div>
+    </div>
+    </form>
+    <div class="modal-footer">
+      <a  id="okScheduleBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Ok</a>
+      <a  id="cancelScheduleBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+    </div>
+    </div>
+    <!--  second content in modal -->
+    <div id="itemDeleteModal" style="padding:1.1em">
+     	<h3>This event will be deleted</h3>
+     	<h6>You will not be able to undo!</h6>
+    <div class="modal-footer">
+      <a  id="okDeleteItemBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Ok</a>
+      <a  id="cancelDeleteItemBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+    </div>
+  </div>
+  </div>
+     
+  
+	</div><!--  end container -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+	<script>
+	var newItem;//reference to same item for saving
+				//that way we don't keep adding to the stack;
+	$(function(){ //load the script
+		
+		 //see if roster schedule has been loaded
+		  if(!window.schedule){
+			  //if not load it
+			  //show loading icon/////
+			  showLoader();
+//			  $.get('/' + window.rosterId +'/schedule', function(data,status){
+//				  if(data){//so if data isn't null
+//				  window.schedule = data;
+//				  }else{
+					  window.schedule = new Schedule();
+				 // }
+				 //end the loading icon 
+				 console.log(window.schedule);
+				  hideLoader();
+			//  });///end get schedule
+		  }//end if !window.schedule/////
+		  
+			
+		
+		
+		 //initialize the schedule
+		  $('#scheduleCal').fullCalendar({
+			  defaultView:'agendaWeek', firstDay:1, minTime:"07:00:00", maxTime:"17:00:00",aspectRatio:1.55,
+			  header:{center:'agendaWeek,listWeek',left:'', right:'' },columnFormat:'ddd',allDaySlot:false,
+				weekends:false,slotDuration:'00:05',dragOpacity:0.5,listDayAltFormat:false,
+			  //hide the day header in day view
+			  viewRender: function(view){
+				  if(view.name =='agendaDay'){
+					  $('th.fc-day-header').hide();
+				  }else{
+					  $('th.fc-day-header').show();
+				  }
+			  },
+			  //event source
+			  events:window.schedule.items,
+			  //now handle object update events
+			  //create a new event on dayClick
+			  editable:true,
+			 eventDrop:function(event){
+				 console.log('event id ' + event.id);
+				 var item = getItemById(event.id);
+				 console.log('event drop items length' + window.schedule.items.length);
+				 item.update(event);
+				 $('#updateSchedultBtn').removeClass('disabled');
+			 },
+			 eventResize:function(event){
+				 var item = getItemById(event.id);
+				 console.log('event resize; event is ');
+				 console.log(item);
+				 item.update(event);
+				 $('#updateSchedultBtn').removeClass('disabled');
+			 },
+			  eventClick:function(event){
+				  showItemDeleteModal(event);
+				  $('#updateSchedultBtn').removeClass('disabled');
+			  },
+			  dayClick:function(date, jsEvent, view){
+				  newItem = new ScheduleItem();
+				  newItem.start = date.toISOString();
+				showScheduleForm(newItem);
+			  },
+			  selectable: true,
+				selectHelper: true,
+				select: function(start, end, jsEvent, view) {
+					newItem = new ScheduleItem();
+					newItem.start = start.toISOString();
+					newItem.end = end.toISOString();
+					showScheduleForm(newItem);
+					$('#scheduleCal').fullCalendar('unselect');
+				}
+
+		  });
+		  
+		  //initialize the color picker for the form
+		  $("#scheduleColorInput").spectrum({
+			    showPaletteOnly: true,
+			    togglePaletteOnly: true,
+			    togglePaletteMoreText: 'more',
+			    togglePaletteLessText: 'less',
+			    hideAfterPaletteSelect:true,
+			    clickoutFiresChange: true,
+			    change:function(){
+			    	//set backgroundColor for scheduleForm
+			    	$('#scheduleForm').css('backgroundColor', $('#scheduleColorInput').spectrum('get'));
+			    },
+			    color: 'Gray',
+			    palette: [
+			        ['DimGray', 'DarkBlue', 'DarkViolet', 'DarkRed','DarkOrange', 'DarkGoldenRod','DarkGreen'],
+			        ['Gray', 'Blue', 'Violet', 'Red', 'Orange', 'GoldenRod', 'Green']
+			    ]
+			});
+		  
+		  //init the modal
+		  $('#modalManager').modal({});
+		 
+		  //add click to ok btn
+		  $('#okScheduleBtn').on('click', okScheduleBtn);
+		  
+		  //add click to cancel btn
+		  $('#cancelScheduleBtn').on('click', hideScheduleForm);
+		 
+		  //add click to ok delete btn
+		  $('#okDeleteItemBtn').on('click', deleteItem);
+		  
+		  //add click
+		  $('#cancelDeleteItemBtn').on('click',hideItemDeleteModal);
+		  
+		  //add click to update
+		  $('#updateScheduleBtn').on('click', updateBtnClick);
+	});// end load script ///////////
+	
+	
+		  //access to Schedule object
+		  function Schedule(){
+			  this.id;
+			  this.items = new Array();
+			  this.type = 'weekly'; // weekly or daily
+			  this.addItem = function(item){
+				this.items.push(item);  
+			  };
+		  }
+		  //access to ScheduleItem
+		  function ScheduleItem(){
+			 	this.id = new Date().valueOf();
+				this.title = '';
+				this.start = '';
+				this.end = '';
+				this.backgroundColor = '';
+				this.borderColor = '';
+				//array of string
+				this.className =['schedule-item'];
+				this.textColor = '';
+				this.color = '';
+				this.update = function(event){  this.title = event.title;
+								this.start = event.start.toISOString(); this.end = event.end.toISOString();
+								this.color = event.color
+								console.log(this);
+				};
+		  }
+		  
+		  //schedule form
+		  function showScheduleForm(item){
+			  console.log('show schedule form is called');
+			  $('#modalManager').modal('open');
+			  $('#scheduleModal').show();
+			  $('#itemDeleteModal').hide();
+			  $('#scheduleForm').data('item', item);
+			  console.log('schedule form data is : ');
+			  console.log($('#scheduleForm').data('item'));
+			  
+		  }
+		  
+		  function okScheduleBtn(){
+			 
+			  //get form data
+			  var formData = $('#scheduleForm').data('item');
+	
+			  //get title value
+			  formData.title = $('#scheduleTitleInput').val();
+			  //get color value
+			  formData.color = $('#scheduleColorInput').spectrum('get').toName();
+			  //render the event to the calendar
+			  window.schedule.addItem(formData);
+			  console.log('all items');
+			  console.log(window.schedule);
+			  $('#scheduleCal').fullCalendar('renderEvent', formData, true);
+			  //hide the form
+			  hideScheduleForm();
+			  $('#updateScheduleBtn').removeClass('disabled');
+		  }
+		  
+		  function hideScheduleForm(){
+			  $('#modalManager').modal('close');
+			  $('#scheduleModal').hide();
+			  $('#scheduleForm').get(0).reset();
+			  $('#scheduleColorInput').spectrum('set','Gray')//default color;
+			  $('#scheduleForm').css('backgroundColor', 'Gray');
+		  }
+		  function showItemDeleteModal(event){
+			  $('#modalManager').modal('open');
+			  $('#itemDeleteModal').show();
+			  $('#scheduleModal').hide();
+			  $('#itemDeleteModal').data('event', event);
+		  }
+		  
+		  function deleteItem(){
+			var remove =   $('#itemDeleteModal').data('event');
+			
+			//remove it from the array
+			for(var i = 0; i < window.schedule.items.length; i++){
+				console.log('looped ' + (i+1) + ' times to find item');
+				if(remove.id === window.schedule.items[i].id){
+					window.schedule.items.splice(i,1);
+					break;
+				}
+			}
+			$('#scheduleCal').fullCalendar('removeEvents', remove.id);
+			hideItemDeleteModal();
+			console.log(window.schedule.items);
+			
+		  }
+		  
+		  function hideItemDeleteModal(){
+			  $('#itemDeleteModal').modal('close');
+		  }
+		  function saveSchedule(){
+			  $.ajax({
+				  
+			  });
+		  }
+			  
+			function showLoader(){
+				$('#scheduleLoader').show();
+			}
+			
+			function hideLoader(){
+				$('#scheduleLoader').hide();
+			}
+			function getItemById(id){
+				for(var i = 0; i < window.schedule.items.length; i++){
+					if(id === window.schedule.items[i].id){
+						return window.schedule.items[i];
+					}
+				}
+				
+			}
+			
+			function updateBtnClick(){
+				console.log('update called');
+				//show loader
+				if($(this).hasClass('disabled')){
+					return;
+				}else{
+				//send request
+				console.log('ajax being sent');
+				$.ajax({
+					url:'/' + window.rosterId +'/schedule',
+					data:{id: window.rosterId, schedule:window.schedule},
+					method:'POST'
+				}).done(function(){
+					Materialize.toast('Update Successful', 2500);
+				});
+				//add disabled class
+				$('#updateScheduleBtn').addClass('disabled');
+				
+			} //end else
+			}
+		
+	</script>
+</body>
+</html>

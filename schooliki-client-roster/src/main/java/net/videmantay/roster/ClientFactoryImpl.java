@@ -6,7 +6,9 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
+import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -97,6 +99,10 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public void setCurrentRoster(RosterJson current) {
 		currentRoster = current;
+		//set rosterId to window;
+		Properties wnd = window.cast();
+		wnd.set("rosterId", currentRoster.getId());
+		
 	}
 
 	@Override

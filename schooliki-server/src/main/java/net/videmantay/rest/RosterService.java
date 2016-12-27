@@ -401,8 +401,16 @@ public class RosterService {
 	@Path("/{id}/schedule")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSchedule(@PathParam("id") Long id){
-		Schedule scheduleDB = db().load().type(Schedule.class).ancestor(Key.create(Roster.class, id)).first().now();
 		
+		Key<Roster> parent = Key.create(Roster.class, id);
+		Schedule scheduleDB = db().load().type(Schedule.class).ancestor(parent).first().now();
+		//in case of null create new
+		if(scheduleDB == null){
+			scheduleDB = new Schedule();
+			scheduleDB.parent = parent;
+			scheduleDB.id = db().save().entity(scheduleDB).now().getId();
+			
+		}
 		ScheduleDTO retrieve = new ScheduleDTO(scheduleDB);
 		return Response.ok().entity(retrieve).build();
 		
@@ -413,6 +421,7 @@ public class RosterService {
 	@POST
 	@Path("/{id}/schedule")
 	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response saveSchedule(@PathParam("id") Long id, ScheduleDTO schedule){
 		//do validation here
 		Schedule update = Schedule.fromDTO(schedule);

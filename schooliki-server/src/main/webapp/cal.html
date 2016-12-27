@@ -37,7 +37,7 @@
    <br>
  	<section id="scheduleLegend">
  		<label  id="clicker" class="chip amber darken-2">Click</label><b>schedule:&nbsp;</b></label>
- 		<span>You haven't created a schedule yet.  </span><a>Let's get started!</a>
+ 		<span>You haven't created a schedule yet.  </span><a href="schedule.html">Let's get started!</a>
  	</section>
   <hr/>
   	<br/>
@@ -75,32 +75,7 @@
    			}
    			}); 
    
-  //initialize the schedule
-  $('#schedule').fullCalendar({
-	  defaultView:'agendaWeek', firstDay:1, minTime:"07:00:00", maxTime:"17:00:00",
-	  contentHeight:function(){return Math.floor($(window).height() * 0.8);},
-	  header:{center:'agendaWeek,agendaDay,listWeek' },columnFormat:'dddd',
-	  editable:true,
-	  //now handle view change call backs
-	  viewRender:function(view, element){
-		  if(view.name=="agendaWeek"){
-			  $('#schedule').text("Weekly Schedule");
-		  }else if(view.name=="agendaDay"){
-			  $('#schedule').text("Daily Schedule");
-		  }else{
-			  $('#schedule').text("Schedule");
-		  }
-		  
-	  },
-	  //now handle object update events
-	  eventDrop:function(){},
-	  eventResize:function(){},
-	  //create a new event on dayClick
-	  dayClick:function(date, jsEvent, view){
-		 
-	  }
-	  
-  });
+ 
    
    //parent access test has passed 12/16/16
    $('#clicker').click(function(){ parent.testThis()});
