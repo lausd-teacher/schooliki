@@ -101,9 +101,9 @@ public class ClientFactoryImpl implements ClientFactory {
 		currentRoster = current;
 		//set rosterId to window;
 		Properties wnd = window.cast();
-		console.log("current roster id is " + currentRoster.getId());
-		wnd.set("rosterId", currentRoster.getId());
 		
+		wnd.setNumber("rosterId", currentRoster.getId());
+		console.log(wnd.getInt("rosterId"));
 	}
 
 	@Override
