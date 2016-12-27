@@ -338,8 +338,13 @@
 				//send request
 				console.log('ajax being sent');
 				$.ajax({
-					url:'/roster/' + window.rosterId +'/schedule',
-					data:{id: window.rosterId, schedule:window.schedule},
+					url:'/roster/' + parent.rosterId +'/schedule',
+					headers: { 
+				        'Accept': 'application/json',
+				        'Content-Type': 'application/json' 
+				    },
+					dataType:'json',
+					data:JSON.stringify({id: parent.rosterId, schedule:window.schedule}),
 					method:'POST'
 				}).done(function(){
 					Materialize.toast('Update Successful', 2500);

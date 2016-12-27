@@ -438,18 +438,19 @@ public class RosterService {
 			
 					if(scheCheck != null){// this is a valid schedule now update
 					
-						return Response.ok().entity(update).build();
+						return Response.ok().build();
 						
 					}else{//error so return an error response!
 						return Response.status(Status.BAD_REQUEST).build();
 					}
-					
+				//alse add something to trigger the auto kupdate
+					//here it goes.
 					
 			}else{//this is just a first save
 				
-				Long scheId = db().save().entity(update).now().getId();
+				db().save().entity(schedule).now().getId();
 				
-				return Response.ok().entity(scheId).build();
+				return Response.ok().build();
 				
 			}
 		
