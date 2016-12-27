@@ -141,7 +141,6 @@
 			 eventDrop:function(event){
 				 console.log('event id ' + event.id);
 				 var item = getItemById(event.id);
-				 console.log('event drop items length' + window.schedule.items.length);
 				 item.update(event);
 				 $('#updateSchedultBtn').removeClass('disabled');
 			 },
@@ -150,11 +149,11 @@
 				 console.log('event resize; event is ');
 				 console.log(item);
 				 item.update(event);
-				 $('#updateSchedultBtn').removeClass('disabled');
+				 $('#updateScheduleBtn').removeClass('disabled');
 			 },
 			  eventClick:function(event){
 				  showItemDeleteModal(event);
-				  $('#updateSchedultBtn').removeClass('disabled');
+				  $('#updateScheduleBtn').removeClass('disabled');
 			  },
 			  dayClick:function(date, jsEvent, view){
 				  newItem = new ScheduleItem();
@@ -339,7 +338,7 @@
 				//send request
 				console.log('ajax being sent');
 				$.ajax({
-					url:'/' + window.rosterId +'/schedule',
+					url:'/roster/' + window.rosterId +'/schedule',
 					data:{id: window.rosterId, schedule:window.schedule},
 					method:'POST'
 				}).done(function(){
