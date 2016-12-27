@@ -218,9 +218,6 @@
 			  this.id;
 			  this.items = new Array();
 			  this.type = 'weekly'; // weekly or daily
-			  this.addItem = function(item){
-				this.items.push(item);  
-			  };
 		  }
 		  //access to ScheduleItem
 		  function ScheduleItem(){
@@ -268,7 +265,7 @@
 			  //get color value
 			  formData.color = $('#scheduleColorInput').spectrum('get').toName();
 			  //render the event to the calendar
-			  window.schedule.addItem(formData);
+			  window.schedule.items.push(formData);
 			  console.log('all items');
 			  console.log(window.schedule);
 			  $('#scheduleCal').fullCalendar('renderEvent', formData, true);
