@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+	<ui:style>
+	    .label{
+            margin: 24px;
+        }
+        .profile{
+		border:1px solid DarkGreen;
+		padding:2em;
+		font-family:Verdana;
+	}
+	</ui:style>
+	<g:HTMLPanel>
+				<m:MaterialLink ui:field="logoutLink" text="Logout" iconType="WHATSHOT" />
+				<m:MaterialLink ui:field="appsLink" text="Apps" iconType="VIEW_MODULE" />
+				<m:MaterialLink ui:field="notificationsLink" text="Notifications" textColor="blue"
+					iconType="NOTIFICATIONS" separator="true" />
+				<m:MaterialLink ui:field="navigationLink" text="Navigation" textColor="blue"
+					iconType="NAVIGATION" />
+				<m:MaterialLink ui:field="favoriteLink" text="Favorite" textColor="blue"
+					iconType="FAVORITE" />
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel addStyleNames="rosterStudentPanel" ui:field="rosterStudentPanel">
+	      
+			<div  ui:field="studentImg" class="seatingChartImageDiv">
+			</div>
+			<m:MaterialLabel ui:field="studentName"></m:MaterialLabel>
+			<div class="rosterPanelSeatedDiv">
+			   <g:HTMLPanel>
+			      <m:MaterialLink>
+			          <m:MaterialBadge text="seated" backgroundColor="green" textColor="WHITE"/>
+			  </m:MaterialLink>
+			   </g:HTMLPanel>
+			</div>
+	   </g:HTMLPanel>
+</ui:UiBinder> 

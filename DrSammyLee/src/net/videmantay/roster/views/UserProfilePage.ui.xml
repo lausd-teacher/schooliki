@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel ui:field="container">
+	   <div id="profile" class="profilePad">
+     <div style="padding-left:37%;"><img style="width:30px;" src="../img/g+.png"></img><span>Profile Information</span></div>
+	  <table style="width:30%;">
+	     <tr>
+	       <td><img ui:field="profileImage"></img></td>
+	       <td></td>
+	     </tr>
+	     <tr>
+	       <td>First Name</td>
+	       <td><span ui:field="profileFirstName"></span></td>
+	     </tr>
+	      <tr>
+	       <td>Last Name</td>
+	       <td><span ui:field="profileLastName"></span></td>
+	     </tr>
+	      <tr>
+	      <td>Email</td>
+	       <td><span ui:field="profileEmail"></span></td>
+	     </tr>
+	  </table>
+   </div>
+	
+	</g:HTMLPanel>
+</ui:UiBinder> 

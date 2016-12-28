@@ -1,0 +1,26 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+
+
+	<ui:style>
+        .label{
+            margin: 24px;
+        }
+        .profile{
+		border:1px solid DarkGreen;
+		padding:2em;
+		font-family:Verdana;
+
+	}
+    </ui:style>
+	<g:HTMLPanel ui:field="container">
+		
+		<m:MaterialFAB>
+			<m:MaterialTooltip text="Create" position="LEFT">
+				<m:MaterialButton ui:field="fab" type="FLOATING"
+					backgroundColor="green darken-4" iconType="ADD" size="LARGE" />
+			</m:MaterialTooltip>
+		</m:MaterialFAB>
+	</g:HTMLPanel>
+</ui:UiBinder>

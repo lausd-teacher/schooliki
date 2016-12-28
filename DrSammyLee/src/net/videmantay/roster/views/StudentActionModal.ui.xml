@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+		<m:MaterialModal ui:field="modal" width="50%" height="100%">
+			<m:MaterialModalContent>
+			    <m:MaterialTitle ui:field="title"></m:MaterialTitle>
+			    <m:MaterialTab>
+					<m:MaterialTabItem  waves="GREEN"><m:MaterialAnchorButton type="FLAT" textColor="green darken-1" text="Superb Decision" href="#posIncidentGrid"/></m:MaterialTabItem>
+					<m:MaterialTabItem waves="RED"><m:MaterialAnchorButton  type="FLAT" textColor="red darken-1" text="Poor Judgement" href="#negIncidentGrid"/></m:MaterialTabItem>
+				</m:MaterialTab>
+				<g:HTMLPanel>
+					<div id="posIncidentGrid">
+		                <m:MaterialContainer>
+		                      <m:MaterialRow ui:field="positiveIncidentsTypeContainer"> 
+			    
+			                   </m:MaterialRow>
+		                </m:MaterialContainer>
+	                </div>
+	                <div id="negIncidentGrid">
+		                <m:MaterialContainer>
+		                      <m:MaterialRow ui:field="negativeIncidentsTypeContainer"> 
+			    
+			                   </m:MaterialRow>
+		                </m:MaterialContainer>
+	                </div>
+			   </g:HTMLPanel>
+			</m:MaterialModalContent>
+			<m:MaterialModalFooter>
+			<m:MaterialButton text="Ok" ui:field="studentActionModalOkButton"></m:MaterialButton>	
+			</m:MaterialModalFooter>
+		</m:MaterialModal>
+</ui:UiBinder> 
