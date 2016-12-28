@@ -21,13 +21,13 @@
 
 package net.videmantay.server.shiro.guice;
 
-import com.cilogi.shiro.web.FreemarkerServlet;
-import com.cilogi.shiro.web.MailQueueServlet;
-import com.cilogi.shiro.web.MailReceiveServlet;
-import com.cilogi.shiro.web.WakeServlet;
-import com.cilogi.shiro.web.oauth.GoogleLoginServlet;
-import com.cilogi.shiro.web.user.*;
-import com.cilogi.shiro.web.user.dev.AddUsersServlet;
+import net.videmantay.server.shiro.web.FreemarkerServlet;
+import net.videmantay.server.shiro.web.MailQueueServlet;
+import net.videmantay.server.shiro.web.MailReceiveServlet;
+import net.videmantay.server.shiro.web.WakeServlet;
+import net.videmantay.server.shiro.web.oauth.GoogleLoginServlet;
+import net.videmantay.server.shiro.web.user.*;
+import net.videmantay.server.shiro.web.user.dev.AddUsersServlet;
 import com.google.appengine.tools.appstats.AppstatsFilter;
 import com.google.appengine.tools.appstats.AppstatsServlet;
 import com.google.common.base.Preconditions;

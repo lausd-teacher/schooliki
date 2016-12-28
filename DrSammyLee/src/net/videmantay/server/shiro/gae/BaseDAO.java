@@ -18,7 +18,7 @@
 //
 
 
-package com.cilogi.shiro.gae;
+package net.videmantay.server.shiro.gae;
 
 import com.googlecode.objectify.Key;
 

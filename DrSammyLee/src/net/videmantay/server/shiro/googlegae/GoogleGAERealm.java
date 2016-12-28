@@ -18,9 +18,9 @@
 //
 
 
-package com.cilogi.shiro.googlegae;
+package net.videmantay.server.shiro.googlegae;
 
-import com.cilogi.shiro.gae.MemcacheManager;
+import net.videmantay.server.shiro.gae.MemcacheManager;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

@@ -18,7 +18,7 @@
 //
 
 
-package com.cilogi.shiro.googlegae;
+package net.videmantay.server.shiro.googlegae;
 
 import org.apache.shiro.authc.HostAuthenticationToken;
 import org.apache.shiro.authc.RememberMeAuthenticationToken;

@@ -18,7 +18,7 @@
 //
 
 
-package com.cilogi.shiro.gae;
+package net.videmantay.server.shiro.gae;
 
 public enum UserAuthType {
     CILOGI, GOOGLE, FACEBOOK;

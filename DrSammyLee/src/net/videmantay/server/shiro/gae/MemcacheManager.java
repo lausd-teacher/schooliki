@@ -1,4 +1,4 @@
-package com.cilogi.shiro.gae;
+package net.videmantay.server.shiro.gae;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;

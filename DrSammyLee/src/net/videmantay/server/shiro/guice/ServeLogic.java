@@ -19,11 +19,9 @@
 //
 
 
-package com.cilogi.shiro.guice;
+package net.videmantay.server.shiro.guice;
 
-import com.cilogi.shiro.oauth.provider.FacebookAuth;
-import com.cilogi.shiro.oauth.provider.IOAuthProviderInfo;
-import com.cilogi.util.doc.CreateDoc;
+import net.videmantay.server.util.doc.CreateDoc;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.appengine.tools.appstats.AppstatsFilter;
 import com.google.appengine.tools.appstats.AppstatsServlet;

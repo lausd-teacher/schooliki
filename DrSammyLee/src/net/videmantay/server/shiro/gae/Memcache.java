@@ -1,4 +1,4 @@
-package com.cilogi.shiro.gae;
+package net.videmantay.server.shiro.gae;
 
 import com.google.appengine.api.memcache.AsyncMemcacheService;
 import com.google.appengine.api.memcache.Expiration;

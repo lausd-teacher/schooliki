@@ -18,7 +18,7 @@
 //
 
 
-package com.cilogi.shiro.googlegae;
+package net.videmantay.server.shiro.googlegae;
 
 import com.google.common.base.Preconditions;
 import org.apache.shiro.authc.AuthenticationInfo;

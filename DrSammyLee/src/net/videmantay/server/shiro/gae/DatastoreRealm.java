@@ -17,7 +17,7 @@
 // effectively secure at all times.
 //
 
-package com.cilogi.shiro.gae;
+package net.videmantay.server.shiro.gae;
 
 import com.google.common.base.Preconditions;
 import org.apache.shiro.authc.*;

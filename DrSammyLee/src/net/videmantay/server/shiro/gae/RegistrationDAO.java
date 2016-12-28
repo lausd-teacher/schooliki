@@ -18,7 +18,7 @@
 //
 
 
-package com.cilogi.shiro.gae;
+package net.videmantay.server.shiro.gae;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
