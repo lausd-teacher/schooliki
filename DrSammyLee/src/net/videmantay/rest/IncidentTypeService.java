@@ -1,6 +1,6 @@
 package net.videmantay.rest;
 
-import static net.videmantay.server.user.DB.db;
+import static net.videmantay.server.util.DB.db;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 import net.videmantay.rest.dto.IncidentTypeDTO;
 import net.videmantay.server.entity.IncidentType;
-import net.videmantay.server.user.DB;
+import net.videmantay.server.util.DB;
 
 @Path("/incidenttype")
 public class IncidentTypeService {

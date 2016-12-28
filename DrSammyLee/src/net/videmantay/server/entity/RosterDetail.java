@@ -1,4 +1,4 @@
-package net.videmantay.server.user;
+package net.videmantay.server.entity;
 
 import java.io.Serializable;
 
@@ -9,7 +9,6 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
-import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.shared.GradeLevel;
 
 @Cache

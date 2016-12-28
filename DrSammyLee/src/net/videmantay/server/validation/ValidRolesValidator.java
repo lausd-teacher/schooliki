@@ -3,7 +3,7 @@ package net.videmantay.server.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import net.videmantay.server.user.AppUser;
+import net.videmantay.server.entity.AppUser;
 import net.videmantay.shared.UserRoles;
 
 public class ValidRolesValidator implements ConstraintValidator<ValidRoles, AppUser> {

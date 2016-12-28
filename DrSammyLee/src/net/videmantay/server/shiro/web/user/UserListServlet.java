@@ -29,9 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,14 +47,14 @@ import net.videmantay.server.shiro.gae.GaeUser;
 import net.videmantay.server.shiro.gae.GaeUserDAO;
 import net.videmantay.server.shiro.web.BaseServlet;
 
-@Singleton
+
 public class UserListServlet extends BaseServlet {
     static final Logger LOG = Logger.getLogger(UserListServlet.class.getName());
 
     private static final int MAX_QUERY_OFFSET = 50;
 
-    @Inject
-    UserListServlet(Provider<GaeUserDAO> daoProvider) {
+
+    UserListServlet(GaeUserDAO daoProvider) {
         super(daoProvider);
     }
 

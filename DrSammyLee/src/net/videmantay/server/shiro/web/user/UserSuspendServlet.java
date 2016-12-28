@@ -27,21 +27,18 @@ import net.videmantay.server.shiro.web.BaseServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@Singleton
+
 public class UserSuspendServlet extends BaseServlet {
     static final Logger LOG = LoggerFactory.getLogger(UserSuspendServlet.class);
 
-    @Inject
-    UserSuspendServlet(Provider<GaeUserDAO> daoProvider) {
+  
+    UserSuspendServlet(GaeUserDAO daoProvider) {
         super(daoProvider);    
     }
 
@@ -49,7 +46,7 @@ public class UserSuspendServlet extends BaseServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String userName = request.getParameter(USERNAME);
-            GaeUserDAO dao = daoProvider.get();
+            GaeUserDAO dao = daoProvider;
             GaeUser user = dao.findUser(userName);
             if (user != null) {
                     if (isCurrentUserAdmin()) {

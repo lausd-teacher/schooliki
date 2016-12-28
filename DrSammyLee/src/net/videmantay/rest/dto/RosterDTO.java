@@ -7,11 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import net.videmantay.server.entity.GoogleService;
-
+import net.videmantay.server.entity.Roster;
 import net.videmantay.server.entity.TeacherInfo;
-
-import net.videmantay.server.user.Roster;
-
 import net.videmantay.shared.GradeLevel;
 
 public class RosterDTO implements Serializable {

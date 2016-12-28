@@ -1,4 +1,4 @@
-package net.videmantay.server.user;
+package net.videmantay.server.util;
 
 import static com.googlecode.objectify.ObjectifyService.*;
 

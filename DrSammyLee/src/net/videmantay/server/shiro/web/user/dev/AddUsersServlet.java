@@ -28,24 +28,21 @@ import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@Singleton
+
 public class AddUsersServlet extends BaseServlet {
     static final Logger LOG = LoggerFactory.getLogger(AddUsersServlet.class);
 
     private static final int DEFAULT_COUNT = 100;
     private static final String DEFAULT_DOMAIN = "dummy.com";
 
-    @Inject
-    public AddUsersServlet(Provider<GaeUserDAO> daoProvider) {
+   
+    public AddUsersServlet(GaeUserDAO daoProvider) {
         super(daoProvider);
     }
 
@@ -54,7 +51,7 @@ public class AddUsersServlet extends BaseServlet {
         int count = intParameter("count", request, DEFAULT_COUNT);
         String domain = stringParameter("domain", request, DEFAULT_DOMAIN);
 
-        GaeUserDAO dao = daoProvider.get();
+        GaeUserDAO dao = daoProvider;
         for (int i = 0; i < count; i++) {
             String nm = "user_"+i+"@" + domain;
             GaeUser user = dao.get(nm);

@@ -34,9 +34,6 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,13 +58,13 @@ import java.util.logging.Logger;
  * is logged out & you'll have to re-authenticate with other Google services.  I guess we could make this
  * an option if users find it too annoying.
  */
-@Singleton
+
 public class GoogleLoginServlet extends BaseServlet {
     static final Logger LOG = Logger.getLogger(GoogleLoginServlet.class.getName());
 
 
-    @Inject
-    public GoogleLoginServlet(Provider<GaeUserDAO> daoProvider) {
+  
+    public GoogleLoginServlet(GaeUserDAO daoProvider) {
         super(daoProvider);
     }
 
@@ -99,7 +96,7 @@ public class GoogleLoginServlet extends BaseServlet {
             String username = currentUser.getEmail();
 
             // add the user to the database
-            GaeUserDAO dao = daoProvider.get();
+            GaeUserDAO dao = daoProvider;
             GaeUser user = dao.findUser(username);
             if (user == null) {
                 user = new GaeUser(username, Sets.newHashSet("user"), Sets.<String>newHashSet());

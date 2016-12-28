@@ -1,4 +1,4 @@
-package net.videmantay.server.user;
+package net.videmantay.server.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;

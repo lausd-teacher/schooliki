@@ -3,8 +3,7 @@ package net.videmantay.server.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-
-import net.videmantay.server.user.Roster;
+import net.videmantay.server.entity.Roster;
 
 public class ValidDateRangeValidator implements ConstraintValidator<ValidDateRange, Roster>{
 

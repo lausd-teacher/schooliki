@@ -35,8 +35,6 @@ import org.apache.shiro.subject.Subject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,13 +57,13 @@ public class BaseServlet extends HttpServlet implements ParameterNames, MimeType
 
     private CreateDoc create;
 
-    protected Provider<GaeUserDAO> daoProvider;
+    protected GaeUserDAO daoProvider;
 
-    protected BaseServlet(Provider<GaeUserDAO> daoProvider) {
+    protected BaseServlet(GaeUserDAO daoProvider) {
         this.daoProvider = daoProvider;
     }
 
-    @Inject
+   
     protected void setCreate(CreateDoc create) {
         this.create = create;
     }
@@ -167,7 +165,7 @@ public class BaseServlet extends HttpServlet implements ParameterNames, MimeType
         if (email == null) {
             return null;
         } else {
-            GaeUserDAO dao = daoProvider.get();
+            GaeUserDAO dao = daoProvider;
             return dao.findUser(email);
         }
     }

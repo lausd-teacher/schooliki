@@ -2,7 +2,7 @@ package net.videmantay.rest.dto;
 
 import java.io.Serializable;
 
-import net.videmantay.server.user.RosterStudent;
+import net.videmantay.server.entity.RosterStudent;
 
 
 

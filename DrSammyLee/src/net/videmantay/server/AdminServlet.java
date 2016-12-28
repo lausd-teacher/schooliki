@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.videmantay.server.user.DB;
+import net.videmantay.server.util.DB;
 
 public class AdminServlet extends HttpServlet{
 	

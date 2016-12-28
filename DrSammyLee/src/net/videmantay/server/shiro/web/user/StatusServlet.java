@@ -27,9 +27,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.subject.Subject;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,12 +41,12 @@ import java.util.logging.Logger;
  * always run server-side to avoid scams.  However this information can be used to
  * set up display options.
  */
-@Singleton
+
 public class StatusServlet extends BaseServlet {
     static final Logger LOG = Logger.getLogger(StatusServlet.class.getName());
 
-    @Inject
-    StatusServlet(Provider<GaeUserDAO> daoProvider) {
+ 
+    StatusServlet(GaeUserDAO daoProvider) {
         super(daoProvider);
     }
 

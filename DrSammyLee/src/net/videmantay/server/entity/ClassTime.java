@@ -9,7 +9,6 @@ import com.googlecode.objectify.annotation.Index;
 
 import net.videmantay.rest.dto.ClassTimeDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
-import net.videmantay.server.user.RosterStudent;
 
 @Entity
 public class ClassTime implements Serializable{

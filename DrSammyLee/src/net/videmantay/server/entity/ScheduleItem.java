@@ -10,7 +10,6 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 
 import net.videmantay.rest.dto.ScheduleItemDTO;
-import net.videmantay.server.user.Roster;
 
 
 public class ScheduleItem {

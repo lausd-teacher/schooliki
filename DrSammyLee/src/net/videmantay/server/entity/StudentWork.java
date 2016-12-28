@@ -10,7 +10,6 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
 import net.videmantay.rest.dto.StudentWorkDTO;
-import net.videmantay.server.user.RosterStudent;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;

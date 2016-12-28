@@ -17,14 +17,14 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
 import net.videmantay.rest.dto.AppUserDTO;
-import net.videmantay.server.user.AppUser;
-import net.videmantay.server.user.DB;
+import net.videmantay.server.entity.AppUser;
+import net.videmantay.server.util.DB;
 import net.videmantay.server.util.UserPasswordGenerator;
 
 import com.google.appengine.api.datastore.Entity;
 
-import static net.videmantay.server.user.DB.*;
 import static com.googlecode.objectify.ObjectifyService.ofy;
+import static net.videmantay.server.util.DB.*;
 
 import java.util.ArrayList;
 import java.util.List;

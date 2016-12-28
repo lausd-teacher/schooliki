@@ -1,7 +1,7 @@
 package net.videmantay.rest;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
-import static net.videmantay.server.user.DB.db;
+import static net.videmantay.server.util.DB.db;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +33,16 @@ import net.videmantay.rest.dto.RosterStudentDTO;
 import net.videmantay.rest.dto.ScheduleDTO;
 import net.videmantay.rest.dto.ScheduleItemDTO;
 import net.videmantay.rest.dto.StudentRollDTO;
+import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Incident;
+import net.videmantay.server.entity.Roster;
+import net.videmantay.server.entity.RosterStudent;
 import net.videmantay.server.entity.Schedule;
 import net.videmantay.server.entity.ScheduleItem;
 import net.videmantay.server.entity.StudentIncident;
 import net.videmantay.server.entity.StudentRoll;
-import net.videmantay.server.user.AppUser;
-import net.videmantay.server.user.DB;
-import net.videmantay.server.user.Roster;
-import net.videmantay.server.user.RosterStudent;
+import net.videmantay.server.util.DB;
 
 @Path("/roster")
 public class RosterService {

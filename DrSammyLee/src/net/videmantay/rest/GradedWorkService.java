@@ -30,10 +30,10 @@ import net.videmantay.rest.dto.StudentWorkDTO;
 import net.videmantay.server.entity.AssignedGradedWork;
 import net.videmantay.server.entity.GoogleCalendarEvent;
 import net.videmantay.server.entity.GradedWork;
+import net.videmantay.server.entity.Roster;
+import net.videmantay.server.entity.RosterStudent;
 import net.videmantay.server.entity.StudentWork;
-import net.videmantay.server.user.DB;
-import net.videmantay.server.user.Roster;
-import net.videmantay.server.user.RosterStudent;
+import net.videmantay.server.util.DB;
 
 @Path("/gradedwork")
 public class GradedWorkService {

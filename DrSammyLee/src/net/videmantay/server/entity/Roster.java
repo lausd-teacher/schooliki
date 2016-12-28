@@ -1,4 +1,4 @@
-package net.videmantay.server.user;
+package net.videmantay.server.entity;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -14,14 +14,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import net.videmantay.rest.dto.RosterDTO;
-import net.videmantay.server.entity.ClassTime;
-import net.videmantay.server.entity.Goal;
-import net.videmantay.server.entity.GoogleService;
-import net.videmantay.server.entity.Incident;
-import net.videmantay.server.entity.SeatingChart;
-import net.videmantay.server.entity.StudentGroup;
-import net.videmantay.server.entity.StudentJob;
-import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.server.validation.ValidDateFormat;
 import net.videmantay.server.validation.ValidDateRange;
 import net.videmantay.shared.GradeLevel;

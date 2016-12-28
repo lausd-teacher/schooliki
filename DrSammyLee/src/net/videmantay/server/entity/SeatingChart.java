@@ -8,8 +8,6 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Serialize;
 
-import net.videmantay.server.user.Roster;
-
 
 @Entity
 public class SeatingChart implements Serializable {

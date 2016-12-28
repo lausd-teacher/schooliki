@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.IncidentType;
-import net.videmantay.server.user.AppUser;
-import net.videmantay.server.user.DB;
+import net.videmantay.server.util.DB;
 import net.videmantay.server.util.UserPasswordGenerator;
 
 public class DemoDataServlet extends HttpServlet {

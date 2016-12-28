@@ -2,7 +2,7 @@ package net.videmantay.rest.dto;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import net.videmantay.server.user.AppUser;
+import net.videmantay.server.entity.AppUser;
 import net.videmantay.shared.UserRoles;
 
 public class AppUserDTO {

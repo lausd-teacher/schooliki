@@ -29,9 +29,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,12 +36,12 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 
-@Singleton
+
 public class LoginServlet extends BaseServlet {
     static final Logger LOG = Logger.getLogger(LoginServlet.class.getName());
 
-    @Inject
-    LoginServlet(Provider<GaeUserDAO> daoProvider) {
+ 
+    LoginServlet(GaeUserDAO daoProvider) {
         super(daoProvider);
     }
     

@@ -1,4 +1,4 @@
-package net.videmantay.server.user;
+package net.videmantay.server.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,8 +20,6 @@ import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Serialize;
 
 import net.videmantay.rest.dto.RosterStudentDTO;
-import net.videmantay.server.entity.Goal;
-import net.videmantay.server.entity.StudentJob;
 import net.videmantay.server.validation.ValidDateOfBirth;
 import net.videmantay.server.validation.ValidationMessages;
 

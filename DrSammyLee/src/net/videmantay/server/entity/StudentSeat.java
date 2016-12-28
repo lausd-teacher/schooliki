@@ -2,8 +2,6 @@ package net.videmantay.server.entity;
 
 import java.io.Serializable;
 
-import net.videmantay.server.user.RosterStudent;
-
 public class StudentSeat implements Serializable{
 	
 	

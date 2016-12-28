@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import net.videmantay.server.ErrorMessages;
 import net.videmantay.server.ViewsUtils;
-import net.videmantay.server.user.AppUser;
-import net.videmantay.server.user.DB;
+import net.videmantay.server.entity.AppUser;
+import net.videmantay.server.util.DB;
 import net.videmantay.shared.UserRoles;
 
 public class LoginService extends HttpServlet {

@@ -79,12 +79,7 @@ public class GaeUserDAO extends BaseDAO<GaeUser> {
         return reg;
     }
 
-    public String findUserNameFromValidCode(String code) {
-        RegistrationDAO dao = new RegistrationDAO();
-        RegistrationString reg = dao.get(code);
-        return (reg == null) ?  null : (reg.isValid() ? reg.getUsername() : null);
-    }
-
+ 
     public GaeUser findUser(String userName) {
         return get(userName);
     }

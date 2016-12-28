@@ -11,7 +11,6 @@ import com.googlecode.objectify.annotation.Serialize;
 
 import net.videmantay.rest.dto.ScheduleDTO;
 import net.videmantay.rest.dto.ScheduleItemDTO;
-import net.videmantay.server.user.Roster;
 
 @Entity
 public class Schedule {
