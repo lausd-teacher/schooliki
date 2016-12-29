@@ -22,7 +22,7 @@ import net.videmantay.admin.views.AppLayout;
 import net.videmantay.admin.views.AppUserDeleteModal;
 import net.videmantay.admin.views.AppUserForm;
 import net.videmantay.admin.views.components.AdminSideNav;
-import net.videmantay.shared.util.GoogleJs;
+
 
 public class MainPageActivity extends AbstractActivity implements AppUserForm.Presenter, AdminGrid.Presenter, 
    AppUserDeleteModal.Presenter,AdminSideNav.Presenter {
@@ -205,7 +205,7 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 		sideNav.getLogoutLink().addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
-				GoogleJs.logout();
+			
 			}
 		});
 		

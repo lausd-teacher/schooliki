@@ -3,11 +3,13 @@ package net.videmantay.rest;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 import static net.videmantay.server.util.DB.db;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
@@ -33,6 +35,7 @@ import net.videmantay.rest.dto.RosterStudentDTO;
 import net.videmantay.rest.dto.ScheduleDTO;
 import net.videmantay.rest.dto.ScheduleItemDTO;
 import net.videmantay.rest.dto.StudentRollDTO;
+import net.videmantay.server.GoogleUtils;
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Incident;
@@ -44,8 +47,44 @@ import net.videmantay.server.entity.StudentIncident;
 import net.videmantay.server.entity.StudentRoll;
 import net.videmantay.server.util.DB;
 
+import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.Preconditions;
+import com.google.api.services.calendar.model.*;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.Permission;
+import com.google.appengine.api.channel.ChannelMessage;
+import com.google.appengine.api.channel.ChannelService;
+import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.appengine.api.datastore.Cursor;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.labs.repackaged.com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.primitives.Longs;
+
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.VoidWork;
+import com.googlecode.objectify.cmd.Query;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
+
 @Path("/roster")
-public class RosterService {
+public class RosterService{
+	
+	
 
 	private final Logger log = Logger.getLogger("Roster Service");
 
@@ -62,7 +101,7 @@ public class RosterService {
 	DB<ClassTime> classTimeDB = new DB<ClassTime>(ClassTime.class);
 	
 	DB<StudentRoll> studentRollDB = new DB<StudentRoll>(StudentRoll.class);
-
+	
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

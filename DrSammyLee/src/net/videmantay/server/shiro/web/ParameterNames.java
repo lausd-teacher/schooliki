@@ -24,7 +24,7 @@ package net.videmantay.server.shiro.web;
  * These are the parameters used to post information from the
  * client to the server.  Gathered here for easy reference.
  */
-interface ParameterNames {
+public interface ParameterNames {
     String CODE = "code";
 
 

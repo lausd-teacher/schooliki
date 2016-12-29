@@ -1,7 +1,7 @@
 package net.videmantay.roster.json;
 
 
-import net.videmantay.shared.json.EventJson;
+import net.videmantay.student.json.EventJson;
 
 public class GradedWorkJson extends AssignmentJson {
 

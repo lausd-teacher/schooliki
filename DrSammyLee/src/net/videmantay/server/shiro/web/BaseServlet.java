@@ -165,7 +165,7 @@ public class BaseServlet extends HttpServlet implements ParameterNames, MimeType
         if (email == null) {
             return null;
         } else {
-            GaeUserDAO dao = daoProvider;
+            GaeUserDAO dao = new GaeUserDAO();
             return dao.findUser(email);
         }
     }

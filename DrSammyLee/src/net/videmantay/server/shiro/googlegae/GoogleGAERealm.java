@@ -20,16 +20,27 @@
 
 package net.videmantay.server.shiro.googlegae;
 
+import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.shiro.gae.MemcacheManager;
+import net.videmantay.server.util.DB;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.realm.AuthenticatingRealm;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
 
+import com.google.common.base.Preconditions;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 
-public class GoogleGAERealm extends AuthenticatingRealm {
+public class GoogleGAERealm extends AuthorizingRealm {
     static final Logger LOG = Logger.getLogger(GoogleGAERealm.class.getName());
 
     public GoogleGAERealm() {
@@ -45,5 +56,30 @@ public class GoogleGAERealm extends AuthenticatingRealm {
         } else {
             return null;
         }
+    }
+    
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        Preconditions.checkNotNull(principals, "You can't have a null collection of principals");
+        String userName = (String) getAvailablePrincipal(principals);
+        if (userName == null) {
+            throw new NullPointerException("Can't find a principal in the collection");
+        }
+        LOG.fine("Finding authorization info for " + userName + " in DB");
+        AppUser user = DB.db().load().type(AppUser.class).filter("eMail", userName).first().now();
+        if (user == null || userIsNotQualified(user)) {
+            return null;
+        }
+        LOG.fine("Found " + userName + " in DB");
+        Set<String> roles = new HashSet<>();
+        roles.addAll(Arrays.asList(user.getRoles()));
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.setRoles(roles);
+        return info;
+    }
+    
+   
+    private static boolean userIsNotQualified(AppUser user) {
+        return !user.isActive();
     }
 }

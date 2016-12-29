@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.EventBus;
 
 import net.videmantay.admin.places.MainAdminPlace;
-import net.videmantay.shared.util.GoogleJs;
 
 
 public class Admin implements EntryPoint {
@@ -46,9 +45,6 @@ public class Admin implements EntryPoint {
 //		});
 		
 		historyHandler.handleCurrentHistory();
-		
-		GoogleJs.InitializeSignedInListener();
-
 	}
 
 }

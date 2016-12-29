@@ -81,7 +81,7 @@ public class GaeUserDAO extends BaseDAO<GaeUser> {
 
  
     public GaeUser findUser(String userName) {
-        return get(userName);
+        return ofy().load().type(GaeUser.class).filter("email", userName).first().now();
     }
 
     /**

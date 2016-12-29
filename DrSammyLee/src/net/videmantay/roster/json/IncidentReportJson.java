@@ -5,7 +5,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayNumber;
 
 import net.videmantay.roster.json.IncidentJson;
-import net.videmantay.shared.json.EventJson;
+import net.videmantay.student.json.EventJson;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class IncidentReportJson extends JavaScriptObject {

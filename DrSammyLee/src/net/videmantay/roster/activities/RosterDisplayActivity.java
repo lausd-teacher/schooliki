@@ -41,7 +41,7 @@ import net.videmantay.roster.views.RosterPanel;
 import net.videmantay.roster.views.UserProfilePage;
 import net.videmantay.roster.views.components.MainRosterNavBar;
 import net.videmantay.roster.views.components.MainRosterSideNav;
-import net.videmantay.shared.util.GoogleJs;
+
 
 public class RosterDisplayActivity extends AbstractActivity
 		implements RosterDisplay.Presenter, RosterForm.Presenter, RosterPanel.Presenter, MainRosterSideNav.Presenter {

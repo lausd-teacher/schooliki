@@ -24,7 +24,6 @@ import org.apache.shiro.session.SessionException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.LogoutFilter;
 
-import javax.inject.Inject;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.util.logging.Logger;
@@ -32,10 +31,8 @@ import java.util.logging.Logger;
 public class SocialLogoutFilter extends LogoutFilter {
     static final Logger LOG = Logger.getLogger(SocialLogoutFilter.class.getName());
 
-    @Inject
     public SocialLogoutFilter() {}
 
-    @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
         Subject subject = SecurityUtils.getSubject();
 
