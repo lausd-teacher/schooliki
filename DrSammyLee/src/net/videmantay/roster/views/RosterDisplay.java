@@ -19,9 +19,9 @@ import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.GradedWorkJson;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.shared.url.RosterUrl;
 import net.videmantay.student.json.RosterDetailJson;
 
 public class RosterDisplay extends Composite{

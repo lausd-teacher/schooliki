@@ -30,11 +30,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 @Path("/appuser")
 public class AppUserService {
 
 	private final Logger log = Logger.getLogger("Admin Service");
+	private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 
@@ -50,7 +57,7 @@ public class AppUserService {
 		log.log(Level.INFO, "get user is called " + id);
 
 		if (result != null) {
-			return Response.ok().entity(new AppUserDTO(result)).build();
+			return Response.ok().entity(result).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
@@ -62,16 +69,13 @@ public class AppUserService {
 
 		ofy().clear();
 
-		List<AppUser> userAcctList = new ArrayList<AppUser>();
+		List<AppUser> userAcctList;
 
 		 userAcctList = db().load().type(AppUser.class).list();
 		
-		List<AppUserDTO> appUserDTOList = new ArrayList<AppUserDTO>();
-		   
-		   for(AppUser user: userAcctList)
-			   appUserDTOList.add(new AppUserDTO(user));
+		
 
-		return Response.ok().entity(appUserDTOList).build();
+		return Response.ok().entity(userAcctList).build();
 	}
 	
 	
@@ -80,37 +84,41 @@ public class AppUserService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createUser(AppUserDTO appUser) {
-
-		final AppUser toBeCreated = AppUser.createFromDTO(appUser);
-		
-		//Generate password for the newly created user
-		
-		  toBeCreated.setPassword(UserPasswordGenerator.nextPassword());
+	public Response createUser(final AppUser appUser) {
+		//validate here!//
+		Set<ConstraintViolation<AppUser>> constraints = validator.validate(appUser);
+		if(!constraints.isEmpty()){
+			return Response.status(Status.NOT_ACCEPTABLE).entity(appUser).build();
+		}
 
 		ofy().transact(new VoidWork() {
 			@Override
 			public void vrun() {
-				toBeCreated.setId(appUserDB.save(toBeCreated).getId());
+				appUser.setId(appUserDB.save(appUser).getId());
 			}
 		});
-		return Response.status(Status.CREATED).entity(toBeCreated.getId()).build();
+		return Response.status(Status.CREATED).entity(appUser.getId()).build();
 	}
 
 	@POST
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifyUser(@PathParam("id") Long id, AppUserDTO newProperties) {
+	public Response modifyUser(@PathParam("id") Long id, AppUser newProperties) {
 
+		//first validate
+		Set<ConstraintViolation<AppUser>>constraints = validator.validate(newProperties);
+		if(!constraints.isEmpty()){
+			return Response.status(Status.NOT_ACCEPTABLE).entity(newProperties).build();
+		}
 		AppUser result = ofy().load().key(Key.create(AppUser.class, id)).now();
 
 		if (result != null) {
 			newProperties.setId(id);
 			
-			AppUser modified = AppUser.createFromDTO(newProperties);
+			
 
-			appUserDB.save(modified);
+			appUserDB.save(newProperties);
 
 			return Response.ok().build();
 

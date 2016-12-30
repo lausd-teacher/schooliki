@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialColumn;
-import net.videmantay.roster.ClientFactory;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
 
@@ -34,27 +34,11 @@ public class ClassTimeGrid extends Composite {
 	}
 
 	
-	public ClassTimeGrid(ClientFactory factory) {
+	public ClassTimeGrid() {
 		initWidget(uiBinder.createAndBindUi(this));
-		roster = factory.getCurrentRoster();
-		currrentClassTime = factory.getSelectedClassTime();
-		container.add(factory.getClassTimeForm());
-
-		if(currrentClassTime != null){
-			
-//			ClasstimeGridItem activeItem = new ClasstimeGridItem();
-//			activeItem.setClassTime(currrentClassTime);
-//			activeItem.addStyleName("activeClassTime");
-//			cardCol.add(activeItem);
-//			if(roster.getClassTimes().length() > 1){
-//			for(int i = 0; i < roster.getClassTimes().length(); i++){
-//				ClasstimeGridItem item = new ClasstimeGridItem();
-//				item.setClassTime(roster.getClassTimes().get(i));
-//				cardCol.add(item);
-//			 }
-//			}
+		roster = RosterUtils.getCurrentRoster();
+		currrentClassTime = RosterUtils.getSelectedClassTime();
 		
-		}
 	}
 	
 	

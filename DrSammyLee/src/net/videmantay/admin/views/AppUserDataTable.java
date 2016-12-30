@@ -38,7 +38,7 @@ public class AppUserDataTable extends DataGrid<AppUserJson> {
 
 		@Override
 		public String getValue(AppUserJson object) {
-			return object.geteMail();
+			return object.getEmail();
 			
 		}};
 		
@@ -84,7 +84,7 @@ public class AppUserDataTable extends DataGrid<AppUserJson> {
 		public void onBrowserEvent(Cell.Context context, Element parent, AppUserJson value, NativeEvent event, ValueUpdater<AppUserJson> valueUpdater){
 			if($(event.getEventTarget()).hasClass("delete-user")){
 				//fire a show deleteModal
-				GWT.log("delete button hit" + value.geteMail());
+				GWT.log("delete button hit" + value.getEmail());
 				factory.setCurrentSelectedUser(value);
 				deleteModal.show(value);
 			}

@@ -5,7 +5,7 @@
 	<m:MaterialModal ui:field="deleteModal">
 		<m:MaterialModalContent>
 			<g:HTMLPanel>
-				<div><h4>Are you sure you want to deactivate user ? (it will remain in the database, and you can reactivate it later) </h4>
+				<div><h4>Are you sure you want to delte user ? (try deactivating,it will remain in the database, and you can reactivate it later) </h4>
 					<h6 ui:field="deletedUserHeading"></h6>
 				</div>
 			</g:HTMLPanel>

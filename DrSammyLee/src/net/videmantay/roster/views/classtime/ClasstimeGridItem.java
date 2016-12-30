@@ -20,11 +20,8 @@ public class ClasstimeGridItem extends Composite {
 	interface ClasstimeGridItemUiBinder extends UiBinder<Widget, ClasstimeGridItem> {
 	}
 
-	public ClasstimeGridItem(String title, String description, String classTimeId) {
+	public ClasstimeGridItem() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.title.setText(title);
-		this.description.setText(description);
-		this.classTimeId = classTimeId;
 	}
 	
 	@UiField
@@ -45,7 +42,27 @@ public class ClasstimeGridItem extends Composite {
 	@UiField
 	MaterialAnchorButton procedBtn;
 	
-	String classTimeId;
+	private  ClassTimeJson classTime;
 
 	
+	public void setClassTime(ClassTimeJson classTime){
+		this.classTime = classTime;
+		draw();
+	}
+	
+	private void draw(){
+		title.setText(classTime.getTitle());
+		description.setText(classTime.getDescript());
+		String groupNumText = "0";
+		if(classTime.getGroups() != null){
+			groupNumText=classTime.getGroups().length() + "";
+		}
+		groupNum.setText(groupNumText);
+		
+		String procedNumText = "0";
+		if(classTime.getProcedures() != null){
+			procedNumText=classTime.getProcedures().length() + "";
+		}
+		procedureNum.setText(procedNumText);
+	}
 }

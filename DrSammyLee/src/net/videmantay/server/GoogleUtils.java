@@ -38,7 +38,7 @@ public class GoogleUtils {
 	
 	private final static JacksonFactory jsonFactory = new JacksonFactory();
 	private final static UrlFetchTransport transport = new UrlFetchTransport();
-	private final static String applicationName = "Schooleaky";
+	private final static String applicationName = "Schooliki";
 	private final static String clientId = "342098051221-vohdgpes1bunbmpkbb2i29k8tpkrcnqg.apps.googleusercontent.com";
 	private final static String clientSecret = "s0aSpImQ-7Q5b_tlqW7u1gSy";
 	public final static AppEngineDataStoreFactory dataStoreFactory = AppEngineDataStoreFactory.getDefaultInstance();

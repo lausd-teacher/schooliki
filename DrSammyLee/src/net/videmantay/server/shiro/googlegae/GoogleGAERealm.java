@@ -34,9 +34,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 
 import com.google.common.base.Preconditions;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Logger;
 
 
@@ -71,10 +68,9 @@ public class GoogleGAERealm extends AuthorizingRealm {
             return null;
         }
         LOG.fine("Found " + userName + " in DB");
-        Set<String> roles = new HashSet<>();
-        roles.addAll(Arrays.asList(user.getRoles()));
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setRoles(roles);
+        info.setRoles(user.roles);
+        info.setStringPermissions(user.permissions);
         return info;
     }
     

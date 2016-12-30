@@ -22,7 +22,6 @@ import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
-import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 
@@ -115,7 +114,7 @@ public class RosterDashboardPanel extends Composite
 	private State state = State.DASHBOARD;
 	
 	private HasRosterDashboardView display;
-	final ClientFactory factory;
+	
 
 
 	//enum for state
@@ -123,9 +122,8 @@ public class RosterDashboardPanel extends Composite
 	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
-	public RosterDashboardPanel(ClientFactory factory) {
+	public RosterDashboardPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.factory = factory;
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 	}
 	

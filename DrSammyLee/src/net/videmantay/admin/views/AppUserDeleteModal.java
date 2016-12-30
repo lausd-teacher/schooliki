@@ -17,8 +17,8 @@ import static com.google.gwt.query.client.GQuery.*;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialToast;
+import net.videmantay.admin.AdminUrl;
 import net.videmantay.admin.json.AppUserJson;
-import net.videmantay.shared.url.AdminUrl;
 
 public class AppUserDeleteModal extends Composite {
 
@@ -47,7 +47,7 @@ public class AppUserDeleteModal extends Composite {
 
 	
 	public void show(AppUserJson user){
-		$(deletedUserHeading).html("<span>" + user.geteMail() + "<br/>" 
+		$(deletedUserHeading).html("<span>" + user.getEmail() + "<br/>" 
 				+ user.getFirstName() +"&nbsp;" + user.getLastName() 
 				+"</span>");
 		deleteModal.openModal();

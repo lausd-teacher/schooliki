@@ -31,7 +31,7 @@ public class AppUserForm extends Composite  {
 	}	
 		
 	@UiField
-	MaterialInput eMail;
+	MaterialInput email;
 		
 	@UiField
 	MaterialCard rolesSelectCard;
@@ -183,7 +183,7 @@ public class AppUserForm extends Composite  {
 			AppUserJson newUser = JavaScriptObject.createObject().cast();
 			newUser.setFirstLogin(true);
 			newUser.setActive(true);
-			newUser.seteMail(eMail.getText());
+			newUser.setEmail(email.getText());
 			
 			boolean teacher = teacherCheck.getValue();
 			boolean faculty = facultyCheck.getValue();

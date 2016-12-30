@@ -19,9 +19,9 @@ import static com.google.gwt.query.client.GQuery.$;
 import gwt.material.design.client.ui.MaterialBadge;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialLabel;
-import net.videmantay.roster.ClientFactory;
 import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
+import net.videmantay.student.json.RosterStudentJson;
 
 public class RosterStudentCard extends Composite {
 
@@ -47,17 +47,15 @@ public class RosterStudentCard extends Composite {
 	
 	final StudentActionModal studentActionModal;
 	
-	final AppUserJson currentStudent;
+	final RosterStudentJson currentStudent;
 	
 	final Long currentRosterId; 
 		
-	final ClientFactory clientFactory;
-	
 	public static final String ABSENT_HTML_SYMBOL = "&#9747;";
 	public static final String PRESENT_HTML_SYMBOL = "&#9731;";
 	
 
-	public RosterStudentCard(AppUserJson student, ClientFactory factory) {
+	public RosterStudentCard(RosterStudentJson student) {
 		initWidget(uiBinder.createAndBindUi(this));
 		attendenceBadge.setVisibility(Visibility.HIDDEN);
 		attendenceBadge.getElement().getStyle().setBackgroundColor("red");

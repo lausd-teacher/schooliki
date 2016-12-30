@@ -35,12 +35,11 @@ public class IncidentMain extends Composite {
 	MaterialRow incidentTypeContainer;
 	
 	
-	IncidentForm incidentForm;
+	IncidentForm incidentForm = new IncidentForm();
 	
 	
-	public IncidentMain(IncidentForm incidentForm) {
+	public IncidentMain() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.incidentForm = incidentForm;
 		container.add(incidentForm);
 	}
 	

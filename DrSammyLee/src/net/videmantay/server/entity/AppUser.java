@@ -1,6 +1,13 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Set;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -16,31 +23,41 @@ public  class AppUser  implements Serializable {
 
      
 	@Id
-    Long id;
+    public Long id;
         
     @Index
-    String googleId;
+    @Email
+    public String googleId;
     
-    String name;
+    public String name;
     
-    String firstName;
+    public String firstName;
     
-    String lastName;
+    public String lastName;
     
-    String imageUrl;
+    public String imageUrl;
     
     @Index
-    String eMail;
+    @Email
+    public String email;
     
-    boolean active;
+    @NotNull
+    public boolean active;
     
-    boolean firstLogin;
+    @NotNull
+    public boolean firstLogin;
     
-    String[] roles;
+    @Size(min=1)
+    public Set<String> roles;
     
-    String password;
+    public Set<String> permissions;
     
-    int incidentPointsAggregate = 0;
+    public int incidentPointsAggregate = 0;
+    
+    public String personalTitle;
+    
+    @Index
+    private Date dateRegistered;
 
 	public AppUser() {
 
@@ -48,13 +65,13 @@ public  class AppUser  implements Serializable {
 	
 	
 
-	public AppUser(String firstName, String lastName, String imageUrl, String eMail, String googleId, boolean isActive, String[] roles, boolean isFirstLogin) {
+	public AppUser(String firstName, String lastName, String imageUrl, String eMail, String googleId, boolean isActive,Set<String> roles,Set<String>permissions, boolean isFirstLogin) {
 		this.name = firstName + " " + lastName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.name = firstName + " " + lastName;
 		this.imageUrl = imageUrl;
-		this.eMail = eMail;
+		this.email = eMail;
 		this.googleId = googleId;
 		this.active = isActive;
 		this.roles = roles;
@@ -76,8 +93,8 @@ public  class AppUser  implements Serializable {
 		return this.imageUrl;
 	}
 
-	public String geteMail() {
-		return this.eMail;
+	public String getEmail() {
+		return this.email;
 	}
 
 	public void setId(Long id) {
@@ -93,8 +110,8 @@ public  class AppUser  implements Serializable {
 		this.imageUrl = imageUrl;
 	}
 
-	public void seteMail(String eMail) {
-		this.eMail = eMail;
+	public void setEmail(String eMail) {
+		this.email = eMail;
 	}
 	
 	
@@ -116,13 +133,13 @@ public  class AppUser  implements Serializable {
 
 
 
-	public String[] getRoles() {
+	public Set<String> getRoles() {
 		return this.roles;
 	}
 
 
 
-	public void setRoles(String[] roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 
@@ -134,14 +151,12 @@ public  class AppUser  implements Serializable {
 
 
 
-	public String getPassword() {
-		return this.password;
+	public Set<String> getPermissions(){
+		return this.permissions;
 	}
-
-
-
-	public void setPassword(String password) {
-		this.password = password;
+	
+	public void setPermissions(Set<String> perms){
+		this.permissions = perms;
 	}
 
 
@@ -179,6 +194,14 @@ public  class AppUser  implements Serializable {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public String getPersonalTitle(){
+		return this.personalTitle;
+	}
+	
+	public void setPersonalTitle(String title){
+		this.personalTitle = title;
+	}
 
 
 
@@ -192,32 +215,19 @@ public  class AppUser  implements Serializable {
 		this.incidentPointsAggregate = incidentPointsAggregate;
 	}
 
-
-
-	public static AppUser createFromDTO(AppUserDTO appuserDTO) {
-		AppUser appUser = new AppUser();
-		appUser.id = appuserDTO.getId();
-		appUser.active = appuserDTO.isActive();
-		appUser.googleId = appuserDTO.getGoogleId();
-		appUser.name = appuserDTO.getName();
-		appUser.imageUrl = appuserDTO.getImageUrl();
-		appUser.eMail = appuserDTO.geteMail();
-		appUser.password = appuserDTO.getPassword();
-		appUser.firstName =appuserDTO.getFirstName();
-		appUser.lastName = appuserDTO.getLastName();
-		appUser.firstLogin = appuserDTO.isFirstLogin();
-		appUser.setRoles(appuserDTO.getRoles());
-		appUser.incidentPointsAggregate = appuserDTO.getIncidentPointsAggregate();
-		return appUser;
-	}
 	
 	
 	public boolean hasRole(UserRoles role){
-		for(int i = 0; i < roles.length; i++){
-			if(roles[i].toString().equals(role.toString()))
-				return true;
-		}
-		return false;
+		return this.roles.contains(role.toString());
+		
+	}
+	
+	public Date getDateRegistered(){
+		return this.dateRegistered;
+	}
+	
+	public void setDateRegistered(Date regDate){
+		this.dateRegistered = regDate;
 	}
 	
 	

@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialNavBrand;
-import net.videmantay.roster.ClientFactory;
 
 
 public class UserProfilePage extends Composite {
@@ -40,28 +39,17 @@ public class UserProfilePage extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		title = appTitle;
 		userProfilePanel = profilePanel;
-		renderProfileIfSuccessfull();
 	}
 	
-	public native void renderProfileIfSuccessfull()/*-{
-			$wnd.gapi.load('auth2', function(){
-	        var auth2 = $wnd.gapi.auth2.init({
-	            client_id: '535909648993-7nfaqivi206q2phmicubas1hjri084eb.apps.googleusercontent.com'
-	        }).then(function(){
-	       	             var instance = $wnd.gapi.auth2.getAuthInstance();
-		            	 var profile = instance.currentUser.get().getBasicProfile();
-		            	@net.videmantay.roster.views.UserProfilePage::renderProfile(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(profile.getFamilyName(), profile.getGivenName(), profile.getEmail(), profile.getImageUrl()); 
-	           });
-	       });
-	}-*/;
 	
 	
-	private static void renderProfile(String givenName, String familyName, String eMail, String profilePictureUrl){
+	
+	private static void renderProfile(String givenName, String familyName, String email, String profilePictureUrl){
 		GWT.log("rendering profile method");
 		profileImage.setSrc(profilePictureUrl);
 		profileFirstName.setInnerText(givenName);
 		profileLastName.setInnerHTML(familyName);
-		profileEmail.setInnerHTML(eMail);
+		profileEmail.setInnerHTML(email);
 		userProfilePanel.setProfileInfo(givenName + " " + familyName, profilePictureUrl);
 		title.setText(givenName + " " + familyName);
 	}

@@ -40,11 +40,10 @@ public class AppUserDTO {
 		this.id = appuser.getId();
 		this.name = appuser.getName();
 		this.imageUrl = appuser.getImageUrl();
-		this.eMail = appuser.geteMail();
+		
 		this.googleId = appuser.getGoogleId();
 		this.active = appuser.isActive();
-		this.roles = appuser.getRoles();
-		this.password = appuser.getPassword();
+		
 		this.firstLogin = appuser.isFirstLogin();
 		this.firstName = appuser.getFirstName();
 		this.lastName = appuser.getLastName();

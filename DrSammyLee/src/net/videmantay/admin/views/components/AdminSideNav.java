@@ -25,11 +25,9 @@ public class AdminSideNav extends Composite {
 	MaterialLink notificationsLink;
 	
 	@UiField
-	MaterialLink navigationLink;
+	MaterialLink settingsLink;
 	
-	@UiField
-	MaterialLink favoriteLink;
-
+	
 	public AdminSideNav() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -46,14 +44,11 @@ public class AdminSideNav extends Composite {
 		return this.notificationsLink;
 	}
 
-	public MaterialLink getNavigationLink() {
-		return this.navigationLink;
+	public MaterialLink getSettingsLink() {
+		return this.settingsLink;
 	}
 
-	public MaterialLink getFavoriteLink() {
-		return this.favoriteLink;
-	}
-	
+
 	public interface Presenter {
 		
 		

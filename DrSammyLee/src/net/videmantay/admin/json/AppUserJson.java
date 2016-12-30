@@ -24,8 +24,8 @@ public class AppUserJson extends JavaScriptObject {
 		return this.imageUrl;
 	}-*/;
 
-	public final  native String geteMail() /*-{
-		return this.eMail;
+	public final  native String getEmail() /*-{
+		return this.email;
 	}-*/;
 
 	public final  native void setId(Long id) /*-{
@@ -40,8 +40,8 @@ public class AppUserJson extends JavaScriptObject {
 		this.imageUrl = imageUrl;
 	}-*/;
 
-	public final  native void seteMail(String eMail) /*-{
-		this.eMail = eMail;
+	public final  native void setEmail(String eMail) /*-{
+		this.email = eMail;
 	}-*/;
 
 	public final  native String getGoogleId() /*-{
@@ -64,7 +64,21 @@ public class AppUserJson extends JavaScriptObject {
 		this.active = isActive;
 	}-*/;
 
-
+	public final native void setPermissions(String[] perms)/*-{
+		this.permissions = perms;
+	}-*/;
+	
+	public final native String[] getPermissions()/*-{
+		return this.permissions;
+	}-*/;
+	
+	public final native void addPermission(String perm)/*-{
+		if(!this.permissions){
+			permissions = new Array();
+		}
+		
+		this.permissions.push(perm);
+	}-*/;
 
 	public final  native String[] getRoles() /*-{
 		return this.roles;
@@ -77,19 +91,6 @@ public class AppUserJson extends JavaScriptObject {
 		    
 	   this.roles.push(role);
     }-*/;
-
-
-	public final  native String getPassword() /*-{
-		return this.password;
-	}-*/;
-
-
-
-	public final  native void setPassword(String password) /*-{
-		this.password = password;
-	}-*/;
-
-
 
 	public final  native boolean isFirstLogin() /*-{
 		return this.firstLogin;
@@ -121,6 +122,10 @@ public class AppUserJson extends JavaScriptObject {
 
 	public final  native void setLastName(String lastName) /*-{
 		this.lastName = lastName;
+	}-*/;
+	
+	public final native String getPersonalTitle()/*-{
+		return this.personalTitle;
 	}-*/;
 	
 }

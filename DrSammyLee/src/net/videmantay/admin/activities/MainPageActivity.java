@@ -48,8 +48,7 @@ public class MainPageActivity extends AbstractActivity implements AppUserForm.Pr
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		layout.getSideNav().add(sideNav.getAppsLink());
-		layout.getSideNav().add(sideNav.getFavoriteLink());
-		layout.getSideNav().add(sideNav.getNavigationLink());
+		layout.getSideNav().add(sideNav.getSettingsLink());
 		layout.getSideNav().add(sideNav.getNotificationsLink());
 		layout.getSideNav().add(sideNav.getLogoutLink());
 		

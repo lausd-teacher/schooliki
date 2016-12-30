@@ -20,22 +20,29 @@
 
 package net.videmantay.server.shiro.web.oauth;
 
-import net.videmantay.server.shiro.gae.GaeUser;
-import net.videmantay.server.shiro.gae.GaeUserDAO;
+import static net.videmantay.server.util.DB.*;
+
+import net.videmantay.server.GoogleUtils;
+import net.videmantay.server.entity.AppUser;
+import net.videmantay.shared.UserRoles;
 import net.videmantay.server.shiro.googlegae.GoogleGAEAuthenticationToken;
-import net.videmantay.server.shiro.web.BaseServlet;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.services.plus.Plus;
+import com.google.api.services.plus.model.Person;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
+import org.slf4j.event.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -76,54 +83,85 @@ public class GoogleLoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserService userService =  UserServiceFactory.getUserService();
-        try {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, AuthenticationException {
+       
+    	LOG.info("login server running");
+    	
+    	
+    	UserService userService =  UserServiceFactory.getUserService();
             User currentUser = userService.getCurrentUser();
+            
             if (currentUser == null) {
             	String currentUri = WebUtils.getRequestUri(request);
                 String authUrl = userService.createLoginURL(currentUri);
-                try {
-                    response.sendRedirect(response.encodeRedirectURL(authUrl));
-                } catch (Exception e) {
-                    LOG.warning("Error trying to redirect to " + authUrl);
-                    response.sendRedirect("/");
-                }
+                response.sendRedirect(authUrl);
+                return;
             }
             String username = currentUser.getEmail();
+            LOG.info(username + " is logged in");
+            //upon login may be super user if so login auto
+            Subject subject = SecurityUtils.getSubject();
+            if(!subject.isAuthenticated()){//subject need to login/////
+            if(username.equals("lee@videmantay.net")){
+            	LOG.info("User is lee and if is passed");
+            	UsernamePasswordToken token = new UsernamePasswordToken();
+            	token.setPassword("adminpw".toCharArray());
+            	token.setUsername("lee@videmantay.net");
+            	token.setRememberMe(false);
+            	subject.login(token);
+            	response.sendRedirect("/admin");
+            	return;
+            }// end if super user
+            
+         }//end if subject login
 
             // add the user to the database
-            GaeUserDAO dao = new GaeUserDAO();
-            GaeUser user = dao.findUser(username);
+            AppUser user = db().load().type(AppUser.class).filter("email", username).first().now();
             if (user == null) {
                response.sendRedirect("/error.html");
             }
+            //check to see if firstTime yes then pop the fields
+        
+            if(user.isFirstLogin()){
+            	doFirstLogin(user,currentUser,response);
+            }/// end if fist login //////
+            
 
             String host = request.getRemoteHost();
             GoogleGAEAuthenticationToken token = new GoogleGAEAuthenticationToken(username,  host);
-            try {
-                Subject subject = SecurityUtils.getSubject();
-                loginWithNewSession(token, subject);
-
-                // go back to where Shiro thought we should go or to home if that's not set
-                SavedRequest savedRequest = WebUtils.getAndClearSavedRequest(request);
-                String redirectUrl = (savedRequest == null) ? "/" : savedRequest.getRequestUrl();
-                response.sendRedirect(response.encodeRedirectURL(redirectUrl));
-            } catch (AuthenticationException e) {
-                e.getStackTrace();
-            }
-        } catch (Exception e) {
-            e.getMessage();
-        }
+          
+               loginWithNewSession(token, subject); 
+            
     }
-
-
-    private static void logoutGoogleIfLoggedIn(HttpServletRequest request, HttpServletResponse response, UserService service) throws IOException{
-        User user = service.getCurrentUser();
-        if (user != null) {
-            String redirectUrl = request.getRequestURL().toString();
-            WebUtil.logoutGoogleService(request, response, redirectUrl);
-        }
+    
+    private void doFirstLogin(AppUser user, User currentUser, HttpServletResponse response) throws IOException{
+    	user.setFirstLogin(false);
+        
+    	
+    	//get plus 
+    	Credential cred = GoogleUtils.cred(currentUser.getUserId());
+    	//possible null for cred if this is the case have user auth
+    	//then send back here
+    	if(cred == null){
+    		response.sendRedirect("/auth");
+    	}
+    	Plus plus = GoogleUtils.plus(cred);
+    	Person person = plus.people().get("me").execute();
+    	//always do null check
+    	if(person == null){
+    		LOG.warning(user.getEmail() +" user doesn't have a Google+ account");
+    		
+    	}else{ //populate using person
+    		user.setFirstName(person.getName().getGivenName());
+    		user.setLastName(person.getName().getFamilyName());
+    		user.setPersonalTitle(person.getName().getHonorificPrefix());
+    		//if user is a student an image should be supplied by admin
+    		if(user.getImageUrl() == null || user.getImageUrl().isEmpty()){
+    			user.setImageUrl(person.getImage().getUrl());
+    		}/// end populate person//////
+    	}//end person null check////
+    	//save changes //////
+    	db().save().entity(user);
     }
     
     /**
@@ -151,21 +189,5 @@ public class GoogleLoginServlet extends HttpServlet {
             newSession.setAttribute(key, attributes.get(key));
         }
     }
-
-    protected boolean isCurrentUserAdmin() {
-        Subject subject = SecurityUtils.getSubject();
-        return subject.hasRole("admin");
-    }
-
-    @SuppressWarnings({"unchecked"})
-    protected GaeUser getCurrentGaeUser() {
-        Subject subject = SecurityUtils.getSubject();
-        String email = (String)subject.getPrincipal();
-        if (email == null) {
-            return null;
-        } else {
-            GaeUserDAO dao = new GaeUserDAO();
-            return dao.findUser(email);
-        }
-    }
+  
 }

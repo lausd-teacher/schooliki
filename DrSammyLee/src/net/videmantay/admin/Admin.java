@@ -37,12 +37,7 @@ public class Admin implements EntryPoint {
 		RootPanel.get().add(appWidget);
 
 		
-//		Window.addWindowClosingHandler(new ClosingHandler(){
-//	     	@Override
-//			public void onWindowClosing(ClosingEvent event) {
-//	     		controller.goTo(new RosterHomePlace("rosters"));
-//			}
-//		});
+
 		
 		historyHandler.handleCurrentHistory();
 	}

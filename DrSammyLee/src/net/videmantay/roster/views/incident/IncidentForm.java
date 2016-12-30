@@ -55,14 +55,13 @@ public class IncidentForm extends Composite {
 	@UiField
 	MaterialButton cancelBtn;
 	
-	final IncidentFormIconInput incidentFormIconInput;
+	final IncidentFormIconInput incidentFormIconInput = new IncidentFormIconInput();
 	
 
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
 
-	public IncidentForm(IncidentFormIconInput iconInput) {
+	public IncidentForm() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.incidentFormIconInput = iconInput;
 		iconInputContainer.add(incidentFormIconInput);
 		formContainer.getElement().setId("incidentForm");
 		valueInput.setValue(0);

@@ -15,11 +15,9 @@
 	<g:HTMLPanel>
 				<m:MaterialLink ui:field="logoutLink" text="Logout" iconType="WHATSHOT" />
 				<m:MaterialLink ui:field="appsLink" text="Apps" iconType="VIEW_MODULE" />
-				<m:MaterialLink ui:field="notificationsLink" text="Notifications" textColor="blue"
+				<m:MaterialLink ui:field="notificationsLink" text="Notifications" 
 					iconType="NOTIFICATIONS" separator="true" />
-				<m:MaterialLink ui:field="navigationLink" text="Navigation" textColor="blue"
-					iconType="NAVIGATION" />
-				<m:MaterialLink ui:field="favoriteLink" text="Favorite" textColor="blue"
-					iconType="FAVORITE" />
+				<m:MaterialLink ui:field="settingsLink" text="Settings" 
+					iconType="SETTINGS" />
 	</g:HTMLPanel>
 </ui:UiBinder> 

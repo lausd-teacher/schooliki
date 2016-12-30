@@ -25,12 +25,13 @@ import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTitle;
 import gwt.material.design.client.ui.MaterialToast;
-import net.videmantay.roster.ClientFactory;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.views.components.IncidentCard;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
+import net.videmantay.student.json.RosterStudentJson;
 
 public class StudentActionModal extends Composite {
 
@@ -56,16 +57,11 @@ public class StudentActionModal extends Composite {
 	
 	@UiField
 	MaterialTitle title;
+
 	
-	
-	
-	
-	
-	final ClientFactory factory;
-	
-	public StudentActionModal(ClientFactory clientFactory) {
+	public StudentActionModal() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.factory = clientFactory;
+	
 	}
 	
 	
@@ -139,7 +135,7 @@ public class StudentActionModal extends Composite {
 					GWT.log("clicking on card in student action modal");
 					SelectionManager.unSelectCurrentSelectedIncidentCard();
 					SelectionManager.selectIncidentCard(card.getContainer());
-					Long currentRosterId = factory.getCurrentRoster().getId();
+					Long currentRosterId = RosterUtils.getCurrentRoster().getId();
 					final IncidentJson newIncident = JavaScriptObject.createObject().cast();
 					newIncident.setIncidentTypeId(incidentType.getId());
 					newIncident.setName(incidentType.getName());
@@ -147,11 +143,11 @@ public class StudentActionModal extends Composite {
 					newIncident.setValue(incidentType.getPoints());
 					final MaterialCard selectedCard = SelectionManager.getSelectedStudentCard();				
 					String studentId = selectedCard.getElement().getId();
-					final AppUserJson currentStudent = factory.findStudentById(studentId);
+					final RosterStudentJson currentStudent = RosterUtils.findStudentById(studentId);
 					//title.setTitle("Assign Incident to " + currentStudent.getName());
 					title.setTitle("Assign Incidents");
 					
-					GQuery.ajax("/roster/" +factory.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
+					GQuery.ajax("/roster/" +RosterUtils.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
 							Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
 							.done(new Function() {
 								@Override
@@ -181,7 +177,7 @@ public class StudentActionModal extends Composite {
 									audio.play();
 									
 									pointsBadge.setInnerText(aggregate+"");
-									MaterialToast.fireToast(operator + " for " + currentStudent.getName(), 1500);
+									MaterialToast.fireToast(operator + " for " + currentStudent., 1500);
 									hide();
 								}
 							}).progress(new Function() {

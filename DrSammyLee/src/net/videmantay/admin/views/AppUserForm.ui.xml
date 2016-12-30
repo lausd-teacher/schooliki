@@ -14,7 +14,7 @@
 			<m:MaterialCardTitle text="Users" iconType="PERSON"
 				iconPosition="LEFT" textColor="black" />
 				<g:HTMLPanel>
-					<m:MaterialInput ui:field="eMail" type="EMAIL"
+					<m:MaterialInput ui:field="email" type="EMAIL"
 						required="true" placeholder="Google E-mail" />
 					<h:Label ui:field="acctIdError" styleName="errorLabel" text="Must be valid email" textColor="red lighten-1"/>
 					<m:MaterialLabel text="Roles:"></m:MaterialLabel>

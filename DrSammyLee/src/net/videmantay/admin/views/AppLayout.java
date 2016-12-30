@@ -5,7 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-
+import static com.google.gwt.query.client.GQuery.$;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialNavBar;
 import gwt.material.design.client.ui.MaterialNavBrand;
@@ -63,6 +63,11 @@ public class AppLayout extends Composite {
 
 	public AppLayout() {
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	@Override
+	public void onLoad(){
+		$("#loader").hide();
 	}
 
 }
