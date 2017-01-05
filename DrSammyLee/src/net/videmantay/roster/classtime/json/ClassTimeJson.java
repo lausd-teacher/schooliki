@@ -1,6 +1,8 @@
 package net.videmantay.roster.classtime.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
 
 public class ClassTimeJson extends JavaScriptObject {
 
@@ -70,8 +72,18 @@ public class ClassTimeJson extends JavaScriptObject {
 	
 	public final native String getIsDefault() /*-{
 	return this.isDefault;
-}-*/;
+	}-*/;
 	
+	public final native JsArray<GroupJson> getGroup()/*-{
+		return this.group;
+	}-*/;
 	
+	public final native JsArrayString getProcedures()/*-{
+	return this.procedures;
+	}-*/;
 	
+	public final native void setProcedures(JsArrayString proc)/*-{
+		this.procedures = proc;
+	}-*/;
+
 }

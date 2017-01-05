@@ -45,23 +45,23 @@ public class RosterStudentCard extends Composite {
 	@UiField
 	MaterialBadge attendenceBadge;
 	
-	final StudentActionModal studentActionModal;
+	/*final StudentActionModal studentActionModal;
 	
 	final RosterStudentJson currentStudent;
 	
 	final Long currentRosterId; 
-		
+		*/
 	public static final String ABSENT_HTML_SYMBOL = "&#9747;";
 	public static final String PRESENT_HTML_SYMBOL = "&#9731;";
 	
 
-	public RosterStudentCard(RosterStudentJson student) {
+		public RosterStudentCard(RosterStudentJson student) {
 		initWidget(uiBinder.createAndBindUi(this));
 		attendenceBadge.setVisibility(Visibility.HIDDEN);
 		attendenceBadge.getElement().getStyle().setBackgroundColor("red");
 		attendenceBadge.getElement().addClassName("attendenceBadge");
 		attendenceBadge.setText(ABSENT_HTML_SYMBOL);
-		
+		/*
 		pointsBadge.getElement().getStyle().setBackgroundColor("green");
 		pointsBadge.setText(student.getIncidentPointsAggregate()+"");
 		pointsBadge.getElement().addClassName("pointsBadge");
@@ -74,7 +74,7 @@ public class RosterStudentCard extends Composite {
 		this.clientFactory = factory;
 		//depends on what we load from the server
 		rosterStudentPanel.getElement().getStyle().setOpacity(0.5);
-	
+	*/
 	}
 
 	
@@ -97,7 +97,7 @@ public class RosterStudentCard extends Composite {
 	}
 	
 	private void setupPanelForGrid(){
-		rosterStudentPanel.addDomHandler(new ClickHandler(){
+		/*rosterStudentPanel.addDomHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
 				SelectionManager.unselectCurrentlySelectedStudent();
@@ -117,7 +117,7 @@ public class RosterStudentCard extends Composite {
 		studentImg.getStyle().setHeight(70, Unit.PX);
 		studentImg.getStyle().setWidth(70, Unit.PX);
 		//We are not doing anything right now, probably will be adding some event here
-	}
+*/	}
 	
 	
 	private void toggleAttendenceBadge(Element attendenceBadge){

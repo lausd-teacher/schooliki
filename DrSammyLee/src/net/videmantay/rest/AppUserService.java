@@ -90,7 +90,8 @@ public class AppUserService {
 		if(!constraints.isEmpty()){
 			return Response.status(Status.NOT_ACCEPTABLE).entity(appUser).build();
 		}
-
+		appUser.firstLogin = true;
+		
 		ofy().transact(new VoidWork() {
 			@Override
 			public void vrun() {

@@ -54,10 +54,6 @@ public class DB<T> implements Serializable {
 		
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static void start(){
-		new DB();
-	}
 	
 	public static Objectify db(){
 		return ofy();

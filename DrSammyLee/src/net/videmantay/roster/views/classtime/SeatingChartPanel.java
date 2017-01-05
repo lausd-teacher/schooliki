@@ -35,6 +35,7 @@ import java.util.Stack;
 
 import static gwtquery.plugins.ui.Ui.Ui;
 import net.videmantay.roster.HasRosterDashboardView;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.classtime.json.FurnitureJson;
 import net.videmantay.roster.classtime.json.SeatingChartJson;
@@ -42,9 +43,11 @@ import net.videmantay.roster.classtime.json.StudentSeatJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.Action;
 
-public class SeatingChartPanel extends Composite implements HasRosterDashboardView {
+public class SeatingChartPanel extends Composite {//implements HasRosterDashboardView {
 
-	private static SeatingChartPanelUiBinder uiBinder = GWT.create(SeatingChartPanelUiBinder.class);
+	/*
+	 * private static SeatingChartPanelUiBinder uiBinder = GWT.create(SeatingChartPanelUiBinder.class);
+	 
 
 	interface SeatingChartPanelUiBinder extends UiBinder<Widget, SeatingChartPanel> {
 	}
@@ -118,7 +121,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 						Properties prop = Properties.create();
 						prop.set("classTime", JsonUtils.stringify(classTime));
 						prop.set("roster", roster.getId());
-					Ajax.get(RosterUrl.GET_SEATINGCHART, prop)
+					Ajax.get(RosterUrl.seatingchart(id, classtimeId), prop)
 					.done(new Function(){
 						@Override
 						public void f(){
@@ -165,7 +168,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			RosterStudentPanel sp =new RosterStudentPanel();
 			sp.setData(roster.getRosterStudents().get(i));
 			/*MaterialLink link = new MaterialLink();
-			link.add(sp);*/
+			link.add(sp);
 			stuPanels.add(sp);
 		}
 		console.log("We've cycled through students here is array of panels ");
@@ -671,7 +674,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		//if so these student must be put in the studentList alphabetically??
 		GQuery $desk = $this;
 		
-			/*GQuery $rosStu = $desk.find(".rosterStudent");
+			GQuery $rosStu = $desk.find(".rosterStudent");
 			if($rosStu.length() > 0){
 				for(int i = 0; i < $rosStu.length(); i++){
 				MaterialLink link = new MaterialLink();
@@ -679,7 +682,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 				studentList.add(link);
 				}//end for
 			}//end if
-*/	
+	
 		tempFurnitureList.remove($desk.data("desk"));
 		$desk.remove();
 	}
@@ -719,7 +722,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		drawChart();
 		
 	}
-	
+	*/
 
 
 }

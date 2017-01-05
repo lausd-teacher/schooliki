@@ -2,36 +2,41 @@ package net.videmantay.roster;
 
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
-import com.google.gwt.query.client.js.JsUtils;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-
-
-import gwt.material.design.client.ui.MaterialToast;
 
 import static com.google.gwt.query.client.GQuery.*;
 
 import net.videmantay.roster.classtime.json.ClassTimeJson;
-import net.videmantay.roster.places.RosterHomePlace;
+
 
 
 public class Teacher implements EntryPoint {
+	
+private final  HistoryMapper mapper = new HistoryMapper();
 
 	@Override
 	public void onModuleLoad() {
-        
 		
-		
+	
+	//handle navigation
+        History.addValueChangeHandler(mapper);
+        if(History.getToken() == null || History.getToken().isEmpty()){
+			console.log("History was null so mapper do default called");
+			mapper.doDefault();
+		}else{
+			History.fireCurrentHistoryState();
+		}
+     //hide the loader
 		hideLoader();
-		
-		//expose function to iframe
+	//expose function to iframe
 		expose();
+		//RootPanel.get().add(new HTMLPanel("<h1>I am a teacher!</h1>"));
+		
 	}//end module load//////
 	
 	

@@ -1,6 +1,6 @@
 package net.videmantay.roster.views;
 
-import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.*;
 
 import java.util.Date;
 
@@ -11,9 +11,12 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.Promise;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -21,6 +24,7 @@ import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialInput;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.RosterJson;
 
 
@@ -60,7 +64,9 @@ public class RosterForm extends Composite{
 	@UiField
 	HTMLPanel formContainer;
 	
-	
+	@UiField
+	FormPanel form;
+
 	private RosterJson data = JavaScriptObject.createObject().cast();
 
 	public RosterForm() {
@@ -70,7 +76,7 @@ public class RosterForm extends Composite{
 	
 	@Override
 	public void onLoad(){
-		$("#rosterForm input").blur(getValidationFunction());
+		$("#rosterForm input").blur(validate());
 		
 		startDate.addCloseHandler(new CloseHandler<MaterialDatePicker>(){
 			@Override
@@ -117,25 +123,23 @@ public class RosterForm extends Composite{
 	}
 	
 	//Need to find a better way to do this
-	public RosterJson collectFormData(){
+	public RosterJson formData(){
 		
 		DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
 		
-		String json = "{"
-				+ "\"title\":"+"\""+title.getText()+"\","
-				+ "\"description\":"+"\""+description.getText()+"\","
-				+ "\"roomNum\":"+"\""+roomNum.getText()+"\","
-				+ "\"startDate\":"+"\""+df.format(startDate.getDate())+"\","
-				+ "\"endDate\":"+"\""+df.format(endDate.getDate())+"\""
-				+ "}";
+		data.setDescription(description.getValue());
+		data.setTitle(title.getValue());
+		data.setEndDate(df.format(endDate.getValue()));
+		data.setStartDate(df.format(startDate.getValue()));
+		data.setRoomNum(roomNum.getValue());
 		
-		data = JsonUtils.safeEval(json);
 		
-		return data.cast();
+		
+		return data;
 		
 	}
 	
-	private  Function getValidationFunction(){		
+	private  Function validate(){		
 		return new Function(){
 			@Override
 			public void f(){
@@ -163,15 +167,39 @@ public class RosterForm extends Composite{
 	}
 
 
-	public interface Presenter{
-		
-		public void submitButtonClick();
-		public void cancelButtonClick();
-		
+	public Promise submit(){
+		console.log("SUBMIT: roster hit the form data is : " + JsonUtils.stringify(formData()));
+		if(submitBtn.isEnabled()){
+			return Ajax.ajax(Ajax.createSettings()
+								.setContentType("application/json")
+								.setType("post")
+								.setDataType("json")
+								.setData(formData())
+								.setUrl(RosterUrl.roster()));
+		}else{
+			return null;
+		}
 	}
-
 	
-
-
+	public void cancel(){
+		data = null;
+		form.reset();
+	}
+	
+	public void reset(){
+		form.reset();
+	}
+	
+	public void setData(RosterJson newData){
+		if(newData != null){
+			data = newData;
+			
+			title.setValue(data.getTitle());
+			description.setValue(data.getDescription());
+			startDate.setValue(new Date(Date.parse(data.getStartDate())));
+			endDate.setValue(new Date(Date.parse(data.getEndDate())));
+			roomNum.setValue(data.getRoomNum());
+		}
+	}
 
 }

@@ -5,9 +5,13 @@ import static com.google.gwt.query.client.GQuery.*;
 import java.util.List;
 
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.ClassroomMain;
@@ -19,6 +23,7 @@ public class RosterUtils {
 
 	private RosterUtils(){}
 	private static RosterJson currentRoster;
+	private static JsArray<RosterJson> rosterList;
 	private static ClassTimeJson selectedClassTime;
 	private static RootPanel root = RootPanel.get();
 	private static RosterMain landingPage = new RosterMain();
@@ -28,7 +33,13 @@ public class RosterUtils {
 	private static JsArray<RosterStudentJson> students;
 	private static StudentActionModal studentActionModal = new StudentActionModal();
 	
+	public static JsArray<RosterJson> getRosterList(){
+		return rosterList;
+	}
 	
+	public static void setRosterList(JsArray<RosterJson> rosList){
+		rosterList = rosList;
+	}
 	public static  void setCurrentRoster(RosterJson current) {
 		currentRoster = current;
 		//set rosterId to window;
@@ -43,8 +54,21 @@ public class RosterUtils {
 	}
 	
 	public static void setSelectedClassTime(ClassTimeJson sct) {
+		if(selectedClassTime == sct){
+			return;
+		}
 		selectedClassTime = sct;
 		$(window).prop("selectedClassTime", selectedClassTime);
+		// must get the config from server and added it to then window as well
+		Ajax.get(RosterUrl.classtimeconfig(currentRoster.getId(), selectedClassTime.getId()))
+		.done(new Function(){
+			@Override
+			public void f(){
+				ClassTimeConfigJson ctc =  JsonUtils.safeEval((String)this.arguments(0)).cast();
+				//fire ctc change event
+				$(window).trigger(RosterEvent.updateClassTimeConfig, ctc);
+			}
+		});
 		//this must also change the classtime button text to the current class time	
 	}
 	
@@ -55,9 +79,15 @@ public class RosterUtils {
 	public static void showLandingPage(String request){
 		root.clear();
 		root.add(landingPage);
-		landingPage.handleRequest(request);
+		landingPageRequest(request);
 	}
-	
+	private static void landingPageRequest(String request){
+		switch(request){
+		case "settings": landingPage.setting();break;
+		case "calendars":landingPage.calendars();break;
+		default: landingPage.rosters();
+		}
+	}
 	public static void showClassroomPage(List<String> request){
 		classroomPage.handleRequest(request);
 	}

@@ -15,10 +15,10 @@ import java.util.List;
  */
 public class HistoryMapper implements ValueChangeHandler<String>{
 
-	private HistoryMapper(){}
+	public HistoryMapper(){}
 
 	@Override
-	public void onValueChange(ValueChangeEvent<String> event) {
+	public  void onValueChange(ValueChangeEvent<String> event) {
 		List<String> request= Splitter.on("/").splitToList(event.getValue());
 		
 		if(request == null || request.size() <= 0 ){
@@ -40,9 +40,10 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 		}
 	}
 	
-	
-	private void doDefault(){
+	public void doDefault(){
 		History.newItem("roster");
+		History.fireCurrentHistoryState();
 		RosterUtils.showLandingPage("roster");
 	}
+	
 }

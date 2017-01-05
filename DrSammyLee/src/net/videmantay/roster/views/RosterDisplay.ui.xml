@@ -8,11 +8,20 @@
 		<v:RosterForm ui:field="rosterForm"/>
 	<!-- FAB -->
 		<m:MaterialFAB>
-			<m:MaterialTooltip text="Create" position="LEFT">
 				<m:MaterialButton ui:field="fab" type="FLOATING"
 					backgroundColor="amber" iconType="ADD" size="LARGE" />
-			</m:MaterialTooltip>
 		</m:MaterialFAB>
-       		  
+       	<m:MaterialModal ui:field="deleteRosterModal">
+       		<m:MaterialModalContent>
+       			<m:MaterialTitle title="Delete Roster" />
+       			<m:MaterialLabel ui:field="deleteRosterLabel" />
+       			<m:MaterialFooter>
+       				<m:MaterialAnchorButton backgroundColor="grey darken-1" textColor="white"  text="Cancel" 
+       				ui:field="cancelBtnDeleteRoster"/>
+       				<m:MaterialAnchorButton backgroundColor="red darken-1" textColor="white"  text="OK" 
+       				ui:field="okBtnDeleteRoster"/>
+       			</m:MaterialFooter>
+       		</m:MaterialModalContent>
+       	</m:MaterialModal> 
 	</g:HTMLPanel>
 </ui:UiBinder> 

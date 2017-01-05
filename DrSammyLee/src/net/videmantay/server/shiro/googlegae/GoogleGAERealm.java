@@ -20,6 +20,7 @@
 
 package net.videmantay.server.shiro.googlegae;
 
+import net.videmantay.server.GoogleUtils;
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.shiro.gae.MemcacheManager;
 import net.videmantay.server.util.DB;
@@ -32,8 +33,12 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.common.base.Preconditions;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 
@@ -63,7 +68,7 @@ public class GoogleGAERealm extends AuthorizingRealm {
             throw new NullPointerException("Can't find a principal in the collection");
         }
         LOG.fine("Finding authorization info for " + userName + " in DB");
-        AppUser user = DB.db().load().type(AppUser.class).filter("eMail", userName).first().now();
+        AppUser user = DB.db().load().type(AppUser.class).filter("email", userName).first().now();
         if (user == null || userIsNotQualified(user)) {
             return null;
         }
@@ -71,6 +76,25 @@ public class GoogleGAERealm extends AuthorizingRealm {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setRoles(user.roles);
         info.setStringPermissions(user.permissions);
+        
+        //must be authorized to sign in do the check here
+        if(!user.isFirstLogin()){
+        	info.getStringPermissions().add("login:*");
+        }
+        
+        //must have given oauth2 perms check for cred here
+        User userCheck =   UserServiceFactory.getUserService().getCurrentUser();
+        try {
+			Credential cred = GoogleUtils.cred(userCheck.getUserId());
+			if(cred != null){
+				LOG.info(userCheck.getEmail() + " has creds");
+				info.getStringPermissions().add("oauth2:*");
+			}
+		} catch (IOException e) {
+			return info;
+			
+		}
+        
         return info;
     }
     

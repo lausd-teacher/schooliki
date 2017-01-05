@@ -112,56 +112,72 @@ public class GoogleLoginServlet extends HttpServlet {
             	response.sendRedirect("/admin");
             	return;
             }// end if super user
-            
-         }//end if subject login
-
-            // add the user to the database
-            AppUser user = db().load().type(AppUser.class).filter("email", username).first().now();
-            if (user == null) {
-               response.sendRedirect("/error.html");
-            }
-            //check to see if firstTime yes then pop the fields
-        
-            if(user.isFirstLogin()){
-            	doFirstLogin(user,currentUser,response);
-            }/// end if fist login //////
-            
-
             String host = request.getRemoteHost();
             GoogleGAEAuthenticationToken token = new GoogleGAEAuthenticationToken(username,  host);
           
                loginWithNewSession(token, subject); 
+               //redirect by role
+         }//end if subject login
+
+            
+            //check to see if subject has login perm
+            //which is really a check for oauth credentials
+           if(!subject.isPermitted("login")){
+        	   doFirstLogin(currentUser,response);
+           }
+
+           
+               
+               if(subject.hasRole(UserRoles.STUDENT.toString())){
+            	   response.sendRedirect("/student");
+               }else if(subject.hasRole(UserRoles.TEACHER.toString())){
+            	   response.sendRedirect("/teacher");
+               }else if(subject.hasRole(UserRoles.ADMIN.toString())){
+            	   response.sendRedirect("/admin");
+               }else{
+            	   LOG.warning("unable to find role for user " + subject.getPrincipal().toString());
+            	   response.sendRedirect("/error.html");
+               }
             
     }
     
-    private void doFirstLogin(AppUser user, User currentUser, HttpServletResponse response) throws IOException{
-    	user.setFirstLogin(false);
+    private void doFirstLogin(User currentUser, HttpServletResponse response) throws IOException{
+    	LOG.info("Do first login called");
+    	
         
     	
     	//get plus 
     	Credential cred = GoogleUtils.cred(currentUser.getUserId());
     	//possible null for cred if this is the case have user auth
     	//then send back here
-    	if(cred == null){
+    	if(cred == null || cred.getAccessToken() == null){
+    		LOG.info("cred is null in first log in should redirect");
     		response.sendRedirect("/auth");
+    		return;
+    	}
+    	if(cred.getExpiresInSeconds() <= 300){
+    		cred.refreshToken();
     	}
     	Plus plus = GoogleUtils.plus(cred);
     	Person person = plus.people().get("me").execute();
     	//always do null check
     	if(person == null){
-    		LOG.warning(user.getEmail() +" user doesn't have a Google+ account");
+    		LOG.warning(currentUser.getEmail() +" user doesn't have a Google+ account");
     		
     	}else{ //populate using person
+    		final AppUser user = db().load().type(AppUser.class).filter("email", currentUser.getEmail()).first().now();
+    		user.setFirstLogin(false);
     		user.setFirstName(person.getName().getGivenName());
     		user.setLastName(person.getName().getFamilyName());
     		user.setPersonalTitle(person.getName().getHonorificPrefix());
     		//if user is a student an image should be supplied by admin
     		if(user.getImageUrl() == null || user.getImageUrl().isEmpty()){
     			user.setImageUrl(person.getImage().getUrl());
+    			//save changes //////
+    	    	db().save().entity(user);
     		}/// end populate person//////
     	}//end person null check////
-    	//save changes //////
-    	db().save().entity(user);
+    	
     }
     
     /**

@@ -1,6 +1,7 @@
 package net.videmantay.roster.views;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,6 +16,7 @@ import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialTooltip;
 import net.videmantay.shared.LoginInfo;
+import net.videmantay.student.json.InfoJson;
 
 public class RosterMain extends Composite {
 
@@ -35,12 +37,6 @@ public class RosterMain extends Composite {
 	MaterialLink calendarLink;
 	
 	@UiField
-	MaterialLink libraryLink;
-	
-	@UiField
-	MaterialLink lessonsLink;
-	
-	@UiField
 	MaterialTooltip calendarTooltip;
 	
 	@UiField
@@ -48,11 +44,16 @@ public class RosterMain extends Composite {
 	
 	@UiField
 	MaterialTooltip notificationTooltip;
-
 	
+	@UiField
+	UserProfilePanel profile;
 	
 	public RosterMain() {
+		console.log("Main Roster loaded");
 		initWidget(uiBinder.createAndBindUi(this));
+		InfoJson info = window.getPropertyJSO("info").cast();
+		console.log(info);
+		profile.setProfileInfo(info);
 	}
 	
 	@Override 
@@ -68,6 +69,16 @@ public class RosterMain extends Composite {
 		console.log("RosterMain rosters(); called");
 		mainPanel.clear();
 		mainPanel.add(new RosterDisplay());
+	}
+	
+	public void setting(){
+		mainPanel.clear();
+		mainPanel.add(new RosterSettingsPanel());
+	}
+	
+	public void calendars(){
+		mainPanel.clear();
+		mainPanel.add(new AllCalendarsPanel());
 	}
 	
 

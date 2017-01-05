@@ -18,6 +18,7 @@ import gwt.material.design.addins.client.sideprofile.MaterialSideProfile;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
 import net.videmantay.shared.LoginInfo;
+import net.videmantay.student.json.InfoJson;
 
 public class UserProfilePanel extends Composite{
 
@@ -27,7 +28,11 @@ public class UserProfilePanel extends Composite{
 
 
 	@UiField
-	MaterialLabel name;
+	MaterialLabel firstName;
+	
+	@UiField
+	MaterialLabel lastName;
+	
 	@UiField
 	MaterialImage img;
 	@UiField
@@ -40,10 +45,16 @@ public class UserProfilePanel extends Composite{
 	
 	}
 	
-	public void setProfileInfo(String username, String imgUrl){
-		name.setText(username);
+	public void setProfileInfo(String firstName, String lastName,String imgUrl){
+		this.firstName.setText(firstName);
+		this.lastName.setText(lastName);
 		img.setUrl(imgUrl);
 		
+	}
+	
+	public void setProfileInfo(InfoJson info){
+		console.log("info fist name is " + info.firstName());
+		this.setProfileInfo(info.firstName(), info.lastName(), info.img());
 	}
 	
 	
@@ -51,9 +62,5 @@ public class UserProfilePanel extends Composite{
 		return this.sideUserProfile;
 	}
 
-
-	public interface Presenter{
-		void userProfileClickeEvent();
-	}
 
 }

@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,13 +33,13 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 public class GoogleUtils {
 	private GoogleUtils(){}
 	
-	private static Logger log = Logger.getAnonymousLogger();
+	private static Logger LOG = Logger.getAnonymousLogger();
 	
 	private final static JacksonFactory jsonFactory = new JacksonFactory();
 	private final static UrlFetchTransport transport = new UrlFetchTransport();
 	private final static String applicationName = "Schooliki";
 	private final static String clientId = "342098051221-vohdgpes1bunbmpkbb2i29k8tpkrcnqg.apps.googleusercontent.com";
-	private final static String clientSecret = "s0aSpImQ-7Q5b_tlqW7u1gSy";
+	private final static String clientSecret = "5nvXVjQOgBHdwoCwGC1x56Zy";
 	public final static AppEngineDataStoreFactory dataStoreFactory = AppEngineDataStoreFactory.getDefaultInstance();
 	
 	public final static String PhotoScope ="https://www.googleapis.com/auth/photos";
@@ -55,8 +54,8 @@ public class GoogleUtils {
 		scopes.add(CalendarScopes.CALENDAR);
 		scopes.add(TasksScopes.TASKS);
 		scopes.add(SheetsScopes.SPREADSHEETS);
-		scopes.add(PlusScopes.PLUS_ME);
-		scopes.add(PhotoScope);
+		scopes.add(PlusScopes.USERINFO_PROFILE);
+		//scopes.add(PhotoScope);
 		scopes.add(PhotoUploadScope);
 		
 		
@@ -73,9 +72,10 @@ public class GoogleUtils {
 	public static Credential cred(String userId) throws IOException{
 		final Credential credential = authFlow(userId).loadCredential(userId);
 		if(credential == null){
+			LOG.warning("Credential is null user didn't get approval");
 			return null;
 		}
-		if(credential.getExpiresInSeconds() < 1800){
+		if(credential.getExpiresInSeconds() <= 300){
 			credential.refreshToken();
 		}
 		return credential;
@@ -119,7 +119,7 @@ public class GoogleUtils {
 	public static String redirectUri(HttpServletRequest req) {
 	    GenericUrl url = new GenericUrl(req.getRequestURL().toString());
 	    url.setRawPath("/oauth2callback");
-	    log.log(Level.INFO, "The url is " + url.build());
+	    LOG.info("The url is " + url.build());
 	    return url.build();
 	}
 	

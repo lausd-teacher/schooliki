@@ -177,7 +177,7 @@ public class StudentActionModal extends Composite {
 									audio.play();
 									
 									pointsBadge.setInnerText(aggregate+"");
-									MaterialToast.fireToast(operator + " for " + currentStudent., 1500);
+									MaterialToast.fireToast(operator + " for " + currentStudent.getStudentId(), 1500);
 									hide();
 								}
 							}).progress(new Function() {

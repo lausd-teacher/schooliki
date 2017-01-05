@@ -1,52 +1,23 @@
 package net.videmantay.server.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Serialize;
+
+@Entity
 public class ClassTimeConfig {
 	
-	private List<SeattingChartPosition> seatingPositions;
-	private List<StudentGroup> studentGroups;
-	private Long classTimeId;
+	@Id
+	Long id;
 	
-	public ClassTimeConfig(Long classTimeId){
-		this.classTimeId = classTimeId;
-		seatingPositions = new ArrayList<SeattingChartPosition>();
-		studentGroups = new ArrayList<StudentGroup>();
-	}
+	@Serialize
+	public Set<StudentGroup> groups = new HashSet<>();
 	
-	
-	public List<SeattingChartPosition> getSeatingPositions() {
-		return this.seatingPositions;
-	}
-	public List<StudentGroup> getStudentGroups() {
-		return this.studentGroups;
-	}
-	public Long getClassTimeId() {
-		return this.classTimeId;
-	}
-	public void setSeatingPositions(List<SeattingChartPosition> seatingPositions) {
-		this.seatingPositions = seatingPositions;
-	}
-	public void setStudentGroups(List<StudentGroup> studentGroups) {
-		this.studentGroups = studentGroups;
-	}
-	public void setClassTimeId(Long classTimeId) {
-		this.classTimeId = classTimeId;
-	}
-	
-	
-	public void addSeattingChartPosition(SeattingChartPosition position){
-		seatingPositions.add(position);
-		
-	}
-	
-	public void addStudentGroup(StudentGroup group){
-		studentGroups.add(group);
-	}
-	
-	
-	
-	
-
+	@Serialize
+	public Set<Procedure> procedures = new HashSet<>();
 }

@@ -45,7 +45,7 @@ public class GoogleGAEAuthenticationToken implements HostAuthenticationToken, Re
 
     @Override
     public boolean isRememberMe() {
-        return true;
+        return false;
     }
 
     @Override

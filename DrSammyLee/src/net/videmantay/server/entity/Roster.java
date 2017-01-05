@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
+import org.joda.time.DateTime;
 
 import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.server.validation.ValidDateFormat;
@@ -49,10 +50,10 @@ public class Roster implements Serializable{
 	public String roomNum;
 	
 	@NotNull
-	public Date startDate;
+	public String startDate;
 	
 	@NotNull
-	public Date endDate;
+	public String endDate;
 	
 
 	public Roster(){
@@ -71,22 +72,7 @@ public class Roster implements Serializable{
 		this.ownerId = ownerId;
 	}
 
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -115,23 +101,5 @@ public class Roster implements Serializable{
 		this.roomNum = roomNum;
 	}
 	
-	public static Roster createFromDTO(RosterDTO dto) throws ParseException{
-		
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("YYYY-mm-dd");
-		
-		Roster roster = new Roster();
-		
-		roster.id = dto.id;
-		roster.ownerId = dto.ownerId;
-		roster.title = dto.title;
-		roster.description = dto.description;
-		roster.roomNum = dto.roomNum;
-		roster.startDate = sDateFormat.parse(dto.startDate);
-		roster.endDate = sDateFormat.parse(dto.endDate);
-		
-		 return roster;
-	}
-
-
 	
 }

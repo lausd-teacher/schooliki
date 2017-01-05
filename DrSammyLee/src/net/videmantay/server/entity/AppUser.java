@@ -2,6 +2,7 @@ package net.videmantay.server.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -45,12 +46,12 @@ public  class AppUser  implements Serializable {
     public boolean active;
     
     @NotNull
-    public boolean firstLogin;
+    public boolean firstLogin = true;
     
     @Size(min=1)
-    public Set<String> roles;
+    public Set<String> roles = new HashSet<>();
     
-    public Set<String> permissions;
+    public Set<String> permissions = new HashSet<>();
     
     public int incidentPointsAggregate = 0;
     
@@ -228,6 +229,15 @@ public  class AppUser  implements Serializable {
 	
 	public void setDateRegistered(Date regDate){
 		this.dateRegistered = regDate;
+	}
+	
+	@Override
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		for(String s: this.roles){
+			sb.append(s + "/ ");
+		}
+		return "AppUser: id-" + this.id + "\nemail-"+ this.email + "\nfirst login-" + this.firstLogin +"\nroles: " + sb;
 	}
 	
 	

@@ -16,17 +16,19 @@ public class Auth extends AbstractAppEngineAuthorizationCodeServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException{
-		checkCreds();
+		checkCreds(res);
 	}
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException{
-		checkCreds();
+		checkCreds(res);
 	}
 	
-	private void checkCreds() throws ServletException, IOException{
+	private void checkCreds(HttpServletResponse res) throws ServletException, IOException{
 		User user = UserServiceFactory.getUserService().getCurrentUser();
-		
+		if(user == null){
+			res.sendRedirect("/login");
+		}
 		Credential cred = GoogleUtils.cred(user.getUserId());
 		if(cred == null|| cred.getExpiresInSeconds() < 1800){
 			initializeFlow();

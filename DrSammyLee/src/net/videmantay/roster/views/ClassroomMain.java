@@ -24,6 +24,8 @@ import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.views.assignment.GradedWorkMain;
 import net.videmantay.roster.views.classtime.ClassTimeMain;
 import net.videmantay.roster.views.incident.IncidentMain;
+import static net.videmantay.roster.RosterUrl.*;
+import static net.videmantay.roster.RosterUtils.*;
 import net.videmantay.roster.json.IncidentReportJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.student.StudentInfoMain;
@@ -41,8 +43,6 @@ public class ClassroomMain extends Composite{
 	interface ClassroomMainUiBinder extends UiBinder<Widget, ClassroomMain> {
 	}
 	public interface HasUpdateClassTime{public void updateClassTime();}
-
-	final ClassroomMain $this;
 	
 	@UiField
 	MaterialContainer mainPanel;
@@ -86,20 +86,20 @@ public class ClassroomMain extends Composite{
 	public ClassroomMain() {
 		this.initWidget(uiBinder.createAndBindUi(this));
 		//classroom.setId("classroom");
-			$this = this;
+	
 			//set side nav links/////////
 			profilePanel.addDomHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("rosters");
+					History.newItem("roster");
 					
 				}}, ClickEvent.getType());
 			dashboardLink.addClickHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("roster/" + classRoster.getId());
+					History.newItem("r/" + classRoster.getId());
 					new Timer(){
 
 						@Override
@@ -162,7 +162,7 @@ public class ClassroomMain extends Composite{
 	}
 	
 	public void setClassroom(final ArrayList<String> token){
-		console.log("set classroom called");
+		/*console.log("set classroom called");
 		//need this to hold path
 		final ArrayList<String> path = new ArrayList<String>();
 		//parse the path to get the roster id
@@ -176,7 +176,7 @@ public class ClassroomMain extends Composite{
 			console.log("Roster ajax called made from classroom main");
 			//Asyncall to get my roster with id of id
 			//setView must be called after roster is set
-			Ajax.post(RosterUrl.GET_ROSTER, $$("roster:" + id))
+			Ajax.post(RosterUrl.roster(id), $$("roster:" + id))
 			.done( new Function(){
 					@Override
 					public void f(){
@@ -205,7 +205,7 @@ public class ClassroomMain extends Composite{
 					 setView(path);
 					}else{dashboardView();}
 						}// end else roster will be here
-		
+		*/
 	}
 	
 	private void setView(List<String> path){
@@ -272,7 +272,6 @@ public class ClassroomMain extends Composite{
 			@Override
 			public void onSuccess() {
 				mainPanel.clear();
-				mainPanel.add(new GradedWorkMain());
 				rosterTitle.setText("Assignments");
 				
 			}

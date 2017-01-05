@@ -41,25 +41,5 @@ public class UserProfilePage extends Composite {
 		userProfilePanel = profilePanel;
 	}
 	
-	
-	
-	
-	private static void renderProfile(String givenName, String familyName, String email, String profilePictureUrl){
-		GWT.log("rendering profile method");
-		profileImage.setSrc(profilePictureUrl);
-		profileFirstName.setInnerText(givenName);
-		profileLastName.setInnerHTML(familyName);
-		profileEmail.setInnerHTML(email);
-		userProfilePanel.setProfileInfo(givenName + " " + familyName, profilePictureUrl);
-		title.setText(givenName + " " + familyName);
-	}
-	
-	public String getProfileFullName(){
-		return profileFirstName.getInnerHTML() + " " + profileLastName.getInnerHTML();
-		
-	}
-	
-    public String getProfilePictureUrl(){
-		return profileImage.getSrc();
-	}
+
 }

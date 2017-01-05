@@ -7,18 +7,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.videmantay.server.util.DB;
 
 public class AdminServlet extends HttpServlet{
-	
+
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		
-		
+		TemplateGen template = (TemplateGen) this.getServletContext().getAttribute("template");
 		res.setContentType("text/html");
-		DB.start();
-		res.getWriter().write(ViewsUtils.adminView());
+		res.getWriter().write(template.getAdminPage());
 		
 		
 	}

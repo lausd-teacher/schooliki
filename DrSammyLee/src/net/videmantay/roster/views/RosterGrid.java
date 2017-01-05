@@ -26,7 +26,13 @@ public class RosterGrid extends MaterialContainer{
 			"<h6 class='emptyRosterListContent'>you can begin pressing the big  plus button at" +
 			"the botton of the screen.</h6>");
 	
+	MaterialRow row = new MaterialRow();
 	
+	RosterGrid(){
+		this.add(row);
+		this.setWidth("100%");
+		this.setHeight("100%");
+	}
 	
 	public void showEmptyList(){
 		this.clear();
@@ -38,6 +44,17 @@ public class RosterGrid extends MaterialContainer{
 		this.add(this.errorMessage);
 	}
 
-
+	public void addRoster(RosterJson roster){
+		MaterialColumn col = new MaterialColumn();
+		col.setGrid("s12 m3 l3");
+		RosterPanel panel = new RosterPanel();
+		panel.setData(roster);
+		col.add(panel);
+		if(row.getWidgetCount() == 4){
+			row = new MaterialRow();
+			this.add(row);
+		}
+		row.add(col);
+	}
 
 }

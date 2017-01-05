@@ -1,170 +1,101 @@
 package net.videmantay.server;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import javax.servlet.ServletContext;
+import freemarker.log.Logger;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Template;
-import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.TemplateDateModel;
-import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
 
 public class TemplateGen{
 	
-	private Configuration cfg = null;
-	
-	
-	private static TemplateGen instance = null;
-	
-	private final Logger log = Logger.getLogger("logger");
-	
-	private TemplateGen(){
+	private  final Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+	private final  Logger LOG = Logger.getLogger(TemplateGen.class.getName());
+	public TemplateGen(ServletContext ctx){
 		
 		
-		cfg = new Configuration(Configuration.VERSION_2_3_23);
-		log.log(Level.INFO, this.getClass().getClassLoader().getResource("").getPath());
 		
-
-		try {
-			cfg.setDirectoryForTemplateLoading(new File("html"));
-			
-			
-		} catch (IOException e) {
+		// Specify the data source where the template files come from. Here I set a
+		// plain directory for it, but non-file-system are possible too:
 		
-			e.printStackTrace();
-		}
-
-		
+		cfg.setServletContextForTemplateLoading(ctx, "WEB-INF/html");
+		// Specify how templates will see the data-model. This is an advanced topic...
+		// for now just use this:
 		DefaultObjectWrapperBuilder owb = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_23);
 		owb.setForceLegacyNonListCollections(false);
 		owb.setDefaultDateType(TemplateDateModel.DATETIME);
 		cfg.setObjectWrapper(owb.build());
-		
+
+		// Set your preferred charset template files are stored in. UTF-8 is
+		// a good choice in most applications:
 		cfg.setDefaultEncoding("UTF-8");
 
+		// Sets how errors will appear. Here we assume we are developing HTML pages.
+		// For production systems TemplateExceptionHandler.RETHROW_HANDLER is better.
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 
-		cfg.setIncompatibleImprovements(Configuration.VERSION_2_3_21);  // FreeMarker 2.3.20
-		
 	}
 	
-	
-	public String getLoggedInLoginView(String currentUser){
-		
+	public  String getAdminPage(){
 		try {
-			StringWriter writer = new StringWriter();
-			StringWriter writer2 = new StringWriter();
+			Template adminPage = cfg.getTemplate("admin.html");
+			HashMap<String, Object> root = new HashMap<String, Object>();
 			
-			Template logginPage = cfg.getTemplate("login.html");
-			Template loggedInBody = cfg.getTemplate("loggedin.html");
-			
-			 Map<String, String> templateData = new HashMap<String, String>();
-			 templateData.put("name", currentUser);
-			 
-			 loggedInBody.process(templateData, writer);
-			 
-			 Map<String, String> pageParts = new HashMap<String, String>();
-			 pageParts.put("loginBody", writer.toString());
-			 
-			
-			 logginPage.process(pageParts, writer2);
-			
-			
-			return writer2.toString();
-			
-			
-		} catch (IOException | TemplateException e) {
+			return adminPage.toString();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return error();
+	}
+	
+	public  Template getTeacherPage(){
+		try {
+			Template teacherPage = cfg.getTemplate("teacher.html");
+			LOG.info(teacherPage.toString());
+			return teacherPage;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	public  String getStudentPage(){
+		try {
+			Template adminPage = cfg.getTemplate("student.html");
+			return adminPage.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return error();
+	}
+	
+	public  String getAidePage(){
+		try {
+			Template adminPage = cfg.getTemplate("aide.html");
+			return adminPage.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return error();
+	}
+	
 
-	}
-	
-	
-	  public static TemplateGen getInstance(){
-		  
-		   if(instance == null){
-			   
-			   
-			   return new TemplateGen();
-		   }else{
-			   
-			   return instance;
-		   }
-		  
-		  
-		  
-	  }
-	
-      public String getLoggedOutLoginView(){
-    	  try {
-  			StringWriter writer = new StringWriter();
-  			Template logginPage = cfg.getTemplate("login.html");
-  			Template loggedOutBody = cfg.getTemplate("loggedout.html");
-  			
-          
-  			 
-  			 Map<String, String> pageParts = new HashMap<String, String>();
-  			 pageParts.put("loginBody", loggedOutBody.toString());
-  			 
-  			 logginPage.process(pageParts, writer);
-  			
-  			return writer.toString();
-  			
-  			
-  		} catch (IOException | TemplateException e) {
-  			// TODO Auto-generated catch block
-  			e.printStackTrace();
-  		}
-  		
-  		return error();
-	}
-      
-      
-      public String getLoginViewWithError(String errorMessage){
-    	  try {
-    		StringWriter writer1 = new StringWriter();
-  			StringWriter writer2 = new StringWriter();
-  			
-  			Template logginPage = cfg.getTemplate("login.html");
-  			Template loggedOutBody = cfg.getTemplate("loggedoutwitherrors.html");
-  			
-  			Map<String, String> errors = new HashMap<String, String>();
-  			errors.put("errors", errorMessage);
-  			
-  			log.log(Level.INFO, "called login view with errors");
-  			
-  			loggedOutBody.process(errors, writer1);
-             
-  			 
-  			 Map<String, String> pageParts = new HashMap<String, String>();
-  			 pageParts.put("loginBody", writer1.toString());
-  			 
-  			 logginPage.process(pageParts, writer2);
-  			
-  			return writer2.toString();	
-  		} catch (IOException | TemplateException e) {
-  			// TODO Auto-generated catch block
-  			e.printStackTrace();
-  		}
-  		
-  		return error();
-	}
-	
 	
    private static String error(){
 	   return "<h1>Error</h1><div>Error redenring the page, please try later</div>";
    }
-   
+
 
 }

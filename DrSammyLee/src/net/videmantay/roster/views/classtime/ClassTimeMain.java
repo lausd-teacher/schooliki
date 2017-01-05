@@ -28,7 +28,7 @@ public class ClassTimeMain extends Composite {
 	
 	public ClassTimeMain() {
 		initWidget(uiBinder.createAndBindUi(this));
-		ClasstimeGridItem activeItem = new ClasstimeGridItem();
+		/*ClasstimeGridItem activeItem = new ClasstimeGridItem();
 		activeItem.setClassTime(curClassTime);
 		activeItem.addStyleName("activeClassTime");
 		cardCol.add(activeItem);
@@ -39,7 +39,7 @@ public class ClassTimeMain extends Composite {
 			cardCol.add(item);
 		}
 		}
-		
+		*/
 		
 	}
 

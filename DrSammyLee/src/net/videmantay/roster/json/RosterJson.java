@@ -76,4 +76,12 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	
+	public final native String getColor()/*-{
+		return this.color;
+	}-*/;
+	
+	public final native RosterJson setColor(String color)/*-{
+		this.color = color;
+	}-*/;
+	
 }

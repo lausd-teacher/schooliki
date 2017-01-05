@@ -51,14 +51,10 @@
 			<!-- SideNav -->
 			<m:MaterialSideNav type="PUSH" m:id="sideNav"
 				closeOnClick="true">
-				<v:UserProfilePanel></v:UserProfilePanel>
-				<m:MaterialLink ui:field="rosterLink" text="Roster" textColor="green" iconType="CLASS" />
-				<m:MaterialLink ui:field="calendarLink" text="Calendar" textColor="orange" iconType="EVENT" />
-				<m:MaterialLink ui:field="libraryLink" text="Library" textColor="light-green darken-4"
-					iconType="BOOK"/>
-				<m:MaterialLink ui:field="lessonsLink" text="Lessons" textColor="amber darken-4"
-					iconType="CONTENT_PASTE" />
-				<m:MaterialLink ui:field="settingsLink" text="Settings" textColor="green"
+				<v:UserProfilePanel ui:field="profile"></v:UserProfilePanel>
+				<m:MaterialLink ui:field="rosterLink" text="Roster" textColor="deep-orange darken-1" iconType="CLASS" />
+				<m:MaterialLink ui:field="calendarLink" text="Calendar" textColor="deep-orange darken-1" iconType="EVENT" />
+				<m:MaterialLink ui:field="settingsLink" text="Settings" textColor="deep-orange darken-1"
 					iconType="SETTINGS" />
 				<m:MaterialLink />
 			</m:MaterialSideNav>

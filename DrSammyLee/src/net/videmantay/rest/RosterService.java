@@ -25,6 +25,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+
 import com.googlecode.objectify.Key;
 
 import net.videmantay.rest.dto.AppUserDTO;
@@ -108,20 +111,17 @@ public class RosterService{
 	public Response listRosters(@Context HttpServletRequest request) {
 		ofy().clear();
 		
-		Object currentUserId = request.getSession(false).getAttribute(LoginService.CURRENTUSERID_SESSION_ATTRIBUTE);
-
+		Subject subject = SecurityUtils.getSubject();
+		Object currentUserId = subject.getPrincipal();
+		
 		if(currentUserId != null){
 			String ownerId = currentUserId.toString();
 			log.log(Level.INFO, "List rosters is called");
 
 				List<Roster> rosterList = db().load().type(Roster.class).filter("ownerId", ownerId).list();
 		
-				List<RosterDTO> rosterDTOList = new ArrayList<RosterDTO>();
-				for (Roster roster : rosterList) {
-					RosterDTO dto = new RosterDTO(roster);
-					rosterDTOList.add(dto);
-				}
-				return Response.ok().entity(rosterDTOList).build();
+				
+				return Response.ok().entity(rosterList).build();
 		}
 
 		return Response.ok().build();
@@ -146,16 +146,17 @@ public class RosterService{
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createRoster(RosterDTO rosterDTO, @Context HttpServletRequest request) throws Exception{
-		
-		Object currentUserId = request.getSession(false).getAttribute(LoginService.CURRENTUSERID_SESSION_ATTRIBUTE);
-		
+	public Response saveRoster(Roster roster) throws Exception{
+		Subject subject = SecurityUtils.getSubject();
+		Object currentUserId = subject.getPrincipal();
 		if(currentUserId != null){
 			String ownerId = currentUserId.toString();
-				final Roster roster = Roster.createFromDTO(rosterDTO);
 				roster.setOwnerId(ownerId);
 		        Long id = rosterDB.save(roster).getId();
-		        return Response.status(Status.CREATED).entity(id).build();
+		        if(roster.id == null){ 
+		        	roster.setId(id);
+		        }
+		        return Response.status(Status.CREATED).entity(roster).build();
 		}
 		
 
@@ -164,7 +165,6 @@ public class RosterService{
 
 	@DELETE
 	@Path("/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response delelteRoster(@PathParam("id") Long id) {
 
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
@@ -494,7 +494,8 @@ public class RosterService{
 			}
 		
 	}
-	
+	/* Every roster will always have one schedule so it can never be deleted just changed 
+	 * 
 	@DELETE
 	@Path("/{id}/schedule/{scheduleId}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -505,6 +506,8 @@ public class RosterService{
 		db().delete().key(sKey);
 		
 		return Response.ok().build();
-	}
+	} 
+	*
+	*/
 
 }
