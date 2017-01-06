@@ -41,6 +41,7 @@ public class TeacherServlet extends HttpServlet {
 		info.email = appUser.getEmail();
 		Credential cred = GoogleUtils.cred(user.getUserId());
 		info.token = cred.getAccessToken();
+		info.logout = UserServiceFactory.getUserService().createLogoutURL("/");
 		
 		//make info a json sting
 		ObjectMapper mapper = new ObjectMapper();

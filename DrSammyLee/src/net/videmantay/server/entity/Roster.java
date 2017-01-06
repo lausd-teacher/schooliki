@@ -55,7 +55,9 @@ public class Roster implements Serializable{
 	@NotNull
 	public String endDate;
 	
-
+	public String color = "red darken-2";
+	
+	@SafeHtml
 	public Roster(){
 		
 	}
@@ -99,6 +101,14 @@ public class Roster implements Serializable{
 
 	public void setRoomNum(String roomNum) {
 		this.roomNum = roomNum;
+	}
+	
+	public void setColor(String color){
+		this.color = color;
+	}
+	
+	public String getColor(){
+		return color;
 	}
 	
 	

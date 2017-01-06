@@ -7,10 +7,11 @@
 	</ui:style>
 	<m:MaterialCard ui:field="card">
 		<m:MaterialCardContent>
-			<m:MaterialCardTitle text="Roster" iconType="CLASS"
-				iconPosition="LEFT" textColor="black" />
 				<g:FormPanel ui:field="form" >
 				<g:HTMLPanel ui:field="formContainer">
+					<m:MaterialLabel text="Color:" textColor="grey darken-1" fontSize="1.25em"/>
+					<m:MaterialRow ui:field="colorRow">
+					</m:MaterialRow>
 					<m:MaterialInput ui:field="title" type="TEXT"
 						required="true" placeholder="Title" />
 					<h:Label ui:field="titleError" styleName="errorLabel" text="You must include a title" textColor="red lighten-1"/>

@@ -16,7 +16,7 @@ public class ValidDateRangeValidator implements ConstraintValidator<ValidDateRan
 	@Override
 	public boolean isValid(Roster roster, ConstraintValidatorContext context) {
 		
-		 if(roster.getEndDate().before(roster.getStartDate())){
+		 if(roster.endDate.compareTo( roster.startDate) <= 0 ){
 			 context.disableDefaultConstraintViolation();
 			 context
 			 .buildConstraintViolationWithTemplate(ValidationMessages.INVALID_DATE_PERIOD)

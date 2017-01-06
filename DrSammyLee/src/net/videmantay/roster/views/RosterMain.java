@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,6 +16,7 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialTooltip;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.InfoJson;
 
@@ -28,13 +30,9 @@ public class RosterMain extends Composite {
 	
 	@UiField
 	MaterialContainer mainPanel;
-	
 
 	@UiField
-	MaterialLink rosterLink;
-	
-	@UiField
-	MaterialLink calendarLink;
+	MaterialLink logoutLink;
 	
 	@UiField
 	MaterialTooltip calendarTooltip;
@@ -51,34 +49,23 @@ public class RosterMain extends Composite {
 	public RosterMain() {
 		console.log("Main Roster loaded");
 		initWidget(uiBinder.createAndBindUi(this));
-		InfoJson info = window.getPropertyJSO("info").cast();
+		//final InfoJson info = window.getPropertyJSO("info").cast();
+		final InfoJson info = RosterUtils.getInfo();
 		console.log(info);
 		profile.setProfileInfo(info);
-	}
-	
-	@Override 
-	public void onLoad(){
-	
-	}
-	
-	public void handleRequest(String request){
-		
+		logoutLink.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				Window.Location.assign(info.logout());
+				
+			}});
 	}
 	
 	public void rosters(){
 		console.log("RosterMain rosters(); called");
 		mainPanel.clear();
 		mainPanel.add(new RosterDisplay());
-	}
-	
-	public void setting(){
-		mainPanel.clear();
-		mainPanel.add(new RosterSettingsPanel());
-	}
-	
-	public void calendars(){
-		mainPanel.clear();
-		mainPanel.add(new AllCalendarsPanel());
 	}
 	
 

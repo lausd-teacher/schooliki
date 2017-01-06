@@ -1,18 +1,11 @@
 package net.videmantay.roster.views;
-import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.AttachDetachException;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -20,19 +13,10 @@ import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
-import gwt.material.design.client.ui.MaterialToast;
-import net.videmantay.roster.views.assignment.GradedWorkMain;
-import net.videmantay.roster.views.classtime.ClassTimeMain;
-import net.videmantay.roster.views.incident.IncidentMain;
-import static net.videmantay.roster.RosterUrl.*;
-import static net.videmantay.roster.RosterUtils.*;
-import net.videmantay.roster.json.IncidentReportJson;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.views.student.StudentInfoMain;
+import net.videmantay.student.json.InfoJson;
 import net.videmantay.roster.views.UserProfilePanel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.google.gwt.query.client.GQuery.*;
 
@@ -42,7 +26,6 @@ public class ClassroomMain extends Composite{
 
 	interface ClassroomMainUiBinder extends UiBinder<Widget, ClassroomMain> {
 	}
-	public interface HasUpdateClassTime{public void updateClassTime();}
 	
 	@UiField
 	MaterialContainer mainPanel;
@@ -85,56 +68,43 @@ public class ClassroomMain extends Composite{
 	
 	public ClassroomMain() {
 		this.initWidget(uiBinder.createAndBindUi(this));
-		//classroom.setId("classroom");
 	
+		final InfoJson info = RosterUtils.getInfo();
+		profilePanel.setProfileInfo(info);
 			//set side nav links/////////
 			profilePanel.addDomHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
+					event.stopPropagation();
 					History.newItem("roster");
-					
 				}}, ClickEvent.getType());
+			
 			dashboardLink.addClickHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("r/" + classRoster.getId());
-					new Timer(){
-
-						@Override
-						public void run() {
-							sideNav.hide();
-						}}.schedule(250);
-				}
-				
-			});
+					event.stopPropagation();
+					History.newItem("c/" + RosterUtils.getCurrentRoster().getId());
+					$("#sidenav-overlay, .drag-target").remove();
+				}});
 			
 			assignmentLink.addClickHandler( new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("roster/" + classRoster.getId() +"/assignments");
-					new Timer(){
-
-						@Override
-						public void run() {
-							sideNav.hide();
-						}}.schedule(250); 
-					
+					event.stopPropagation();
+					History.newItem("c/" + RosterUtils.getCurrentRoster().getId() +"/a");
+					$("#sidenav-overlay, .drag-target").remove();
 				}});
 			
 			incidentLink.addClickHandler( new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("roster/" + classRoster.getId() +"/incidents");
-					new Timer(){
-
-						@Override
-						public void run() {
-							sideNav.hide();
-						}}.schedule(250); 
+					event.stopPropagation();
+					History.newItem("c/" + RosterUtils.getCurrentRoster().getId()+"/i");
+					$("#sidenav-overlay, .drag-target").remove();
 					
 				}});
 			
@@ -142,27 +112,168 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("roster/" + classRoster.getId() +"/classtime");
-					new Timer(){
-
-						@Override
-						public void run() {
-							sideNav.hide();
-						}}.schedule(250); 
-					
+					event.stopPropagation();
+					History.newItem("c/" + classRoster.getId() +"/t");
+					$("#sidenav-overlay, .drag-target").remove();
 				}});
 		// End set up Side nav Links///////////////////
-			
+		
 			
 	}//end constructor
-	
-
-	public void handleRequest(List<String> request){
+	//methods for navigation
+	public void dashboard(){
+		
+	}
+	public void dashboard(String id){
+		
+	}
+	public void dashboard(String id, String view){
+		
+	}
+	public void classtime(){
+		
+	}
+	public void classtime(String id){
 		
 	}
 	
-	public void setClassroom(final ArrayList<String> token){
-		/*console.log("set classroom called");
+	public void classtimeGroup(){
+		
+	}
+	
+	public void classtimeProcedures(){
+		
+	}
+	
+	public void seatingchart(){
+		
+	}
+	
+	public void schedule(){
+		
+	}
+	
+	public void assignment(){
+		
+	}
+	public void assignment(String id){
+		
+	}
+	public void assignment(String id, String view){
+		
+	}
+	public void lesson(){
+		
+	}
+	public void lesson(String id){
+		
+	}
+	public void lesson(String id, String view){
+		
+	}
+	public void incident(){
+		
+	}
+	public void incident(String id){
+		
+	}
+	public void incident(String id, String view){
+		
+	}
+	public void goal(){
+		
+	}
+	public void goal(String id){
+		
+	}
+	public void goal(String id, String view){
+		
+	}
+	public void book(){
+		
+	}
+	public void book(String id){
+		
+	}
+	public void book(String id, String view){
+		
+	}
+	public void job(){
+		
+	}
+	public void job(String id){
+		
+	}
+	public void job(String id, String view){
+		
+	}
+	
+	public void form(){
+		
+	}
+	public void form(String view){
+		
+	}
+	public void form(String id, String view){
+		
+	}
+	
+	//student pages //////
+	public void student(String id){
+		
+	}
+	public void student(String id, String view){
+		
+	}
+	
+	public void studentwork(){
+		
+	}
+	
+	public void studentwork(Long id){
+		
+	}
+	public void studentwork(String view){
+		
+	}
+	public void studentwork(String id, String view){
+		
+	}
+	
+	public void studentgoal(){
+		
+	}
+	
+	public void studentgoal(Long id){
+		
+	}
+	public void studentgoal(String view){
+		
+	}
+	public void studentgoal(String id, String view){
+		
+	}
+	
+	public void studentincident(){
+		
+	}
+	
+	public void studentincident(Long id){
+		
+	}
+	public void studentincident(String view){
+		
+	}
+	
+	
+	
+
+	/*public void handleRequest(List<String> request){
+		
+	}
+	
+	public void setClassroom(){
+		console.log("set classroom called");
 		//need this to hold path
 		final ArrayList<String> path = new ArrayList<String>();
 		//parse the path to get the roster id
@@ -205,18 +316,17 @@ public class ClassroomMain extends Composite{
 					 setView(path);
 					}else{dashboardView();}
 						}// end else roster will be here
-		*/
+		
 	}
 	
-	private void setView(List<String> path){
-		
+	private void setView(List<String> path){	
 		switch(path.get(0)){
-		case "students":studentView(path); break;
-		case "classtime": classTimeView(path);break;
-		case "assignments":assignmentView(path); break;
-		case "incidents":incidentView(path); break;
-		case "jobs": jobView(path);break;
-		case "goals":goalView(path); break;
+		case "s":studentView(path); break;
+		case "t": classTimeView(path);break;
+		case "a":assignmentView(path); break;
+		case "i":incidentView(path); break;
+		case "j": jobView(path);break;
+		case "g":goalView(path); break;
 		default: dashboardView();
 		}
 	}
@@ -333,5 +443,5 @@ public class ClassroomMain extends Composite{
 	@Override
 	public void onLoad(){
 	
-	}
+	}*/
 }

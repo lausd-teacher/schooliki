@@ -2,6 +2,8 @@ package net.videmantay.roster.views;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,12 +13,14 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 
 import gwt.material.design.client.constants.CheckBoxType;
 import gwt.material.design.client.constants.IconPosition;
@@ -31,6 +35,8 @@ import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialRow;
+import gwt.material.design.client.ui.html.Span;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.RosterJson;
 
@@ -50,6 +56,10 @@ public class RosterPanel extends Composite {
 	public MaterialCardTitle cardTitle;
 	@UiField
 	public MaterialLabel cardDescript;
+	@UiField
+	public MaterialLabel rosDate;
+	@UiField
+	public MaterialLabel rosRoom;
 	
 	private RosterPanel rosterPanel = this;
 	
@@ -119,6 +129,11 @@ public class RosterPanel extends Composite {
 		console.log("Set data called for " + data.getTitle());
 		cardTitle.setText(data.getTitle());
 		cardDescript.setText(data.getDescription());
+		String dateInfo = dateFormat(data.getStartDate()) + " - " + dateFormat(data.getEndDate());
+		rosDate.setText(dateInfo);
+		if(data.getRoomNum() != null && !data.getRoomNum().isEmpty()){
+			rosRoom.setText("Room: " + data.getRoomNum());
+			}
 		$(this).data("roster", data);
 		//use the id as dropdown activator
 		cardTitle.getIcon().setActivates("r-"+data.getId());
@@ -128,7 +143,7 @@ public class RosterPanel extends Composite {
 		deleteRosterLink.setText("Delete");
 		deleteRosterLink.setIconType(IconType.DELETE);
 		deleteRosterLink.setIconPosition(IconPosition.LEFT);
-		deleteRosterLink.setIconFontSize(0.9, Unit.EM);
+		deleteRosterLink.setIconFontSize(0.95, Unit.EM);
 		deleteRosterLink.setFontSize("0.5em");
 		deleteRosterLink.addClickHandler(promptDelete);
 		
@@ -136,7 +151,7 @@ public class RosterPanel extends Composite {
 		updateRosterLink.setText("Edit");
 		updateRosterLink.setIconType(IconType.EDIT);
 		updateRosterLink.setIconPosition(IconPosition.LEFT);
-		updateRosterLink.setIconFontSize(0.9, Unit.EM);
+		updateRosterLink.setIconFontSize(0.95, Unit.EM);
 		updateRosterLink.setFontSize("0.5em");
 		updateRosterLink.addClickHandler(updateForm);
 		
@@ -156,9 +171,15 @@ public class RosterPanel extends Composite {
 			button.addClickHandler(new ClickHandler(){
 				@Override
 				public void onClick(ClickEvent e){
-					card.setBackgroundColor(s);
-					cardContent.setTextColor(s);
+					setColor(s);
 					$(rosterPanel).data("roster",RosterJson.class).setColor(s);
+					//save to db ///
+					Ajax.ajax(Ajax.createSettings()
+							.setContentType("application/json")
+							.setType("post")
+							.setDataType("json")
+							.setData($(rosterPanel).data("roster",RosterJson.class))
+							.setUrl(RosterUrl.roster()));
 				}
 			});
 			col.add(button);
@@ -184,11 +205,28 @@ public class RosterPanel extends Composite {
 			@Override
 			public boolean f(Event e){
 				e.stopPropagation();
-				History.newItem("c/" + $(rosterPanel).data("roster", RosterJson.class).getId());
+				//TODO: this code used in two different places - rewrite;
+				RosterJson rj = $(rosterPanel).data("roster", RosterJson.class);
+				History.newItem("c/" + rj.getId());
+				RosterUtils.setCurrentRoster(rj);
+				
 				return true;
 			}
 		});
 		
+	}
+	
+	public void setColor(String color){
+		card.setBackgroundColor(color);
+		cardContent.setTextColor(color);
+	}
+	
+	private String dateFormat(String date){
+			Date toDate = new Date(Date.parse(date));
+			DateTimeFormat df = DateTimeFormat.getFormat("MMM d, yyyy");
+			return df.format(toDate);
+			
+			
 	}
 
 }

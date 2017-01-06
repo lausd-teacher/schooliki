@@ -10,7 +10,7 @@
 			<m:MaterialNavBrand  ui:field="rosterTitle" textAlign="CENTER"/>
 			</m:MaterialNavBar>
 
-			<m:MaterialSideNav type="PUSH" m:id="sideNav" ui:field="sideNav" closeOnClick="true">
+			<m:MaterialSideNav type="FIXED" alwaysShowActivator="true" m:id="sideNav" ui:field="sideNav"  closeOnClick="true">
 				<v:UserProfilePanel ui:field="profilePanel"></v:UserProfilePanel>
 				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" textColor="red darken-4"/>
 				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange darken-4" iconType="ASSIGNMENT" />

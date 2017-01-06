@@ -7,10 +7,13 @@ import java.util.Date;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -20,10 +23,15 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.constants.IconPosition;
+import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialAnchorButton;
+import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCard;
+import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialInput;
+import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.RosterJson;
 
@@ -38,6 +46,9 @@ public class RosterForm extends Composite{
 	
 	@UiField
 	MaterialCard card;
+	
+	@UiField
+	MaterialRow colorRow;
 	
 	@UiField
 	MaterialInput title;
@@ -66,17 +77,50 @@ public class RosterForm extends Composite{
 	
 	@UiField
 	FormPanel form;
+	
+	GQuery $colorBtns;
 
 	private RosterJson data = JavaScriptObject.createObject().cast();
+	private String colorVal = "red darken-2";
 
 	public RosterForm() {
 		initWidget(uiBinder.createAndBindUi(this));
 		formContainer.getElement().setId("rosterForm");
+		//setup color row
+		for(String s: RosterColors.colors){
+			MaterialColumn col = new MaterialColumn();
+			col = new MaterialColumn();
+			col.setGrid("s1");
+			col.setMargin(2);
+			final MaterialButton button = new MaterialButton();
+			$(button).addClass("colorBtn");
+			button.setBackgroundColor(s);
+			button.setSize("20px", "20px");
+			button.setPadding(3);
+			button.setMarginRight(3);
+			button.setDataAttribute("buttonColor", s);
+			$(button).data("buttonColor", s);
+			if(s.equals("red darken-2")){
+				$(button).css($$("border: 2px solid DimGray; padding: 1em"));
+			}
+			button.addClickHandler(new ClickHandler(){
+				@Override
+				public void onClick(ClickEvent e){
+					$(".colorBtn").css($$("padding:0em; border-width:0px;"));
+					$(e.getSource()).css($$("padding:1em; border:2px solid DimGray"));
+					colorVal = button.getBackgroundColor();
+				}
+			});
+			col.add(button);
+			colorRow.add(col);
+		}
 	}
 	
 	@Override
 	public void onLoad(){
 		$("#rosterForm input").blur(validate());
+		//init colorBtns
+		$colorBtns = $("button.colorBtn");
 		
 		startDate.addCloseHandler(new CloseHandler<MaterialDatePicker>(){
 			@Override
@@ -132,9 +176,9 @@ public class RosterForm extends Composite{
 		data.setEndDate(df.format(endDate.getValue()));
 		data.setStartDate(df.format(startDate.getValue()));
 		data.setRoomNum(roomNum.getValue());
+		data.setColor(colorVal);
 		
-		
-		
+
 		return data;
 		
 	}
@@ -181,13 +225,14 @@ public class RosterForm extends Composite{
 		}
 	}
 	
-	public void cancel(){
-		data = null;
-		form.reset();
-	}
 	
 	public void reset(){
+		
 		form.reset();
+		data = null;
+		colorVal = "red darken-2";
+		$colorBtns.css($$("padding:0em; border-width:0px;"));
+		$colorBtns.filter("[data-buttoncolor=red darken-2]").css($$("padding:1em; border:2px solid DimGray"));
 	}
 	
 	public void setData(RosterJson newData){
@@ -199,6 +244,9 @@ public class RosterForm extends Composite{
 			startDate.setValue(new Date(Date.parse(data.getStartDate())));
 			endDate.setValue(new Date(Date.parse(data.getEndDate())));
 			roomNum.setValue(data.getRoomNum());
+			$colorBtns.css($$("padding:0em; border-width:0px;"));
+			$colorBtns.filter("[data-buttoncolor="+data.getColor()+"]").css($$("padding:1em; border:2px solid DimGray"));
+					
 		}
 	}
 

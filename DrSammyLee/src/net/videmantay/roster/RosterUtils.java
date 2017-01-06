@@ -16,6 +16,7 @@ import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.ClassroomMain;
 import net.videmantay.roster.views.RosterMain;
+import net.videmantay.student.json.InfoJson;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.roster.views.StudentActionModal;
 
@@ -33,6 +34,11 @@ public class RosterUtils {
 	private static JsArray<RosterStudentJson> students;
 	private static StudentActionModal studentActionModal = new StudentActionModal();
 	
+	
+	public static InfoJson getInfo(){
+		InfoJson info = window.getPropertyJSO("info").cast();
+		return info;
+	}
 	public static JsArray<RosterJson> getRosterList(){
 		return rosterList;
 	}
@@ -66,7 +72,7 @@ public class RosterUtils {
 			public void f(){
 				ClassTimeConfigJson ctc =  JsonUtils.safeEval((String)this.arguments(0)).cast();
 				//fire ctc change event
-				$(window).trigger(RosterEvent.updateClassTimeConfig, ctc);
+				$(body).trigger(RosterEvent.updateClassTimeConfig, ctc);
 			}
 		});
 		//this must also change the classtime button text to the current class time	
@@ -77,19 +83,27 @@ public class RosterUtils {
 	}
 	
 	public static void showLandingPage(String request){
+		
 		root.clear();
 		root.add(landingPage);
-		landingPageRequest(request);
+		landingPage.rosters();
+		//just in case overlay is still in
+		$("#sidenav-overlay, .drag-target").remove();
 	}
-	private static void landingPageRequest(String request){
-		switch(request){
-		case "settings": landingPage.setting();break;
-		case "calendars":landingPage.calendars();break;
-		default: landingPage.rosters();
-		}
+	
+	public static RosterMain getLandingPage(){
+		return landingPage;
 	}
+	
+	public static ClassroomMain getClassroomPage(){
+		return classroomPage;
+	}
+	
 	public static void showClassroomPage(List<String> request){
-		classroomPage.handleRequest(request);
+		root.clear();
+		root.add(classroomPage);
+		//just in case overlay is still in
+		$("#sidenav-overlay, .drag-target").remove();
 	}
 	
 	public static RosterStudentJson findStudentById(String id){

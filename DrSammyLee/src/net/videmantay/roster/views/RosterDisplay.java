@@ -72,8 +72,30 @@ public class RosterDisplay extends Composite{
 						fab.setVisible(true);
 						console.log(this.arguments(0));
 						RosterJson roster = ((RosterJson)this.arguments(0)).cast();
-						console.log("INFO: roster back from server is " + roster.toString());
-						rosterGrid.addRoster(roster);
+						boolean noMatch = true;
+						for(int i = 0; i <RosterUtils.getRosterList().length(); i++){
+							if(roster.getId() == RosterUtils.getRosterList().get(i).getId()){
+								RosterJson updateMe = RosterUtils.getRosterList().get(i);
+								updateMe.setColor(roster.getColor());
+								updateMe.setTitle(roster.getTitle());
+								updateMe.setDescription(roster.getDescription());
+								updateMe.setEndDate(roster.getEndDate());
+								updateMe.setStartDate(roster.getStartDate());
+								updateMe.setRoomNum(roster.getRoomNum());
+								noMatch = false;
+								console.log("There was a match for roster we updated");
+							}
+						}//end for we cycled through it all
+						if(noMatch){
+							console.log("There was no match for roster it is a new one");
+							RosterUtils.getRosterList().push(roster);
+						}
+						rosterGrid.row.clear();
+						for(int i = 0; i < RosterUtils.getRosterList().length(); i++){
+						if(RosterUtils.getRosterList().get(i) != null){
+						rosterGrid.addRoster(RosterUtils.getRosterList().get(i));
+						}
+						}
 					}
 				});
 				rosterForm.reset();
@@ -86,7 +108,7 @@ public class RosterDisplay extends Composite{
 					rosterForm.setVisible(false);
 					rosterGrid.setVisible(true);
 					fab.setVisible(true);
-					rosterForm.cancel();
+					rosterForm.reset();
 				}};
 	private ClickHandler cancelDelete = new ClickHandler(){
 		@Override
@@ -110,7 +132,7 @@ public class RosterDisplay extends Composite{
 		}//end for
 		RosterUtils.setRosterList(newList);
 		//redraw the gird
-		rosterGrid.clear();
+		rosterGrid.row.clear();
 		for(int i = 0; i <RosterUtils.getRosterList().length(); i++){
 			rosterGrid.addRoster(RosterUtils.getRosterList().get(i));
 		}

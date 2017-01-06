@@ -20,7 +20,7 @@
 		<header>
 			<!-- NavBar -->
 			<m:MaterialNavBar activates="sideNav" backgroundColor="red darken-4">
-				<m:MaterialNavBrand centerOn="CENTER_ON_SMALL" text="Dr. Sammy Lee" />
+				<m:MaterialNavBrand marginLeft="10" centerOn="CENTER_ON_SMALL" text="Dr. Sammy Lee" />
 				<m:MaterialNavSection hideOn="HIDE_ON_SMALL_DOWN" float="RIGHT">
 					<m:MaterialTooltip ui:field="calendarTooltip" text="Calendar" position="LEFT">
 						<m:MaterialLink iconType="EVENT"
@@ -49,14 +49,10 @@
 				<m:MaterialLink text="Good going"></m:MaterialLink>
 			</m:MaterialDropDown>
 			<!-- SideNav -->
-			<m:MaterialSideNav type="PUSH" m:id="sideNav"
-				closeOnClick="true">
+			<m:MaterialSideNav  m:id="sideNav" type="FIXED" alwaysShowActivator="true" closeOnClick="true">
 				<v:UserProfilePanel ui:field="profile"></v:UserProfilePanel>
-				<m:MaterialLink ui:field="rosterLink" text="Roster" textColor="deep-orange darken-1" iconType="CLASS" />
-				<m:MaterialLink ui:field="calendarLink" text="Calendar" textColor="deep-orange darken-1" iconType="EVENT" />
-				<m:MaterialLink ui:field="settingsLink" text="Settings" textColor="deep-orange darken-1"
-					iconType="SETTINGS" />
-				<m:MaterialLink />
+				<m:MaterialLink ui:field="logoutLink" text="Logout" textColor="grey darken-2" iconType="INPUT" />
+			<!-- extra link for  long list 	<m:MaterialLink /> -->
 			</m:MaterialSideNav>
 		</header>
 		<m:MaterialContainer m:id="mainPanel" ui:field="mainPanel" width="100%" height="100%" >

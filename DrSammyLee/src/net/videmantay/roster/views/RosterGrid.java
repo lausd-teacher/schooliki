@@ -46,11 +46,12 @@ public class RosterGrid extends MaterialContainer{
 
 	public void addRoster(RosterJson roster){
 		MaterialColumn col = new MaterialColumn();
-		col.setGrid("s12 m3 l3");
+		col.setGrid("s12 m4 l4");
 		RosterPanel panel = new RosterPanel();
+		panel.setColor(roster.getColor());
 		panel.setData(roster);
 		col.add(panel);
-		if(row.getWidgetCount() == 4){
+		if(row.getWidgetCount() == 3){
 			row = new MaterialRow();
 			this.add(row);
 		}
