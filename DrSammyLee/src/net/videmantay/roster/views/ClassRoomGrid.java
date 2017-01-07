@@ -187,29 +187,4 @@ public class ClassRoomGrid extends Composite implements HasRosterDashboardView {
 		
 	}
 	
-
-	public MaterialFAB getFab() {
-		return this.fab;
-	}
-
-	public MaterialContainer getContainer() {
-		return this.container;
-	}
-
-	public MaterialAnchorButton getAddButton() {
-		return this.addButton;
-	}
-	
-	public StudentActionModal getStuModal() {
-		return this.stuModal;
-	}
-
-	public CreateStudentForm getCreateStudentFrom() {
-		return this.createStudentFrom;
-	}
-	
-	public interface Presenter{
-		void addStudentButtonClickEvent();
-	}
-
 }

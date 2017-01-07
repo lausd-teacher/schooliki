@@ -25,12 +25,12 @@ import gwt.material.design.client.ui.MaterialTabItem;
 import net.videmantay.roster.HasRosterDashboardView;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 
-public class RosterDashboardPanel extends Composite
+public class ClassroomDashboardPanel extends Composite
 {
 
-	private static RosterDashboardPanelUiBinder uiBinder = GWT.create(RosterDashboardPanelUiBinder.class);
+	private static ClassroomDashboardPanelUiBinder uiBinder = GWT.create(ClassroomDashboardPanelUiBinder.class);
 
-	interface RosterDashboardPanelUiBinder extends UiBinder<Widget, RosterDashboardPanel> {
+	interface ClassroomDashboardPanelUiBinder extends UiBinder<Widget, ClassroomDashboardPanel> {
 	}
 	
 
@@ -122,7 +122,7 @@ public class RosterDashboardPanel extends Composite
 	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
-	public RosterDashboardPanel() {
+	public ClassroomDashboardPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 	}
@@ -144,75 +144,7 @@ public class RosterDashboardPanel extends Composite
 
 	
 	
-	public MaterialSwitch getGridSwitch() {
-		return this.gridSwitch;
-	}
-
-	public MaterialIcon getHwIcon() {
-		return this.hwIcon;
-	}
-
-	public MaterialIcon getGroupsIcon() {
-		return this.groupsIcon;
-	}
-
-	public MaterialIcon getRollIcon() {
-		return this.rollIcon;
-	}
-
-	public MaterialIcon getMultipleIcon() {
-		return this.multipleIcon;
-	}
-
-	public MaterialIcon getRandomIcon() {
-		return this.randomIcon;
-	}
-
-	public MaterialIcon getSeatingChartEditIcon() {
-		return this.seatingChartEditIcon;
-	}
-
-	public HTMLPanel getTab1Main() {
-		return this.tab1Main;
-	}
-
-	public MaterialRow getToolbar() {
-		return this.toolbar;
-	}
-
-	public MaterialRow getDoneToolbar() {
-		return this.doneToolbar;
-	}
-
-	public MaterialAnchorButton getClasstimeBtn() {
-		return this.classtimeBtn;
-	}
-
-	public MaterialDropDown getClasstimeDropDown() {
-		return this.classtimeDrop;
-	}
-
-
-	public MaterialAnchorButton getDoneBtn() {
-		return this.doneBtn;
-	}
-
-
-	public MaterialAnchorButton getCancelBtn() {
-		return this.CancelBtn;
-	}
-
-
-	public MaterialButton getUndoBtn() {
-		return this.undoBtn;
-	}
-
-
-
-
-	public MaterialTab getTab() {
-		return this.tab;
-	}
+	
 
 	public State getState() {
 		return this.state;
@@ -237,11 +169,11 @@ public class RosterDashboardPanel extends Composite
 		if(display instanceof SeatingChartPanel){
 			tab1Main.add(display);
 		    seatingChartEditIcon.setVisible(true);
-		  // calFrame.setVisible(false);
+		
 		}else if(display instanceof ClassRoomGrid){
 			tab1Main.add(display);
 			seatingChartEditIcon.setVisible(false);
-			//calFrame.setVisible(false);
+		
 		}
 			
 	}
@@ -250,61 +182,14 @@ public class RosterDashboardPanel extends Composite
 		return display;
 	}
 
-
-	public MaterialTabItem getCalTab() {
-		return this.calTab;
-	}
-
     public void clearDropDown(){
     	     classtimeDrop.clear();
     	     classtimeDrop.add(classDropDownManageLink);
     }
+    
+    
 
 
-	public MaterialTabItem getReportsTab() {
-		return this.reportsTab;
-	}
 
-	public MaterialTabItem getDashboardTab() {
-		return this.dashboardTab;
-	}
 	
-	public MaterialLink getClassDropDownManageLink() {
-		return this.classDropDownManageLink;
-	}
-
-	public MaterialAnchorButton getSaveRollBtn() {
-		return this.saveRollBtn;
-	}
-
-	public MaterialButton getCancelRollBtn() {
-		return this.cancelRollBtn;
-	}
-
-	public HTMLPanel getCalendarContainer() {
-		return this.calendarContainer;
-	}
-	
-	public MaterialButton getRedoBtn() {
-		return this.redoBtn;
-	}
-
-	public interface Presenter{
-		void gridSwitchClickEvent();
-		void homeworkIconClickEvent();
-		void tabsClickEvent();
-		void manageClassTimeLinkClickEvent();
-		void seatingChartEditClickEvent();
-		void barDoneButtonClickEvent();
-		void barCancelButtonClickEvent();
-		void rollIconClick();
-		void saveRollButtonClick();
-		void cancelRollButtonClick();
-		void undoButtonClickEvent();
-		void redoButtonClickEvent();
-	}
-
-
-
-
 }

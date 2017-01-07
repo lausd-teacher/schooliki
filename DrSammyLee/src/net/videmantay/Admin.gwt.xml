@@ -15,5 +15,5 @@
 		<when-type-is class="net.videmantay.admin.ClientFactory" />
 	</replace-with>
 	<entry-point class="net.videmantay.admin.Admin"></entry-point>
-	<set-property name="user.agent" value="safari" />
+	<set-property name="user.agent" value="safari"/>
 </module>

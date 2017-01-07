@@ -22,44 +22,54 @@ import net.videmantay.roster.views.StudentActionModal;
 
 public class RosterUtils {
 
-	private RosterUtils(){}
-	private static RosterJson currentRoster;
-	private static JsArray<RosterJson> rosterList;
-	private static ClassTimeJson selectedClassTime;
-	private static RootPanel root = RootPanel.get();
-	private static RosterMain landingPage = new RosterMain();
-	private static  ClassroomMain classroomPage = new ClassroomMain();
-	private static boolean isEditMode = false;
-	private static boolean isRollMode = false;
-	private static JsArray<RosterStudentJson> students;
-	private static StudentActionModal studentActionModal = new StudentActionModal();
+	private  final RootPanel root = RootPanel.get();
+	private  final RosterMain landingPage;
+	private   final ClassroomMain classroomPage;
+	private final InfoJson info = window.getPropertyJSO("info").cast();
+	
+	private  RosterJson currentRoster;
+	private  JsArray<RosterJson> rosterList;
+	private  ClassTimeJson selectedClassTime;
+	private  boolean isEditMode = false;
+	private  boolean isRollMode = false;
+	private  JsArray<RosterStudentJson> students;
+	private  StudentActionModal studentActionModal;
 	
 	
-	public static InfoJson getInfo(){
-		InfoJson info = window.getPropertyJSO("info").cast();
-		return info;
+	RosterUtils(){
+		landingPage = new RosterMain(this);
+		classroomPage = new ClassroomMain(this);
 	}
-	public static JsArray<RosterJson> getRosterList(){
+	
+	
+	public InfoJson getInfo(){
+		return this.info;
+	}
+	public  JsArray<RosterJson> getRosterList(){
 		return rosterList;
 	}
 	
-	public static void setRosterList(JsArray<RosterJson> rosList){
-		rosterList = rosList;
+	public  void setRosterList(JsArray<RosterJson> rosList){
+		this.rosterList = rosList;
 	}
-	public static  void setCurrentRoster(RosterJson current) {
-		currentRoster = current;
+	public   void setCurrentRoster(final RosterJson current) {
+		console.log("current roster is set");
+		console.log(current);
+		//make a copy of the roster /// geeze loise
+		//this.currentRoster = JsonUtils.safeEval(JsonUtils.stringify(current)).cast();
+		this.currentRoster = current;
 		//set rosterId to window;
 		Properties wnd = window.cast();
 		
-		wnd.setNumber("rosterId", currentRoster.getId());
-		console.log(wnd.getInt("rosterId"));
+		wnd.set("roster", this.currentRoster);
+		console.log(wnd.get("roster"));
 	}
 	
-	public static RosterJson getCurrentRoster(){
+	public  RosterJson getCurrentRoster(){
 		return currentRoster;
 	}
 	
-	public static void setSelectedClassTime(ClassTimeJson sct) {
+	public  void setSelectedClassTime(ClassTimeJson sct) {
 		if(selectedClassTime == sct){
 			return;
 		}
@@ -78,35 +88,31 @@ public class RosterUtils {
 		//this must also change the classtime button text to the current class time	
 	}
 	
-	public static ClassTimeJson getSelectedClassTime() {
+	public  ClassTimeJson getSelectedClassTime() {
 		return selectedClassTime;
 	}
 	
-	public static void showLandingPage(String request){
+	public  void showLandingPage(){
 		
 		root.clear();
 		root.add(landingPage);
 		landingPage.rosters();
-		//just in case overlay is still in
-		$("#sidenav-overlay, .drag-target").remove();
 	}
 	
-	public static RosterMain getLandingPage(){
+	public RosterMain getLandingPage(){
 		return landingPage;
 	}
 	
-	public static ClassroomMain getClassroomPage(){
+	public  void showClassroomPage(){
+		root.clear();
+		root.add(classroomPage);
+	}
+	
+	public ClassroomMain getClassroomPage(){
 		return classroomPage;
 	}
 	
-	public static void showClassroomPage(List<String> request){
-		root.clear();
-		root.add(classroomPage);
-		//just in case overlay is still in
-		$("#sidenav-overlay, .drag-target").remove();
-	}
-	
-	public static RosterStudentJson findStudentById(String id){
+	public  RosterStudentJson findStudentById(String id){
 		if(students == null){
 			//get students
 		}

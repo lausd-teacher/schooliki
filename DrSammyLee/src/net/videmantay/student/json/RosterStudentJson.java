@@ -1,6 +1,7 @@
 package net.videmantay.student.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayInteger;
 
 
 public class RosterStudentJson extends JavaScriptObject{
@@ -31,4 +32,45 @@ public class RosterStudentJson extends JavaScriptObject{
 	public final native void setRosterId(String rosterId) /*-{
 		this.rosterId = rosterId;
 	}-*/;
+	
+	public final  native String getFirstName() /*-{
+	return this.firstName;
+	}-*/;
+
+public final  native String getLastName() /*-{
+	return this.lastName;
+}-*/;
+
+public final  native void setFirstName(String firstName) /*-{
+	this.firstName = firstName;
+}-*/;
+
+public final  native void setLastName(String lastName) /*-{
+	this.lastName = lastName;
+}-*/;
+
+public final  native void setImageUrl(String imageUrl) /*-{
+this.imageUrl = imageUrl;
+}-*/;
+
+public final  native String getImageUrl() /*-{
+return this.imageUrl;
+}-*/;
+
+public final native Integer posPoint()/*-{
+	return this.posPoints;
+}-*/;
+
+public final native void posPoint(Integer points)/*-{
+	this.posPoints = points
+}-*/;
+
+public final native Integer negPoint()/*-{
+	return this.negPoints;
+}-*/;
+
+public final native void negPoint(Integer points)/*-{
+this.negPoints = points
+}-*/;
+
 }

@@ -19,7 +19,6 @@ import static com.google.gwt.query.client.GQuery.$;
 import gwt.material.design.client.ui.MaterialBadge;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialLabel;
-import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
 import net.videmantay.student.json.RosterStudentJson;
 
@@ -78,9 +77,9 @@ public class RosterStudentCard extends Composite {
 	}
 
 	
-	public void setData(AppUserJson student){
+	public void setData(RosterStudentJson student){
 		this.getElement().setId(student.getId());
-		studentName.setText(student.getName());
+		studentName.setText(student.getFirstName() + " " + student.getLastName());
 		String url= student.getImageUrl();
 		studentImg.getStyle().setBackgroundImage("url('" + url +"')");
 		studentName.getElement().setAttribute("style", "max-width:40px");

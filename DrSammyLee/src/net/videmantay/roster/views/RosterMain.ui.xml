@@ -49,8 +49,10 @@
 				<m:MaterialLink text="Good going"></m:MaterialLink>
 			</m:MaterialDropDown>
 			<!-- SideNav -->
-			<m:MaterialSideNav  m:id="sideNav" type="FIXED" alwaysShowActivator="true" closeOnClick="true">
+			<m:MaterialSideNav ui:field="sideNav" m:id="sideNav" type="PUSH" alwaysShowActivator="true" closeOnClick="true">
 				<v:UserProfilePanel ui:field="profile"></v:UserProfilePanel>
+				<m:MaterialLink ui:field="rosterLink" text="Rosters" textColor="red darken-2" iconType="CLASS" />
+				<m:MaterialLink ui:field="calendarLink" text="Calendar" textColor="deep-orange darken-1" iconType="EVENT"/>
 				<m:MaterialLink ui:field="logoutLink" text="Logout" textColor="grey darken-2" iconType="INPUT" />
 			<!-- extra link for  long list 	<m:MaterialLink /> -->
 			</m:MaterialSideNav>

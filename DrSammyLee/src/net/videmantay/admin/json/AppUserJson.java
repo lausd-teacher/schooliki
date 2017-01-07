@@ -127,5 +127,13 @@ public class AppUserJson extends JavaScriptObject {
 	public final native String getPersonalTitle()/*-{
 		return this.personalTitle;
 	}-*/;
+
+	public final native String getGradeLevel()/*-{
+	return this.gradeLevel;
+}-*/;
+
+public final native void setGradeLevel(String level)/*-{
+	this.gradeLevel = level;
+}-*/;
 	
 }

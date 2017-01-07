@@ -16,8 +16,8 @@ import com.google.gwt.user.client.ui.Widget;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwtquery.plugins.ui.interactions.Draggable;
-import net.videmantay.roster.json.AppUserJson;
-import net.videmantay.roster.views.RosterDashboardPanel.View;
+import net.videmantay.roster.views.ClassroomDashboardPanel.View;
+import net.videmantay.student.json.RosterStudentJson;
 
 public class RosterStudentPanel extends Composite {
 
@@ -35,7 +35,7 @@ public class RosterStudentPanel extends Composite {
 	@UiField
 	MaterialLabel studentName;
 
-	public RosterStudentPanel(AppUserJson student) {
+	public RosterStudentPanel(RosterStudentJson student) {
 		initWidget(uiBinder.createAndBindUi(this));
 		setData(student);
 	}
@@ -53,10 +53,10 @@ public class RosterStudentPanel extends Composite {
 		setUpDragAndDrop();
 	}
 	
-	public void setData(AppUserJson student){
+	public void setData(RosterStudentJson student){
 		this.getElement().setId(student.getId());
 		studentImg.setAttribute("studentId", student.getId());
-		studentName.setText(student.getName());
+		studentName.setText(student.getLastName());
 		String url= student.getImageUrl();
 		studentImg.getStyle().setBackgroundImage("url('" + url +"')");
 		studentName.getElement().setAttribute("style", "max-width:40px");

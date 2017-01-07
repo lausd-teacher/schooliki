@@ -17,6 +17,7 @@ import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialCheckBox;
 import gwt.material.design.client.ui.MaterialInput;
+import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.html.Label;
 import net.videmantay.admin.json.AppUserJson;
@@ -54,6 +55,9 @@ public class AppUserForm extends Composite  {
 	
 	@UiField
 	MaterialAnchorButton cancelBtn;
+	
+	@UiField
+	MaterialListBox listBox;
 	
 	@UiField
 	MaterialModal formContainer;
@@ -94,6 +98,7 @@ public class AppUserForm extends Composite  {
 		studentCheck.addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event) {
+				listBox.setVisible(studentCheck.getValue());
 			if(studentCheck.getValue()){
 				$(teacherCheck,facultyCheck, adminCheck).hide();
 			}else{
@@ -201,6 +206,7 @@ public class AppUserForm extends Composite  {
 			  }else if(student){
 				  newUser.addRole(UserRoles.STUDENT.toString());
 			  }
+			  newUser.setGradeLevel(listBox.getValue());
 			
 			return newUser;
 		}

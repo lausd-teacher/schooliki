@@ -2,12 +2,12 @@ package net.videmantay.roster.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -28,7 +28,7 @@ public class RosterDisplay extends Composite{
 
 	private static RosterDisplayUiBinder uiBinder = GWT.create(RosterDisplayUiBinder.class);
 
-
+	private final RosterUtils utils;
 
 	@UiField
 	RosterGrid rosterGrid;
@@ -60,61 +60,72 @@ public class RosterDisplay extends Composite{
 
 			@Override
 			public void onClick(ClickEvent event) {
-				MaterialLoader.showLoading(true, rosterGrid);
+				MaterialLoader.showLoading(true);
 				Promise promise = rosterForm.submit();	
 				promise.done(new Function(){
 					@Override
 					public void f(){
-						console.log("INFO: done promised is called ");
-						MaterialLoader.showLoading(false, rosterGrid);
-						rosterForm.setVisible(false);
-						rosterGrid.setVisible(true);
-						fab.setVisible(true);
-						console.log(this.arguments(0));
-						RosterJson roster = ((RosterJson)this.arguments(0)).cast();
-						boolean noMatch = true;
-						for(int i = 0; i <RosterUtils.getRosterList().length(); i++){
-							if(roster.getId() == RosterUtils.getRosterList().get(i).getId()){
-								RosterJson updateMe = RosterUtils.getRosterList().get(i);
-								updateMe.setColor(roster.getColor());
-								updateMe.setTitle(roster.getTitle());
-								updateMe.setDescription(roster.getDescription());
-								updateMe.setEndDate(roster.getEndDate());
-								updateMe.setStartDate(roster.getStartDate());
-								updateMe.setRoomNum(roster.getRoomNum());
-								noMatch = false;
-								console.log("There was a match for roster we updated");
+						final RosterJson retrieved = ((RosterJson)this.arguments(0)).cast();
+						new Timer(){
+							
+							@Override
+							public void run() {
+								console.log("INFO: done promised is called ");
+								MaterialLoader.showLoading(false);
+								rosterForm.setVisible(false);
+								rosterGrid.clear();
+								rosterGrid.setVisible(true);
+								fab.setVisible(true);
+								
+								
+								boolean noMatch = true;
+								//stupid longs i  hate you
+								String curId = "" + retrieved.getId();
+								
+								for(int i = 0; i <utils.getRosterList().length(); i++){
+									String comId = ""+ utils.getRosterList().get(i).getId();
+									if(curId.equals(comId)){
+										RosterJson updateMe = utils.getRosterList().get(i);
+										updateMe.setColor(retrieved.getColor());
+										updateMe.setTitle(retrieved.getTitle());
+										updateMe.setDescription(retrieved.getDescription());
+										updateMe.setEndDate(retrieved.getEndDate());
+										updateMe.setStartDate(retrieved.getStartDate());
+										updateMe.setRoomNum(retrieved.getRoomNum());
+										noMatch = false;
+										console.log("There was a match for roster we updated");
+										break;
+									}
+								}//end for we cycled through it all
+								if(noMatch){
+									console.log("There was no match for roster it is a new one");
+									utils.getRosterList().push(retrieved);
+								}
+								drawGrid();
 							}
-						}//end for we cycled through it all
-						if(noMatch){
-							console.log("There was no match for roster it is a new one");
-							RosterUtils.getRosterList().push(roster);
-						}
-						rosterGrid.row.clear();
-						for(int i = 0; i < RosterUtils.getRosterList().length(); i++){
-						if(RosterUtils.getRosterList().get(i) != null){
-						rosterGrid.addRoster(RosterUtils.getRosterList().get(i));
-						}
-						}
-					}
+								
+						}.schedule(2000);
+					}	
 				});
 				rosterForm.reset();
-			}};
+			}
+		};
 			
 		private ClickHandler cancelBtnClick = new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					rosterForm.setVisible(false);
-					rosterGrid.setVisible(true);
+					drawGrid();
 					fab.setVisible(true);
 					rosterForm.reset();
+					$("div.lean-overlay").remove();
 				}};
 	private ClickHandler cancelDelete = new ClickHandler(){
 		@Override
 		public void onClick(ClickEvent e){
 			//hide the modal
 			deleteRosterModal.closeModal();
+			$("div.lean-overlay").remove();
 		}
 	};
 	private ClickHandler okDelete = new ClickHandler(){
@@ -124,18 +135,19 @@ public class RosterDisplay extends Composite{
 			deleteRosterModal.closeModal();
 		RosterJson ros = $(deleteRosterModal).data("roster", RosterJson.class);
 		JsArray<RosterJson> newList = JsArray.createArray().cast();
-		for(int i = 0; i < RosterUtils.getRosterList().length(); i++){
-			if(ros == RosterUtils.getRosterList().get(i)){
+		
+		//make longs string pain!!!
+		String curId = ros.getId()+"";
+		for(int i = 0; i < utils.getRosterList().length(); i++){
+			String comId = utils.getRosterList().get(i).getId() + "";	
+			if(curId.equals(comId)){
 				continue;
 			}//end if
-			newList.push(RosterUtils.getRosterList().get(i));
+			newList.push(utils.getRosterList().get(i));
 		}//end for
-		RosterUtils.setRosterList(newList);
+		utils.setRosterList(newList);
 		//redraw the gird
-		rosterGrid.row.clear();
-		for(int i = 0; i <RosterUtils.getRosterList().length(); i++){
-			rosterGrid.addRoster(RosterUtils.getRosterList().get(i));
-		}
+		drawGrid();
 		Ajax.ajax(Ajax.createSettings().setData(ros.getId())
 				.setDataType("json")
 				.setContentType("application/json")
@@ -143,7 +155,12 @@ public class RosterDisplay extends Composite{
 				.setUrl(RosterUrl.roster(ros.getId()))
 				).done(new Function(){ 
 					@Override
-					public void f(){MaterialToast.fireToast("Roster successfully deleted");}
+					public void  f(){
+
+						MaterialToast.fireToast("Roster successfully deleted");
+					$("div.lean-overlay").remove();
+		
+					}
 				});
 		
 		
@@ -156,6 +173,7 @@ public class RosterDisplay extends Composite{
 	Function promptDelete = new Function(){
 		@Override
 		public boolean f(Event e, Object...objects){
+			e.stopPropagation();
 			$(deleteRosterModal).data("roster", (RosterJson)objects[0]);
 			deleteRosterModal.openModal();
 			return true;
@@ -164,6 +182,7 @@ public class RosterDisplay extends Composite{
 	Function updateRosterForm = new Function(){
 		@Override
 		public boolean f(Event e, Object...objects){
+			e.stopPropagation();
 			showForm();
 			rosterForm.setData((RosterJson)objects[0]);
 			return true;
@@ -173,7 +192,8 @@ public class RosterDisplay extends Composite{
 	interface RosterDisplayUiBinder extends UiBinder<Widget, RosterDisplay> {
 	}
 
-	public RosterDisplay() {
+	public RosterDisplay(RosterUtils ru) {
+		this.utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
 		this.setSize("100%", "100%");
 		rosterForm.setVisible(false);
@@ -190,37 +210,35 @@ public class RosterDisplay extends Composite{
 		$(body).on("updateRosterForm", updateRosterForm);
 		
 		$(body).on("promptDelete", promptDelete);
+		// do in const
 	}
 	
 	@Override
-	public void onLoad(){
+	public void onLoad(){	
+		//load the grid
 		MaterialLoader.showLoading(true, rosterGrid);
-		//ajax to get roster list and populate the grid
-		Ajax.get(RosterUrl.roster()).done(new Function(){
-			@Override
-			public void f(){
-		MaterialLoader.showLoading(false,rosterGrid);	
-		JsArray<RosterJson> rosters = JsonUtils.safeEval((String)this.getArgument(0)).cast();
-		if(rosters == null || rosters.length() < 1){
-			rosterGrid.showEmptyList();
-		}else{
-			//set the roster list in rosterUtils
-			RosterUtils.setRosterList(rosters);
-			
-			//cycle through and draw
-			for(int i = 0; i < rosters.length(); i++){
-			rosterGrid.addRoster(rosters.get(i));
-			}//end for 
-		}
-			}
-		});
-		
+			new Timer(){
+
+				@Override
+				public void run() {
+					MaterialLoader.showLoading(false, rosterGrid);
+					drawGrid();
+				}}.schedule(750);
+				
 	}//end on load
 	
 	private void showForm(){
 		rosterForm.setVisible(true);
 		rosterGrid.setVisible(false);
 		fab.setVisible(false);
+	}
+	private void drawGrid(){
+		rosterGrid.clear();
+		for(int i = 0; i < utils.getRosterList().length(); i++){
+		if(utils.getRosterList().get(i) != null){
+		rosterGrid.addRoster(utils.getRosterList().get(i));
+		}
+		}
 	}
 		
 }

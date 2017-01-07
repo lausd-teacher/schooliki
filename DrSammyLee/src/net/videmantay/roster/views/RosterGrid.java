@@ -1,5 +1,6 @@
 package net.videmantay.roster.views;
 
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import java.util.ArrayList;
 
@@ -26,10 +27,10 @@ public class RosterGrid extends MaterialContainer{
 			"<h6 class='emptyRosterListContent'>you can begin pressing the big  plus button at" +
 			"the botton of the screen.</h6>");
 	
-	MaterialRow row = new MaterialRow();
+	MaterialRow row ;
+	final RosterGrid grid = this;
 	
 	RosterGrid(){
-		this.add(row);
 		this.setWidth("100%");
 		this.setHeight("100%");
 	}
@@ -43,19 +44,33 @@ public class RosterGrid extends MaterialContainer{
 		this.clear();
 		this.add(this.errorMessage);
 	}
+	
+	public void addRoster(final RosterJson roster){
+		new Timer(){
 
-	public void addRoster(RosterJson roster){
-		MaterialColumn col = new MaterialColumn();
-		col.setGrid("s12 m4 l4");
-		RosterPanel panel = new RosterPanel();
-		panel.setColor(roster.getColor());
-		panel.setData(roster);
-		col.add(panel);
-		if(row.getWidgetCount() == 3){
-			row = new MaterialRow();
-			this.add(row);
-		}
-		row.add(col);
+			@Override
+			public void run() {
+				if(row == null){
+					row = new MaterialRow();
+					grid.add(row);
+				}
+				if(row.getWidgetCount() == 3){
+					row = new MaterialRow();
+					grid.add(row);
+				}
+				MaterialColumn col = new MaterialColumn();
+				col.setGrid("s12 m4 l4");
+				RosterPanel panel = new RosterPanel();
+				
+				panel.setColor(roster.getColor());
+				panel.setData(roster);
+				col.add(panel);
+				row.add(col);
+				
+			}}.schedule(100);
+		
 	}
+
+	
 
 }

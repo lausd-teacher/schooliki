@@ -37,6 +37,8 @@ public  class AppUser  implements Serializable {
     public String lastName;
     
     public String imageUrl;
+    @Index
+    public String gradeLevel;
     
     @Index
     @Email
@@ -66,13 +68,14 @@ public  class AppUser  implements Serializable {
 	
 	
 
-	public AppUser(String firstName, String lastName, String imageUrl, String eMail, String googleId, boolean isActive,Set<String> roles,Set<String>permissions, boolean isFirstLogin) {
+	public AppUser(String firstName, String lastName, String imageUrl, String eMail, String gradeLevel, String googleId, boolean isActive,Set<String> roles,Set<String>permissions, boolean isFirstLogin) {
 		this.name = firstName + " " + lastName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.name = firstName + " " + lastName;
 		this.imageUrl = imageUrl;
 		this.email = eMail;
+		this.gradeLevel = gradeLevel;
 		this.googleId = googleId;
 		this.active = isActive;
 		this.roles = roles;

@@ -1,9 +1,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:style>
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
 	
-	</ui:style>
 	<g:HTMLPanel>
+	<m:MaterialLabel text="All Rosters Calendar" textColor="grey darken-2" padding="1" marginLeft="70" fontSize="2em" />
+	<g:HTMLPanel ui:field="emptyPanel">
+		<i class="material-icons" style="color:DimGray;left:45%;padding-right:0.5em;padding-top:0.25em;font-size:10em">event</i>
+		<h1 style="color:DimGray; padding:0.5em;">
+		You haven't created any rosters yet!</h1>
+		<h6 style="color:DimGray; padding-left:1em">
+		<p>You must have at least one roster to have a calendar</p>
+		<p>This is a place to see all your rosters' calendars at once.</p>
+		</h6>
+	</g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

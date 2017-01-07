@@ -39,6 +39,21 @@
 									<m:MaterialLabel text="Admin" />
 									<m:MaterialCheckBox ui:field="adminCheck" />
 								</h:Div>
+								<m:MaterialRow>
+								<m:MaterialColumn grid="s4">
+								<m:MaterialLabel text="Grade level:"/>
+								</m:MaterialColumn>
+								<m:MaterialColumn grid="s4">
+									<m:MaterialListBox ui:field="listBox" visible="false"> 
+										<h:Option text="K" value="K"/>
+										<h:Option text="1" value="1"/>
+										<h:Option text="2" value="2"/>
+										<h:Option text="3" value="3"/>
+										<h:Option text="4" value="4"/>
+										<h:Option text="5" value="5"/>
+									</m:MaterialListBox>
+								</m:MaterialColumn>
+								</m:MaterialRow>
 							</m:MaterialCardContent>
 						</m:MaterialCard>
 					</m:MaterialRow>

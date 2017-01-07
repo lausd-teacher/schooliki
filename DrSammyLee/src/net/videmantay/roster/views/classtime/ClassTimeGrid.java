@@ -15,6 +15,7 @@ import net.videmantay.roster.json.RosterJson;
 
 public class ClassTimeGrid extends Composite {
 
+	private final RosterUtils utils;
 	@UiField
 	MaterialColumn cardCol;
 	
@@ -34,10 +35,11 @@ public class ClassTimeGrid extends Composite {
 	}
 
 	
-	public ClassTimeGrid() {
+	public ClassTimeGrid(RosterUtils ru) {
+		this.utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
-		roster = RosterUtils.getCurrentRoster();
-		currrentClassTime = RosterUtils.getSelectedClassTime();
+		roster = utils.getCurrentRoster();
+		currrentClassTime = utils.getSelectedClassTime();
 		
 	}
 	

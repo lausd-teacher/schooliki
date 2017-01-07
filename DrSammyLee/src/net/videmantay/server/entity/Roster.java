@@ -57,6 +57,14 @@ public class Roster implements Serializable{
 	
 	public String color = "red darken-2";
 	
+	public List<String> gradeLevels;
+	
+	public String folderUrl;
+	
+	public String calendarUrl;
+	
+	
+	
 	@SafeHtml
 	public Roster(){
 		

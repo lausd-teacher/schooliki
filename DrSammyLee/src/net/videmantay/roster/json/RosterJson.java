@@ -2,6 +2,7 @@ package net.videmantay.roster.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
 
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.shared.GradeLevel;
@@ -65,6 +66,14 @@ public class RosterJson extends JavaScriptObject {
 	public final native RosterJson setDescription(String description)/*-{
 		this.description = description;
 		return this;
+	}-*/;
+	
+	public final native JsArrayString getGradeLevels()/*-{
+		return this.gradeLevels;
+	}-*/;
+	
+	public final native void setGradeLevels(JsArrayString levels)/*-{
+		this.gradeLevels = levels;
 	}-*/;
 
 	public final native  String getRoomNum()/*-{

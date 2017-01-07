@@ -26,7 +26,6 @@ import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTitle;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.RosterUtils;
-import net.videmantay.roster.json.AppUserJson;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.views.components.IncidentCard;
@@ -39,7 +38,7 @@ public class StudentActionModal extends Composite {
 
 	interface StudentActionModalUiBinder extends UiBinder<Widget, StudentActionModal> {
 	}
-	
+	private final RosterUtils utils;
 	public static final String GOOD_NEWS_AUDIO_ID = "goodNewsAudio";
 	public static final String BAD_NEWS_AUDIO_ID = "badNewsAudio";
 	
@@ -59,7 +58,8 @@ public class StudentActionModal extends Composite {
 	MaterialTitle title;
 
 	
-	public StudentActionModal() {
+	public StudentActionModal(RosterUtils ru) {
+		this.utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
 	
 	}
@@ -135,7 +135,7 @@ public class StudentActionModal extends Composite {
 					GWT.log("clicking on card in student action modal");
 					SelectionManager.unSelectCurrentSelectedIncidentCard();
 					SelectionManager.selectIncidentCard(card.getContainer());
-					Long currentRosterId = RosterUtils.getCurrentRoster().getId();
+					Long currentRosterId = utils.getCurrentRoster().getId();
 					final IncidentJson newIncident = JavaScriptObject.createObject().cast();
 					newIncident.setIncidentTypeId(incidentType.getId());
 					newIncident.setName(incidentType.getName());
@@ -143,11 +143,11 @@ public class StudentActionModal extends Composite {
 					newIncident.setValue(incidentType.getPoints());
 					final MaterialCard selectedCard = SelectionManager.getSelectedStudentCard();				
 					String studentId = selectedCard.getElement().getId();
-					final RosterStudentJson currentStudent = RosterUtils.findStudentById(studentId);
+					final RosterStudentJson currentStudent = utils.findStudentById(studentId);
 					//title.setTitle("Assign Incident to " + currentStudent.getName());
 					title.setTitle("Assign Incidents");
 					
-					GQuery.ajax("/roster/" +RosterUtils.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
+					GQuery.ajax("/roster/" +utils.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
 							Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
 							.done(new Function() {
 								@Override

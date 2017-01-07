@@ -22,22 +22,18 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 
-import gwt.material.design.client.constants.CheckBoxType;
 import gwt.material.design.client.constants.IconPosition;
 import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialCardContent;
 import gwt.material.design.client.ui.MaterialCardTitle;
-import gwt.material.design.client.ui.MaterialCheckBox;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialRow;
-import gwt.material.design.client.ui.html.Span;
 import net.videmantay.roster.RosterUrl;
-import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.RosterJson;
 
 public class RosterPanel extends Composite {
@@ -46,7 +42,7 @@ public class RosterPanel extends Composite {
 
 	interface RosterPanelUiBinder extends UiBinder<Widget, RosterPanel> {
 	}
-	
+
 	@UiField
 	MaterialCard card;
 	
@@ -86,7 +82,7 @@ public class RosterPanel extends Composite {
 		public void onClick(ClickEvent e){
 			RosterJson roster = $(rosterPanel).data("roster", RosterJson.class);
 			History.newItem("c/" + roster.getId());
-			RosterUtils.setCurrentRoster(roster);
+
 		}
 	};
 	
@@ -115,9 +111,6 @@ public class RosterPanel extends Composite {
 	public RosterPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.addStyleName("rosterPanel");
-		
-		
-		
 		card.addDomHandler(mouseOver, MouseOverEvent.getType());
 		card.addDomHandler(mouseOut, MouseOutEvent.getType());
 		//cardTitle.addDomHandler(click, ClickEvent.getType());
@@ -126,6 +119,7 @@ public class RosterPanel extends Composite {
 	}
 	
 	public void setData(final RosterJson data){
+		$(this).data("roster", data);
 		console.log("Set data called for " + data.getTitle());
 		cardTitle.setText(data.getTitle());
 		cardDescript.setText(data.getDescription());
@@ -134,11 +128,14 @@ public class RosterPanel extends Composite {
 		if(data.getRoomNum() != null && !data.getRoomNum().isEmpty()){
 			rosRoom.setText("Room: " + data.getRoomNum());
 			}
-		$(this).data("roster", data);
+		this.setColor(data.getColor());
+		
 		//use the id as dropdown activator
 		cardTitle.getIcon().setActivates("r-"+data.getId());
+		console.log("activator for " + cardTitle.getIcon().getActivates());
 		final MaterialDropDown rosterDropdown = new MaterialDropDown();
 		rosterDropdown.setActivator("r-"+data.getId());
+		console.log("activator by " + rosterDropdown.getActivator());
 		final MaterialLink deleteRosterLink = new MaterialLink();
 		deleteRosterLink.setText("Delete");
 		deleteRosterLink.setIconType(IconType.DELETE);
@@ -193,23 +190,21 @@ public class RosterPanel extends Composite {
 		rosterDropdown.add(colorLink);
 		rosterDropdown.setConstrainWidth(true);
 		card.add(rosterDropdown);	
-			
+		return;	
 	}
 	
 	@Override
 	public void onLoad(){
 		$(card).css("minWidth","100px").css("minHeight", "75px");
-		$(card).css("cursor", "pointer");
-		$(cardTitle.getIcon()).css("zIndex", "10");
-		$(card).find("span.card-title > span").click(new Function(){
+		$(card).find("span.card-title > span").css("cursor", "pointer").click(new Function(){
 			@Override
 			public boolean f(Event e){
 				e.stopPropagation();
 				//TODO: this code used in two different places - rewrite;
 				RosterJson rj = $(rosterPanel).data("roster", RosterJson.class);
 				History.newItem("c/" + rj.getId());
-				RosterUtils.setCurrentRoster(rj);
-				
+				console.log($(body).data("rosterList"));
+				//body.setPropertyJSO("currentRoster", rj);			
 				return true;
 			}
 		});

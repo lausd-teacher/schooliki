@@ -6,7 +6,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
 
 import net.videmantay.roster.json.RosterJson;
-
+import static com.google.gwt.query.client.GQuery.*;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Longs;
 
@@ -38,10 +38,15 @@ import java.util.List;
  */
 public class HistoryMapper implements ValueChangeHandler<String>{
 
-	public HistoryMapper(){}
+	private final RosterUtils utils;
+	
+	public HistoryMapper(RosterUtils ru){
+		this.utils = ru;
+	}
 
 	@Override
 	public  void onValueChange(ValueChangeEvent<String> event) {
+		
 		List<String> request= Splitter.on("/").splitToList(event.getValue());
 		
 		if(request == null || request.size() <= 0 ){
@@ -49,10 +54,17 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 		}
 		
 		if(request.size() == 1){// this means you on just the landing page show landing page 
-			RosterUtils.showLandingPage(request.get(0));
+			console.log("token size is 1");
+			utils.showLandingPage();
+			switch(request.get(0)){
+			case "calendar": utils.getLandingPage().calendar();break;
+			default: utils.getLandingPage().rosters();
+			}
+			return;
 		}//end if  equals 1 /////
 		
 		if(request.size() >= 2){
+			console.log("token is 2 or more");
 			//this is a classroom request make sure the first item is 'c' for classroom
 			if(!request.get(0).equals("c")){
 				doDefault();
@@ -61,25 +73,35 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 		//here we need to get the long id and set the current roster to the id
 			//if no match is found back to the dashboard
 		//set the current roster as id
-		Long id = Longs.tryParse(request.get(1));
+		//gwt and long don't mix compare strings
+		String id = request.get(1);
+		console.log("The current roster id is " + id);
 		//shuffle throug roste list for id
 		boolean noMatch = true;
-		JsArray<RosterJson> rosList = RosterUtils.getRosterList();
+		JsArray<RosterJson> rosList = utils.getRosterList();
 		for(int i = 0; i < rosList.length(); i++){
-			if(id == rosList.get(i).getId()){
-				RosterUtils.setCurrentRoster(rosList.get(i));
+			console.log("cycled through roster list " + (i + 1) + " times and roster id is " + rosList.get(i).getId());
+			String rosId = "" +rosList.get(i).getId();
+			if(id.equals(rosId)){
+				utils.setCurrentRoster(rosList.get(i));
 				noMatch = false;
 				break;
 			}
 		}//end for
 			//we cycled through and there was no match
 		if(noMatch){
+			console.log("no match back to the drawing board");
 			History.newItem("roster");
+		}else{
+			utils.showClassroomPage();
+		}
+		if(request.size() == 2){
+			utils.getClassroomPage().dashboard();
 		}
 		
 		}//end if  2 or more/////
 		
-		if(request.size() >=3){
+		/*if(request.size() >=3){
 			//all views will start with a plus sign
 			if(request.get(2).startsWith("+")){
 			//TODO:	RosterUtils.getClassroomPage().dashboardChart();
@@ -108,14 +130,14 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 			if(request.get(4).startsWith("+")){//it's a view
 				
 			}
-		}
+		}*/
 	}
 	
 	
 	public void doDefault(){
-		History.newItem("roster");
-		History.fireCurrentHistoryState();
-		RosterUtils.showLandingPage("roster");
+		History.replaceItem("roster");
+		utils.showLandingPage();
+		utils.getLandingPage().rosters();
 	}
 	
 }
