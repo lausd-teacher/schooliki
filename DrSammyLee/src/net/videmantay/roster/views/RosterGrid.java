@@ -27,8 +27,7 @@ public class RosterGrid extends MaterialContainer{
 			"<h6 class='emptyRosterListContent'>you can begin pressing the big  plus button at" +
 			"the botton of the screen.</h6>");
 	
-	MaterialRow row ;
-	final RosterGrid grid = this;
+	
 	
 	RosterGrid(){
 		this.setWidth("100%");
@@ -46,28 +45,9 @@ public class RosterGrid extends MaterialContainer{
 	}
 	
 	public void addRoster(final RosterJson roster){
-		new Timer(){
-
-			@Override
-			public void run() {
-				if(row == null){
-					row = new MaterialRow();
-					grid.add(row);
-				}
-				if(row.getWidgetCount() == 3){
-					row = new MaterialRow();
-					grid.add(row);
-				}
-				MaterialColumn col = new MaterialColumn();
-				col.setGrid("s12 m4 l4");
-				RosterPanel panel = new RosterPanel();
 				
-				panel.setColor(roster.getColor());
-				panel.setData(roster);
-				col.add(panel);
-				row.add(col);
 				
-			}}.schedule(100);
+		
 		
 	}
 

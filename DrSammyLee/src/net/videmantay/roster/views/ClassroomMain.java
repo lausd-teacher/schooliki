@@ -1,29 +1,36 @@
 package net.videmantay.roster.views;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.events.SideNavClosedEvent;
+import gwt.material.design.client.events.SideNavClosedEvent.SideNavClosedHandler;
 import gwt.material.design.client.ui.MaterialContainer;
+import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBar;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.InfoJson;
+import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.roster.views.UserProfilePanel;
 
 import static com.google.gwt.query.client.GQuery.*;
-
-import com.google.api.client.googleapis.util.Utils;
 
 public class ClassroomMain extends Composite{
 
@@ -34,9 +41,6 @@ public class ClassroomMain extends Composite{
 	
 	@UiField
 	MaterialContainer mainPanel;
-	
-	@UiField
-	MaterialNavBrand rosterTitle;
 	
 	@UiField
 	UserProfilePanel profilePanel;
@@ -69,6 +73,12 @@ public class ClassroomMain extends Composite{
 	@UiField
 	MaterialNavBar navBar;
 	
+	@UiField
+	MaterialNavBrand navBrand;
+	
+	@UiField
+	HTMLPanel classroom;
+	
 	//needs access to widget children
 	ClassroomDashboardPanel dashboard;
 	
@@ -83,57 +93,69 @@ public class ClassroomMain extends Composite{
 	public ClassroomMain(RosterUtils ru) {
 		this.utils = ru;
 		this.initWidget(uiBinder.createAndBindUi(this));
-
 			//set side nav links/////////
-			profilePanel.addDomHandler(new ClickHandler(){
+		profilePanel.addDomHandler(new ClickHandler(){
 
-				@Override
-				public void onClick(ClickEvent event) {
-					event.stopPropagation();
-					History.newItem("roster");
-					hideSideNav();
-				}}, ClickEvent.getType());
+			@Override
+			public void onClick(ClickEvent event) {
+				History.newItem("roster");
+				
+			}
+			
+			
+		}, ClickEvent.getType());
 			
 			dashboardLink.addClickHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					event.stopPropagation();
-					History.newItem("c/" + utils.getCurrentRoster().getId());
-					hideSideNav();
+					History.newItem("c/" + utils.getCurrentRoster().getId());	
 				}});
 			
 			assignmentLink.addClickHandler( new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					event.stopPropagation();
 					History.newItem("c/" + utils.getCurrentRoster().getId() +"/a");
-					hideSideNav();
 				}});
 			
 			incidentLink.addClickHandler( new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					event.stopPropagation();
 					History.newItem("c/" + utils.getCurrentRoster().getId()+"/i");
-					hideSideNav();
-					
 				}});
 			
 			classTimeLink.addClickHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
-					event.stopPropagation();
 					History.newItem("c/" + roster.getId() +"/t");
-					hideSideNav();
 				}});
+			
 		// End set up Side nav Links///////////////////
 	//if we are here we want to mangae students and classtime load them
 			//Ajax.get(RosterUrl.st)
 	}//end constructor
+	
+	private void setRoster(){
+	Ajax.get(RosterUrl.student(roster.getId())).done(new Function(){
+		@Override
+		public void f(){
+			JsArray<RosterStudentJson> students =this.arguments(0);
+			utils.setStudents(students);
+			//drawStudents
+		}
+	});
+	
+	Ajax.get(RosterUrl.classtime(roster.getId())).done(new Function(){
+		@Override
+		public void f(){
+			
+		}
+	});
+		
+	}
 	//methods for navigation
 	public void dashboard(){
 		GWT.runAsync(new RunAsyncCallback(){
@@ -150,6 +172,7 @@ public class ClassroomMain extends Composite{
 				if(mainState.equalsIgnoreCase("dashboard")){
 					return;
 				}else{
+			
 				mainPanel.clear();
 				dashboard = new ClassroomDashboardPanel();
 				mainPanel.add(dashboard);
@@ -703,28 +726,26 @@ public class ClassroomMain extends Composite{
 	
 	@Override
 	public void onLoad(){
-		hideSideNav();
 		
+	
 		console.log("classroom main onload called");
 		final InfoJson info = utils.getInfo();
 		roster = utils.getCurrentRoster();
 		navBar.setBackgroundColor(roster.getColor());
+		navBrand.setText(roster.getTitle());
 		profilePanel.setProfileInfo(info);
 		
 	}
-	
-	private void hideSideNav(){
-		sideNav.hide();
-		sideNav.hideOverlay();
-		$("div#sidenav-overlay").remove();
-		$("div.drag-target").remove();
-	}
-	
 	@Override
 	public void onUnload(){
 		//clean up html picker and tool tips
 		$("div.picker, .material-tooltip").remove();
 	}
+	
+
+	
+	
+	
 	
 	
 	

@@ -41,8 +41,10 @@ import net.videmantay.rest.dto.StudentRollDTO;
 import net.videmantay.server.GoogleUtils;
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.ClassTime;
+import net.videmantay.server.entity.ClassTimeConfig;
 import net.videmantay.server.entity.Incident;
 import net.videmantay.server.entity.Roster;
+import net.videmantay.server.entity.RosterConfig;
 import net.videmantay.server.entity.RosterStudent;
 import net.videmantay.server.entity.Schedule;
 import net.videmantay.server.entity.ScheduleItem;
@@ -178,6 +180,36 @@ public class RosterService{
 
 		return Response.status(Status.NOT_FOUND).build();
 
+	}
+	
+	@GET
+	@Path("{id}/rosterconfig")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRosterConfig(@PathParam("id") Long id){
+		//must load the students
+		///class times
+		//and default classtime
+		RosterConfig config = new RosterConfig();
+		config.students.addAll(db().load().type(RosterStudent.class).filter("rosterId", id).list());
+		config.classtimes.addAll(db().load().type(ClassTime.class).filter("rosterId", id).list());
+		
+		// if you have any classtimes load the default///
+		if(config.classtimes.size() >= 1){
+		Long ctId = null;
+		boolean noMatch = true;
+		for(ClassTime ct: config.classtimes){
+			if(ct.isDefault){
+			ctId = 	ct.getId();
+			noMatch = false;
+			break;
+		}
+		}
+		if(noMatch){
+			ctId = config.classtimes.iterator().next().id;
+		}
+		config.defaultTime = db().load().type(ClassTimeConfig.class).id(ctId).now();
+		}//end check if has classtimes;
+		return Response.ok().entity(config).build();	
 	}
 
 	@GET

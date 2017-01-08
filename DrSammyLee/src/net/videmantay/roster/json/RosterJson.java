@@ -93,4 +93,20 @@ public class RosterJson extends JavaScriptObject {
 		this.color = color;
 	}-*/;
 	
+	public final void copy(RosterJson copy){
+		
+		this.setColor(copy.getColor());
+		this.setDescription(copy.getDescription());
+		this.setEndDate(copy.getEndDate());
+		this.setStartDate(copy.getStartDate());
+		
+		if(copy.getGradeLevels() != null)
+		this.setGradeLevels(copy.getGradeLevels());
+		
+		this.setId(copy.getId());
+		this.setOwnerId(copy.getOwnerId());
+		this.setRoomNum(copy.getRoomNum());
+		this.setTitle(copy.getTitle());
+	}
+	
 }

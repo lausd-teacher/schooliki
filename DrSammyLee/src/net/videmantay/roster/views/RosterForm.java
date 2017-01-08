@@ -232,7 +232,7 @@ public class RosterForm extends Composite{
 		data = null;
 		colorVal = "red darken-2";
 		$colorBtns.css($$("padding:0em; border-width:0px;"));
-		$colorBtns.filter("[data-buttoncolor=red darken-2]").css($$("padding:1em; border:2px solid DimGray"));
+		$colorBtns.filter("[data-buttoncolor='red darken-2']").css($$("padding:1em; border:2px solid DimGray"));
 	}
 	
 	public void setData(RosterJson newData){
@@ -245,7 +245,7 @@ public class RosterForm extends Composite{
 			endDate.setValue(new Date(Date.parse(data.getEndDate())));
 			roomNum.setValue(data.getRoomNum());
 			$colorBtns.css($$("padding:0em; border-width:0px;"));
-			$colorBtns.filter("[data-buttoncolor="+data.getColor()+"]").css($$("padding:1em; border:2px solid DimGray"));
+			$colorBtns.filter("[data-buttoncolor='"+data.getColor()+"']").css($$("padding:1em; border:2px solid DimGray"));
 					
 		}
 	}

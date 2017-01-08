@@ -28,7 +28,7 @@ import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialRow;
-import net.videmantay.roster.json.AppUserJson;
+import net.videmantay.student.json.RosterStudentJson;
 
 
 public class CreateStudentForm extends Composite{
@@ -59,7 +59,7 @@ public class CreateStudentForm extends Composite{
 	@UiField
 	MaterialRow availableStudentContainer;
 
-	JsArray<AppUserJson> studentList = JavaScriptObject.createArray().cast();
+	JsArray<RosterStudentJson> studentList = JavaScriptObject.createArray().cast();
 	
 	HTMLPanel test;
 
@@ -117,8 +117,8 @@ public class CreateStudentForm extends Composite{
 private void renderStudentList(){
 	
 	for(int i = 0; i < studentList.length(); i++){
-		AppUserJson current = studentList.get(i);
-		final StudentCard card = new StudentCard(current.getImageUrl(), current.getName(), current.geteMail(), current.getId());
+		RosterStudentJson current = studentList.get(i);
+		final StudentCard card = new StudentCard(current.getImageUrl(), current.getFirstName(), current.getStudentId(), current.getId());
 		
 //		MaterialColumn column = new MaterialColumn();
 //		column.add(card);

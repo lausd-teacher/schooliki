@@ -5,12 +5,11 @@
 	xmlns:h="urn:import:gwt.material.design.client.ui.html"
 	xmlns:v="urn:import:net.videmantay.roster.views">
 	<g:HTMLPanel styleName="classroom" ui:field="classroom">
-			<m:MaterialNavBar ui:field="navBar" activates="sideNav" backgroundColor="red darken-4" addStyleNames="classroomNav">
-			
-			<m:MaterialNavBrand  ui:field="rosterTitle" textAlign="CENTER"/>
+			<m:MaterialNavBar ui:field="navBar" backgroundColor="red darken-4" activates="sideNav">
+			<m:MaterialNavBrand  ui:field="navBrand" textAlign="CENTER"/>
 			</m:MaterialNavBar>
 
-			<m:MaterialSideNav type="PUSH"  m:id="sideNav" ui:field="sideNav"  closeOnClick="true">
+			<m:MaterialSideNav ui:field="sideNav" m:id="sideNav" type="PUSH"  closeOnClick="true" showOnAttach="false" >
 				<v:UserProfilePanel ui:field="profilePanel"></v:UserProfilePanel>
 				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" textColor="red darken-4"/>
 				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange darken-4" iconType="ASSIGNMENT" />

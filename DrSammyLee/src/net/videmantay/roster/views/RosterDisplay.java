@@ -17,8 +17,10 @@ import com.google.gwt.query.client.plugins.ajax.Ajax;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
+import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
@@ -65,7 +67,10 @@ public class RosterDisplay extends Composite{
 				promise.done(new Function(){
 					@Override
 					public void f(){
-						final RosterJson retrieved = ((RosterJson)this.arguments(0)).cast();
+						console.log("argument recieved by AJAX: ");
+						console.log(this.arguments(0));
+						final RosterJson retrieved = this.arguments(0);
+					
 						new Timer(){
 							
 							@Override
@@ -73,7 +78,6 @@ public class RosterDisplay extends Composite{
 								console.log("INFO: done promised is called ");
 								MaterialLoader.showLoading(false);
 								rosterForm.setVisible(false);
-								rosterGrid.clear();
 								rosterGrid.setVisible(true);
 								fab.setVisible(true);
 								
@@ -101,10 +105,14 @@ public class RosterDisplay extends Composite{
 									console.log("There was no match for roster it is a new one");
 									utils.getRosterList().push(retrieved);
 								}
+								console.log("Here is the rostser form - no Match is " + noMatch);
+								console.log("The array is");
+								console.log(utils.getRosterList());
+								
 								drawGrid();
 							}
 								
-						}.schedule(2000);
+						}.schedule(3000);
 					}	
 				});
 				rosterForm.reset();
@@ -115,10 +123,10 @@ public class RosterDisplay extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
-					drawGrid();
 					fab.setVisible(true);
 					rosterForm.reset();
-					$("div.lean-overlay").remove();
+					rosterGrid.setVisible(true);
+					rosterForm.setVisible(false);
 				}};
 	private ClickHandler cancelDelete = new ClickHandler(){
 		@Override
@@ -232,13 +240,30 @@ public class RosterDisplay extends Composite{
 		rosterGrid.setVisible(false);
 		fab.setVisible(false);
 	}
-	private void drawGrid(){
+	private final void drawGrid(){
+		console.log("Draw Grid: called");
 		rosterGrid.clear();
-		for(int i = 0; i < utils.getRosterList().length(); i++){
-		if(utils.getRosterList().get(i) != null){
-		rosterGrid.addRoster(utils.getRosterList().get(i));
+		rosterGrid.add(addRosters(utils.getRosterList()));
+	}
+	
+	private final MaterialRow addRosters(JsArray<RosterJson> rosters){
+		final MaterialRow row = new MaterialRow();
+		
+		for(int i =0; i< rosters.length();i++){
+			if(rosters.get(i) == null){continue;}
+			MaterialColumn col = new MaterialColumn();
+			col.setGrid("s12 m4 l4");
+			RosterPanel panel = new RosterPanel();
+			
+			panel.setColor(rosters.get(i).getColor());
+			panel.setData(rosters.get(i));
+			col.add(panel);
+			row.add(col);
+			console.log("roster grid added :");
+			console.log(rosters.get(i));
 		}
-		}
+		
+		return row;
 	}
 		
 }

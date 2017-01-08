@@ -24,7 +24,7 @@ public class RosterUtils {
 
 	private  final RootPanel root = RootPanel.get();
 	private  final RosterMain landingPage;
-	private   final ClassroomMain classroomPage;
+	private  ClassroomMain classroomPage;
 	private final InfoJson info = window.getPropertyJSO("info").cast();
 	
 	private  RosterJson currentRoster;
@@ -34,6 +34,8 @@ public class RosterUtils {
 	private  boolean isRollMode = false;
 	private  JsArray<RosterStudentJson> students;
 	private  StudentActionModal studentActionModal;
+	private JsArray<ClassTimeJson> classTimes;
+	private ClassTimeConfigJson defaultTime;
 	
 	
 	RosterUtils(){
@@ -110,6 +112,14 @@ public class RosterUtils {
 	
 	public ClassroomMain getClassroomPage(){
 		return classroomPage;
+	}
+	
+	public void setStudents(JsArray<RosterStudentJson> stus){
+		this.students = stus;
+	}
+	
+	public JsArray<RosterStudentJson> getStudents(){
+		return this.students;
 	}
 	
 	public  RosterStudentJson findStudentById(String id){
