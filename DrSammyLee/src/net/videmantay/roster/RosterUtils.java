@@ -6,11 +6,13 @@ import java.util.List;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-
 import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
@@ -23,27 +25,38 @@ import net.videmantay.roster.views.StudentActionModal;
 public class RosterUtils {
 
 	private  final RootPanel root = RootPanel.get();
-	private  final RosterMain landingPage;
+	private   final RosterMain landingPage;
 	private  ClassroomMain classroomPage;
 	private final InfoJson info = window.getPropertyJSO("info").cast();
+	//too long response for first load ; postpone the iterface
+	private boolean classroomFirstLoaded = true;
 	
 	private  RosterJson currentRoster;
 	private  JsArray<RosterJson> rosterList;
 	private  ClassTimeJson selectedClassTime;
+	private ClassTimeConfigJson classtimeConfig;
+	private JsArray<ClassTimeJson> classTimes;
 	private  boolean isEditMode = false;
 	private  boolean isRollMode = false;
 	private  JsArray<RosterStudentJson> students;
 	private  StudentActionModal studentActionModal;
-	private JsArray<ClassTimeJson> classTimes;
 	private ClassTimeConfigJson defaultTime;
 	
 	
-	RosterUtils(){
+
+	
+	public RosterUtils(){
 		landingPage = new RosterMain(this);
-		classroomPage = new ClassroomMain(this);
+	}
+
+	
+	public boolean isClassFirstLoad(){
+		return classroomFirstLoaded;
 	}
 	
-	
+	public void setClassFirstLoad(boolean loaded){
+		this.classroomFirstLoaded = loaded;
+	}
 	public InfoJson getInfo(){
 		return this.info;
 	}
@@ -94,6 +107,23 @@ public class RosterUtils {
 		return selectedClassTime;
 	}
 	
+	public JsArray<ClassTimeJson> getClassTimes(){
+		return classTimes;
+	}
+	
+	public void setClassTimes(JsArray<ClassTimeJson> times){
+		this.classTimes = times;
+	}
+	
+	public ClassTimeConfigJson getClasstimeConfig(){
+		return this.classtimeConfig;
+	}
+	
+	public void setClasstimeConfig(ClassTimeConfigJson classConfig){
+		this.classtimeConfig = classConfig;
+	}
+	
+	
 	public  void showLandingPage(){
 		
 		root.clear();
@@ -105,6 +135,7 @@ public class RosterUtils {
 		return landingPage;
 	}
 	
+	
 	public  void showClassroomPage(){
 		root.clear();
 		root.add(classroomPage);
@@ -112,6 +143,10 @@ public class RosterUtils {
 	
 	public ClassroomMain getClassroomPage(){
 		return classroomPage;
+	}
+	
+	public void setClassroomPage(ClassroomMain classroom){
+		this.classroomPage = classroom;
 	}
 	
 	public void setStudents(JsArray<RosterStudentJson> stus){
@@ -133,4 +168,6 @@ public class RosterUtils {
 		}
 		return null;
 	}
+	
+	
 }

@@ -10,13 +10,18 @@ package net.videmantay.roster;
 	 private final static String schedule = "schedule/";
 	 private final static String seatingChart = "seatingchart/";
 	 private final static String classtimeconfig = "classtimeconfig";
+	 private final static String rosterconfig = "rosterconfig";
+	 private final static String search = "search";
 	 
 	public final static String roster(){return roster;}
 	public final static String roster(Long id){return roster + id;}
 	
+	public final static String rosterconfig(Long id){return roster +id + rosterconfig;}
+	
 	public final static String student(Long id){return roster + id + student;}
 	public final static String  student(Long id, String studentId){return roster + id + student + studentId;}
-	
+	public final static String studentSearch(){return roster + student+ search;}
+
 	public final static String  studentIncident(Long id , String studentId){
 		return roster + id +student + studentId + incident;
 	}
@@ -45,7 +50,7 @@ package net.videmantay.roster;
 	public final static String classtime(Long id, Long classtimeId){return roster+ id+ classtime + classtimeId;}
 	
 	public final static String classtimeconfig(Long id){return roster + id + classtimeconfig;}
-	public final static String classtimeconfig(Long id, String classtimeId){return roster+id+classtime+id+classtimeconfig;}
+	public final static String classtimeconfig(Long id, Long classtimeId){return roster+id+classtime+id+classtimeconfig;}
 	
 	public final static String seatingchart(Long id){return roster + id + seatingChart;}
 	public final static String seatingchart(Long id, Long classtimeId){return roster + id + seatingChart + classtimeId;}

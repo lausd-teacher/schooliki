@@ -58,10 +58,10 @@ public class RosterMain extends Composite {
 	MaterialSideNav sideNav;
 	private final RosterUtils utils;
 	public RosterMain(RosterUtils ru) {
+		initWidget(uiBinder.createAndBindUi(this));
 		this.utils = ru;
 		console.log("Main Roster loaded");
 		console.log(utils.getRosterList());
-		initWidget(uiBinder.createAndBindUi(this));
 		//final InfoJson info = window.getPropertyJSO("info").cast();
 		final InfoJson info = ru.getInfo();
 		console.log(info);

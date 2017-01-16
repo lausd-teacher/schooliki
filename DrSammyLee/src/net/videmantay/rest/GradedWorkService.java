@@ -156,7 +156,7 @@ public class GradedWorkService {
 					assignedWork.setGradedWorkId(idAsFinalVariable);
 					assignedWork.setStudentWorkId(work.id);
 					assignedWork.setRosterStudentId(work.rosterStudentId);
-					assignedWork.setRosterId(rosterStudent.getRosterId());
+					assignedWork.setRosterId(rosterStudent.rosterKey.getId());
 
 					assignedGradedeWokDB.save(assignedWork);
 				}

@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<m:MaterialCollectionItem ui:field="item"> 
+			<m:MaterialRow> 
+				<m:MaterialColumn>
+					<m:MaterialImage  ui:field="itemImg"/>
+				</m:MaterialColumn>
+				<m:MaterialLabel ui:field="itemLabel" />
+				<m:MaterialColumn>
+				<m:MaterialRow>
+				<m:MaterialColumn>
+				<m:MaterialAnchorButton text="ACCEPT" iconType="DONE" ui:field="acceptRequestBtn"></m:MaterialAnchorButton>
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+				<m:MaterialAnchorButton text="DISMISS" iconType="DELETE" ui:field="dismissRequestBtn"></m:MaterialAnchorButton>
+				</m:MaterialColumn>
+				</m:MaterialRow>
+			</m:MaterialColumn>
+			</m:MaterialRow>
+	</m:MaterialCollectionItem>
+</ui:UiBinder> 

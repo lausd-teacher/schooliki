@@ -12,7 +12,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 import gwt.material.design.client.ui.MaterialLoader;
-import net.videmantay.admin.json.AppUserJson;
+import net.videmantay.student.json.AppUserJson;
 
 public class AppUserAsyncDataProvider extends AsyncDataProvider<AppUserJson> {
 	private final ArrayList<AppUserJson> list = new ArrayList<AppUserJson>();

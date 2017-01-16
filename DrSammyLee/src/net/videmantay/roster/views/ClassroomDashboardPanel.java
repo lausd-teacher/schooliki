@@ -22,7 +22,7 @@ import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
-import net.videmantay.roster.HasRosterDashboardView;
+import net.videmantay.roster.HasClassroomDashboardView;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 
 public class ClassroomDashboardPanel extends Composite
@@ -35,90 +35,91 @@ public class ClassroomDashboardPanel extends Composite
 	
 
 	@UiField
-	MaterialSwitch gridSwitch;
+	public MaterialSwitch gridSwitch;
 	
 	@UiField
-	MaterialIcon hwIcon;
+	public MaterialIcon hwIcon;
 	
 	@UiField
-	MaterialIcon groupsIcon;
+	public MaterialIcon groupsIcon;
 	
 	@UiField
-	MaterialIcon rollIcon;
+	public MaterialIcon rollIcon;
 	
 	@UiField
-	MaterialIcon multipleIcon;
+	public MaterialIcon multipleIcon;
 	
 	@UiField
-	MaterialIcon randomIcon;
+	public MaterialIcon randomIcon;
 	
 	@UiField
-	MaterialIcon seatingChartEditIcon;
+	public MaterialIcon seatingChartEditIcon;
 	
 	@UiField
-	HTMLPanel tab1Main;
+	public HTMLPanel tab1Main;
 	
 	@UiField
-	MaterialRow toolbar;
+	public MaterialRow toolbar;
 	
 	@UiField
-	MaterialRow doneToolbar;
-	
+	public MaterialRow doneToolbar;
+	/////////bar vs button essential the same job but bar 
+	//is 100 across the screen and detached from nav panel
 	@UiField
-	MaterialAnchorButton classtimeBtn;
-	
+	public MaterialAnchorButton classroomtimeBar;
 	@UiField
-	MaterialDropDown classtimeDrop;
+	public MaterialAnchorButton classtimeBtn;
+	////////////////////////////////////////////////////////
+	@UiField
+	public MaterialDropDown classtimeDrop;
 	
     @UiField
-	MaterialLink classDropDownManageLink;
+    public MaterialLink classDropDownManageLink;
 	
 	@UiField
-	MaterialAnchorButton doneBtn;
+	public MaterialAnchorButton doneBtn;
 	
 	@UiField
-	MaterialAnchorButton CancelBtn;
+	public MaterialAnchorButton CancelBtn;
 		
 	@UiField
-	MaterialButton undoBtn;
+	public MaterialButton undoBtn;
 	
 	@UiField
-	MaterialButton redoBtn;
+	public MaterialButton redoBtn;
 
 	@UiField
-	MaterialRow rollToolbar;
+	public MaterialRow rollToolbar;
 	
 	@UiField
-	MaterialAnchorButton saveRollBtn;
+	public MaterialAnchorButton saveRollBtn;
 	
 	@UiField
-	MaterialButton cancelRollBtn;
+	public MaterialButton cancelRollBtn;
 	
 	@UiField
-	MaterialTab tab;
+	public MaterialTab tab;
 	
 	@UiField
-	MaterialTabItem calTab;
+	public MaterialTabItem calTab;
 	
 	@UiField
-	MaterialTabItem reportsTab;
+	public MaterialTabItem reportsTab;
 	
 	@UiField
-	MaterialTabItem dashboardTab;
+	public MaterialTabItem dashboardTab;
 	
 	@UiField
-	HTMLPanel calendarContainer;
+	public HTMLPanel calendarContainer;
 		
 	
-	private View viewType = View.GRID;
 	private State state = State.DASHBOARD;
 	
-	private HasRosterDashboardView display;
+	private HasClassroomDashboardView display;
 	
 
 
 	//enum for state
-	public enum View{GRID,CHART};
 	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
@@ -153,18 +154,8 @@ public class ClassroomDashboardPanel extends Composite
 	public void setState(State state) {
 		this.state = state;
 	}
-
-
-	public View getViewType() {
-		return this.viewType;
-	}
-
-	public void setViewType(View viewType) {
-		this.viewType = viewType;
-	}
 	
-	
-	public void setDisplayInTab1(HasRosterDashboardView display){
+	public void setDisplayInTab1(HasClassroomDashboardView display){
 		tab1Main.clear();
 		if(display instanceof SeatingChartPanel){
 			tab1Main.add(display);
@@ -178,7 +169,7 @@ public class ClassroomDashboardPanel extends Composite
 			
 	}
 	
-	public HasRosterDashboardView getDisplay(){
+	public HasClassroomDashboardView getDisplay(){
 		return display;
 	}
 

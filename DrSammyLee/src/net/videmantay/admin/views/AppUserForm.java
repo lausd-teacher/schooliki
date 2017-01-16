@@ -20,8 +20,8 @@ import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.html.Label;
-import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.shared.UserRoles;
+import net.videmantay.student.json.AppUserJson;
 
 
 public class AppUserForm extends Composite  {

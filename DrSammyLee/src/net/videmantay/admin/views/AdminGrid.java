@@ -16,7 +16,7 @@ import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.admin.AdminUrl;
-import net.videmantay.admin.json.AppUserJson;
+import net.videmantay.student.json.AppUserJson;
 
 import static com.google.gwt.query.client.GQuery.*;
 

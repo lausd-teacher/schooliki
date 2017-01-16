@@ -10,11 +10,11 @@ public class ClassTimeJson extends JavaScriptObject {
 	
 	
 
-	public final native String getId()/*-{
+	public final native Long getId()/*-{
 		return this.id;
 	}-*/;
 
-	public final native String getRosterId() /*-{
+	public final native Long getRosterId() /*-{
 		return this.rosterId;
 	}-*/;
 
@@ -30,19 +30,11 @@ public class ClassTimeJson extends JavaScriptObject {
 		return this.lastUpdate;
 	}-*/;
 
-	public final native String getStartTime() /*-{
-		return this.startTime;
-	}-*/;
-
-	public final native String getEndTime() /*-{
-		return this.endTime;
-	}-*/;
-
-	public final native void setId(String id) /*-{
+	public final native void setId(Long id) /*-{
 		this.id = id;
 	}-*/;
 
-	public final native void setRosterId(String rosterId) /*-{
+	public final native void setRosterId(Long rosterId) /*-{
 		this.rosterId = rosterId;
 	}-*/;
 
@@ -54,23 +46,12 @@ public class ClassTimeJson extends JavaScriptObject {
 		this.descript = descript;
 	}-*/;
 
-	public final native void setLastUpdate(String lastUpdate) /*-{
-		this.lastUpdate = lastUpdate;
-	}-*/;
-
-	public final native void setStartTime(String startTime) /*-{
-		this.startTime = startTime;
-	}-*/;
-
-	public final native void setEndTime(String endTime) /*-{
-		this.endTime = endTime;
-	}-*/;	
 	
 	public final native void setIsDefault(boolean isDefault) /*-{
 	   this.isDefault = isDefault;
      }-*/;
 	
-	public final native String getIsDefault() /*-{
+	public final native boolean getIsDefault() /*-{
 	return this.isDefault;
 	}-*/;
 	

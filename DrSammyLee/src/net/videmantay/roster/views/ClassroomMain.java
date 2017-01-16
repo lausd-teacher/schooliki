@@ -1,6 +1,7 @@
 package net.videmantay.roster.views;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -17,6 +18,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.events.SideNavClosedEvent;
 import gwt.material.design.client.events.SideNavClosedEvent.SideNavClosedHandler;
+import gwt.material.design.client.events.SideNavClosingEvent;
+import gwt.material.design.client.events.SideNavClosingEvent.SideNavClosingHandler;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
@@ -25,12 +28,18 @@ import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
+import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
+import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.InfoJson;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.roster.views.UserProfilePanel;
+import net.videmantay.roster.views.classtime.SeatingChartPanel;
 
 import static com.google.gwt.query.client.GQuery.*;
+
+import com.google.api.client.googleapis.util.Utils;
 
 public class ClassroomMain extends Composite{
 
@@ -40,44 +49,44 @@ public class ClassroomMain extends Composite{
 	}
 	
 	@UiField
-	MaterialContainer mainPanel;
+	public MaterialContainer mainPanel;
 	
 	@UiField
-	UserProfilePanel profilePanel;
+	public UserProfilePanel profilePanel;
 	
 	@UiField
-	MaterialSideNav sideNav;
+	public MaterialSideNav sideNav;
 	//side nav links here ///////
 	
 	@UiField
-	MaterialLink dashboardLink;
+	public MaterialLink dashboardLink;
 	
 	@UiField
-	MaterialLink assignmentLink;
+	public MaterialLink assignmentLink;
 	
 	@UiField
-	MaterialLink incidentLink;
+	public MaterialLink incidentLink;
 	
 	@UiField
-	MaterialLink goalLink;
+	public MaterialLink goalLink;
 	
 	@UiField
-	MaterialLink classTimeLink;
+	public MaterialLink classTimeLink;
 	
 	@UiField
-	MaterialLink lessonPlanLink;
+	public MaterialLink lessonPlanLink;
 	
 	@UiField
-	MaterialLink jobLink;
+	public MaterialLink jobLink;
 	
 	@UiField
-	MaterialNavBar navBar;
+	public MaterialNavBar navBar;
 	
 	@UiField
-	MaterialNavBrand navBrand;
+	public MaterialNavBrand navBrand;
 	
 	@UiField
-	HTMLPanel classroom;
+	public HTMLPanel classroom;
 	
 	//needs access to widget children
 	ClassroomDashboardPanel dashboard;
@@ -88,27 +97,44 @@ public class ClassroomMain extends Composite{
 	//end side nav links/////////
 		
 	private  RosterJson roster;
-	private String mainState = "";
-	
+	private SideNavClosingHandler sideNavClosed = new SideNavClosingHandler(){
+
+		@Override
+		public void onSideNavClosing(SideNavClosingEvent event) {
+			new Timer(){
+				@Override
+				public void run(){
+					$("header,main").css("marginLeft", "0px");
+					$("div#sidenav-overlay, div.drag-target", body).remove();
+				}
+			}.schedule(110);
+			
+		}};
+		
+///the constructor//////////
 	public ClassroomMain(RosterUtils ru) {
-		this.utils = ru;
+		this.utils = ru;	
 		this.initWidget(uiBinder.createAndBindUi(this));
 			//set side nav links/////////
 		profilePanel.addDomHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
+				sideNav.hide();
 				History.newItem("roster");
 				
 			}
 			
 			
 		}, ClickEvent.getType());
+		
+		sideNav.addClosingHandler(sideNavClosed);
 			
 			dashboardLink.addClickHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
+					sideNav.hide();
 					History.newItem("c/" + utils.getCurrentRoster().getId());	
 				}});
 			
@@ -116,6 +142,9 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
+					event.preventDefault();
+					event.stopPropagation();
+					sideNav.hide();
 					History.newItem("c/" + utils.getCurrentRoster().getId() +"/a");
 				}});
 			
@@ -123,6 +152,9 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
+					event.preventDefault();
+					event.stopPropagation();
+					sideNav.hide();
 					History.newItem("c/" + utils.getCurrentRoster().getId()+"/i");
 				}});
 			
@@ -130,6 +162,9 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
+					event.preventDefault();
+					event.stopPropagation();
+					sideNav.hide();
 					History.newItem("c/" + roster.getId() +"/t");
 				}});
 			
@@ -139,18 +174,58 @@ public class ClassroomMain extends Composite{
 	}//end constructor
 	
 	private void setRoster(){
-	Ajax.get(RosterUrl.student(roster.getId())).done(new Function(){
+	Ajax.get(RosterUrl.rosterconfig(utils.getCurrentRoster().getId())).done(new Function(){
 		@Override
 		public void f(){
-			JsArray<RosterStudentJson> students =this.arguments(0);
-			utils.setStudents(students);
-			//drawStudents
-		}
-	});
-	
-	Ajax.get(RosterUrl.classtime(roster.getId())).done(new Function(){
-		@Override
-		public void f(){
+			
+			RosterConfigJson rosCon = JsonUtils.safeEval((String)this.arguments(0)).cast();
+			console.log("rosteconfig is: ");
+			console.log(rosCon);
+			if(rosCon.getStudents() == null){
+				//draw empty grid
+			}else{
+				//draw student grid
+				utils.setStudents(rosCon.getStudents());
+			}
+			if(rosCon.getClassTimes() == null || rosCon.getClassTimes().length() < 1){
+				ClassTimeJson classtime = ClassTimeJson.createObject().cast();
+				classtime.setDescript("This is the default classtime. "+
+				"Classtime is a way to help teachers transition from one activity to the next" +
+				"i.e  'Carpet Time' , 'Reading Buddies'  , 'Lab'");
+				classtime.setTitle("Default Time");
+				classtime.setRosterId(utils.getCurrentRoster().getId());
+				classtime.setIsDefault(true);
+				JsArray<ClassTimeJson> times = JsArray.createArray().cast();
+				times.push(classtime);
+				utils.setClassTimes(times);
+				utils.setSelectedClassTime(classtime);
+				console.log("utils get classtimes");
+				console.log(utils.getClassTimes());
+				dashboard.classtimeBtn.setText(utils.getSelectedClassTime().getTitle());
+				dashboard.classroomtimeBar.setText(utils.getSelectedClassTime().getTitle());
+			}else{
+			utils.setClassTimes(rosCon.getClassTimes());
+			for(int i = 0; i < utils.getClassTimes().length(); i++){
+				MaterialLink link = new MaterialLink();
+				link.setText(utils.getClassTimes().get(i).getTitle());
+				link.setId(utils.getClassTimes().get(i).getId() + "");
+				if(utils.getClassTimes().get(i).getIsDefault()){
+					dashboard.classtimeBtn.setText(utils.getClassTimes().get(i).getTitle());
+					dashboard.classroomtimeBar.setText(utils.getClassTimes().get(i).getTitle());
+					dashboard.classtimeDrop.insert(link, 1);
+				}
+				dashboard.classtimeDrop.add(link);
+			}
+				dashboard.classtimeDrop.add(dashboard.classDropDownManageLink);
+			}
+			if(rosCon.getDefaultTime() == null){
+				ClassTimeConfigJson dtime = ClassTimeConfigJson.createObject().cast();
+				utils.setClasstimeConfig(dtime);
+			}else{
+			utils.setClasstimeConfig(rosCon.getDefaultTime());
+			}
+			
+			
 			
 		}
 	});
@@ -158,28 +233,19 @@ public class ClassroomMain extends Composite{
 	}
 	//methods for navigation
 	public void dashboard(){
-		GWT.runAsync(new RunAsyncCallback(){
-
-			@Override
-			public void onFailure(Throwable reason) {
-				mainPanel.clear();
-				mainPanel.add(new HTMLPanel("<h1>Error loading please refresh</h1>"));
-				
-			}
-
-			@Override
-			public void onSuccess() {
-				if(mainState.equalsIgnoreCase("dashboard")){
+		
+				if(dashboard != null && dashboard.getState().toString().equalsIgnoreCase("dashboard")){
 					return;
 				}else{
 			
 				mainPanel.clear();
 				dashboard = new ClassroomDashboardPanel();
 				mainPanel.add(dashboard);
-				mainState= "dashboard";
+				dashboard.tab1Main.add(new ClassroomDisplay(utils));
+					
 				//get students and classtimes for currentroster set default classtime
 				}	
-			}});
+			
 	}
 
 	//classtime list
@@ -263,7 +329,8 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
+				dashboard.tab1Main.clear();
+				dashboard.tab1Main.add(new SeatingChartPanel(utils));
 				
 			}});
 	}
@@ -734,192 +801,15 @@ public class ClassroomMain extends Composite{
 		navBar.setBackgroundColor(roster.getColor());
 		navBrand.setText(roster.getTitle());
 		profilePanel.setProfileInfo(info);
+		setRoster();
 		
 	}
 	@Override
 	public void onUnload(){
 		//clean up html picker and tool tips
 		$("div.picker, .material-tooltip").remove();
+		$(navBar).css("width","0px");
+		$(mainPanel).css("width", "0px");
 	}
-	
-
-	
-	
-	
-	
-	
-	
-
-	/*public void handleRequest(List<String> request){
 		
-	}
-	
-	public void setClassroom(){
-		console.log("set classroom called");
-		//need this to hold path
-		final ArrayList<String> path = new ArrayList<String>();
-		//parse the path to get the roster id
-		Long id = Longs.tryParse(token.get(1));
-		console.log("The roster's id is " + id);
-		if(id == null){
-			History.back();
-		}
-		
-		if($this.getRosterId() == null ||id != $this.getRosterId()){
-			console.log("Roster ajax called made from classroom main");
-			//Asyncall to get my roster with id of id
-			//setView must be called after roster is set
-			Ajax.post(RosterUrl.roster(id), $$("roster:" + id))
-			.done( new Function(){
-					@Override
-					public void f(){
-						classRoster = JsonUtils.safeEval((String) this.arguments(0)).cast();
-						rosterTitle.setText(classRoster.getTitle());
-						window.setPropertyJSO("roster", classRoster);
-						//do a classtime check here to see if it is set and if it isn't
-						if(window.getPropertyJSO("classtime") == null){
-							//all roster have a default
-							window.setPropertyJSO("classtime", classRoster.getDefaultClassTime());
-						}
-				
-							if(token.size()>= 3){
-							 path.addAll(token.subList(2, token.size()));
-
-							 setView(path);
-							}else{dashboardView();}
-						
-					}
-			});}else{
-					
-						if(token.size()>= 3){
-					 path.addAll(token.subList(2, token.size()));
-					 //classtime may have been set
-					 
-					 setView(path);
-					}else{dashboardView();}
-						}// end else roster will be here
-		
-	}
-	
-	private void setView(List<String> path){	
-		switch(path.get(0)){
-		case "s":studentView(path); break;
-		case "t": classTimeView(path);break;
-		case "a":assignmentView(path); break;
-		case "i":incidentView(path); break;
-		case "j": jobView(path);break;
-		case "g":goalView(path); break;
-		default: dashboardView();
-		}
-	}
-	
-	private void dashboardView(){
-		console.log("classmain dashboard called");
-		if(mainPanel.getWidgetCount() >= 1 && mainPanel.getWidget(0) instanceof ClassroomDashboardPanel){
-			console.log("Main panel had instance of roster dashboard already");
-			return;
-		}
-		mainPanel.clear();
-		mainPanel.add(new ClassroomDashboardPanel());
-		rosterTitle.setText(classRoster.getTitle());
-		sideNav.hide();
-		console.log(classRoster);
-	}
-	private void studentView(final List<String>path){
-		
-		GWT.runAsync(new RunAsyncCallback(){
-
-			@Override
-			public void onFailure(Throwable reason) {
-				
-				
-			}
-
-			@Override
-			public void onSuccess() {
-				
-				
-				switch(path.size()){
-				
-				//rosterStudent main must handle the view of students
-				case 2: mainPanel.clear();
-				mainPanel.getElement().removeAllChildren();
-				mainPanel.add(new StudentInfoMain().setStudent(Longs.tryParse(path.get(1))));
-				rosterTitle.setText("Student Info");
-				break;
-				}
-				
-			}});
-		
-	}
-	private void assignmentView(List<String> path){
-		GWT.runAsync(new RunAsyncCallback(){
-
-			@Override
-			public void onFailure(Throwable reason) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onSuccess() {
-				mainPanel.clear();
-				rosterTitle.setText("Assignments");
-				
-			}
-			
-		});
-	}
-	
-	private void classTimeView(List<String> path){
-		GWT.runAsync(new RunAsyncCallback(){
-
-			@Override
-			public void onFailure(Throwable reason) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onSuccess() {
-				mainPanel.clear();
-				mainPanel.add(new ClassTimeMain());
-				rosterTitle.setText("Class Time");
-				
-			}});
-		
-	}
-	
-	private void incidentView(List<String> path){
-		GWT.runAsync(new RunAsyncCallback(){
-
-			@Override
-			public void onFailure(Throwable reason) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onSuccess() {
-				mainPanel.clear();
-				mainPanel.add(new IncidentMain());
-				rosterTitle.setText("Incidents");
-				
-			}});
-}
-	private void jobView(List<String> path){
-		
-}
-	private void goalView(List<String> path){
-	
-}	
-	public Long getRosterId(){
-		if(classRoster == null){
-			return null;
-		}
-			return classRoster.getId();
-			
-		
-	}*/
-	
 }

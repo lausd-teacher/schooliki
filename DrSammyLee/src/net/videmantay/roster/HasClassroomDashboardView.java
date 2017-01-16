@@ -2,7 +2,7 @@ package net.videmantay.roster;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-public interface HasRosterDashboardView extends IsWidget {
+public interface HasClassroomDashboardView extends IsWidget {
 
 	public void checkHW();
 	

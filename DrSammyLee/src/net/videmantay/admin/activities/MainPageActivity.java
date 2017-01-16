@@ -16,12 +16,12 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 import gwt.material.design.client.ui.MaterialLoader;
 import net.videmantay.admin.ClientFactory;
-import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.admin.views.AdminGrid;
 import net.videmantay.admin.views.AppLayout;
 import net.videmantay.admin.views.AppUserDeleteModal;
 import net.videmantay.admin.views.AppUserForm;
 import net.videmantay.admin.views.components.AdminSideNav;
+import net.videmantay.student.json.AppUserJson;
 
 
 public class MainPageActivity extends AbstractActivity implements AppUserForm.Presenter, AdminGrid.Presenter, 

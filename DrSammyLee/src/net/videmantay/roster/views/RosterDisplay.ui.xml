@@ -5,7 +5,7 @@
 	xmlns:v="urn:import:net.videmantay.roster.views">
 	<g:HTMLPanel>
 		<m:MaterialLabel text="Rosters" textColor="grey"  padding="1" marginLeft="70" fontSize="2em"/>
-		<v:RosterGrid ui:field="rosterGrid" />
+		<m:MaterialContainer ui:field="rosterContainer"></m:MaterialContainer>
 		<v:RosterForm ui:field="rosterForm"/>
 	<!-- FAB -->
 		<m:MaterialFAB>

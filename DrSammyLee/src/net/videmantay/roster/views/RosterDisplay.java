@@ -18,6 +18,7 @@ import com.google.gwt.query.client.plugins.ajax.Ajax;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialColumn;
+import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
@@ -33,7 +34,7 @@ public class RosterDisplay extends Composite{
 	private final RosterUtils utils;
 
 	@UiField
-	RosterGrid rosterGrid;
+	MaterialContainer rosterContainer;
 	
 	@UiField
 	RosterForm rosterForm;
@@ -78,7 +79,7 @@ public class RosterDisplay extends Composite{
 								console.log("INFO: done promised is called ");
 								MaterialLoader.showLoading(false);
 								rosterForm.setVisible(false);
-								rosterGrid.setVisible(true);
+								rosterContainer.setVisible(true);
 								fab.setVisible(true);
 								
 								
@@ -112,7 +113,7 @@ public class RosterDisplay extends Composite{
 								drawGrid();
 							}
 								
-						}.schedule(3000);
+						}.schedule(1000);
 					}	
 				});
 				rosterForm.reset();
@@ -125,7 +126,7 @@ public class RosterDisplay extends Composite{
 				public void onClick(ClickEvent event) {
 					fab.setVisible(true);
 					rosterForm.reset();
-					rosterGrid.setVisible(true);
+				rosterContainer.setVisible(true);
 					rosterForm.setVisible(false);
 				}};
 	private ClickHandler cancelDelete = new ClickHandler(){
@@ -218,32 +219,26 @@ public class RosterDisplay extends Composite{
 		$(body).on("updateRosterForm", updateRosterForm);
 		
 		$(body).on("promptDelete", promptDelete);
+		MaterialLoader.showLoading(true, rosterContainer);
+		new Timer(){
+
+			@Override
+			public void run() {
+				MaterialLoader.showLoading(false, rosterContainer);
+				drawGrid();
+			}}.schedule(250);
 		// do in const
 	}
-	
-	@Override
-	public void onLoad(){	
-		//load the grid
-		MaterialLoader.showLoading(true, rosterGrid);
-			new Timer(){
-
-				@Override
-				public void run() {
-					MaterialLoader.showLoading(false, rosterGrid);
-					drawGrid();
-				}}.schedule(750);
-				
-	}//end on load
-	
+		
 	private void showForm(){
 		rosterForm.setVisible(true);
-		rosterGrid.setVisible(false);
+		rosterContainer.setVisible(false);
 		fab.setVisible(false);
 	}
 	private final void drawGrid(){
 		console.log("Draw Grid: called");
-		rosterGrid.clear();
-		rosterGrid.add(addRosters(utils.getRosterList()));
+		rosterContainer.add(addRosters(utils.getRosterList()));
+		
 	}
 	
 	private final MaterialRow addRosters(JsArray<RosterJson> rosters){

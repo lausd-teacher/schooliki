@@ -3,15 +3,13 @@ package net.videmantay.rest;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 import static net.videmantay.server.util.DB.db;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -29,62 +27,35 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.cmd.Query;
 
-import net.videmantay.rest.dto.AppUserDTO;
 import net.videmantay.rest.dto.ClassTimeDTO;
 import net.videmantay.rest.dto.IncidentDTO;
 import net.videmantay.rest.dto.RosterDTO;
 import net.videmantay.rest.dto.RosterStudentDTO;
 import net.videmantay.rest.dto.ScheduleDTO;
-import net.videmantay.rest.dto.ScheduleItemDTO;
 import net.videmantay.rest.dto.StudentRollDTO;
-import net.videmantay.server.GoogleUtils;
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.ClassTimeConfig;
 import net.videmantay.server.entity.Incident;
+import net.videmantay.server.entity.JoinRequest;
 import net.videmantay.server.entity.Roster;
+import net.videmantay.server.entity.RosterCodeGenerator;
 import net.videmantay.server.entity.RosterConfig;
+import net.videmantay.server.entity.RosterDetail;
 import net.videmantay.server.entity.RosterStudent;
 import net.videmantay.server.entity.Schedule;
-import net.videmantay.server.entity.ScheduleItem;
 import net.videmantay.server.entity.StudentIncident;
 import net.videmantay.server.entity.StudentRoll;
+import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.server.util.DB;
 
-import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.util.DateTime;
-import com.google.api.client.util.Preconditions;
-import com.google.api.services.calendar.model.*;
-import com.google.api.services.calendar.Calendar;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.File;
-import com.google.api.services.drive.model.Permission;
-import com.google.appengine.api.channel.ChannelMessage;
-import com.google.appengine.api.channel.ChannelService;
-import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.api.client.repackaged.com.google.common.base.CharMatcher;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.labs.repackaged.com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.primitives.Longs;
-
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.VoidWork;
-import com.googlecode.objectify.cmd.Query;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
+import com.google.common.primitives.Ints;
 
 @Path("/roster")
 public class RosterService{
@@ -106,6 +77,7 @@ public class RosterService{
 	DB<ClassTime> classTimeDB = new DB<ClassTime>(ClassTime.class);
 	
 	DB<StudentRoll> studentRollDB = new DB<StudentRoll>(StudentRoll.class);
+	
 	
 
 	@GET
@@ -155,8 +127,24 @@ public class RosterService{
 			String ownerId = currentUserId.toString();
 				roster.setOwnerId(ownerId);
 		        Long id = rosterDB.save(roster).getId();
-		        if(roster.id == null){ 
+		        if(roster.id == null){ //it's new and a rosterDetail must be created
 		        	roster.setId(id);
+		        	RosterDetail detail = new RosterDetail();
+		        	detail.setId(roster.getId());
+		        	detail.setGradeLevel(roster.gradeLevels);
+		        	detail.setTitle(roster.getTitle());
+		        	detail.description = roster.description;
+		        	//create a 5 to 7 character string for roster join code
+		        	RosterCodeGenerator codeGen = db().load().key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
+		        	detail.joinCode = codeGen.assignCode();
+		        	
+		        	TeacherInfo teacherInfo  = new TeacherInfo();
+		        	AppUser appUser = db().load().type(AppUser.class)
+		        			.filter("email", subject.getPrincipal().toString()).first().now();
+		        	teacherInfo.setLastName(appUser.lastName);
+		        	teacherInfo.setPicUrl(appUser.getImageUrl());
+		        	detail.setTeacherInfo(teacherInfo);
+		        	db().save().entities(detail,codeGen);
 		        }
 		        return Response.status(Status.CREATED).entity(roster).build();
 		}
@@ -164,6 +152,7 @@ public class RosterService{
 
 		return Response.status(Status.UNAUTHORIZED).build();
 	}
+	
 
 	@DELETE
 	@Path("/{id}")
@@ -172,14 +161,36 @@ public class RosterService{
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
-
+			//deleting a roster is a huge ordeal probably
+			//best for taskque
 			rosterDB.delete(result);
-
+			//get rosterDetail
+			RosterDetail details = db().load().key(Key.create(RosterDetail.class, id)).now();
+			
+			//also clear up the code for someone else to use
+			RosterCodeGenerator codeGen = db().load()
+										.key(Key.create(RosterCodeGenerator.class,RosterCodeGenerator.KEYGEN)).now();
+			codeGen.relinquishCode(details.joinCode);
+			db().save().entity(codeGen);
+			
+			//delete everything associate with details
+			db().delete().entities(db().load().ancestor(details).keys());
 			return Response.ok().build();
-		}
+		}//end if///
 
 		return Response.status(Status.NOT_FOUND).build();
 
+	}
+	
+	@POST
+	@Path("/{id}/updateJoinCode")
+	public Response updateJoinCode(@PathParam("id") Long id){
+		//get generator
+		RosterCodeGenerator codeGen = db().load().key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
+		RosterDetail detail = db().load().key(Key.create(RosterDetail.class, id)).now();
+		detail.joinCode = codeGen.assignCode();
+		db().save().entities(detail, codeGen);
+		return Response.ok().entity(codeGen).build();
 	}
 	
 	@GET
@@ -216,15 +227,10 @@ public class RosterService{
 	@Path("/{id}/student")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRosterStudentsList(@PathParam("id") Long id) {
-
-		List<RosterStudent> studentsList = ofy().load().type(RosterStudent.class).filter("rosterId", id).list();
-		List<AppUserDTO> appUserDTOList = new ArrayList<AppUserDTO>();
 	
-		for (RosterStudent roster : studentsList) {
-			AppUser student = ofy().load().key(Key.create(AppUser.class, roster.getStudentId())).now();
-			appUserDTOList.add(new AppUserDTO(student));
-		}
-		return Response.ok().entity(appUserDTOList).build();
+		Key<Roster> parent = Key.create(Roster.class, id);
+		List<RosterStudent> students = db().load().type(RosterStudent.class).ancestor(parent).list();
+		return Response.ok().entity(students).build();
 	}
 
 	@GET
@@ -246,34 +252,42 @@ public class RosterService{
 	@Path("/{id}/student")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createRosterStudents(@PathParam("id") Long id, List<RosterStudentDTO> rosterStudents) {
+	public Response createRosterStudents(@PathParam("id") Long id, List<JoinRequest> joinRequests) {
 		// cheking if roster exists and student exists
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
-		boolean studentsCheck = true;
-		
-		for(int i = 0; i < rosterStudents.size(); i++){
-			RosterStudentDTO rosterStudentDTO = rosterStudents.get(i);
-			AppUser student = ofy().load().key(Key.create(AppUser.class, rosterStudentDTO.getStudentId())).now();
-			 if(student == null){
-				 studentsCheck = false;
-			 }
+		List<RosterStudent> students = new ArrayList<>();
+		User user = UserServiceFactory.getUserService().getCurrentUser();
+			if(result != null && result.getOwnerId() == user.getEmail() ){
 			
-		}
-		  
-		if (result != null && studentsCheck) {
-			
-			for(int i = 0; i < rosterStudents.size(); i++){
-				RosterStudentDTO rosterStudentDTO = rosterStudents.get(i);
+				for(JoinRequest jr: joinRequests){
+					AppUser appUser = db().load().type(AppUser.class).filter("email", jr.email).first().now();
+					RosterStudent stu = new RosterStudent(result.id, appUser);
+					students.add(stu);
+				}//end for
 				
-				rosterStudentDB.save(RosterStudent.createFromDTO(rosterStudentDTO));
-			}
-
-			return Response.ok().build();
-		}
+				return Response.ok().entity(students).build();
+				
+			}//end if
 
 		return Response.status(Status.NOT_FOUND).build();
 	}
 	
+	@GET
+	@Path("/student/search/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response studentSearch(@QueryParam("q") String q, @QueryParam("p") String pageNum, @QueryParam("g") Set<String> grade){
+		
+		log.info("Search student Called!");
+		log.info("q: " + q + "  p: " + pageNum + ",  g" + grade)  ;
+		Query<AppUser> userQ =	db().load().type(AppUser.class).filter("roles", "STUDENT")
+				.filter("email >=" , q).limit(50);
+		
+					List<AppUser> students = userQ.list();
+					log.info("appUser list is  " + students);
+			return Response.ok().entity(students).build();
+	
+	}
 	@POST
 	@Path("/{id}/student/{studentId}/incident")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -312,6 +326,8 @@ public class RosterService{
 		return Response.status(Status.NOT_FOUND).build();
 	}
 	
+	
+	
 	@POST
 	@Path("/{id}/student/{studentId}/roll")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -336,31 +352,7 @@ public class RosterService{
 		return Response.status(Status.NOT_FOUND).build();
 	}
 	
-//	@GET
-//	@Path("/{id}/student/{studentId}/roll")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response takeRollForStudent(@PathParam("id") Long id, @PathParam("studentId") Long studentId) {
-//		
-//		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
-//
-//		if (result != null) {
-//
-//			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
-//			
-//			if(student != null){
-//					final StudentRoll newRoll = StudentRoll.createFromDTO(incidentDTO);
-//				
-//					Long newId = studentRollDB.save(newRoll).getId();
-//						
-//					return Response.ok().entity(newId).build();
-//			}
-//		}
-//
-//		return Response.status(Status.NOT_FOUND).build();
-//	}
-	
-	
+		
 	@GET
 	@Path("/{id}/student/{studentId}/incident")
 	@Consumes(MediaType.APPLICATION_JSON)

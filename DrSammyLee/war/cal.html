@@ -27,8 +27,6 @@
    	text-align:center;
    	font-size:1.75em;
    }
-   /*hide the schedule onstrart */
-   #schedule{display:none}
    </style>
   </head>
 
@@ -36,16 +34,12 @@
    <div class="container">
    <br>
  	<section id="scheduleLegend">
- 		<label  id="clicker" class="chip amber darken-2">Click</label><b>schedule:&nbsp;</b></label>
- 		<span>You haven't created a schedule yet.  </span><a href="schedule.html">Let's get started!</a>
+ 		<b>schedule:&nbsp;</b></label>
+ 		<span id="emptySchedule">You haven't created a schedule yet.  </span><a href="schedule.html">Let's get started!</a>
  	</section>
   <hr/>
   	<br/>
 			<div id="lessonPlans"></div>
-		<div id="schedulePanel" >
-			<div id="scheduleTilte">Weekly Schedule</div>
-			<div id="schedule"></div>
-		</div>
 	</div><!-- end container -->
 <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -78,24 +72,11 @@
  
    
    //parent access test has passed 12/16/16
-   $('#clicker').click(function(){ parent.testThis()});
+   //so from gwt we can have access to objects
    
    //initialize the schedule calendar
    //show only week agenda or day  agenda with only days in the heading
-   //title can go from weekly schedule to daily schedule according to the view
-   
-    function showSchedule(){
-	   
-   };
-   
-   function hideSchedule(){
-	   
-   };
-   
-
-   
-
-   			
+   //title can go from weekly schedule to daily schedule according to the view			
    </script>
    
   </body>

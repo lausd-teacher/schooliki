@@ -2,10 +2,10 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.7.0/distro-source/core/src/gwt-module.dtd">
 <module rename-to="teacher">
 	<inherits name="com.google.gwt.query.Query" />
-	<inherits name="gwtquery.plugins.Ui"/>
 	<inherits name="com.google.common.collect.Collect" />
+	<inherits name="com.arcbees.chosen.Chosen" />
+	<inherits name="gwtquery.plugins.Ui"/>
 	 <inherits name="com.floreysoft.gwt.picker.Picker"/>
-	<inherits name="gwt.material.design.GwtMaterialDesignBasic" />
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeRed" />
 	<inherits name="gwt.material.design.addins.GwtMaterialAddins"/>
 	<inherits name="com.googlecode.gwt.charts.Charts" />

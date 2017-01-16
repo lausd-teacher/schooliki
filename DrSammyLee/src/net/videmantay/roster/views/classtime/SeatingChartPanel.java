@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialCollection;
 import gwt.material.design.client.ui.MaterialCollectionItem;
+import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.html.Div;
@@ -34,19 +35,22 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import static gwtquery.plugins.ui.Ui.Ui;
-import net.videmantay.roster.HasRosterDashboardView;
+import net.videmantay.roster.HasClassroomDashboardView;
 import net.videmantay.roster.RosterUrl;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.classtime.json.FurnitureJson;
 import net.videmantay.roster.classtime.json.SeatingChartJson;
 import net.videmantay.roster.classtime.json.StudentSeatJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.views.RosterStudentPanel;
 import net.videmantay.shared.Action;
 
-public class SeatingChartPanel extends Composite {//implements HasRosterDashboardView {
+public class SeatingChartPanel extends Composite implements HasClassroomDashboardView {
 
-	/*
-	 * private static SeatingChartPanelUiBinder uiBinder = GWT.create(SeatingChartPanelUiBinder.class);
+	
+
+ private static SeatingChartPanelUiBinder uiBinder = GWT.create(SeatingChartPanelUiBinder.class);
 	 
 
 	interface SeatingChartPanelUiBinder extends UiBinder<Widget, SeatingChartPanel> {
@@ -71,22 +75,22 @@ public class SeatingChartPanel extends Composite {//implements HasRosterDashboar
 	@UiField
 	HTMLPanel seatingChart;
 		
-	//Pull roster from window//
+	private final RosterUtils utils;
 	private final RosterJson roster;
-	
 	//action list for undos
 	private final Stack<Action> stack = new Stack<Action>();
 	
 	
 	
-	public SeatingChartPanel() {
+	public SeatingChartPanel(RosterUtils ru) {
+		utils = ru;
 		//first check for jQuery ui
 		if(window.getPropertyJSO("JQuery.ui") == null){
 			//load script
 			ScriptInjector.fromUrl("/loader.js").setWindow(ScriptInjector.TOP_WINDOW).inject();
 		}
 		initWidget(uiBinder.createAndBindUi(this));
-		roster = window.getPropertyJSO("roster").cast();
+		roster = utils.getCurrentRoster();
 		console.log("The roster from seating chart is : ");
 		console.log(roster);
 	
@@ -101,7 +105,7 @@ public class SeatingChartPanel extends Composite {//implements HasRosterDashboar
 		//create a new temp seating chart.
 		
 			//check if a seating chart has already been designedated in the window
-			ClassTimeJson classTime = window.getPropertyJSO("classtime").cast();
+			ClassTimeJson classTime = utils.getSelectedClassTime();
 			console.log("The class time from seating chart is...");
 			console.log(classTime);
 			
@@ -118,14 +122,12 @@ public class SeatingChartPanel extends Composite {//implements HasRosterDashboar
 						
 					}else{
 						console.log("seating chart should make a network call here");
-						Properties prop = Properties.create();
-						prop.set("classTime", JsonUtils.stringify(classTime));
-						prop.set("roster", roster.getId());
-					Ajax.get(RosterUrl.seatingchart(id, classtimeId), prop)
+						
+					Ajax.get(RosterUrl.seatingchart(roster.getId(), utils.getSelectedClassTime().getId()))
 					.done(new Function(){
 						@Override
 						public void f(){
-							SeatingChartJson seatingChartJson = JsonUtils.safeEval((String) this.getArgument(0));
+							SeatingChartJson seatingChartJson = this.getArgument(0);
 							window.setPropertyJSO("seatingChart", seatingChartJson);
 							setSeatingChart(seatingChartJson);
 						}
@@ -160,14 +162,14 @@ public class SeatingChartPanel extends Composite {//implements HasRosterDashboar
 		floorPlan.clear();
 		studentList.clear();
 		console.log("Roster students is ");
-		console.log(roster.getRosterStudents());
+		
 		//make a copy of the student list then pop as they are put in place
 		ArrayList<RosterStudentPanel> stuPanels = new ArrayList<RosterStudentPanel>();
-		for(int i =0; i < roster.getRosterStudents().length(); i++){
+		for(int i =0; i < utils.getStudents().length(); i++){
 			//might as well setup the studentList here too
-			RosterStudentPanel sp =new RosterStudentPanel();
-			sp.setData(roster.getRosterStudents().get(i));
-			/*MaterialLink link = new MaterialLink();
+			RosterStudentPanel sp =new RosterStudentPanel(utils.getStudents().get(i));
+			
+			MaterialLink link = new MaterialLink();
 			link.add(sp);
 			stuPanels.add(sp);
 		}
@@ -489,7 +491,7 @@ public class SeatingChartPanel extends Composite {//implements HasRosterDashboar
 		prop.set("seatingChart", JsonUtils.stringify(data));
 		prop.set("roster", roster.getId());
 		originalData = null;
-		Ajax.post(RosterUrl.UPDATE_SEATINGCHART, prop);
+		Ajax.post(RosterUrl.seatingchart(roster.getId(), utils.getSelectedClassTime().getId()), prop);
 		drawChart();
 		home();
 		MaterialLoader.showLoading(false,floorPlan);
@@ -662,7 +664,7 @@ public class SeatingChartPanel extends Composite {//implements HasRosterDashboar
 		prop.set("seatingChart", JsonUtils.stringify(data));
 		prop.set("roster", roster.getId());
 		
-		Ajax.post(RosterUrl.UPDATE_SEATINGCHART, prop);
+		Ajax.post(RosterUrl.seatingchart(roster.getId(), utils.getSelectedClassTime().getId()), prop);
 		drawChart();
 		home();
 	};
@@ -722,7 +724,8 @@ public class SeatingChartPanel extends Composite {//implements HasRosterDashboar
 		drawChart();
 		
 	}
-	*/
+
+
 
 
 }

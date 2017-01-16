@@ -1,12 +1,23 @@
 package net.videmantay.roster;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 
+import gwt.material.design.client.ui.MaterialLoader;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.views.ClassroomMain;
+import net.videmantay.roster.views.RosterMain;
+
 import static com.google.gwt.query.client.GQuery.*;
+
+import com.google.api.client.googleapis.util.Utils;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Longs;
 
@@ -37,69 +48,104 @@ import java.util.List;
  *   
  */
 public class HistoryMapper implements ValueChangeHandler<String>{
+	
+	
 
 	private final RosterUtils utils;
+	final private HTMLPanel html = new HTMLPanel("<div>There was an error loading the page!\n "+
+			"Please refresh <i class='material-icons'>refresh</i></div>");
+	final HistoryToken historyToken = new HistoryToken();
+	
+	
+
+	//for loading async pages
+
+			
+		RunAsyncCallback classroomGet =new RunAsyncCallback(){
+
+			@Override
+			public void onFailure(Throwable reason) {
+				RootPanel.get().clear();
+				RootPanel.get().add(html);
+			}
+
+			@Override
+			public void onSuccess() {
+				if(!historyToken.getToken().get(0).equals("c")){
+					doDefault();
+					return;
+				}
+				
+				console.log("token is 2 or more");
+				if(utils.getClassroomPage() == null){
+					utils.setClassroomPage(new ClassroomMain(utils));
+					
+				}
+					//this is a classroom request make sure the first item is 'c' for classroom
+					
+				//here we need to get the long id and set the current roster to the id
+					//if no match is found back to the dashboard
+				//set the current roster as id
+				//gwt and long don't mix compare strings
+				String id = historyToken.getToken().get(1);
+				console.log("The current roster id is " + id);
+				//shuffle throug roste list for id
+				boolean noMatch = true;
+				JsArray<RosterJson> rosList = utils.getRosterList();
+				for(int i = 0; i < rosList.length(); i++){
+					console.log("cycled through roster list " + (i + 1) + " times and roster id is " + rosList.get(i).getId());
+					String rosId = "" +rosList.get(i).getId();
+					if(id.equals(rosId)){
+						utils.setCurrentRoster(rosList.get(i));
+						noMatch = false;
+						break;
+					}
+				}//end for
+					//we cycled through and there was no match
+				if(noMatch){
+					console.log("no match back to the drawing board");
+					History.newItem("roster");
+				}else{
+					//here we need a delay cuz not responding 
+					//when loaded. more like a two second delay.
+					utils.showClassroomPage();
+					console.log("history token size is " + historyToken.getToken().size());
+						if(historyToken.getToken().size() == 2){
+						utils.getClassroomPage().dashboard();
+								}//end if == 2
+						//at this point there is a three
+						
+				
+				}//end else noMatch
+				
+				
+				}//end success
+				
+		};
+
 	
 	public HistoryMapper(RosterUtils ru){
 		this.utils = ru;
 	}
 
 	@Override
-	public  void onValueChange(ValueChangeEvent<String> event) {
+	public  void onValueChange( ValueChangeEvent<String> event) {
 		
-		List<String> request= Splitter.on("/").splitToList(event.getValue());
+		historyToken.setToken(Splitter.on("/").splitToList(event.getValue()));
 		
-		if(request == null || request.size() <= 0 ){
+		if(historyToken.getToken() == null || historyToken.getToken().size() <= 0 ){
 			doDefault();
 		}
 		
-		if(request.size() == 1){// this means you on just the landing page show landing page 
-			console.log("token size is 1");
-			utils.showLandingPage();
-			switch(request.get(0)){
-			case "calendar": utils.getLandingPage().calendar();break;
-			default: utils.getLandingPage().rosters();
-			}
-			return;
+		if(historyToken.getToken().size() == 1){// this means you on just the landing page show landing page 
+			 doLandingPage();
 		}//end if  equals 1 /////
 		
-		if(request.size() >= 2){
-			console.log("token is 2 or more");
-			//this is a classroom request make sure the first item is 'c' for classroom
-			if(!request.get(0).equals("c")){
-				doDefault();
-				return;
-			}
-		//here we need to get the long id and set the current roster to the id
-			//if no match is found back to the dashboard
-		//set the current roster as id
-		//gwt and long don't mix compare strings
-		String id = request.get(1);
-		console.log("The current roster id is " + id);
-		//shuffle throug roste list for id
-		boolean noMatch = true;
-		JsArray<RosterJson> rosList = utils.getRosterList();
-		for(int i = 0; i < rosList.length(); i++){
-			console.log("cycled through roster list " + (i + 1) + " times and roster id is " + rosList.get(i).getId());
-			String rosId = "" +rosList.get(i).getId();
-			if(id.equals(rosId)){
-				utils.setCurrentRoster(rosList.get(i));
-				noMatch = false;
-				break;
-			}
-		}//end for
-			//we cycled through and there was no match
-		if(noMatch){
-			console.log("no match back to the drawing board");
-			History.newItem("roster");
-		}else{
-			utils.showClassroomPage();
-		}
-		if(request.size() == 2){
-			utils.getClassroomPage().dashboard();
-		}
-		
+		if(historyToken.getToken().size() >= 2){
+			doClassroomPage();
 		}//end if  2 or more/////
+		return;
+	}
 		
 		/*if(request.size() >=3){
 			//all views will start with a plus sign
@@ -131,13 +177,56 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 				
 			}
 		}*/
-	}
-	
-	
+
 	public void doDefault(){
 		History.replaceItem("roster");
 		utils.showLandingPage();
 		utils.getLandingPage().rosters();
 	}
 	
-}
+	private void doLandingPage(){
+		if(utils.isClassFirstLoad()){
+			this.doLandingFirstLoad();
+			return;
+		}
+		utils.showLandingPage();
+		switch(historyToken.getToken().get(0)){
+		case "calendar": utils.getLandingPage().calendar();break;
+		default: utils.getLandingPage().rosters();
+		}
+		return;
+	}
+	private void doClassroomPage(){
+		GWT.runAsync(ClassroomMain.class, classroomGet);
+	}
+	
+	private class HistoryToken{
+		List<String> token;
+		public List<String> getToken(){
+			return this.token;
+		}
+		public void setToken(List<String> token){
+			this.token = token;
+		}
+	}
+	private void doLandingFirstLoad(){
+		utils.showLandingPage();
+		MaterialLoader.showLoading(true);
+		utils.setClassFirstLoad(false);
+		new Timer(){
+			@Override
+			public void run(){
+				History.replaceItem("roster");
+				utils.getLandingPage().rosters();
+				MaterialLoader.showLoading(false);
+			}
+		}.schedule(100);
+	}
+
+		
+}	
+
+
+		
+
+	

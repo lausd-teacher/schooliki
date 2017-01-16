@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import gwt.material.design.client.ui.MaterialPreLoader;
 import gwt.material.design.client.ui.MaterialSpinner;
 import net.videmantay.admin.ClientFactory;
-import net.videmantay.admin.json.AppUserJson;
+import net.videmantay.student.json.AppUserJson;
 
 public class AppUserDataTable extends DataGrid<AppUserJson> {
 

@@ -11,7 +11,10 @@
 			<m:MaterialTabItem addStyleNames="myTab" ui:field="reportsTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
 		</m:MaterialTab>
 		<div  id="tab1">
-			<m:MaterialAnchorButton ui:field="classroomtimeBar" backgroundColor="red darken-4" centerOn="CENTER_ON_SMALL" grid="s12" width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar" text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtimedrop"></m:MaterialAnchorButton>
+			<m:MaterialAnchorButton ui:field="classroomtimeBar" backgroundColor="red darken-4" centerOn="CENTER_ON_SMALL" grid="s12" width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar" text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime2"></m:MaterialAnchorButton>
+			<m:MaterialDropDown activator="classtime2" ui:field="classtimeDrop2">
+					<m:MaterialLink addStyleNames="manageClassTimeLink" ui:field="classDropDownManageLink2" text="Manage..." />
+				</m:MaterialDropDown>
 			<m:MaterialRow ui:field="toolbar" height="3em" backgroundColor="yellow darken-1" textColor="red darken-3" paddingLeft="10" centerOn="CENTER_ON_SMALL">
 				<m:MaterialAnchorButton ui:field="classtimeBtn" hideOn="HIDE_ON_SMALL" addStyleNames="classTimeBtn" float="RIGHT" text="Class Time" fontSize="1.10em"  marginRight="5.0" textAlign="CENTER" backgroundColor="red darken-3" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime"/>
 				<m:MaterialDropDown activator="classtime" ui:field="classtimeDrop">
@@ -68,7 +71,7 @@
 				</m:MaterialColumn>
 				<!--This starts selects tools -->
 				<m:MaterialColumn grid="s2 m2 l2">
-					<m:MaterialPanel paddingTop="12" marginLeft="10">
+					<m:MaterialPanel paddingTop="12" marginLeft="20">
 						<m:MaterialLabel text="Select: " textColor="deep-orange darken-3"/>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
@@ -90,7 +93,7 @@
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 			</m:MaterialColumn>
-				<m:MaterialColumn grid="s1 m1 l1">
+				<m:MaterialColumn grid="s1 m1 l1" marginRight="10">
 					<m:MaterialPanel paddingTop="12">
 						<g:HTMLPanel>
 						<m:MaterialTooltip text="Select All">
@@ -134,7 +137,7 @@
              </audio>
             <audio id="goodNewsAudio" style="display:none;">
 			 <source src="audio/HooHooHoo2.mp3" type="audio/mpeg" />
-       </audio>
+      		 </audio>
 		</div>
 		<div id="tab2">
 		<g:HTMLPanel ui:field="calendarContainer">

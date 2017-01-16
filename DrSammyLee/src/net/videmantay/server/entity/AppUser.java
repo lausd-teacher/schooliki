@@ -26,7 +26,6 @@ public  class AppUser  implements Serializable {
 	@Id
     public Long id;
         
-    @Index
     @Email
     public String googleId;
     
@@ -39,9 +38,8 @@ public  class AppUser  implements Serializable {
     public String imageUrl;
     @Index
     public String gradeLevel;
-    
-    @Index
     @Email
+    @Index
     public String email;
     
     @NotNull
@@ -51,6 +49,7 @@ public  class AppUser  implements Serializable {
     public boolean firstLogin = true;
     
     @Size(min=1)
+    @Index
     public Set<String> roles = new HashSet<>();
     
     public Set<String> permissions = new HashSet<>();

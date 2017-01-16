@@ -6,6 +6,7 @@
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeRed" />
 	<inherits name="com.google.common.base.Base" />
 	<source path="admin" />
+	<source path="student"/>
 	<source path="shared" />
 	
 	<inherits name='com.google.gwt.place.Place' />

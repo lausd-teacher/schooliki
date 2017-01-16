@@ -38,7 +38,8 @@ private final  HistoryMapper mapper;
 	//expose function to iframe
 		expose();
 		loadRosters();
-		
+		History.newItem("roster");
+	
 	}//end module load//////
 	
 	
@@ -50,12 +51,9 @@ private final  HistoryMapper mapper;
 		JsArray<RosterJson> rosters = JsonUtils.safeEval((String)this.getArgument(0)).cast();
 			//set the roster list in rosterUtils
 			utils.setRosterList(rosters);
-			if(History.getToken() == null || History.getToken().isEmpty()){
-				mapper.doDefault();
-			}else{
-				History.fireCurrentHistoryState();
-			}
-			
+			console.log("ON MODULE LOAD: rosters loaded");
+			console.log(rosters);
+			History.fireCurrentHistoryState();
 		     //hide the loader
 				hideLoader();
 			}

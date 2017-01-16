@@ -14,9 +14,9 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialCard;
+import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwtquery.plugins.ui.interactions.Draggable;
-import net.videmantay.roster.views.ClassroomDashboardPanel.View;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class RosterStudentPanel extends Composite {
@@ -30,47 +30,43 @@ public class RosterStudentPanel extends Composite {
 	HTMLPanel rosterStudentPanel;
 	
 	@UiField
-	DivElement studentImg;
+	DivElement badgeRow;
 	
 	@UiField
-	MaterialLabel studentName;
+	DivElement checkRow;
+	
+	@UiField
+	MaterialLabel firstName;
+	
+	@UiField
+	MaterialLabel lastName;
+	
+	@UiField
+	HTMLPanel honorsPanel;
+	
+	@UiField
+	MaterialImage studentImage;
 
 	public RosterStudentPanel(RosterStudentJson student) {
 		initWidget(uiBinder.createAndBindUi(this));
 		setData(student);
 	}
 	
-	private void setupPanelForSeatingChart(){
-		studentImg.getStyle().setHeight(40, Unit.PX);
-		studentImg.getStyle().setWidth(40, Unit.PX);
-		studentImg.addClassName("studentDraggable");
-		studentImg.getStyle().setPosition(Position.ABSOLUTE);
-		rosterStudentPanel.getElement().getStyle().setWidth(60, Unit.PX);
-		rosterStudentPanel.getElement().getStyle().setHeight(60, Unit.PX);
-		rosterStudentPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		studentName.getElement().getStyle().setPaddingTop(40, Unit.PX);
-		studentName.getElement().getStyle().setFontSize(12, Unit.PX);
-		setUpDragAndDrop();
+	public void setupPanelForSeatingChart(){
+		
+	}
+	
+	public void setupPanelForSideNav(){
+		
+	}
+	
+	public void defaultSetup(){
+		
 	}
 	
 	public void setData(RosterStudentJson student){
-		this.getElement().setId(student.getId());
-		studentImg.setAttribute("studentId", student.getId());
-		studentName.setText(student.getLastName());
-		String url= student.getImageUrl();
-		studentImg.getStyle().setBackgroundImage("url('" + url +"')");
-		studentName.getElement().setAttribute("style", "max-width:40px");
-		setupPanelForSeatingChart();
+		
 	}
 	
-	
-	private void setUpDragAndDrop(){
-		Draggable.Options options = Draggable.Options.create();
-		options.revert("invalid");
-		options.helper("clone");
-		$(studentImg).as(Ui).draggable(options);
-	}
-	
-
 
 }

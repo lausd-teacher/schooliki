@@ -1,6 +1,7 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
@@ -22,17 +23,16 @@ public class RosterDetail implements Serializable {
 
 	@Id
 	public Long id;
-	
-	@Parent
-	public transient Key<Roster> parent;
-	
+		
 	public String title;
 	
 	public String description;
 
 	public TeacherInfo teacherInfo;
 	
-	public GradeLevel gradeLevel;
+	public List<String> gradeLevel;
+	
+	public String joinCode;
 	
 	@Index
 	public transient String ownerId;
@@ -42,17 +42,8 @@ public class RosterDetail implements Serializable {
 		return id;
 	}
 
-	public void setId(Long rosterId) {
-		this.id = rosterId;
-		this.parent = Key.create(Roster.class, id);
-	}
-
-	public Key<Roster> getParent() {
-		return parent;
-	}
-
-	public void setParent(Key<Roster> parent) {
-		this.parent = parent;
+	public void setId(Long id){
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -79,12 +70,12 @@ public class RosterDetail implements Serializable {
 		this.teacherInfo = teacherInfo;
 	}
 
-	public GradeLevel getGradeLevel() {
+	public List<String> getGradeLevel() {
 		return gradeLevel;
 	}
 
-	public void setGradeLevel(GradeLevel gradeLevel) {
-		this.gradeLevel = gradeLevel;
+	public void setGradeLevel(List<String> gradeLevels) {
+		this.gradeLevel = gradeLevels;
 	}
 
 	public String getOwnerId() {
@@ -94,4 +85,12 @@ public class RosterDetail implements Serializable {
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
 	}	
+	
+	public String getJoinCode(){
+		return joinCode;
+	}
+	
+	public void setJoinCode(String code){
+		joinCode = code;
+	}
 }

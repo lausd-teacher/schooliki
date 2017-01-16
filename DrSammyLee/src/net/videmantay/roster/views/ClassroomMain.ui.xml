@@ -5,11 +5,11 @@
 	xmlns:h="urn:import:gwt.material.design.client.ui.html"
 	xmlns:v="urn:import:net.videmantay.roster.views">
 	<g:HTMLPanel styleName="classroom" ui:field="classroom">
-			<m:MaterialNavBar ui:field="navBar" backgroundColor="red darken-4" activates="sideNav">
-			<m:MaterialNavBrand  ui:field="navBrand" textAlign="CENTER"/>
+		<header>
+			<m:MaterialNavBar ui:field="navBar" backgroundColor="red darken-4" activates="classroomSideNav">
+			<m:MaterialNavBrand  ui:field="navBrand" textAlign="CENTER" marginLeft="10" centerOn="CENTER_ON_SMALL"/>
 			</m:MaterialNavBar>
-
-			<m:MaterialSideNav ui:field="sideNav" m:id="sideNav" type="PUSH"  closeOnClick="true" showOnAttach="false" >
+			<m:MaterialSideNav ui:field="sideNav" m:id="classroomSideNav" type="PUSH" closeOnClick="true" alwaysShowActivator="true">
 				<v:UserProfilePanel ui:field="profilePanel"></v:UserProfilePanel>
 				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" textColor="red darken-4"/>
 				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange darken-4" iconType="ASSIGNMENT" />
@@ -25,6 +25,7 @@
 				<m:MaterialLink ui:field="logoutLink" text="Logout" iconType="INPUT" />
 				<m:MaterialLink></m:MaterialLink>
 			</m:MaterialSideNav>
+		</header>
 		<m:MaterialContainer  ui:field="mainPanel" width="100%" height="100%" >
 		</m:MaterialContainer>
 	</g:HTMLPanel>

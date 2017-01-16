@@ -1,4 +1,4 @@
-package net.videmantay.admin.json;
+package net.videmantay.student.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
