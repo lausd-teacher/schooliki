@@ -31,35 +31,28 @@ private final  HistoryMapper mapper;
 
 	@Override
 	public void onModuleLoad() {
-		
-		
-	//handle navigation
-        History.addValueChangeHandler(mapper);
-	//expose function to iframe
-		expose();
-		loadRosters();
-		History.newItem("roster");
-	
-	}//end module load//////
-	
-	
-	//If you are here it because you want to manage rosters
-	private void loadRosters(){
+		//seems first thing to is to make an ajax call  
+		//load the roster and then show roster main.
+		History.addValueChangeHandler(mapper);
 		Ajax.get(RosterUrl.roster()).done(new Function(){
 			@Override
-			public void f(){	
-		JsArray<RosterJson> rosters = JsonUtils.safeEval((String)this.getArgument(0)).cast();
-			//set the roster list in rosterUtils
-			utils.setRosterList(rosters);
-			console.log("ON MODULE LOAD: rosters loaded");
-			console.log(rosters);
-			History.fireCurrentHistoryState();
-		     //hide the loader
+			public void f(){
+				JsArray<RosterJson> rosters = JsonUtils.safeEval((String)this.getArgument(0)).cast();
+				//set the roster list in rosterUtils
+				utils.setRosterList(rosters);
+				console.log("ON MODULE LOAD: rosters loaded");
+				console.log(rosters);
+				 //hide the loader
 				hideLoader();
+				expose();
+				History.newItem("roster");
+				History.fireCurrentHistoryState();
+					
+					
 			}
 		});
-	}
-	
+	}//end module load//////
+		
 	private native void hideLoader()/*-{
 		var loader = $wnd.document.getElementById("loader");
 	    loader.style.visibility="hidden";

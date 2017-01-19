@@ -1,17 +1,34 @@
 package net.videmantay.roster.views;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.query.client.Promise;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import static com.google.gwt.query.client.GQuery.*;
+
+import java.util.List;
+
+import com.google.gwt.query.client.Promise;
+import  com.google.gwt.query.client.Function;
+
+import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialFAB;
+import gwt.material.design.client.ui.MaterialLoader;
+import gwt.material.design.client.ui.MaterialPanel;
+import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.HasClassroomDashboardView;
 import net.videmantay.roster.RosterUtils;
+import net.videmantay.roster.json.JoinRequestJson;
+import net.videmantay.roster.json.JoinStatus;
+import net.videmantay.student.json.RosterStudentJson;
 
 public class ClassroomDisplay extends Composite implements HasClassroomDashboardView{
 
@@ -20,22 +37,23 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 	interface ClassroomDisplayUiBinder extends UiBinder<Widget, ClassroomDisplay> {
 	}
 
-	@UiField
-	public ClassRoomGrid  classroomGrid;
+	private final RosterUtils utils; 
 	
 	@UiField
+	public MaterialPanel  classroomGrid;
+	
+	@UiField(provided=true)
 	ClassroomForm classForm;
 	
 	@UiField
 	public MaterialFAB fab;
 	
-	private final RosterUtils utils;
+	
 	
 	public ClassroomDisplay(RosterUtils ru) {
-		initWidget(uiBinder.createAndBindUi(this));
 		utils = ru;
-		classroomGrid.setData(utils);
-		
+		classForm = new ClassroomForm(utils);
+		initWidget(uiBinder.createAndBindUi(this));
 		//addclick handlers
 		fab.addClickHandler(new ClickHandler(){
 
@@ -60,147 +78,268 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 
 			@Override
 			public void onClick(ClickEvent event) {
-			Promise promise = 	classForm.submit(utils);
+				console.log("class form submit called");
+			Promise promise = 	classForm.submit();
+			classForm.setVisible(false);
+			if(promise == null){
+				console.log("promise was null just return");
+				return;
+			}
+			final JsArray<RosterStudentJson> oldStudentList = utils.getStudents();
+			promise.done(new Function(){
+				@Override
+				public  void f(){
+				final JsArray<RosterStudentJson> students = this.arguments(0);
+				//check for content
+				if(students.length() < 1){
+					return;
+				}else if(oldStudentList.length() == students.length()){//check for change
+					//no change means attempt again/// when to stop
+					new Timer(){
+						@Override
+						public void run(){
+							utils.setStudents(students);
+							drawGrid(students);
+							MaterialLoader.showLoading(false);
+						}
+					}.schedule(2000);
+					MaterialLoader.showLoading(true);
+					return;
+				}else{//now we can really do something
+					utils.setStudents(students);
+					drawGrid(utils.getStudents());
+					
+				}
+				}
+			});
 				
 			}});
+		
+		//populate with fake join request//
+		JsArray<JoinRequestJson> jrList = JsArray.createArray().cast();
+		for(int i = 0; i < 6; i++){
+			JoinRequestJson jr = JoinRequestJson.createObject().cast();
+			jr.setEmail("student_" + (i*11)+"@email.com");
+			jr.setStatus(JoinStatus.PENDING);
+			jrList.push(jr);
+		}
+		classForm.populateJoinRequests(jrList);	
+		drawGrid(utils.getStudents());
 	}//end construct
 
-	@Override
-	public void checkHW() {
-		classroomGrid.checkHW();
+	
+	public void drawGrid(final JsArray<RosterStudentJson> studs){
+		console.log("drawing classroom grid");
+		classroomGrid.clear();
+		MaterialRow row = new MaterialRow();
+		
+		
+		classroomGrid.add(row);
+		MaterialColumn c;
+		RosterStudentPanel rsp;
+		
+		
+		
+			int i = 0;
+			console.log("student 0 is:");
+			console.log(studs);
+				do{
+					 c = new MaterialColumn();
+					 c.setGrid("s6 m3 l2");
+					 rsp = new RosterStudentPanel(studs.get(i));
+					 c.add(rsp);
+					 ++i;
+					 row.add(c);
+					 rsp.gridStyle();
+				}while(i < studs.length());
+			
 		
 	}
+	
+	public void showEmptyGrid(){
+		HTMLPanel empty = new HTMLPanel("<h3>Your student list appears to be empty...</h3>"+
+                "<p>To manager you students just open the side menu"+
+              "and click on students<p><p><a href='#students'>Just click here</a></p>");
+			empty.setStylePrimaryName("emptyClassroom");
+			$(empty).css($$("margin:2em, color:DimGray"));
+			classroomGrid.clear();
+			classroomGrid.add(empty);
+	}
+
+
+	
+	@Override
+	public void checkHW() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	@Override
 	public void groups() {
-		classroomGrid.groups();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void takeRoll() {
-		classroomGrid.takeRoll();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void pickRandom() {
-		classroomGrid.pickRandom();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void selectAll() {
-		classroomGrid.selectAll();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void multipleSelect() {
-		classroomGrid.multipleSelect();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void home() {
-		classroomGrid.home();
+		List<RosterStudentPanel> studentPanels = $(classroomGrid).as(Widgets).widgets(RosterStudentPanel.class);
+		for(final RosterStudentPanel r: studentPanels){
+			r.addDomHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					$(body).trigger("studentActionPanel", r);
+					
+				}}, ClickEvent.getType());
+		}
 		
 	}
+
 
 	@Override
 	public void unHome() {
-		classroomGrid.unHome();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void arrangeFurniture() {
-	classroomGrid.arrangeFurniture();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void arrangeStudents() {
-		classroomGrid.arrangeStudents();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void manageStations() {
-		classroomGrid.manageStations();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void doneCheckHW() {
-		 classroomGrid.doneCheckHW();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void doneGroups() {
-		classroomGrid.doneGroups();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void doneTakeRoll() {
-		classroomGrid.doneTakeRoll();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void donePickRandom() {
-		classroomGrid.donePickRandom();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void doneSelectAll() {
-		classroomGrid.doneSelectAll();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void undo() {
-		classroomGrid.undo();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void cancel(String state) {
-		classroomGrid.cancel(state);
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void deselectAll() {
-	classroomGrid.deselectAll();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void doneMultipleSelect() {
-		classroomGrid.doneMultipleSelect();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void doneArrangeFurniture() {
-		classroomGrid.doneArrangeFurniture();
+		// TODO Auto-generated method stub
 		
 	}
+
 
 	@Override
 	public void doneArrangeStudents() {
-		classroomGrid.doneArrangeFurniture();
+		// TODO Auto-generated method stub
 		
 	}
 
+
 	@Override
 	public void doneManageStations() {
-		classroomGrid.doneManageStations();
+		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void onLoad(){
+		home();
 	}
 
 }

@@ -45,7 +45,7 @@ import static com.google.gwt.query.client.GQuery.*;
 
 public class StudentActionModal extends Composite {
 
-	/*private static StudentActionModalUiBinder uiBinder = GWT.create(StudentActionModalUiBinder.class);
+	private static StudentActionModalUiBinder uiBinder = GWT.create(StudentActionModalUiBinder.class);
 
 	interface StudentActionModalUiBinder extends UiBinder<Widget, StudentActionModal> {
 	}
@@ -77,13 +77,13 @@ public class StudentActionModal extends Composite {
 				studentIds += students.get(i).getId() +",";
 				}
 			}
-			incidentReport.setIncicdent(incident).setStudentIds(studentIds)
-			.setRosterId(roster.getId()).setActionType(actionType.toString());
+			/*incidentReport.setIncicdent(incident).setStudentIds(studentIds)
+			.setRosterId(roster.getId()).setActionType(actionType.toString());*/
 			
 			//then send message to body when complete
 			console.log("incident report sent to server");
 			console.log(JsonUtils.stringify(incidentReport));
-			Ajax.post(RosterUrl.REPORT_INCIDENT, $$("incidentReport:" + JsonUtils.stringify(incidentReport)) );
+			//Ajax.post(RosterUrl.REPORT_INCIDENT, $$("incidentReport:" + JsonUtils.stringify(incidentReport)) );
 			modal.closeModal();
 			return true;
 		}
@@ -129,6 +129,7 @@ public class StudentActionModal extends Composite {
 		this.utils = ru;
 		this.roster = utils.getCurrentRoster();
 		initWidget(uiBinder.createAndBindUi(this));
+		modal.closeModal();
 	
 	}
 	
@@ -169,8 +170,8 @@ public class StudentActionModal extends Composite {
 		
 	private void single(){
 		image.setType(ImageType.CIRCLE);
-		if(students.get(0).getThumbnails() != null){
-		image.setUrl(students.get(0).getThumbnails().get(3).getUrl());
+		if(students.get(0).getImageUrl()!= null){
+		image.setUrl(students.get(0).getImageUrl());
 		}else{
 			image.setUrl("../img/user.svg");
 		}
@@ -187,7 +188,7 @@ public class StudentActionModal extends Composite {
 		negTab.addClickHandler(negTabHandler);
 		cancelStudentActionBtn.addClickHandler(cancelHandler);
 		//setup incident girds
-		for(int i = 0; i < utils.getIncidents().length(); i++){
+		/*for(int i = 0; i < utils.getIncidents().length(); i++){
 			MaterialColumn col = new MaterialColumn();
 			col.setGrid("s6 m3 l3");
 			IncidentItem ii = new IncidentItem();
@@ -198,7 +199,7 @@ public class StudentActionModal extends Composite {
 			}else{
 				negIncidentRow.add(col);
 			}
-		}
+		}*/
 		
 		HTMLPanel moreItems = new HTMLPanel(moreHtml);
 		MaterialColumn moreCol = new MaterialColumn();
@@ -238,21 +239,15 @@ public class StudentActionModal extends Composite {
 				@Override
 				public void onClick(ClickEvent event) {
 					GWT.log("clicking on card in student action modal");
-					SelectionManager.unSelectCurrentSelectedIncidentCard();
-					SelectionManager.selectIncidentCard(card.getContainer());
 					Long currentRosterId = utils.getCurrentRoster().getId();
 					final IncidentJson newIncident = JavaScriptObject.createObject().cast();
 					newIncident.setIncidentTypeId(incidentType.getId());
 					newIncident.setName(incidentType.getName());
 					newIncident.setRosterId(currentRosterId);
-					newIncident.setValue(incidentType.getPoints());
-					final MaterialCard selectedCard = SelectionManager.getSelectedStudentCard();				
-					String studentId = selectedCard.getElement().getId();
-					final RosterStudentJson currentStudent = utils.findStudentById(studentId);
-					//title.setTitle("Assign Incident to " + currentStudent.getName());
-					title.setTitle("Assign Incidents");
+					newIncident.setValue(incidentType.getPoints());		
+				
 					
-					GQuery.ajax("/roster/" +utils.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
+					/*GQuery.ajax("/roster/" +utils.getCurrentRoster().getId() +"/student/"+studentId+"/incident",
 							Ajax.createSettings().setData(newIncident).setType("POST").setDataType("json"))
 							.done(new Function() {
 								@Override
@@ -296,7 +291,7 @@ public class StudentActionModal extends Composite {
 									MaterialLoader.showLoading(false);
 									Window.alert("failed to create incident");
 								}
-							});
+							});*/
 					
 				}
 			   }, ClickEvent.getType());
@@ -312,15 +307,6 @@ public class StudentActionModal extends Composite {
 				MaterialColumn column = new MaterialColumn();
 				column.add(card);
 				
-				if(incidentType.getPoints() >= 0){
-					positiveIncidentsTypeContainer.add(column);
-					
-				}else{
-					negativeIncidentsTypeContainer.add(column);
-					
-				}
-			 
-			 
 		 }
 	}
 	
@@ -332,17 +318,7 @@ public class StudentActionModal extends Composite {
 		addIncidentCardClickEvent(card, incidentType);
 		MaterialColumn column = new MaterialColumn();
 		column.add(card);
-		
-		
-		
-		if(incidentType.getPoints() >= 0){
-			positiveIncidentsTypeContainer.add(column);
-			
-		}else{
-			negativeIncidentsTypeContainer.add(column);
-			
-		}
-		
+				
 	}
-*/
+
 }

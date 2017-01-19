@@ -7,9 +7,12 @@
 			.imgBorder{
 				border:1px solid Maroon;
 					}
+				.userProfileTop{
+			margin-top:50px;
+		}
 		</ui:style>
 		<a:MaterialSideProfile ui:field="sideUserProfile" url="../img/safeResponsibleRespectBG.png">
-			<g:HTMLPanel addStyleNames="userProfileContainer"> 
+			<g:HTMLPanel addStyleNames="userProfileContainer {style.userProfileTop}"> 
 			<m:MaterialRow>
 			<m:MaterialColumn grid="s7" textColor="red darken-2" paddingTop="6">
 				<m:MaterialLabel ui:field="firstName" truncate="true" padding="10" marginTop="5" height="1em"/>

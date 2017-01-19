@@ -2,22 +2,25 @@ package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import gwt.material.design.client.ui.MaterialLoader;
+import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
+import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.ClassroomMain;
-import net.videmantay.roster.views.RosterMain;
 
 import static com.google.gwt.query.client.GQuery.*;
-
-import com.google.api.client.googleapis.util.Utils;
+import com.google.gwt.query.client.Function;
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Longs;
 
@@ -77,10 +80,8 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 				}
 				
 				console.log("token is 2 or more");
-				if(utils.getClassroomPage() == null){
-					utils.setClassroomPage(new ClassroomMain(utils));
-					
-				}
+				
+			
 					//this is a classroom request make sure the first item is 'c' for classroom
 					
 				//here we need to get the long id and set the current roster to the id
@@ -89,6 +90,13 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 				//gwt and long don't mix compare strings
 				String id = historyToken.getToken().get(1);
 				console.log("The current roster id is " + id);
+				//if the current roster is the one being called just return
+				if(utils.getCurrentRoster() != null && utils.getCurrentRoster().getId() == Longs.tryParse(id)){
+					console.log("roster is loaded just skip the AJAX");
+					utils.setClassroomPage(new ClassroomMain(utils));
+					utils.showClassroomPage();
+					return;
+				}
 				//shuffle throug roste list for id
 				boolean noMatch = true;
 				JsArray<RosterJson> rosList = utils.getRosterList();
@@ -106,13 +114,41 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 					console.log("no match back to the drawing board");
 					History.newItem("roster");
 				}else{
-					//here we need a delay cuz not responding 
-					//when loaded. more like a two second delay.
-					utils.showClassroomPage();
-					console.log("history token size is " + historyToken.getToken().size());
-						if(historyToken.getToken().size() == 2){
-						utils.getClassroomPage().dashboard();
-								}//end if == 2
+					//need to load the rosterconfig
+					Ajax.get(RosterUrl.rosterconfig(utils.getCurrentRoster().getId()))
+					.done(new Function(){
+						@Override
+						public void f(){
+							RosterConfigJson rcj =  JsonUtils.safeEval((String)this.arguments(0)).cast();
+							if(rcj != null){
+							utils.setStudents(rcj.getStudents());
+							if(rcj.getClassTimes() == null || rcj.getClassTimes().length() < 1){
+								ClassTimeJson classtime = ClassTimeJson.createObject().cast();
+								classtime.setDescript("This is the default classtime. "+
+								"Classtime is a way to help teachers transition from one activity to the next" +
+								"i.e  'Carpet Time' , 'Reading Buddies'  , 'Lab'");
+								classtime.setTitle("Default Time");
+								classtime.setRosterId(utils.getCurrentRoster().getId());
+								classtime.setIsDefault(true);
+								JsArray<ClassTimeJson> times = JsArray.createArray().cast();
+								times.push(classtime);
+								utils.setClassTimes(times);
+								utils.setSelectedClassTime(classtime);
+							}
+							if(rcj.getDefaultTime() == null){
+								ClassTimeConfigJson dtime = ClassTimeConfigJson.createObject().cast();
+								utils.setClasstimeConfig(dtime);
+							}else{
+							utils.setClasstimeConfig(rcj.getDefaultTime());
+							}
+							//now that everything is in place we init the classmain
+							utils.setClassroomPage(new ClassroomMain(utils));
+							utils.showClassroomPage();
+						}//end if ros config not null
+					}
+					});
+					
+					
 						//at this point there is a three
 						
 				

@@ -22,4 +22,12 @@ public class ClassTimeConfigJson extends JavaScriptObject {
 	public final native void setProcedures(JsArray<ProcedureJson> procs)/*-{
 	return this.procedures = procs;
 }-*/;
+	
+	public final native Long getId()/*-{
+		return this.id;
+	}-*/;
+	
+	public final native void setId(Long id)/*-{
+			this.id = id;
+	}-*/;
 }

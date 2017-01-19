@@ -249,7 +249,6 @@ public class RosterDisplay extends Composite{
 			MaterialColumn col = new MaterialColumn();
 			col.setGrid("s12 m4 l4");
 			RosterPanel panel = new RosterPanel();
-			
 			panel.setColor(rosters.get(i).getColor());
 			panel.setData(rosters.get(i));
 			col.add(panel);

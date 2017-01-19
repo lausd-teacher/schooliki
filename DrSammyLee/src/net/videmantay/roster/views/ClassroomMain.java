@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.constants.TextAlign;
 import gwt.material.design.client.events.SideNavClosedEvent;
 import gwt.material.design.client.events.SideNavClosedEvent.SideNavClosedHandler;
 import gwt.material.design.client.events.SideNavClosingEvent;
@@ -23,6 +24,7 @@ import gwt.material.design.client.events.SideNavClosingEvent.SideNavClosingHandl
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
+import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialNavBar;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
@@ -89,7 +91,7 @@ public class ClassroomMain extends Composite{
 	public HTMLPanel classroom;
 	
 	//needs access to widget children
-	ClassroomDashboardPanel dashboard;
+	private  ClassroomDashboardPanel dashboard;
 	
 	
 	private final RosterUtils utils;
@@ -168,83 +170,55 @@ public class ClassroomMain extends Composite{
 					History.newItem("c/" + roster.getId() +"/t");
 				}});
 			
-		// End set up Side nav Links///////////////////
-	//if we are here we want to mangae students and classtime load them
-			//Ajax.get(RosterUrl.st)
+			
+		
 	}//end constructor
 	
-	private void setRoster(){
-	Ajax.get(RosterUrl.rosterconfig(utils.getCurrentRoster().getId())).done(new Function(){
-		@Override
-		public void f(){
+	
+	//methods for navigation
+	public void showDashboard(){
+		console.log("showing dashboard");
+				dashboard = new ClassroomDashboardPanel(utils);
+				
 			
-			RosterConfigJson rosCon = JsonUtils.safeEval((String)this.arguments(0)).cast();
-			console.log("rosteconfig is: ");
-			console.log(rosCon);
-			if(rosCon.getStudents() == null){
-				//draw empty grid
-			}else{
-				//draw student grid
-				utils.setStudents(rosCon.getStudents());
-			}
-			if(rosCon.getClassTimes() == null || rosCon.getClassTimes().length() < 1){
-				ClassTimeJson classtime = ClassTimeJson.createObject().cast();
-				classtime.setDescript("This is the default classtime. "+
-				"Classtime is a way to help teachers transition from one activity to the next" +
-				"i.e  'Carpet Time' , 'Reading Buddies'  , 'Lab'");
-				classtime.setTitle("Default Time");
-				classtime.setRosterId(utils.getCurrentRoster().getId());
-				classtime.setIsDefault(true);
-				JsArray<ClassTimeJson> times = JsArray.createArray().cast();
-				times.push(classtime);
-				utils.setClassTimes(times);
-				utils.setSelectedClassTime(classtime);
-				console.log("utils get classtimes");
-				console.log(utils.getClassTimes());
+				mainPanel.clear();
+				mainPanel.add(dashboard);
 				dashboard.classtimeBtn.setText(utils.getSelectedClassTime().getTitle());
 				dashboard.classroomtimeBar.setText(utils.getSelectedClassTime().getTitle());
-			}else{
-			utils.setClassTimes(rosCon.getClassTimes());
+			
 			for(int i = 0; i < utils.getClassTimes().length(); i++){
 				MaterialLink link = new MaterialLink();
+				MaterialLink link2 = new MaterialLink();
 				link.setText(utils.getClassTimes().get(i).getTitle());
+				link.setTextAlign(TextAlign.CENTER);
+				link.setFontSize("1.1em");
+				link.setTextColor("red");
+				link.setPadding(10);
 				link.setId(utils.getClassTimes().get(i).getId() + "");
+				
+				
+				link2.setText(utils.getClassTimes().get(i).getTitle());
+				link2.setTextAlign(TextAlign.CENTER);
+				link2.setFontSize("1.1em");
+				link2.setTextColor("red");
+				link2.setPadding(5);
+				link2.setId(utils.getClassTimes().get(i).getId() + "");
+				
 				if(utils.getClassTimes().get(i).getIsDefault()){
 					dashboard.classtimeBtn.setText(utils.getClassTimes().get(i).getTitle());
 					dashboard.classroomtimeBar.setText(utils.getClassTimes().get(i).getTitle());
-					dashboard.classtimeDrop.insert(link, 1);
+					dashboard.classtimeDrop.insert(link, 0);
+					dashboard.classtimeDrop2.insert(link2,0);
+					continue;
 				}
-				dashboard.classtimeDrop.add(link);
+				dashboard.classtimeDrop.insert(link, dashboard.classtimeDrop.getItems().size()-1);
+				dashboard.classtimeDrop2.insert(link2, dashboard.classtimeDrop2.getItems().size()-1);
 			}
-				dashboard.classtimeDrop.add(dashboard.classDropDownManageLink);
-			}
-			if(rosCon.getDefaultTime() == null){
-				ClassTimeConfigJson dtime = ClassTimeConfigJson.createObject().cast();
-				utils.setClasstimeConfig(dtime);
-			}else{
-			utils.setClasstimeConfig(rosCon.getDefaultTime());
-			}
-			
-			
-			
-		}
-	});
-		
-	}
-	//methods for navigation
-	public void dashboard(){
-		
-				if(dashboard != null && dashboard.getState().toString().equalsIgnoreCase("dashboard")){
-					return;
-				}else{
-			
-				mainPanel.clear();
-				dashboard = new ClassroomDashboardPanel();
-				mainPanel.add(dashboard);
-				dashboard.tab1Main.add(new ClassroomDisplay(utils));
+				ClassroomDisplay display =new ClassroomDisplay(utils);
+				
+				dashboard.setDisplayInTab1(display);
+				display.drawGrid(utils.getStudents());
 					
-				//get students and classtimes for currentroster set default classtime
-				}	
 			
 	}
 
@@ -793,15 +767,13 @@ public class ClassroomMain extends Composite{
 	
 	@Override
 	public void onLoad(){
-		
-	
 		console.log("classroom main onload called");
 		final InfoJson info = utils.getInfo();
 		roster = utils.getCurrentRoster();
 		navBar.setBackgroundColor(roster.getColor());
 		navBrand.setText(roster.getTitle());
 		profilePanel.setProfileInfo(info);
-		setRoster();
+		this.showDashboard();
 		
 	}
 	@Override
@@ -810,6 +782,7 @@ public class ClassroomMain extends Composite{
 		$("div.picker, .material-tooltip").remove();
 		$(navBar).css("width","0px");
 		$(mainPanel).css("width", "0px");
+		
 	}
 		
 }

@@ -5,12 +5,16 @@
    	width:100%;
    	background-color:WhiteSmoke;
    }
+   
+   	/* full calenar stuff ---------------------*/
+	
+	
    /*need for fullcalendar iframe scroll on apple */
    .tab2{
    		-webkit-overflow-scrolling: touch;
   	overflow-y: scroll;
    }
-   
+    
    iframe.calFrame{
    	border:none;
    	position:relative;
@@ -18,7 +22,27 @@
    	margin-left:0px;
    	margin-right:0px;
    }
-   /* jquery ui css stuff */
+   
+	div#fullcalendar{
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:1em;
+		margin-bottom:0.25em;
+		position:relative;
+		z-index:999;
+	}
+	div.fc-view-container{
+		z-index:inherit;
+	}
+	div.fc-view{
+		z-index:1000;
+	}
+	div.fc-toolbar >.fc-left > h2{
+		font-size:1.5rem;
+	}
+	/* end fullcalendar style ************/
+	
+   /* jquery ui css stuff ----------------- */
    div.ui-rotatable-handle {
     height: 24px;
     width: 24px;
@@ -48,10 +72,7 @@ div.item-student.ui-selecting { background: #FECA40;
   div.item-student.ui-selected { background: #F39814; color: white; 
   									border:1px solid RedOrange;}
   
-.student-selected{
-	background-color:Orange;
-	color:White;
-}
+
   
 	div.picker-dialog{
 		width:80%;
@@ -65,6 +86,10 @@ div.item-student.ui-selecting { background: #FECA40;
 	ul.tabs li.tab.myTab a span{	   
     display: block !important;
 	}
+	
+	/* end jquery ui stuff *******************/
+	
+	
 	.side-profile > div.right > img.profileImg{
 		margin-bottom:0%;
 		margin-left:5em;
@@ -81,7 +106,7 @@ div.item-student.ui-selecting { background: #FECA40;
 		height:10em !important;
 	}
 	
-	/* All Seating chart styles */
+	/* All Seating chart styles -----------------------*/
 	.seatingChart{
 		border:3px groove Green;
 		width:100%;
@@ -96,51 +121,7 @@ div.item-student.ui-selecting { background: #FECA40;
 		border:1px solid Teal;
 		background-image:url('../img/classFloor.svg');
 	}
-	
-	.studentsPanel{
-	    width:20%;
-		height:100%;
-		border:1px solid Teal;
-	}
-	
-	.incidentCard:hover{
-	 border: solid 2px blue;
-	}
-	
-	.rosterStudentPanel:hover{
-	   border: solid 2px blue;
-	   cursor: pointer;
-	}
-	
-	.iconFormInputContainer{
-	  display:flex;
-	  flex-direction:row;
-	
-	}
-	
-	.incidentFormIcon{
-	  width: 6.6rem;
-	  vertical-align: top;
-	  display: inline-block;
-	  margin: 0.5rem;
-	}
-	
-	.incidentFormIcon:hover{
-	  background:#ead4ec;
-	
-	}
-	
-	
-	.userProfileContainer{
-	    display:flex; 
-	    flex-direction:row; 
-	    margin-top:30%;
-	}
-	
-	.selected{
-	   border: solid 2px blue;
-	}
-	
+		
 	.furniturePanel{
 		width:20%;
 		height:100%;
@@ -250,9 +231,9 @@ div.item-student.ui-selecting { background: #FECA40;
 	.furnitureTools{
 		display:none;
 	}
-	/*  end seating chart style */
+	/*  end seating chart style *************************/
 	
-	/* rosterStudent style */
+	/* rosterStudent style ------------------------------*/
 	
 	.rosterStudent{
 		width:4.75em;
@@ -280,9 +261,8 @@ div.item-student.ui-selecting { background: #FECA40;
 	}
 	.rosterStudent.grid{
 		top:0px;
-		width:6em;
-		height:7.5em;
-		font-size:1em;
+		width:10em;
+		min-height:11em;
 	}
 	.seatingChartImageDiv{
 		background-size:contain;
@@ -323,6 +303,21 @@ div.item-student.ui-selecting { background: #FECA40;
 		clear:right;
 		float:left;
 	}
+	
+	.studentBadge{
+		border:2px solid White;
+		box-shadow:1px 1px 2px Gray;
+		width:3em !important;
+		height:3.5em !important;
+	}
+	.studentBadgeLeft{
+		left:-10px;
+	}
+	.studentBadgeRight{
+		right:-10px !important;
+	}
+	
+	/* end roste student style *********************************************/
 	/* seated student on desk */
 	.desk .seat .rosterStudent{
 		top:-37px;
@@ -345,27 +340,41 @@ div.item-student.ui-selecting { background: #FECA40;
 		z-index:10;
 		
 	}
-	/* 
-		full calenar stuff
-	*/ 
-	div#fullcalendar{
-		margin-left:auto;
-		margin-right:auto;
-		margin-top:1em;
-		margin-bottom:0.25em;
-		position:relative;
-		z-index:999;
+	/* end seating chart style *************************/
+	
+		.incidentCard:hover{
+	 border: solid 2px blue;
 	}
-	div.fc-view-container{
-		z-index:inherit;
+	
+	.rosterStudentPanel:hover{
+	   border: solid 2px blue;
+	   cursor: pointer;
 	}
-	div.fc-view{
-		z-index:1000;
+	
+	.iconFormInputContainer{
+	  display:flex;
+	  flex-direction:row;
+	
 	}
-	div.fc-toolbar >.fc-left > h2{
-		font-size:1.5rem;
+	
+	.incidentFormIcon{
+	  width: 6.6rem;
+	  vertical-align: top;
+	  display: inline-block;
+	  margin: 0.5rem;
 	}
-	/* Roster panel style */
+	
+	.incidentFormIcon:hover{
+	  background:#ead4ec;
+	
+	}
+	
+		
+	.selected{
+	   border: solid 2px blue;
+	}
+	
+	/* Roster panel style --------------------------*/
 	div.card.rosterPanel{
 		background-image:url("../img/sammyOwlTemplate.svg");
 		background-size:contain;

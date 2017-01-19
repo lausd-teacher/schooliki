@@ -18,7 +18,7 @@ public class RosterStudentJson extends JavaScriptObject{
 	}-*/;
 
 	public final native String getStudentId() /*-{
-		return this.studentId;
+		return this.studentAcctId;
 	}-*/;
 
 	public final native String getRosterId() /*-{
@@ -26,7 +26,7 @@ public class RosterStudentJson extends JavaScriptObject{
 	}-*/;
 
 	public final native void setStudentId(String studentId) /*-{
-		this.studentId = studentId;
+		this.studentAcctId = studentId;
 	}-*/;
 
 	public final native void setRosterId(String rosterId) /*-{

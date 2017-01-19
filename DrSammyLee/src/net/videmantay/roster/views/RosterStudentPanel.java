@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.ui.MaterialBadge;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
@@ -33,6 +34,12 @@ public class RosterStudentPanel extends Composite {
 	DivElement badgeRow;
 	
 	@UiField
+	MaterialBadge statusBadge;
+	
+	@UiField
+	MaterialBadge extraStatusBadge;
+	
+	@UiField
 	DivElement checkRow;
 	
 	@UiField
@@ -46,26 +53,49 @@ public class RosterStudentPanel extends Composite {
 	
 	@UiField
 	MaterialImage studentImage;
+	
+	private final RosterStudentJson rosStudent;
 
 	public RosterStudentPanel(RosterStudentJson student) {
+		rosStudent = student;
 		initWidget(uiBinder.createAndBindUi(this));
-		setData(student);
 	}
 	
-	public void setupPanelForSeatingChart(){
-		
-	}
-	
-	public void setupPanelForSideNav(){
-		
-	}
-	
-	public void defaultSetup(){
-		
-	}
+
 	
 	public void setData(RosterStudentJson student){
-		
+		if(student.getFirstName() == null || student.getFirstName().isEmpty()){
+			firstName.setText(student.getStudentId());
+		}else{
+			firstName.setText(student.getFirstName());
+			lastName.setText(student.getLastName());
+		}
+		if(student.getImageUrl() == null || student.getImageUrl().isEmpty()){
+			studentImage.setUrl("img/user.svg");
+		}else{
+			studentImage.setUrl(student.getImageUrl());
+		}
+	}
+	
+	public RosterStudentJson getValue(){
+		return this.rosStudent;
+	}
+	
+	@Override
+	public void onLoad(){
+		setData(rosStudent);
+	}
+	
+	public void gridStyle(){
+		$(statusBadge).addClass("studentBadge", "studentBadgeLeft");
+		$(extraStatusBadge).addClass("studentBadge", "studentBadgeRight");
+		 $(rosterStudentPanel).addClass("grid", "card", "card-content");
+	}
+	
+	private void clearStyle(){
+		$(rosterStudentPanel).removeClass("grid", "card", "card-content");
+		$(statusBadge).removeClass("studentBadge", "studentBadgeLeft");
+		$(extraStatusBadge).removeClass("studentBadge", "studentBadgeRight");
 	}
 	
 

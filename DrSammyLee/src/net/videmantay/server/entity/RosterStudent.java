@@ -18,6 +18,7 @@ public class RosterStudent implements Serializable {
 	public String studentAcctId;
 	
 	@Parent
+	@Index
 	public transient Key<RosterDetail> rosterKey;
 	
 	
@@ -32,9 +33,15 @@ public class RosterStudent implements Serializable {
 	public RosterStudent(){}
 	public RosterStudent(Long rosId, AppUser user){
 		this.rosterKey = Key.create(RosterDetail.class, rosId);
+		if(user.firstName != null)
 		this.firstName = user.firstName;
+		
+		if(user.lastName != null)
 		this.lastName = user.lastName;
+		
+		if(user.getImageUrl() !=null)
 		this.imageUrl = user.imageUrl; 
+		
 		this.studentAcctId = user.email;
 	}
 		

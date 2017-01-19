@@ -12,6 +12,7 @@ import com.googlecode.objectify.annotation.Serialize;
 @Entity
 public class ClassTimeConfig {
 	
+	/* the id is the same as its classtime counter part for easy access */
 	@Id
 	Long id;
 	
@@ -20,4 +21,5 @@ public class ClassTimeConfig {
 	
 	@Serialize
 	public Set<Procedure> procedures = new HashSet<>();
+	
 }

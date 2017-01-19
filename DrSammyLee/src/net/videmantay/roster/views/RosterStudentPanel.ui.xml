@@ -3,19 +3,25 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
-	
+	 
 	</ui:style>
-	<g:HTMLPanel addStyleNames="rosterStudentPanel" ui:field="rosterStudentPanel">
-		<div ui:field="badgeRow">
-			<m:MaterialBadge ui:field="statusBadge" visible="false" float="LEFT"/>
-			<m:MaterialBadge ui:field="extraStatusBadge" visible="false" float="RIGHT"/> 
+	<g:HTMLPanel addStyleNames="rosterStudent" ui:field="rosterStudentPanel">
+	<div class="counterRotate studentHead">
+		<div ui:field="badgeRow" width="100%">
+			<m:MaterialBadge ui:field="statusBadge"  backgroundColor="green lighten-1" textColor="white" 
+			text="99" visible="true" circle="true" />
+			<m:MaterialBadge ui:field="extraStatusBadge" visible="true" 
+			backgroundColor="red lighten-1"  textColor="white" circle="true" text="0" float="RIGHT"/> 
 		</div>
 		<div ui:field="checkRow">
 			<m:MaterialCheckBox ui:field="checkBox" visible="false"/>
 		</div>
-	      	<m:MaterialImage ui:field="studentImage" />
+	      	<m:MaterialImage ui:field="studentImage" circle="true"/>
+	  </div><!-- end counter rotate head -->
+	  <div class="counterRotate studentBody">
 			<m:MaterialLabel ui:field="firstName"></m:MaterialLabel>
 			<m:MaterialLabel ui:field="lastName" />
 			<g:HTMLPanel ui:field="honorsPanel" visible="false"/>
+	</div><!-- end counterRotate studentBody -->
 	   </g:HTMLPanel>
 </ui:UiBinder> 

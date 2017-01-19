@@ -3,15 +3,15 @@ package net.videmantay.roster;
  public class  RosterUrl {
 	 private final static String roster = "/roster/";
 	 private final static String assignment = "assignment/";
-	 private final static String student = "student/";
-	 private final static String incident = "incident/";
-	 private final static String goal = "goal/";
-	 private final static String classtime = "classtime/";
-	 private final static String schedule = "schedule/";
-	 private final static String seatingChart = "seatingchart/";
-	 private final static String classtimeconfig = "classtimeconfig";
-	 private final static String rosterconfig = "rosterconfig";
-	 private final static String search = "search";
+	 private final static String student = "/student/";
+	 private final static String incident = "/incident/";
+	 private final static String goal = "/goal/";
+	 private final static String classtime = "/classtime/";
+	 private final static String schedule = "/schedule/";
+	 private final static String seatingChart = "/seatingchart/";
+	 private final static String classtimeconfig = "/classtimeconfig";
+	 private final static String rosterconfig = "/rosterconfig";
+	 private final static String search = "student/search/";
 	 
 	public final static String roster(){return roster;}
 	public final static String roster(Long id){return roster + id;}
@@ -20,7 +20,7 @@ package net.videmantay.roster;
 	
 	public final static String student(Long id){return roster + id + student;}
 	public final static String  student(Long id, String studentId){return roster + id + student + studentId;}
-	public final static String studentSearch(){return roster + student+ search;}
+	public final static String studentSearch(){return roster+search;}
 
 	public final static String  studentIncident(Long id , String studentId){
 		return roster + id +student + studentId + incident;
@@ -50,7 +50,7 @@ package net.videmantay.roster;
 	public final static String classtime(Long id, Long classtimeId){return roster+ id+ classtime + classtimeId;}
 	
 	public final static String classtimeconfig(Long id){return roster + id + classtimeconfig;}
-	public final static String classtimeconfig(Long id, Long classtimeId){return roster+id+classtime+id+classtimeconfig;}
+	public final static String classtimeconfig(Long id, Long classtimeId){return roster+id+classtime+classtimeId+classtimeconfig;}
 	
 	public final static String seatingchart(Long id){return roster + id + seatingChart;}
 	public final static String seatingchart(Long id, Long classtimeId){return roster + id + seatingChart + classtimeId;}

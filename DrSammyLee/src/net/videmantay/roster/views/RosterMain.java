@@ -5,6 +5,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
@@ -57,12 +58,13 @@ public class RosterMain extends Composite {
 	@UiField
 	MaterialSideNav sideNav;
 	private final RosterUtils utils;
+	
+	@UiConstructor
 	public RosterMain(RosterUtils ru) {
-		initWidget(uiBinder.createAndBindUi(this));
 		this.utils = ru;
 		console.log("Main Roster loaded");
 		console.log(utils.getRosterList());
-		//final InfoJson info = window.getPropertyJSO("info").cast();
+		initWidget(uiBinder.createAndBindUi(this));
 		final InfoJson info = ru.getInfo();
 		console.log(info);
 		profile.setProfileInfo(info);

@@ -91,6 +91,8 @@ public class RosterUtils {
 		selectedClassTime = sct;
 		$(window).prop("selectedClassTime", selectedClassTime);
 		// must get the config from server and added it to then window as well
+		//if this is just a temporary classtime just skip ajax call
+		if(selectedClassTime.getId() != null){
 		Ajax.get(RosterUrl.classtimeconfig(currentRoster.getId(), selectedClassTime.getId()))
 		.done(new Function(){
 			@Override
@@ -100,7 +102,8 @@ public class RosterUtils {
 				$(body).trigger(RosterEvent.updateClassTimeConfig, ctc);
 			}
 		});
-		//this must also change the classtime button text to the current class time	
+		}//end if no id
+		
 	}
 	
 	public  ClassTimeJson getSelectedClassTime() {
@@ -168,6 +171,8 @@ public class RosterUtils {
 		}
 		return null;
 	}
+	
+
 	
 	
 }

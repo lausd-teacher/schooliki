@@ -7,7 +7,7 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-	<v:ClassRoomGrid  ui:field="classroomGrid"></v:ClassRoomGrid>
+	<m:MaterialPanel m:id="classroomGrid" ui:field="classroomGrid" padding="20" width="100%" height="100%"/>
 	<v:ClassroomForm ui:field="classForm"  visible="false"/>
 	<m:MaterialFAB ui:field="fab">
 		<m:MaterialButton  type="FLOATING" iconType="ADD" size="LARGE"/>

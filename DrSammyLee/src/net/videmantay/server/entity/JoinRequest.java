@@ -15,6 +15,6 @@ public class JoinRequest {
 	
 	public RequestStatus status = RequestStatus.PENDING;
 	
-	enum RequestStatus{PENDING,REJECTED,ACCEPTED};
+	public enum RequestStatus{PENDING,REJECTED,ACCEPTED};
 	
 }

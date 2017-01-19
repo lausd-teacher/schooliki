@@ -1,7 +1,6 @@
 package net.videmantay.roster.views;
 
-import static com.google.gwt.query.client.GQuery.body;
-import static com.google.gwt.query.client.GQuery.console;
+import static com.google.gwt.query.client.GQuery.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
@@ -23,6 +22,7 @@ import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
 import net.videmantay.roster.HasClassroomDashboardView;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.views.classtime.SeatingChartPanel;
 
 public class ClassroomDashboardPanel extends Composite
@@ -73,6 +73,9 @@ public class ClassroomDashboardPanel extends Composite
 	@UiField
 	public MaterialDropDown classtimeDrop;
 	
+	@UiField
+	public MaterialDropDown classtimeDrop2;
+	
     @UiField
     public MaterialLink classDropDownManageLink;
 	
@@ -111,21 +114,34 @@ public class ClassroomDashboardPanel extends Composite
 	
 	@UiField
 	public HTMLPanel calendarContainer;
+	
+
+	public StudentActionModal studentActionModal;
 		
 	
 	private State state = State.DASHBOARD;
 	
 	private HasClassroomDashboardView display;
-	
+	final RosterUtils utils;
 
 
 	//enum for state
 	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
-	public ClassroomDashboardPanel() {
+	public ClassroomDashboardPanel(RosterUtils ru) {
+		utils = ru;
+		studentActionModal = new StudentActionModal(ru);
 		initWidget(uiBinder.createAndBindUi(this));
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		$(body).on("studentActionPanel",new Function(){
+			@Override
+			public boolean f(Event e, Object...objects){
+				
+				studentActionModal.modal.openModal();
+				return true;
+			}
+		}) ;
 	}
 	
 	public void showDoneBar(){
@@ -161,7 +177,7 @@ public class ClassroomDashboardPanel extends Composite
 			tab1Main.add(display);
 		    seatingChartEditIcon.setVisible(true);
 		
-		}else if(display instanceof ClassRoomGrid){
+		}else if(display instanceof ClassroomDisplay){
 			tab1Main.add(display);
 			seatingChartEditIcon.setVisible(false);
 		

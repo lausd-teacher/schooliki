@@ -8,12 +8,15 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialCheckBox;
+import gwt.material.design.client.ui.MaterialCollectionItem;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
 import net.videmantay.roster.json.JoinRequestJson;
 
 public class JoinRequestItem extends Composite {
 	
+	@UiField
+	public MaterialCollectionItem item;
 
 	@UiField
 	public MaterialImage itemImg;
@@ -40,5 +43,5 @@ public class JoinRequestItem extends Composite {
 		itemImg.setUrl(jr.getPicUrl());
 		itemLabel.setText(jr.getEmail());
 	}
-
+	
 }

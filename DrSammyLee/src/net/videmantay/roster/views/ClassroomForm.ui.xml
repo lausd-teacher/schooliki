@@ -6,12 +6,28 @@
 	<ui:style>
 		.addedStudents{
 		border-radius:10%;
-		border:1px solid Silver;
+		border:1px solid Gainsboro;
 		overflow-y:auto;
 		padding:1.5em;
 		margin-left:2em;
 		height:350px;
 		
+	}
+	.higherZ{
+	z-index:10;
+	position:absolute;
+	width:100%;
+	background-color:White;
+	border:1px solid DimGray;
+	padding:1.5em;
+	margin-top:1em;
+	
+	}
+	.wrapper{
+		position:relative;
+		overflow:visible;
+		height:0px;
+		width:100%;
 	}
 	
 	</ui:style>
@@ -33,11 +49,11 @@
 		<m:MaterialColumn grid="s12 m5 l5" >
 			<m:MaterialTextBox ui:field="joinRequestSearchInput" placeholder="Search students" iconType="SEARCH"></m:MaterialTextBox>
 		<g:AbsolutePanel ui:field="jrResultPanelWrapper" >
-			<w:CellList ui:field="joinRequestResultsPanel" />
+			<w:CellList ui:field="joinRequestResultsPanel"  addStyleNames="{style.higherZ}"/>
 		</g:AbsolutePanel>
 		</m:MaterialColumn>
 		<m:MaterialColumn grid="s12 m5 l5" padding="1">
-		<m:MaterialLabel text="Add Students" />
+		<m:MaterialLabel text="Add Students" textColor="red darken-3"  fontSize="1.5em" marginLeft="10"/>
 			<m:MaterialPanel ui:field="joinRequestCreatedPanel" backgroundColor="grey lighten-5" addStyleNames="{style.addedStudents}"/>
 		</m:MaterialColumn>
 		</m:MaterialRow>
@@ -48,7 +64,7 @@
 	<!-- put data grid here -->
 	<m:MaterialCollection ui:field="joinRequestCollection"></m:MaterialCollection>
 	<g:HTMLPanel ui:field="emptyJoinRequest"> 
-		<h3 color="DimGray"> You have not received any new requests yet.</h3>
+		<h3 class="grey-text text-darken-2"> You have not received any new requests yet.</h3>
 	</g:HTMLPanel>
 	</m:MaterialPanel>
 	</m:MaterialCardContent>
@@ -56,11 +72,11 @@
 	<m:MaterialRow>
 				<m:MaterialColumn>
 					<m:MaterialAnchorButton ui:field="submitBtn"
-						text="Submit" backgroundColor="green" waves="LIGHT" />
+						text="Done" backgroundColor="amber darken-1" waves="LIGHT" />
 				</m:MaterialColumn>
 				<m:MaterialColumn>
 					<m:MaterialAnchorButton ui:field="cancelBtn"
-						text="Cancel" backgroundColor="red" waves="LIGHT" />
+						text="Cancel" backgroundColor="red darken-2" waves="LIGHT" />
 				</m:MaterialColumn>
 			</m:MaterialRow>
 	</m:MaterialCardAction>

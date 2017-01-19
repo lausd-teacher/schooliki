@@ -201,7 +201,7 @@ public class RosterService{
 		///class times
 		//and default classtime
 		RosterConfig config = new RosterConfig();
-		config.students.addAll(db().load().type(RosterStudent.class).filter("rosterId", id).list());
+		config.students.addAll(db().load().type(RosterStudent.class).ancestor(Key.create(RosterDetail.class, id)).list());
 		config.classtimes.addAll(db().load().type(ClassTime.class).filter("rosterId", id).list());
 		
 		// if you have any classtimes load the default///
@@ -228,7 +228,7 @@ public class RosterService{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRosterStudentsList(@PathParam("id") Long id) {
 	
-		Key<Roster> parent = Key.create(Roster.class, id);
+		Key<RosterDetail> parent = Key.create(RosterDetail.class, id);
 		List<RosterStudent> students = db().load().type(RosterStudent.class).ancestor(parent).list();
 		return Response.ok().entity(students).build();
 	}
@@ -253,18 +253,22 @@ public class RosterService{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createRosterStudents(@PathParam("id") Long id, List<JoinRequest> joinRequests) {
+		log.info("create student called with data of : " +joinRequests.iterator().next().email);
+	
 		// cheking if roster exists and student exists
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 		List<RosterStudent> students = new ArrayList<>();
-		User user = UserServiceFactory.getUserService().getCurrentUser();
-			if(result != null && result.getOwnerId() == user.getEmail() ){
+		//User user = UserServiceFactory.getUserService().getCurrentUser();
+			if(result != null ){
 			
 				for(JoinRequest jr: joinRequests){
+					if(jr.status.name().equalsIgnoreCase("accepted")){
 					AppUser appUser = db().load().type(AppUser.class).filter("email", jr.email).first().now();
 					RosterStudent stu = new RosterStudent(result.id, appUser);
 					students.add(stu);
+					}//endif
 				}//end for
-				
+				db().save().entities(students);
 				return Response.ok().entity(students).build();
 				
 			}//end if
