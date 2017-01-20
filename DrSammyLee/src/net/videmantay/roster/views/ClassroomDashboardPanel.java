@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
@@ -17,6 +18,7 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
+import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTab;
@@ -115,15 +117,14 @@ public class ClassroomDashboardPanel extends Composite
 	@UiField
 	public HTMLPanel calendarContainer;
 	
-
-	public StudentActionModal studentActionModal;
-		
 	
 	private State state = State.DASHBOARD;
 	
 	private HasClassroomDashboardView display;
 	final RosterUtils utils;
 
+	@UiField
+	MaterialModal modal;
 
 	//enum for state
 	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
@@ -131,17 +132,8 @@ public class ClassroomDashboardPanel extends Composite
 	
 	public ClassroomDashboardPanel(RosterUtils ru) {
 		utils = ru;
-		studentActionModal = new StudentActionModal(ru);
 		initWidget(uiBinder.createAndBindUi(this));
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
-		$(body).on("studentActionPanel",new Function(){
-			@Override
-			public boolean f(Event e, Object...objects){
-				
-				studentActionModal.modal.openModal();
-				return true;
-			}
-		}) ;
 	}
 	
 	public void showDoneBar(){
@@ -194,7 +186,15 @@ public class ClassroomDashboardPanel extends Composite
     	     classtimeDrop.add(classDropDownManageLink);
     }
     
-    
+    @Override
+    public void onLoad(){
+    	$(body).on("studentAction", new Function(){
+    		@Override
+    		public void f(){
+    			modal.openModal();
+    		}
+    	});
+    }
 
 
 

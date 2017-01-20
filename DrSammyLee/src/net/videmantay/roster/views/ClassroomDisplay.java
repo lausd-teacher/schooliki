@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -24,6 +25,7 @@ import gwt.material.design.client.ui.MaterialFAB;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialRow;
+import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.HasClassroomDashboardView;
 import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.JoinRequestJson;
@@ -138,11 +140,10 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 		MaterialColumn c;
 		RosterStudentPanel rsp;
 		
-		
-		
 			int i = 0;
 			console.log("student 0 is:");
 			console.log(studs);
+			if(studs.length() >0){
 				do{
 					 c = new MaterialColumn();
 					 c.setGrid("s6 m3 l2");
@@ -152,7 +153,7 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 					 row.add(c);
 					 rsp.gridStyle();
 				}while(i < studs.length());
-			
+			}
 		
 	}
 	
@@ -211,18 +212,15 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 
 
 	@Override
-	public void home() {
-		List<RosterStudentPanel> studentPanels = $(classroomGrid).as(Widgets).widgets(RosterStudentPanel.class);
-		for(final RosterStudentPanel r: studentPanels){
-			r.addDomHandler(new ClickHandler(){
-
-				@Override
-				public void onClick(ClickEvent event) {
-					$(body).trigger("studentActionPanel", r);
-					
-				}}, ClickEvent.getType());
-		}
-		
+	public void home(){
+		$(".rosterStudent", classroomGrid).click(new Function(){
+			@Override
+			public void f(){
+				MaterialToast.fireToast("click");
+				$(body).trigger("studentAction", $(this).id());
+				
+			}
+		});
 	}
 
 
@@ -339,7 +337,10 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 	
 	@Override
 	public void onLoad(){
-		home();
+		new Timer(){
+			@Override
+			public void run(){home();}
+		}.schedule(2000);
 	}
-
+	
 }

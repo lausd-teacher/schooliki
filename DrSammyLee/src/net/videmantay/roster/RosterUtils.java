@@ -2,16 +2,11 @@ package net.videmantay.roster;
 
 import static com.google.gwt.query.client.GQuery.*;
 
-import java.util.List;
-
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
@@ -20,7 +15,6 @@ import net.videmantay.roster.views.ClassroomMain;
 import net.videmantay.roster.views.RosterMain;
 import net.videmantay.student.json.InfoJson;
 import net.videmantay.student.json.RosterStudentJson;
-import net.videmantay.roster.views.StudentActionModal;
 
 public class RosterUtils {
 
@@ -39,7 +33,6 @@ public class RosterUtils {
 	private  boolean isEditMode = false;
 	private  boolean isRollMode = false;
 	private  JsArray<RosterStudentJson> students;
-	private  StudentActionModal studentActionModal;
 	private ClassTimeConfigJson defaultTime;
 	
 	

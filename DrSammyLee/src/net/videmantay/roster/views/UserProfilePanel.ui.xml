@@ -8,7 +8,11 @@
 				border:1px solid Maroon;
 					}
 				.userProfileTop{
-			margin-top:50px;
+			display:block;
+			position:relative;
+			height:65px;
+			top:50px;
+			font-weight:bold;
 		}
 		</ui:style>
 		<a:MaterialSideProfile ui:field="sideUserProfile" url="../img/safeResponsibleRespectBG.png">

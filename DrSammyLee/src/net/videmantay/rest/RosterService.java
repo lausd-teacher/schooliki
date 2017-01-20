@@ -523,19 +523,6 @@ public class RosterService{
 		
 	}
 	/* Every roster will always have one schedule so it can never be deleted just changed 
-	 * 
-	@DELETE
-	@Path("/{id}/schedule/{scheduleId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteSchedule(@PathParam("id") Long id, @PathParam("scheduleId") Long scheduleId){
-		Key<Roster> rosKey = Key.create(Roster.class, id);
-		Key<Schedule> sKey = Key.create(rosKey, Schedule.class, scheduleId);
-		db().delete().key(sKey);
-		
-		return Response.ok().build();
-	} 
-	*
-	*/
+	 */
 
 }
