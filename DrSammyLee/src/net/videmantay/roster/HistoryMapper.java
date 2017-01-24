@@ -115,7 +115,7 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 					History.newItem("roster");
 				}else{
 					//need to load the rosterconfig
-					Ajax.get(RosterUrl.rosterconfig(utils.getCurrentRoster().getId()))
+					Ajax.get(RosterUrl.roster(id))
 					.done(new Function(){
 						@Override
 						public void f(){

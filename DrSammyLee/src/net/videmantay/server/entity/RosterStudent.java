@@ -18,21 +18,21 @@ public class RosterStudent implements Serializable {
 	public String studentAcctId;
 	
 	@Parent
-	@Index
 	public transient Key<RosterDetail> rosterKey;
 	
 	
 	public String firstName;
 	public String lastName;
 	public String imageUrl;
-	public List<Integer> negPoints = new ArrayList<>();
-	public List<Integer> posPoints = new ArrayList<>();
+	public Integer negPoints;
+	public Integer posPoints; 
 	
 	
 	
 	public RosterStudent(){}
 	public RosterStudent(Long rosId, AppUser user){
 		this.rosterKey = Key.create(RosterDetail.class, rosId);
+		
 		if(user.firstName != null)
 		this.firstName = user.firstName;
 		

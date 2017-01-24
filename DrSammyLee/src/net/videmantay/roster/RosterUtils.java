@@ -10,6 +10,7 @@ import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.ui.RootPanel;
 import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.classtime.json.SeatingChartJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.views.ClassroomMain;
 import net.videmantay.roster.views.RosterMain;
@@ -34,6 +35,7 @@ public class RosterUtils {
 	private  boolean isRollMode = false;
 	private  JsArray<RosterStudentJson> students;
 	private ClassTimeConfigJson defaultTime;
+	private SeatingChartJson seatingChart;
 	
 	
 
@@ -165,7 +167,13 @@ public class RosterUtils {
 		return null;
 	}
 	
-
+	public void setSeatingChart(SeatingChartJson seatingChart){
+		this.seatingChart = seatingChart;
+	}
+	
+	public SeatingChartJson getSeatingChart(){
+		return this.seatingChart;
+	}
 	
 	
 }

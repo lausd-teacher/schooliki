@@ -229,7 +229,7 @@ public class RosterForm extends Composite{
 	public void reset(){
 		
 		form.reset();
-		data = null;
+		data = JavaScriptObject.createObject().cast();
 		colorVal = "red darken-2";
 		$colorBtns.css($$("padding:0em; border-width:0px;"));
 		$colorBtns.filter("[data-buttoncolor='red darken-2']").css($$("padding:1em; border:2px solid DimGray"));

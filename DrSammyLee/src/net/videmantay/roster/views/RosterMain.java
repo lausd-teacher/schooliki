@@ -59,7 +59,6 @@ public class RosterMain extends Composite {
 	MaterialSideNav sideNav;
 	private final RosterUtils utils;
 	
-	@UiConstructor
 	public RosterMain(RosterUtils ru) {
 		this.utils = ru;
 		console.log("Main Roster loaded");
@@ -112,6 +111,7 @@ public class RosterMain extends Composite {
 		sideNav.hideOverlay();
 		$("div#sidenav-overlay").remove();
 		$("div.drag-target").remove();
+		$(".lean-overlay").remove();
 	}
 	
 	@Override

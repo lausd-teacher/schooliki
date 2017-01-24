@@ -25,18 +25,20 @@ public class DB<T> implements Serializable {
 		factory().register(RosterDetail.class);
 		factory().register(RosterStudent.class);
 		factory().register(RosterSetting.class);
+		factory().register(RosterConfig.class);
+		factory().register(RosterCodeGenerator.class);
 		factory().register(SeatingChart.class);
 		factory().register(ClassTime.class);
+		factory().register(ClassTimeConfig.class);
+		factory().register(StationManager.class);
 		factory().register(Incident.class);
-		factory().register(IncidentType.class);
 		factory().register(AssignedGradedWork.class);
 		factory().register(GoogleCalendarEvent.class);
 		factory().register(GradedWork.class);
 		factory().register(Schedule.class);
 		factory().register(StudentWork.class);
-		factory().register(StudentIncident.class);
 		factory().register(StudentJob.class);
-		
+		factory().register(StudentIncident.class);
 		factory().register(Showcase.class);
 		
 		//Lesson and Deps
@@ -44,7 +46,6 @@ public class DB<T> implements Serializable {
 		factory().register(Vocab.class);
 		factory().register(VocabList.class);
 		factory().register(Standard.class);
-		factory().register(EducationalLink.class);
 		
 	}
 	

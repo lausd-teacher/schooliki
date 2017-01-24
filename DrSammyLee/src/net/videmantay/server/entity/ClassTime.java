@@ -7,9 +7,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
-import net.videmantay.rest.dto.ClassTimeDTO;
-import net.videmantay.rest.dto.RosterStudentDTO;
-
 @Entity
 public class ClassTime implements Serializable{
 	
@@ -21,12 +18,14 @@ public class ClassTime implements Serializable{
 	
 	@Index
 	public Long rosterId;
+	
 	public String title;
 	public String descript;
 	public Date lastUpdate;
 	
 	public String startTime;
 	public String endTime;
+	
 	
 	public boolean isDefault;
 	
@@ -75,6 +74,12 @@ public class ClassTime implements Serializable{
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
+	public boolean isDefault() {
+		return this.isDefault;
+	}
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
+	} 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -103,26 +108,6 @@ public class ClassTime implements Serializable{
 		} else if (!title.equals(other.title))
 			return false;
 		return true;
-	}
-	
-	public static ClassTime createFromDTO(ClassTimeDTO dto){
-		ClassTime classtime = new ClassTime();
-		classtime.id = dto.getId();
-		classtime.rosterId = dto.getRosterId();
-		classtime.title = dto.getTitle();
-		classtime.descript = dto.getDescript();
-		classtime.lastUpdate = dto.getLastUpdate();
-		classtime.startTime = dto.getStartTime();
-		classtime.endTime = dto.getEndTime();
-		classtime.isDefault = dto.getIsDefault();
-		
-		return classtime;
-	}
-	public boolean isDefault() {
-		return this.isDefault;
-	}
-	public void setDefault(boolean isDefault) {
-		this.isDefault = isDefault;
 	}
 	
 

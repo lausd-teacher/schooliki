@@ -2,6 +2,7 @@ package net.videmantay.roster.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,9 +10,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
+
+import com.google.api.client.googleapis.util.Utils;
 import com.google.gwt.query.client.*;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 
@@ -50,6 +54,10 @@ public class RosterDisplay extends Composite{
 	
 	@UiField
 	MaterialAnchorButton okBtnDeleteRoster;
+	
+	
+	final HTMLPanel emptyList = new HTMLPanel("<h3 class='grey-text' style='border:1px solid Silver;width:80%;padding:4rem;margin:3rem;'> " + 
+									"You have not created any rosters yet.<br/> <br/>Get started by pressing the '+' button at the bottom</h3>");
 /// Create all click handlers ////////////////////////////
 	private ClickHandler showFormHandler = new ClickHandler(){
 
@@ -161,7 +169,7 @@ public class RosterDisplay extends Composite{
 				.setDataType("json")
 				.setContentType("application/json")
 				.setType("DELETE")
-				.setUrl(RosterUrl.roster(ros.getId()))
+				.setUrl(RosterUrl.roster(ros.getId()+""))
 				).done(new Function(){ 
 					@Override
 					public void  f(){
@@ -237,8 +245,13 @@ public class RosterDisplay extends Composite{
 	}
 	private final void drawGrid(){
 		console.log("Draw Grid: called");
+		if(utils.getRosterList() == null || utils.getRosterList().length() < 1){
+			showEmpty();
+			
+		}else{
+		rosterContainer.clear();
 		rosterContainer.add(addRosters(utils.getRosterList()));
-		
+		}
 	}
 	
 	private final MaterialRow addRosters(JsArray<RosterJson> rosters){
@@ -258,6 +271,10 @@ public class RosterDisplay extends Composite{
 		}
 		
 		return row;
+	}
+	private void showEmpty(){
+		rosterContainer.clear();
+		rosterContainer.add(emptyList);
 	}
 		
 }

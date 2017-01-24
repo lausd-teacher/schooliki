@@ -21,6 +21,8 @@ public class StudentRoll {
 	Long studentId;
 	
 	boolean isPresent;
+	boolean isTardy;
+	public String arrivalTime;
 
 	public StudentRoll() {
 	
@@ -41,6 +43,14 @@ public class StudentRoll {
 	public boolean isPresent() {
 		return this.isPresent;
 	}
+	
+	public boolean isTardy(){
+		return isTardy;
+	}
+	
+	public String getArrivalTime(){
+		return this.arrivalTime;
+	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -58,12 +68,13 @@ public class StudentRoll {
 		this.isPresent = isPresent;
 	}
 	
-	public static StudentRoll createFromDTO(StudentRollDTO studentRollDTO) {
-		StudentRoll studentRoll = new StudentRoll();
-		studentRoll.id = studentRollDTO.getId();
-		studentRoll.date = studentRollDTO.getDate();
-		studentRoll.studentId = studentRollDTO.getStudentId();
-		studentRoll.isPresent = studentRollDTO.isPresent();
-		return studentRoll;
+	public void setTardy(boolean isTardy){
+		this.isTardy = isTardy;
 	}
+	
+	public void setArrivalTime(String time){
+		this.arrivalTime = time;
+	}
+	
+	
 }

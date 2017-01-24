@@ -1,25 +1,23 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Serialize;
 
 @Entity
-public class ClassTimeConfig {
-	
-	/* the id is the same as its classtime counter part for easy access */
+public class StationManager implements Serializable{
+
 	@Id
 	public Long id;
-	
+	public String stationDuration;
+	public String transitionTime;
 	@Serialize
-	public Set<StudentGroup> groups = new HashSet<>();
-	
+	public List<TimeSlot> timeSlots = new ArrayList<>();
 	@Serialize
-	public Set<Procedure> procedures = new HashSet<>();
+	public List<Station> stations;
 	
 }

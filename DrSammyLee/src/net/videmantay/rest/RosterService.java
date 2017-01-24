@@ -4,6 +4,8 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import static net.videmantay.server.util.DB.db;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -27,14 +29,11 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
 
 import net.videmantay.rest.dto.ClassTimeDTO;
-import net.videmantay.rest.dto.IncidentDTO;
-import net.videmantay.rest.dto.RosterDTO;
-import net.videmantay.rest.dto.RosterStudentDTO;
 import net.videmantay.rest.dto.ScheduleDTO;
-import net.videmantay.rest.dto.StudentRollDTO;
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.ClassTimeConfig;
@@ -46,188 +45,338 @@ import net.videmantay.server.entity.RosterConfig;
 import net.videmantay.server.entity.RosterDetail;
 import net.videmantay.server.entity.RosterStudent;
 import net.videmantay.server.entity.Schedule;
+import net.videmantay.server.entity.SeatingChart;
 import net.videmantay.server.entity.StudentIncident;
 import net.videmantay.server.entity.StudentRoll;
 import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.server.util.DB;
 
-import com.google.api.client.repackaged.com.google.common.base.CharMatcher;
-import com.google.appengine.api.datastore.Cursor;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.common.primitives.Ints;
-
 @Path("/roster")
-public class RosterService{
-	
-	
+public class RosterService {
 
 	private final Logger log = Logger.getLogger("Roster Service");
 
 	DB<Roster> rosterDB = new DB<Roster>(Roster.class);
-	
+
 	DB<AppUser> appUserDB = new DB<AppUser>(AppUser.class);
 
 	DB<RosterStudent> rosterStudentDB = new DB<RosterStudent>(RosterStudent.class);
-	
+
 	DB<Incident> incidentDB = new DB<Incident>(Incident.class);
-	
+
 	DB<StudentIncident> studentIncidentDB = new DB<StudentIncident>(StudentIncident.class);
-	
+
 	DB<ClassTime> classTimeDB = new DB<ClassTime>(ClassTime.class);
-	
+
 	DB<StudentRoll> studentRollDB = new DB<StudentRoll>(StudentRoll.class);
-	
-	
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listRosters(@Context HttpServletRequest request) {
 		ofy().clear();
-		
+
 		Subject subject = SecurityUtils.getSubject();
 		Object currentUserId = subject.getPrincipal();
-		
-		if(currentUserId != null){
+
+		if (currentUserId != null) {
 			String ownerId = currentUserId.toString();
 			log.log(Level.INFO, "List rosters is called");
 
-				List<Roster> rosterList = db().load().type(Roster.class).filter("ownerId", ownerId).list();
-		
-				
-				return Response.ok().entity(rosterList).build();
+			List<Roster> rosterList = db().load().type(Roster.class).filter("ownerId", ownerId).list();
+
+			return Response.ok().entity(rosterList).build();
 		}
 
 		return Response.ok().build();
 	}
-	
 
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRoster(@PathParam("id") Long id) {
-
-		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
-
-		if (result != null) {
-
-			return Response.ok().entity(new RosterDTO(result)).build();
-		}
-
-		return Response.status(Status.NOT_FOUND).build();
-	}
+	/*
+	 * @GET
+	 * 
+	 * @Path("/{id}")
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON) public Response
+	 * getRoster(@PathParam("id") Long id) {
+	 * 
+	 * Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+	 * 
+	 * if (result != null) {
+	 * 
+	 * return Response.ok().entity(new RosterDTO(result)).build(); }
+	 * 
+	 * return Response.status(Status.NOT_FOUND).build(); }
+	 */
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response saveRoster(Roster roster) throws Exception{
+	public Response saveRoster(Roster roster) throws Exception {
+
+		log.info("The roster id is " + roster.id);
+		Long rosterId = roster.id;
+
 		Subject subject = SecurityUtils.getSubject();
 		Object currentUserId = subject.getPrincipal();
-		if(currentUserId != null){
+		if (currentUserId != null) {
 			String ownerId = currentUserId.toString();
-				roster.setOwnerId(ownerId);
-		        Long id = rosterDB.save(roster).getId();
-		        if(roster.id == null){ //it's new and a rosterDetail must be created
-		        	roster.setId(id);
-		        	RosterDetail detail = new RosterDetail();
-		        	detail.setId(roster.getId());
-		        	detail.setGradeLevel(roster.gradeLevels);
-		        	detail.setTitle(roster.getTitle());
-		        	detail.description = roster.description;
-		        	//create a 5 to 7 character string for roster join code
-		        	RosterCodeGenerator codeGen = db().load().key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
-		        	detail.joinCode = codeGen.assignCode();
-		        	
-		        	TeacherInfo teacherInfo  = new TeacherInfo();
-		        	AppUser appUser = db().load().type(AppUser.class)
-		        			.filter("email", subject.getPrincipal().toString()).first().now();
-		        	teacherInfo.setLastName(appUser.lastName);
-		        	teacherInfo.setPicUrl(appUser.getImageUrl());
-		        	detail.setTeacherInfo(teacherInfo);
-		        	db().save().entities(detail,codeGen);
-		        }
-		        return Response.status(Status.CREATED).entity(roster).build();
+			roster.setOwnerId(ownerId);
+			Long id = rosterDB.save(roster).getId();
+			log.info("now the roster id is " + roster.id);
+			if (rosterId == null) { // it's new and a rosterDetail must be
+									// created
+				roster.setId(id);
+				RosterDetail detail = new RosterDetail();
+				RosterConfig config = new RosterConfig();
+				config.id = id;
+				detail.setId(roster.getId());
+				detail.setGradeLevel(roster.gradeLevels);
+				detail.setTitle(roster.getTitle());
+				detail.description = roster.description;
+				// create a 5 to 7 character string for roster join code
+				RosterCodeGenerator codeGen = db().load()
+						.key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
+				if (codeGen == null) {
+					codeGen = new RosterCodeGenerator();
+				}
+				config.joinCode = codeGen.assignCode(id);
+				db().save().entity(codeGen);
+				TeacherInfo teacherInfo = new TeacherInfo();
+				AppUser appUser = db().load().type(AppUser.class).filter("email", subject.getPrincipal().toString())
+						.first().now();
+				teacherInfo.setLastName(appUser.lastName);
+				teacherInfo.setPicUrl(appUser.getImageUrl());
+				detail.setTeacherInfo(teacherInfo);
+
+				ArrayList<Incident> incidents = new ArrayList<>();
+				Incident incident;
+				// we also need to create default incidents here too
+				// positive list////////
+				// 1. turned in hw - 1px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Turned in HW");
+				incident.setPoints(1);
+				incident.setImageUrl("/img/10.png");
+				incidents.add(incident);
+				// 2. paricipatation -1px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Participation");
+				incident.setPoints(1);
+				incident.setImageUrl("/img/32.png");
+				incidents.add(incident);
+				// 3. help others -3px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Helping others");
+				incident.setPoints(3);
+				incident.setImageUrl("/img/1.png");
+				incidents.add(incident);
+				// 4. took responsibility -2px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Taking responsibility");
+				incident.setPoints(2);
+				incident.setImageUrl("/img/5.png");
+				incidents.add(incident);
+				// 5. shared ideas -1px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Shared idea");
+				incident.setPoints(1);
+				incident.setImageUrl("/img/9.png");
+				incidents.add(incident);
+				// 6. listened attentively -5px;
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Listened attentively");
+				incident.setPoints(1);
+				incident.setImageUrl("/img/7.png");
+				incidents.add(incident);
+				// negative list///////////
+				// 1. no hw -1
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("No HW");
+				incident.setPoints(-1);
+				incident.setImageUrl("/img/6.png");
+				incidents.add(incident);
+				// 2. interrupted -1
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Interrupted");
+				incident.setPoints(-1);
+				incident.setImageUrl("/img/1.png");
+				incidents.add(incident);
+				// 3. shouted out -3px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Shouting out");
+				incident.setPoints(-3);
+				incident.setImageUrl("/img/7.png");
+				incidents.add(incident);
+				// 4. distracted -2px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("");
+				incident.setPoints(-2);
+				incident.setImageUrl("/img/5.png");
+				incidents.add(incident);
+				// 5. bathroom - 1px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Bathroom break");
+				incident.setPoints(-1);
+				incident.setImageUrl("/img/32.png");
+				incidents.add(incident);
+				// 6. fighting -5px
+				incident = new Incident();
+				incident.setRosterId(roster.id);
+				incident.setName("Fighting");
+				incident.setPoints(-5);
+				incident.setImageUrl("/img/9.png");
+				incidents.add(incident);
+				config.incidentKeys.addAll(db().save().entities(incidents).now().keySet());
+				
+				ClassTime defaultTime = new ClassTime();
+				defaultTime.setDefault(true);
+				defaultTime.setDescript("Routines refer to a set of procedures, groups, and stations that help students transition form one task to the next." +
+							" \" Carpet Time\" , \"Author's Chair\", \"Gallery Walks\" are all example of routines.");
+				defaultTime.title = "Class Routine";
+				defaultTime.setDefault(true);
+				defaultTime.id = db().save().entity(defaultTime).now().getId();
+				ClassTimeConfig ctConfig = new ClassTimeConfig();
+				ctConfig.id = defaultTime.id;
+				SeatingChart seatingChart = new SeatingChart();
+				seatingChart.id = defaultTime.id;
+				config.classtimes.add(defaultTime);
+				db().save().entities(detail, config,seatingChart, ctConfig);
+
+			} // end if first save
+			return Response.status(Status.CREATED).entity(roster).build();
 		}
-		
 
 		return Response.status(Status.UNAUTHORIZED).build();
 	}
-	
 
 	@DELETE
 	@Path("/{id}")
-	public Response delelteRoster(@PathParam("id") Long id) {
+	public Response deleteRoster(@PathParam("id") Long id) {
 
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
-			//deleting a roster is a huge ordeal probably
-			//best for taskque
+			// deleting a roster is a huge ordeal probably
+			// best for taskque
 			rosterDB.delete(result);
-			//get rosterDetail
+			// get rosterDetail
 			RosterDetail details = db().load().key(Key.create(RosterDetail.class, id)).now();
-			
-			//also clear up the code for someone else to use
+			final RosterConfig config = db().load().key(Key.create(RosterConfig.class, id)).now();
+			// also clear up the code for someone else to use
 			RosterCodeGenerator codeGen = db().load()
-										.key(Key.create(RosterCodeGenerator.class,RosterCodeGenerator.KEYGEN)).now();
-			codeGen.relinquishCode(details.joinCode);
+					.key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
+			codeGen.relinquishCode(config.joinCode);
 			db().save().entity(codeGen);
-			
-			//delete everything associate with details
-			db().delete().entities(db().load().ancestor(details).keys());
+
+			// delete everything associate with details
+			db().delete().entities(result, details);
+			// load all student related entities
+			// for each student taskque
+
+			/*
+			 * TODO: student delete que will depend on this info so do this
+			 * there db().transactNew(new VoidWork(){
+			 * 
+			 * @Override public void vrun() {
+			 * db().delete().keys(config.classtimeKeys);
+			 * db().delete().keys(config.studentKeys);
+			 * db().delete().keys(config.incidentKeys);
+			 * db().delete().entity(config); }});
+			 */
+
+			// TODO:and for each assignment taskque
 			return Response.ok().build();
-		}//end if///
+		} // end if///
 
 		return Response.status(Status.NOT_FOUND).build();
 
 	}
-	
+
+	@GET
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRosterConfig(@PathParam("id") final Long id) {
+		// must load the students
+		/// class times
+		// and default classtime
+		final RosterConfig config = db().load().key(Key.create(RosterConfig.class, id)).now();
+		db().transactNew(new VoidWork() {
+
+			@Override
+			public void vrun() {
+
+				Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
+				rosterStudents.addAll(
+						db().load().type(RosterStudent.class).ancestor(Key.create(RosterDetail.class, id)).list());
+				if (rosterStudents != null) {
+					config.students.addAll(rosterStudents);
+				}
+
+				if (config.classtimeKeys != null && config.classtimeKeys.size() > 0) {
+					Collection<ClassTime> classtimes = db().load().keys(config.classtimeKeys).values();
+					if (classtimes != null) {
+						config.classtimes.addAll(classtimes);
+
+						// if you have any classtimes load the default///
+						if (config.classtimes.size() >= 1) {
+							Long ctId = null;
+							boolean noMatch = true;
+							for (ClassTime ct : config.classtimes) {
+								if (ct.isDefault) {
+									ctId = ct.getId();
+									noMatch = false;
+									break;
+								}
+							}
+							if (noMatch) {
+								ctId = config.classtimes.iterator().next().id;
+							}
+							config.defaultTime = db().load().type(ClassTimeConfig.class).id(ctId).now();
+						} // end check if has classtimes;
+
+					}
+				}
+
+				if (config.incidentKeys != null && config.incidentKeys.size() > 0) {
+					Collection<Incident> incidents = db().load().keys(config.incidentKeys).values();
+					if (incidents != null) {
+						config.incidents.addAll(incidents);
+					}
+				}
+
+			}
+		});
+		return Response.ok().entity(config).build();
+	}
+
 	@POST
 	@Path("/{id}/updateJoinCode")
-	public Response updateJoinCode(@PathParam("id") Long id){
-		//get generator
-		RosterCodeGenerator codeGen = db().load().key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
-		RosterDetail detail = db().load().key(Key.create(RosterDetail.class, id)).now();
-		detail.joinCode = codeGen.assignCode();
-		db().save().entities(detail, codeGen);
+	public Response updateJoinCode(@PathParam("id") Long id) {
+		// get generator
+		RosterCodeGenerator codeGen = db().load().key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN))
+				.now();
+		RosterConfig config = db().load().key(Key.create(RosterConfig.class, id)).now();
+		codeGen.relinquishCode(config.joinCode);
+		config.joinCode = codeGen.assignCode(id);
+		db().save().entities(config, codeGen);
 		return Response.ok().entity(codeGen).build();
-	}
-	
-	@GET
-	@Path("{id}/rosterconfig")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRosterConfig(@PathParam("id") Long id){
-		//must load the students
-		///class times
-		//and default classtime
-		RosterConfig config = new RosterConfig();
-		config.students.addAll(db().load().type(RosterStudent.class).ancestor(Key.create(RosterDetail.class, id)).list());
-		config.classtimes.addAll(db().load().type(ClassTime.class).filter("rosterId", id).list());
-		
-		// if you have any classtimes load the default///
-		if(config.classtimes.size() >= 1){
-		Long ctId = null;
-		boolean noMatch = true;
-		for(ClassTime ct: config.classtimes){
-			if(ct.isDefault){
-			ctId = 	ct.getId();
-			noMatch = false;
-			break;
-		}
-		}
-		if(noMatch){
-			ctId = config.classtimes.iterator().next().id;
-		}
-		config.defaultTime = db().load().type(ClassTimeConfig.class).id(ctId).now();
-		}//end check if has classtimes;
-		return Response.ok().entity(config).build();	
 	}
 
 	@GET
 	@Path("/{id}/student")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRosterStudentsList(@PathParam("id") Long id) {
-	
+
 		Key<RosterDetail> parent = Key.create(RosterDetail.class, id);
 		List<RosterStudent> students = db().load().type(RosterStudent.class).ancestor(parent).list();
 		return Response.ok().entity(students).build();
@@ -237,12 +386,11 @@ public class RosterService{
 	@Path("/{id}/student/{studentId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRosterStudent(@PathParam("id") Long rosterId, @PathParam("studentId") Long studentId) {
+		Key<RosterDetail> parent = Key.create(RosterDetail.class, rosterId);
+		RosterStudent rosterStudent = ofy().load().key(Key.create(parent, RosterStudent.class, studentId)).now();
 
-		RosterStudent rosterStudent = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
-		  
-		if(rosterStudent != null){
-			RosterStudentDTO rosterStudentDTO = new RosterStudentDTO(rosterStudent);
-			return Response.ok().entity(rosterStudentDTO).build();
+		if (rosterStudent != null) {
+			return Response.ok().entity(rosterStudent).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
@@ -253,110 +401,146 @@ public class RosterService{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createRosterStudents(@PathParam("id") Long id, List<JoinRequest> joinRequests) {
-		log.info("create student called with data of : " +joinRequests.iterator().next().email);
-	
+		log.info("create student called with data of : " + joinRequests.iterator().next().email);
+
 		// cheking if roster exists and student exists
-		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
+		RosterDetail details = ofy().load().key(Key.create(RosterDetail.class, id)).now();
 		List<RosterStudent> students = new ArrayList<>();
-		//User user = UserServiceFactory.getUserService().getCurrentUser();
-			if(result != null ){
-			
-				for(JoinRequest jr: joinRequests){
-					if(jr.status.name().equalsIgnoreCase("accepted")){
+		// User user = UserServiceFactory.getUserService().getCurrentUser();
+		if (details != null) {
+			List<RosterStudent> studentsCheck = db().load().type(RosterStudent.class).ancestor(details).list();
+			for (JoinRequest jr : joinRequests) {
+				if (jr.status.name().equalsIgnoreCase("accepted")) {
+					// check that it doesn't exist in roster
 					AppUser appUser = db().load().type(AppUser.class).filter("email", jr.email).first().now();
-					RosterStudent stu = new RosterStudent(result.id, appUser);
+					RosterStudent stu = new RosterStudent(id, appUser);
 					students.add(stu);
-					}//endif
-				}//end for
-				db().save().entities(students);
-				return Response.ok().entity(students).build();
-				
-			}//end if
+				} // endif
+			} // end for
+
+			return Response.ok().entity(students).build();
+
+		} // end if
 
 		return Response.status(Status.NOT_FOUND).build();
 	}
-	
+
 	@GET
 	@Path("/student/search/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response studentSearch(@QueryParam("q") String q, @QueryParam("p") String pageNum, @QueryParam("g") Set<String> grade){
-		
+	public Response studentSearch(@QueryParam("q") String q, @QueryParam("p") String pageNum,
+			@QueryParam("g") Set<String> grade) {
+
 		log.info("Search student Called!");
-		log.info("q: " + q + "  p: " + pageNum + ",  g" + grade)  ;
-		Query<AppUser> userQ =	db().load().type(AppUser.class).filter("roles", "STUDENT")
-				.filter("email >=" , q).limit(50);
-		
-					List<AppUser> students = userQ.list();
-					log.info("appUser list is  " + students);
-			return Response.ok().entity(students).build();
-	
+		log.info("q: " + q + "  p: " + pageNum + ",  g" + grade);
+		Query<AppUser> userQ = db().load().type(AppUser.class).filter("roles", "STUDENT").filter("email >=", q)
+				.limit(50);
+
+		List<AppUser> students = userQ.list();
+		log.info("appUser list is  " + students);
+		return Response.ok().entity(students).build();
+
 	}
+
 	@POST
 	@Path("/{id}/student/{studentId}/incident")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createIncidentForStudent(@PathParam("id") Long id, IncidentDTO incidentDTO, @PathParam("studentId") Long studentId) {
-		
+	public Response createIncidentForStudent(@PathParam("id") Long id, StudentIncident stuIncident,
+			@PathParam("studentId") String studentId) {
+
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
-			incidentDTO.rosterId = id;
+			stuIncident.parent = Key.create(RosterStudent.class, studentId);
 
-			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
-			
-			if(student != null){
-					final Incident newIncident = Incident.createFromDTO(incidentDTO);
-				
-					Long newId = incidentDB.save(newIncident).getId();
-					
-					StudentIncident incident = new StudentIncident();
-					incident.setIncidentId(newId);
-					incident.setStudentId(studentId);
-					
-					studentIncidentDB.save(incident);
-					
-					int newIncidentPoints = incidentDTO.getValue() + student.getIncidentPointsAggregate();
-					
-					student.setIncidentPointsAggregate(newIncidentPoints);
-					//update points aggregate
-					appUserDB.save(student);
-					
-		
-					return Response.ok().entity(newId).build();
+			RosterStudent student = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
+
+			if (student != null) {
+
+				if (stuIncident.points < 0) {
+					student.negPoints += stuIncident.points;
+				} else {
+					student.posPoints += stuIncident.points;
+				}
+
+				// update points aggregate
+				db().save().entity(student);
+				stuIncident.id = db().save().entity(stuIncident).now().getId();
+
+				return Response.ok().entity(stuIncident).build();
 			}
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
 	}
-	
-	
-	
+
+	@POST
+	@Path("/{id}/batch/student/incident")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response batchCreateStudentIncident(@PathParam("id") Long id, List<StudentIncident> stuIncidents) {
+		// parent key
+		Key<RosterDetail> parent = Key.create(RosterDetail.class, id);
+		// Might as well batch get//
+		ArrayList<Key<RosterStudent>> keys = new ArrayList<Key<RosterStudent>>();
+
+		// save for batch save
+		ArrayList<RosterStudent> students = new ArrayList<RosterStudent>();
+		// obviously we need to serious validation
+		for (StudentIncident si : stuIncidents) {
+			keys.add(Key.create(parent, RosterStudent.class, si.studentAcct));
+		}
+		students.addAll(db().load().keys(keys).values());
+		// complicated iteration ///
+		for (RosterStudent rs : students) {
+			// cycle through incidents and match
+			for (StudentIncident si : stuIncidents) {
+				if (rs.studentAcctId.equals(si.studentAcct)) {
+					if (si.points < 0) {
+						rs.negPoints += si.points;
+					} else {
+						rs.posPoints += si.points;
+					}
+					break;
+				} // end if student match incident
+			} // end for incidents
+		} // end for students
+
+		// update the student points
+		db().save().entities(students);
+
+		stuIncidents.clear();
+		stuIncidents.addAll(db().save().entities(stuIncidents).now().values());
+
+		return Response.ok().entity(stuIncidents).build();
+	}
+
 	@POST
 	@Path("/{id}/student/{studentId}/roll")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response takeRollForStudent(@PathParam("id") Long id, StudentRollDTO incidentDTO, @PathParam("studentId") Long studentId) {
-		
+	public Response takeRollForStudent(@PathParam("id") Long id, StudentRoll studentRoll,
+			@PathParam("studentId") String studentId) {
+
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
 
-			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
-			
-			if(student != null){
-					final StudentRoll newRoll = StudentRoll.createFromDTO(incidentDTO);
-				
-					Long newId = studentRollDB.save(newRoll).getId();
-						
-					return Response.ok().entity(newId).build();
+			RosterStudent student = ofy().load().key(Key.create(RosterStudent.class, studentId)).now();
+
+			if (student != null) {
+
+				Long newId = studentRollDB.save(studentRoll).getId();
+
+				return Response.ok().entity(newId).build();
 			}
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
 	}
-	
-		
+
 	@GET
 	@Path("/{id}/student/{studentId}/incident")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -368,49 +552,26 @@ public class RosterService{
 		if (result != null) {
 
 			AppUser student = ofy().load().key(Key.create(AppUser.class, studentId)).now();
-			
-			if(student != null){
-					List<StudentIncident> studentIncidents = db().load().type(StudentIncident.class).filter("studentId", studentId).list();
-					List<IncidentDTO> incidentDTOList = new ArrayList<IncidentDTO>();
-					
-					for(StudentIncident studentIncident : studentIncidents){
-						Incident incident = ofy().load().key(Key.create(Incident.class, studentIncident.getIncidentId())).now();
-						
-						incidentDTOList.add(new IncidentDTO(incident));
-					}
-		
-					return Response.ok().entity(incidentDTOList).build();
+
+			if (student != null) {
+				List<StudentIncident> studentIncidents = db().load().type(StudentIncident.class)
+						.filter("studentId", studentId).list();
+
+				return Response.ok().entity(studentIncidents).build();
 			}
 		}
 		return Response.status(Status.NOT_FOUND).build();
 	}
 
-	
-//	@GET
-//	@Path("/{id}/incident")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response getIncidentList(@PathParam("id") Long id) {
-//		List<Incident> incidentList = ofy().load().type(Incident.class).filter("rosterId", id).list();
-//		List<IncidentDTO> incidentDTOList = new ArrayList<IncidentDTO>();
-//
-//		for (Incident incident : incidentList) {
-//			IncidentDTO dto = new IncidentDTO(incident);
-//			incidentDTOList.add(dto);
-//		}
-//
-//		return Response.ok().entity(incidentDTOList).build();
-//	}
-	
-
 	@GET
 	@Path("/{id}/classtime")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getClasstimes(@PathParam("id") Long id) {
-		
+	public Response getClasstimeList(@PathParam("id") Long id) {
+
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
-			
+
 			List<ClassTime> classTimeList = ofy().load().type(ClassTime.class).filter("rosterId", id).list();
 			List<ClassTimeDTO> classTimeDTOList = new ArrayList<ClassTimeDTO>();
 			for (ClassTime classTime : classTimeList) {
@@ -419,110 +580,133 @@ public class RosterService{
 			}
 			return Response.ok().entity(classTimeDTOList).build();
 		}
-		
+
 		return Response.status(Status.NOT_FOUND).build();
-		
-		
+
 	}
-	
-	
-	
+
 	@GET
 	@Path("/{id}/classtime/{subId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDetailedClassTime(@PathParam("id") Long id, @PathParam("subId") Long classtimeId){
-		
+	public Response getClassTime(@PathParam("id") Long id, @PathParam("subId") Long classtimeId) {
+
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
 			ClassTime classTime = ofy().load().key(Key.create(ClassTime.class, classtimeId)).now();
-			if(classTime != null)
-			    return Response.ok().entity(classTime).build();
+			if (classTime != null)
+				return Response.ok().entity(classTime).build();
 			else
 				Response.status(Status.NOT_FOUND).build();
-				
+
 		}
-		
+
 		return Response.status(Status.NOT_FOUND).build();
 	}
-	
-	
+
 	@POST
 	@Path("/{id}/classtime")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createClassTime(@PathParam("id") Long id, ClassTimeDTO classTimeDTO) {
-		
+	public Response createClassTime(@PathParam("id") Long id, ClassTime classTime, ClassTimeConfig config) {
+
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
-			ClassTime classTime = ClassTime.createFromDTO(classTimeDTO);
+
 			classTime.setRosterId(id);
 			Long newId = classTimeDB.save(classTime).getId();
+			config.id = newId;
+			db().save().entity(config);
 			return Response.ok().entity(newId).build();
 		}
-		
+
 		return Response.status(Status.NOT_FOUND).build();
 	}
-	
+
+	@GET
+	@Path("/{id}/classtime/{classtimeId}/seatingChart")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSeatingChart(@PathParam("id") Long id, @PathParam("classtimeId") Long classtimeId) {
+		// TODO:check for roster blah blah
+		SeatingChart seatingChart = db().load().key(Key.create(SeatingChart.class, classtimeId)).now();
+		if (seatingChart == null) {
+			seatingChart = new SeatingChart();
+			seatingChart.id = classtimeId;
+			db().save().entity(seatingChart);
+		}
+		return Response.ok().entity(seatingChart).build();
+	}
+
+	@POST
+	@Path("/{id}/classtime/{classtimeId}/seatingChart")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response saveSeatingChart(@PathParam("id") Long id,ClassTimeConfig config,
+			SeatingChart seatingChart) {
+		// TODO: set up checks
+		db().save().entity(seatingChart);
+		return Response.ok().build();
+	}
+
 	@GET
 	@Path("/{id}/schedule")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSchedule(@PathParam("id") Long id){
-		
+	public Response getSchedule(@PathParam("id") Long id) {
+
 		Key<Roster> parent = Key.create(Roster.class, id);
 		Schedule scheduleDB = db().load().type(Schedule.class).ancestor(parent).first().now();
-		//in case of null create new
-		if(scheduleDB == null){
+		// in case of null create new
+		if (scheduleDB == null) {
 			scheduleDB = new Schedule();
 			scheduleDB.parent = parent;
 			scheduleDB.id = db().save().entity(scheduleDB).now().getId();
-			
+
 		}
 		ScheduleDTO retrieve = new ScheduleDTO(scheduleDB);
 		return Response.ok().entity(retrieve).build();
-		
+
 	}
-		
-	
-	
+
 	@POST
 	@Path("/{id}/schedule")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveSchedule(@PathParam("id") Long id, ScheduleDTO schedule){
-		//do validation here
+	public Response saveSchedule(@PathParam("id") Long id, ScheduleDTO schedule) {
+		// do validation here
 		Schedule update = Schedule.fromDTO(schedule);
-		
-		//create key to persist the entity
+
+		// create key to persist the entity
 		Key<Roster> parent = Key.create(Roster.class, id);
 		Key<Schedule> sKey = Key.create(parent, Schedule.class, schedule.id);
-		
+
 		update.parent = parent;
-			//1. try and retrieve
-			if(schedule.id != null){
-			
+		// 1. try and retrieve
+		if (schedule.id != null) {
+
 			Schedule scheCheck = db().load().key(sKey).now();
-			
-					if(scheCheck != null){// this is a valid schedule now update
-					
-						return Response.ok().build();
-						
-					}else{//error so return an error response!
-						return Response.status(Status.BAD_REQUEST).build();
-					}
-				//alse add something to trigger the auto kupdate
-					//here it goes.
-					
-			}else{//this is just a first save
-				
-				db().save().entity(schedule).now().getId();
-				
+
+			if (scheCheck != null) {// this is a valid schedule now update
+
 				return Response.ok().build();
-				
+
+			} else {// error so return an error response!
+				return Response.status(Status.BAD_REQUEST).build();
 			}
-		
+			// alse add something to trigger the auto kupdate
+			// here it goes.
+
+		} else {// this is just a first save
+
+			db().save().entity(schedule).now().getId();
+
+			return Response.ok().build();
+
+		}
+
 	}
-	/* Every roster will always have one schedule so it can never be deleted just changed 
+	/*
+	 * Every roster will always have one schedule so it can never be deleted
+	 * just changed
 	 */
 
 }

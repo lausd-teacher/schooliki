@@ -13,49 +13,51 @@ public class StationJson extends JavaScriptObject {
 		return this.color;
 	}-*/;
 	
-	public final native String getName()/*-{
-		return this.name;
-	}-*/;
-	
-	public final native JavaScriptObject getOffset()/*-{
-		return this.offset;
+	public final native String getTitle()/*-{
+		return this.title;
 	}-*/;
 	
 	public final native String getType()/*-{
 		return this.type;
 	}-*/;
 	
-	public final native JavaScriptObject getBoundingBox()/*-{
-		return this.boundingBox;
-	}-*/;
-	
 	public final native String getZIndex()/*-{
-		return $wnd.$(this).css('zIndex');
+		return this.zIndex;
 	}-*/;
 	
-	public final native JsArray<FurnitureJson> getDesks()/*-{
-			return this.desks;
+	public final native String getX()/*-{
+	return  this.x;
+}-*/;
+	
+	public final native String getY()/*-{
+	return this.y;
+}-*/;
+	
+	public final native String getWidth()/*-{
+	return this.width;
+}-*/;
+	
+	public final native String getHeight()/*-{
+	return this.height;
+}-*/;
+	
+	public final native String getRotate()/*-{
+	return this.rotate;
+}-*/;
+	
+	public final native int getNumber()/*-{
+				return this.number;
 	}-*/;
 	
-	public final native JsArray<RosterStudentJson> getStudents()/*-{
-			return this.students;
-	}-*/;
-	
-	public final native int getSectionNum()/*-{
-				return this.sectionNum;
-	}-*/;
-	
-	public final native JsArrayString getStudentRotation()/*-{}-*/;
-	
-	
+
 	/////////SETTERS///////////////////////////////////////////////////
 	public final native StationJson setColor(String color)/*-{
 			this.color = color;
 			return this;
 	}-*/;
 	
-	public final native StationJson setName(String name)/*-{
-			this.name = name;
+	public final native StationJson setTitle(String name)/*-{
+			this.title = name;
 			return this;
 	}-*/;
 	
@@ -68,22 +70,46 @@ public class StationJson extends JavaScriptObject {
 			this.type= type;
 			return this;
 	}-*/;
-	
-
-	public final native StationJson setDesks(JsArray<FurnitureJson> desks)/*-{
-		this.desks  = desks;
-		return this;
-	}-*/;
-	
-	public final native StationJson setStudents(JsArray<RosterStudentJson> students)/*-{
+		
+	public final native StationJson setStudents(JsArrayString students)/*-{
 				this.students = students;
 				return this;
 	}-*/;
 	
-	public final native StationJson setSectionNum(int sectionNum)/*-{
-				this.sectionNum = sectionNum;
+	public final native StationJson setNum(int number)/*-{
+				this.number = number;
 				return this;
 	}-*/;
+	
+	public final native StationJson setWidth(String type)/*-{
+	this.width= type;
+	return this;
+}-*/;
+	
+	public final native StationJson setHeight(String type)/*-{
+	this.height= type;
+	return this;
+}-*/;
+	
+	public final native StationJson setX(String type)/*-{
+	this.x= type;
+	return this;
+}-*/;
+	
+	public final native StationJson setY(String type)/*-{
+	this.y= type;
+	return this;
+}-*/;
+	
+	public final native StationJson setRotate(String type)/*-{
+	this.rotate= type;
+	return this;
+}-*/;
+	
+	public final native StationJson setImage(String type)/*-{
+	this.image= type;
+	return this;
+}-*/;
 	
 	
 	

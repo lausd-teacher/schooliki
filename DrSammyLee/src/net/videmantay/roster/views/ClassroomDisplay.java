@@ -101,7 +101,7 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 						@Override
 						public void run(){
 							utils.setStudents(students);
-							drawGrid(students);
+							drawGrid();
 							MaterialLoader.showLoading(false);
 						}
 					}.schedule(2000);
@@ -109,7 +109,7 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 					return;
 				}else{//now we can really do something
 					utils.setStudents(students);
-					drawGrid(utils.getStudents());
+					drawGrid();
 					
 				}
 				}
@@ -126,11 +126,12 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 			jrList.push(jr);
 		}
 		classForm.populateJoinRequests(jrList);	
-		drawGrid(utils.getStudents());
+		drawGrid();
 	}//end construct
 
-	
-	public void drawGrid(final JsArray<RosterStudentJson> studs){
+	@Override
+	public void drawGrid(){
+		JsArray<RosterStudentJson> studs = utils.getStudents();
 		console.log("drawing classroom grid");
 		classroomGrid.clear();
 		MaterialRow row = new MaterialRow();

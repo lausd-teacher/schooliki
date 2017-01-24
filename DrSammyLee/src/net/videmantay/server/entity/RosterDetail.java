@@ -22,7 +22,7 @@ public class RosterDetail implements Serializable {
 	public static final long serialVersionUID = -8560762171107782047L;
 
 	@Id
-	public Long id;
+	public transient Long id;
 		
 	public String title;
 	
@@ -32,12 +32,6 @@ public class RosterDetail implements Serializable {
 	
 	public List<String> gradeLevel;
 	
-	public String joinCode;
-	
-	@Index
-	public transient String ownerId;
-	
-
 	public Long getId() {
 		return id;
 	}
@@ -77,20 +71,5 @@ public class RosterDetail implements Serializable {
 	public void setGradeLevel(List<String> gradeLevels) {
 		this.gradeLevel = gradeLevels;
 	}
-
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
-	}	
 	
-	public String getJoinCode(){
-		return joinCode;
-	}
-	
-	public void setJoinCode(String code){
-		joinCode = code;
-	}
 }

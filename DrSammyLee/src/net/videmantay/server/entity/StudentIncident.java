@@ -2,10 +2,11 @@ package net.videmantay.server.entity;
 
 import java.io.Serializable;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Parent;
 
 @Entity
 public class StudentIncident implements Serializable {
@@ -14,23 +15,30 @@ public class StudentIncident implements Serializable {
 	
 	@Id
 	public Long id;
+	
+	@Parent
+	public Key<RosterStudent> parent;
+	
 	@Index
-	public Long studentId;
+	public String studentAcct;
 	
 	@Index
 	public Long incidentId;
+	
+	@Index
+	public String date;
+	
+	public String summary;
 
-	public StudentIncident() {
+	public String imageUrl;
 
-	}
-
+	public int points;
+	
 	public Long getId() {
 		return this.id;
 	}
 
-	public Long getStudentId() {
-		return this.studentId;
-	}
+
 
 	public Long getIncidentId() {
 		return this.incidentId;
@@ -39,13 +47,45 @@ public class StudentIncident implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public void setStudentId(Long studentId) {
-		this.studentId = studentId;
-	}
-
+	
 	public void setIncidentId(Long incidentId) {
 		this.incidentId = incidentId;
+	}
+
+
+
+	public Key<RosterStudent> getParent() {
+		return parent;
+	}
+
+
+
+	public void setParent(Key<RosterStudent> parent) {
+		this.parent = parent;
+	}
+
+
+
+	public String getStudentAcct() {
+		return studentAcct;
+	}
+
+
+
+	public void setStudentAcct(String studentAcct) {
+		this.studentAcct = studentAcct;
+	}
+
+
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 }

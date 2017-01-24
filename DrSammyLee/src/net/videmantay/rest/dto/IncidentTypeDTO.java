@@ -1,6 +1,6 @@
 package net.videmantay.rest.dto;
 
-import net.videmantay.server.entity.IncidentType;
+import net.videmantay.server.entity.Incident;
 
 public class IncidentTypeDTO {
 	
@@ -9,7 +9,7 @@ public class IncidentTypeDTO {
 	String imageUrl;
 	int points;
 	
-	public IncidentTypeDTO(IncidentType type) {
+	public IncidentTypeDTO(Incident type) {
 		this.id = type.getId();
 		this.name = type.getName();
 		this.imageUrl = type.getImageUrl();

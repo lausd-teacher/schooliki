@@ -4,51 +4,53 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface HasClassroomDashboardView extends IsWidget {
 
-	public void checkHW();
-	
-	public void groups();
-	
-	public void takeRoll();
-	
-	public void pickRandom();
-	
-	public void selectAll();
-	
-	public void multipleSelect();
-	
-	public void home();
-	
-	public void unHome();
-	
 	public void arrangeFurniture();
 	
 	public void arrangeStudents();
 	
-	public void manageStations();
-	
-	public void doneCheckHW();
-	
-	public void doneGroups();
-	
-	public void doneTakeRoll();
-	
-	public void donePickRandom();
-	
-	public void doneSelectAll();
-	
-	public void undo();
-	
 	public void cancel(String state);
 	
-	public void deselectAll();
+	public void checkHW();
 	
-	public void doneMultipleSelect();
+	public void deselectAll();
 	
 	public void doneArrangeFurniture();
 	
 	public void doneArrangeStudents();
 	
+	public void doneCheckHW();
+	
+	public void doneGroups();
+	
 	public void doneManageStations();
+	
+	public void doneMultipleSelect();
+	
+	public void donePickRandom();
+	
+	public void doneSelectAll();
+	
+	public void doneTakeRoll();
+	
+	public void drawGrid();
+	
+	public void groups();
+	
+	public void home();
+	
+	public void manageStations();
+	
+	public void multipleSelect();
+	
+	public void pickRandom();
+	
+	public void selectAll();
+	
+	public void takeRoll();
+	
+	public void undo();
+	
+	public void unHome();
 	
 	
 }

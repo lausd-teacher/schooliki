@@ -106,6 +106,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		
 			//check if a seating chart has already been designedated in the window
 			ClassTimeJson classTime = utils.getSelectedClassTime();
+			utils.getClasstimeConfig();
 			console.log("The class time from seating chart is...");
 			console.log(classTime);
 			
@@ -134,7 +135,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 					});
 					}//end else
 				}else{
-					drawChart();
+					drawGrid();
 				}
 	}//end onLoad
 	
@@ -145,7 +146,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	
 	public void setSeatingChart(SeatingChartJson seatingChart){
 		data = seatingChart;
-		drawChart();
+		drawGrid();
 	}
 	
 	private SeatingChartJson copySeatingChart( SeatingChartJson original){
@@ -158,7 +159,8 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		return copy;
 	}
 	
-	public void drawChart(){
+	@Override
+	public void drawGrid(){
 		floorPlan.clear();
 		studentList.clear();
 		console.log("Roster students is ");
@@ -492,7 +494,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		prop.set("roster", roster.getId());
 		originalData = null;
 		Ajax.post(RosterUrl.seatingchart(roster.getId(), utils.getSelectedClassTime().getId()), prop);
-		drawChart();
+		drawGrid();
 		home();
 		MaterialLoader.showLoading(false,floorPlan);
 	};
@@ -665,7 +667,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		prop.set("roster", roster.getId());
 		
 		Ajax.post(RosterUrl.seatingchart(roster.getId(), utils.getSelectedClassTime().getId()), prop);
-		drawChart();
+		drawGrid();
 		home();
 	};
 	
@@ -721,7 +723,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	private void seatingChartCanel(){
 		tempFurnitureList = null;
 		this.setSeatingChart(originalData);
-		drawChart();
+		drawGrid();
 		
 	}
 

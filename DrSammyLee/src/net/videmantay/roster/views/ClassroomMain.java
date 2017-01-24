@@ -5,6 +5,8 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -28,10 +30,12 @@ import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialNavBar;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
+import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
 import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.classtime.json.SeatingChartJson;
 import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.InfoJson;
@@ -89,6 +93,7 @@ public class ClassroomMain extends Composite{
 	
 	@UiField
 	public HTMLPanel classroom;
+
 	
 	//needs access to widget children
 	private  ClassroomDashboardPanel dashboard;
@@ -112,6 +117,50 @@ public class ClassroomMain extends Composite{
 			}.schedule(110);
 			
 		}};
+	//create a grid switch handler for click to and from seatingChart
+		//function for when the ajax for seating chart finishes
+		Function gridFunc = new Function(){
+			@Override
+			public void f(){
+				SeatingChartJson seatingChart = JsonUtils.safeEval((String)this.arguments(0));
+				utils.setSeatingChart(seatingChart);
+				SeatingChartPanel chartPanel = new SeatingChartPanel(utils);
+				dashboard.setDisplayInTab1(chartPanel);
+				dashboard.seatingChartEditIcon.setVisible(true);
+				
+			}
+		};
+		//the runasync for the handler no need to create extra
+		RunAsyncCallback getNewSeatingChart = new RunAsyncCallback(){
+
+			@Override
+			public void onFailure(Throwable reason) {
+				MaterialToast.fireToast("Unable to retreive you Seating Chart");
+				
+			}
+
+			@Override
+			public void onSuccess() {
+				//load from Ajax
+				Ajax
+				.get(RosterUrl.seatingchart(utils.getCurrentRoster().getId(), utils.getSelectedClassTime().getId()))
+				.done(gridFunc);
+				
+			}};
+		ValueChangeHandler<Boolean> gridSwitchHandler = new ValueChangeHandler<Boolean>(){
+
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				console.log("gridswitch clicked and the value is " + dashboard.gridSwitch.getValue());
+				if(dashboard.gridSwitch.getValue()){
+				//so depending on the value
+					seatingchart();
+				}else{
+					showDashboard();
+				}
+				
+			}};
+			
 		
 ///the constructor//////////
 	public ClassroomMain(RosterUtils ru) {
@@ -169,8 +218,6 @@ public class ClassroomMain extends Composite{
 					sideNav.hide();
 					History.newItem("c/" + roster.getId() +"/t");
 				}});
-			
-			
 		
 	}//end constructor
 	
@@ -183,6 +230,12 @@ public class ClassroomMain extends Composite{
 			
 				mainPanel.clear();
 				mainPanel.add(dashboard);
+				
+				
+				//seating chart edit icon click
+				dashboard.gridSwitch.addValueChangeHandler(gridSwitchHandler);
+				
+				//set up classtime buttons and links
 				dashboard.classtimeBtn.setText(utils.getSelectedClassTime().getTitle());
 				dashboard.classroomtimeBar.setText(utils.getSelectedClassTime().getTitle());
 			
@@ -214,14 +267,18 @@ public class ClassroomMain extends Composite{
 				dashboard.classtimeDrop.insert(link, dashboard.classtimeDrop.getItems().size()-1);
 				dashboard.classtimeDrop2.insert(link2, dashboard.classtimeDrop2.getItems().size()-1);
 			}
+			
+			//set up gridswitch click
+			
 				ClassroomDisplay display =new ClassroomDisplay(utils);
 				
 				dashboard.setDisplayInTab1(display);
-				display.drawGrid(utils.getStudents());
+				display.drawGrid();
 					
 			
 	}
-
+	
+	
 	//classtime list
 	public void classtime(){
 		GWT.runAsync(new RunAsyncCallback(){
@@ -292,21 +349,13 @@ public class ClassroomMain extends Composite{
 	}
 	
 	public void seatingchart(){
-		GWT.runAsync(new RunAsyncCallback(){
-
-			@Override
-			public void onFailure(Throwable reason) {
-				mainPanel.clear();
-				mainPanel.add(new HTMLPanel("<h1>Error loading please refresh</h1>"));
-				
-			}
-
-			@Override
-			public void onSuccess() {
-				dashboard.tab1Main.clear();
-				dashboard.tab1Main.add(new SeatingChartPanel(utils));
-				
-			}});
+		if(utils.getSeatingChart() == null || utils.getSeatingChart().getId() != utils.getSelectedClassTime().getId()){
+			GWT.runAsync(getNewSeatingChart);
+			}else{
+				SeatingChartPanel chartPanel = new SeatingChartPanel(utils);
+				dashboard.setDisplayInTab1(chartPanel);
+				dashboard.seatingChartEditIcon.setVisible(true);
+			}//end if seatinchart is null or equat to classtime
 	}
 	
 	public void schedule(){

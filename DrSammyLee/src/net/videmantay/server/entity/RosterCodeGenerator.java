@@ -2,11 +2,12 @@ package net.videmantay.server.entity;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Serialize;
@@ -20,17 +21,21 @@ public class RosterCodeGenerator implements Serializable {
 	public String id = "rosterCodeGenerator";
 	
 	@Serialize
-	Map<String, Key<RosterDetail>> availableCode = new HashMap<String, Key<RosterDetail>>();
+	Map<String,Long> availableCode = new HashMap<String, Long>();
 	
-	public String assignCode(){
+	public String assignCode(Long id){
 		String key = null;
 		if(availableCode.size() < 1 || !availableCode.containsValue(null)){
 			generateCodes();
 		}
 		//pick any null value and  assign the key as code
-		while(availableCode.entrySet().iterator().hasNext()){
-			if(availableCode.entrySet().iterator().next().getValue() == null){
-				 key = availableCode.entrySet().iterator().next().getKey();
+		Iterator<Entry<String, Long>> iterator = availableCode.entrySet().iterator();
+		
+		while(iterator.hasNext()){
+			Entry<String, Long> entry = iterator.next();
+			if(entry.getValue() == null){
+				 key = entry.getKey();
+				 entry.setValue(id);
 				 break;
 			}
 		}
