@@ -16,11 +16,16 @@ public class TimeSlot implements Serializable{
 	 * stations and student must be unique to each slot
 	 * ie slot 1 and slot 2 cannot share any data.
 	 */
-	public List<Slot> timeSlots;
+	public List<Slot> slots;
 	
 	public static class Slot{
 		public int stationNum;
 		public Set<String> studentIds;
+		
+		/* if group id is set
+		 * studentIds will be loaded from the group.
+		 */
+		public Long groupId;
 	}
 	
 }

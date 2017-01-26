@@ -33,15 +33,15 @@ import gwt.material.design.client.ui.MaterialSideNav;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
-import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
-import net.videmantay.roster.classtime.json.ClassTimeJson;
-import net.videmantay.roster.classtime.json.SeatingChartJson;
 import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.routine.json.RoutineConfigJson;
+import net.videmantay.roster.routine.json.RoutineJson;
+import net.videmantay.roster.routine.json.SeatingChartJson;
 import net.videmantay.student.json.InfoJson;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.roster.views.UserProfilePanel;
-import net.videmantay.roster.views.classtime.SeatingChartPanel;
+import net.videmantay.roster.views.routine.SeatingChartPanel;
 
 import static com.google.gwt.query.client.GQuery.*;
 
@@ -127,6 +127,7 @@ public class ClassroomMain extends Composite{
 				SeatingChartPanel chartPanel = new SeatingChartPanel(utils);
 				dashboard.setDisplayInTab1(chartPanel);
 				dashboard.seatingChartEditIcon.setVisible(true);
+				MaterialLoader.showLoading(false);
 				
 			}
 		};
@@ -135,6 +136,7 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onFailure(Throwable reason) {
+				MaterialLoader.showLoading(false);
 				MaterialToast.fireToast("Unable to retreive you Seating Chart");
 				
 			}
@@ -165,6 +167,8 @@ public class ClassroomMain extends Composite{
 ///the constructor//////////
 	public ClassroomMain(RosterUtils ru) {
 		this.utils = ru;	
+		console.log("Classroom constructor and utils is: ");
+		console.log(utils);
 		this.initWidget(uiBinder.createAndBindUi(this));
 			//set side nav links/////////
 		profilePanel.addDomHandler(new ClickHandler(){
@@ -350,6 +354,7 @@ public class ClassroomMain extends Composite{
 	
 	public void seatingchart(){
 		if(utils.getSeatingChart() == null || utils.getSeatingChart().getId() != utils.getSelectedClassTime().getId()){
+			MaterialLoader.showLoading(true);
 			GWT.runAsync(getNewSeatingChart);
 			}else{
 				SeatingChartPanel chartPanel = new SeatingChartPanel(utils);

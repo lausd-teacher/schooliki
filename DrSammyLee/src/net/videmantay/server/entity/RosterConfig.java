@@ -14,15 +14,15 @@ public class RosterConfig  implements Serializable{
 	@Id
 	public Long id;
 	public String joinCode;
-	public transient Set<Key<ClassTime>> classtimeKeys = new HashSet<>();
+	public transient Set<Key<Routine>> classtimeKeys = new HashSet<>();
 	public transient Set<Key<Incident>>incidentKeys= new HashSet<>();
 	
 	@Ignore
 	public Set<RosterStudent> students = new HashSet<>();
 	@Ignore
-	public Set<ClassTime> classtimes = new HashSet<>();
+	public Set<Routine> classtimes = new HashSet<>();
 	@Ignore
 	public Set<Incident>incidents= new HashSet<>();
 	@Ignore
-	public ClassTimeConfig defaultTime = null;
+	public RoutineConfig defaultTime = null;
 }

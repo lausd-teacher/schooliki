@@ -4,7 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
 
-import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.routine.json.RoutineJson;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.student.json.StudentGroupJson;

@@ -7,7 +7,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -15,18 +14,11 @@ import javax.ws.rs.core.Response.Status;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
-
-import net.videmantay.rest.dto.AppUserDTO;
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.util.DB;
-import net.videmantay.server.util.UserPasswordGenerator;
-
-import com.google.appengine.api.datastore.Entity;
-
 import static com.googlecode.objectify.ObjectifyService.ofy;
 import static net.videmantay.server.util.DB.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +27,6 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 @Path("/appuser")
 public class AppUserService {

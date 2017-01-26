@@ -2,16 +2,13 @@ package net.videmantay.rest;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -25,8 +22,6 @@ import javax.ws.rs.core.Response.Status;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
-import net.videmantay.rest.dto.GradedWorkDTO;
-import net.videmantay.rest.dto.StudentWorkDTO;
 import net.videmantay.server.entity.AssignedGradedWork;
 import net.videmantay.server.entity.GoogleCalendarEvent;
 import net.videmantay.server.entity.GradedWork;
@@ -57,21 +52,13 @@ public class GradedWorkService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getGradedWorkList(@QueryParam("rosterId") Long rosterId) {
 
-		List<GradedWork> gradedWorkList = new ArrayList<GradedWork>();
-		List<GradedWorkDTO> gradedWorkDTOList = new ArrayList<GradedWorkDTO>();
+		List<GradedWork> gradedWorkList;
 
-		if (rosterId == null) {
-			gradedWorkList = ofy().load().type(GradedWork.class).list();
-		} else {
+		if (rosterId != null) {
 			gradedWorkList = ofy().load().type(GradedWork.class).filter("rosterId", rosterId).list();
+		return Response.ok().entity(gradedWorkList).build();
 		}
-
-		for (GradedWork gradedwork : gradedWorkList) {
-			GradedWorkDTO dto = new GradedWorkDTO(gradedwork);
-			gradedWorkDTOList.add(dto);
-		}
-
-		return Response.ok().entity(gradedWorkDTOList).build();
+		return Response.status(Status.NOT_FOUND).build();
 	}
 
 	@GET
@@ -93,15 +80,13 @@ public class GradedWorkService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createGradedWork(GradedWorkDTO gradedWorkDTO) {
+	public Response createGradedWork(final GradedWork gradedWork) {
 
-		log.log(Level.INFO, "Graded work" + gradedWorkDTO.rosterId);
-
-		Roster result = ofy().load().key(Key.create(Roster.class, gradedWorkDTO.rosterId)).now();
+		Roster result = ofy().load().key(Key.create(Roster.class, gradedWork.rosterId)).now();
 
 		if (result != null) {
 
-			final GradedWork gradedWork = GradedWork.createFromDTO(gradedWorkDTO);
+			
 
 			ofy().transact(new VoidWork() {
 				@Override
@@ -110,7 +95,7 @@ public class GradedWorkService {
 				}
 			});
 
-			return Response.ok().entity(new GradedWorkDTO(gradedWork)).build();
+			return Response.ok().entity(gradedWork).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
@@ -120,49 +105,48 @@ public class GradedWorkService {
 	@Path("/{id}/studentwork")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getStudentsWorkList(@PathParam("id") Long id) {
+		List<StudentWork> studentWorkList = new ArrayList<>();
+		
 		List<AssignedGradedWork> assignedGradedWorkList = ofy().load().type(AssignedGradedWork.class)
 				.filter("gradedWorkId", id).list();
-		List<StudentWorkDTO> studentWorkListDTO = new ArrayList<StudentWorkDTO>();
-
+		
 		for (AssignedGradedWork assignedGraded : assignedGradedWorkList) {
 			StudentWork studentWork = ofy().load().key(Key.create(StudentWork.class, assignedGraded.getStudentWorkId()))
 					.now();
-
-			studentWorkListDTO.add(new StudentWorkDTO(studentWork));
+			studentWorkList.add(studentWork);
 		}
 
-		return Response.ok().entity(studentWorkListDTO).build();
+		return Response.ok().entity(studentWorkList).build();
 	}
 
 	@POST
 	@Path("/{id}/studentwork")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createStudentsWork(@PathParam("id") Long id, StudentWorkDTO studentWorkDTO) {
+	public Response createStudentsWork(@PathParam("id") Long id, final StudentWork studentWork) {
 
 		GradedWork result = ofy().load().key(Key.create(GradedWork.class, id)).now();
 
 		final RosterStudent rosterStudent = ofy().load()
-				.key(Key.create(RosterStudent.class, studentWorkDTO.getRosterStudentId())).now();
+				.key(Key.create(RosterStudent.class, studentWork.getRosterStudentId())).now();
 
 		if (result != null && rosterStudent != null) {
-			final StudentWork work = StudentWork.createFromDTO(studentWorkDTO);
 			final Long idAsFinalVariable = id;
 
 			ofy().transact(new VoidWork() {
 				@Override
 				public void vrun() {
-					work.id = studentWorkDB.save(work).getId();
+					studentWork.id = studentWorkDB.save(studentWork).getId();
 					AssignedGradedWork assignedWork = new AssignedGradedWork();
 					assignedWork.setGradedWorkId(idAsFinalVariable);
-					assignedWork.setStudentWorkId(work.id);
-					assignedWork.setRosterStudentId(work.rosterStudentId);
+					assignedWork.setStudentWorkId(studentWork.id);
+					assignedWork.setRosterStudentId(studentWork.rosterStudentId);
 					assignedWork.setRosterId(rosterStudent.rosterKey.getId());
 
 					assignedGradedeWokDB.save(assignedWork);
 				}
 			});
 
-			return Response.ok().entity(work).build();
+			return Response.ok().entity(studentWork).build();
 
 		}
 

@@ -11,8 +11,8 @@ import com.google.gwt.user.client.History;
 
 import static com.google.gwt.query.client.GQuery.*;
 
-import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.routine.json.RoutineJson;
 import net.videmantay.roster.views.RosterMain;
 
 
@@ -68,7 +68,7 @@ private final  HistoryMapper mapper;
 		wnd.setFunction("setSelectedClassTime", new Function(){
 			@Override
 			public void f(){
-				ClassTimeJson classTime = JsonUtils.safeEval((String)this.getArgument(0)).cast();
+				RoutineJson classTime = JsonUtils.safeEval((String)this.getArgument(0)).cast();
 				utils.setSelectedClassTime(classTime);
 				console.log(utils.getSelectedClassTime() + "called from external JS");
 			}

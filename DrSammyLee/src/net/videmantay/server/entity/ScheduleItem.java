@@ -4,14 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Parent;
-
-import net.videmantay.rest.dto.ScheduleItemDTO;
-
-
 public class ScheduleItem {
 
 	@NotNull
@@ -51,19 +43,4 @@ public class ScheduleItem {
 	@SafeHtml
 	public String borderColor;
 	
-
-	public static ScheduleItem fromDTO(ScheduleItemDTO dto){
-		ScheduleItem si = new ScheduleItem();
-		si.bacgroundColor = dto.bacgroundColor;
-		si.borderColor = dto.borderColor;
-		si.className = dto.className;
-		si.color = dto.color;
-		si.constraint = dto.constraint;
-		si.end = dto.end;
-		si.start = dto.start;
-		si.textColor = dto.textColor;
-		si.title = dto.title;
-		
-		return si;
-	}
 }

@@ -14,7 +14,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
-import net.videmantay.rest.dto.AppUserDTO;
 import net.videmantay.shared.UserRoles;
 
 

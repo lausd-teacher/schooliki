@@ -3,8 +3,8 @@ package net.videmantay.roster.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
-import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
-import net.videmantay.roster.classtime.json.ClassTimeJson;
+import net.videmantay.roster.routine.json.RoutineConfigJson;
+import net.videmantay.roster.routine.json.RoutineJson;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class RosterConfigJson extends JavaScriptObject {
@@ -15,11 +15,11 @@ public class RosterConfigJson extends JavaScriptObject {
 		return this.students;
 	}-*/;
 	
-	public final native JsArray<ClassTimeJson> getClassTimes()/*-{
+	public final native JsArray<RoutineJson> getClassTimes()/*-{
 			return this.classtimes;
 	}-*/;
 	
-	public final native ClassTimeConfigJson getDefaultTime()/*-{
+	public final native RoutineConfigJson getDefaultTime()/*-{
 		return this.defaultTime;
 	}-*/;
 }

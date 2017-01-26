@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
-import net.videmantay.rest.dto.GradedWorkDTO;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
 
@@ -97,28 +96,5 @@ public class GradedWork extends Assignment implements Serializable{
 		return sb.toString();
 	}
 	
-	public static GradedWork createFromDTO(GradedWorkDTO gradedWorkDTO){
-		GradedWork gradedWork = new GradedWork();
-		
-		gradedWork.id = gradedWorkDTO.id;
-		gradedWork.title = gradedWorkDTO.title;
-		gradedWork.rosterId = gradedWorkDTO.rosterId;
-		gradedWork.standards = gradedWorkDTO.standards;
-		gradedWork.gradeLevels = gradedWorkDTO.gradeLevels;
-		gradedWork.mediaUrl = gradedWorkDTO.mediaUrl;
-		gradedWork.description = gradedWorkDTO.description;
-		gradedWork.subject = gradedWorkDTO.subject;
-		gradedWork.setLinks(gradedWorkDTO.getLinks());
-		gradedWork.type = gradedWorkDTO.type;
-		gradedWork.lang = gradedWorkDTO.lang;
-		gradedWork.pointsPossible = gradedWorkDTO.pointsPossible;
-		gradedWork.assignedDate = gradedWorkDTO.assignedDate;
-		gradedWork.dueDate = gradedWorkDTO.dueDate;
-		gradedWork.finishedGrading = gradedWorkDTO.finishedGrading;
-		gradedWork.rubric = gradedWorkDTO.rubric;
-		
-		
-		return gradedWork;
-	}
 	
 }

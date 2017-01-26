@@ -9,7 +9,6 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
-import net.videmantay.rest.dto.StudentWorkDTO;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;
@@ -138,23 +137,5 @@ public class StudentWork implements Serializable {
 		this.rosterStudentId = rosterStudentId;
 	}
 
-	public static StudentWork createFromDTO(StudentWorkDTO stdWorkDTO) {
-
-		StudentWork work = new StudentWork();
-		work.id = stdWorkDTO.id;
-		work.rosterStudentId = stdWorkDTO.getRosterStudentId();
-		work.percentage = stdWorkDTO.percentage;
-		work.pointsEarned = stdWorkDTO.pointsEarned;
-		work.letterGrade = stdWorkDTO.letterGrade;
-		work.message = stdWorkDTO.message;
-		work.type = stdWorkDTO.type;
-		work.studentWorkStatus = stdWorkDTO.studentWorkStatus;
-		work.dateTaken = stdWorkDTO.dateTaken;
-		work.mediaUrl = stdWorkDTO.mediaUrl;
-		work.subject = stdWorkDTO.subject;
-
-		return work;
-
-	}
 
 }

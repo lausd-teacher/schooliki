@@ -1,0 +1,74 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+		.leftCol{
+			border-right:1px solid Silver;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialCard hoverable="true" width="450" height="300">
+			<m:MaterialCardContent>
+			<m:MaterialAnchorButton iconType="DELETE" type="FLAT" float="RIGHT" hoverable="true" padding="1" textColor="red darken-2"/>
+			<m:MaterialAnchorButton iconType="EDIT" float="RIGHT" type="FLAT" hoverable="true" padding="1" textColor="deep-orange darken-1"/>
+			<m:MaterialCardTitle ui:field="title"/>
+			<m:MaterialLabel ui:field="description"></m:MaterialLabel>
+			<m:MaterialCollapsible>
+				<m:MaterialCollapsibleItem> 
+					<m:MaterialCollapsibleHeader>
+					<m:MaterialRow> 
+						<m:MaterialColumn>
+							<m:MaterialLink iconType="" text="Procedures"/>
+							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					</m:MaterialCollapsibleHeader>
+					<m:MaterialCollapsibleBody> 
+						<!-- so this is somehting to thin what he has -->
+					</m:MaterialCollapsibleBody>
+				</m:MaterialCollapsibleItem>
+				<m:MaterialCollapsibleItem> 
+					<m:MaterialCollapsibleHeader>
+					<m:MaterialRow> 
+						<m:MaterialColumn>
+							<m:MaterialLink iconType="" text="Groups"/>
+							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					</m:MaterialCollapsibleHeader>
+					<m:MaterialCollapsibleBody> 
+						<!-- so this is somehting to thin what he has -->
+					</m:MaterialCollapsibleBody>
+				</m:MaterialCollapsibleItem>
+				<m:MaterialCollapsibleItem> 
+					<m:MaterialCollapsibleHeader>
+					<m:MaterialRow> 
+						<m:MaterialColumn>
+							<m:MaterialLink iconType="" text="Routines"/>
+							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					</m:MaterialCollapsibleHeader>
+					<m:MaterialCollapsibleBody> 
+						<!-- so this is somehting to thin what he has -->
+					</m:MaterialCollapsibleBody>
+				</m:MaterialCollapsibleItem>
+				<m:MaterialCollapsibleItem> 
+					<m:MaterialCollapsibleHeader>
+					<m:MaterialRow> 
+						<m:MaterialColumn>
+							<m:MaterialLink iconType="" text="Procedures"/>
+							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					</m:MaterialCollapsibleHeader>
+					<m:MaterialCollapsibleBody> 
+						<!-- so this is somehting to thin what he has -->
+					</m:MaterialCollapsibleBody>
+				</m:MaterialCollapsibleItem>
+			</m:MaterialCollapsible>
+			</m:MaterialCardContent>
+		</m:MaterialCard>
+	</g:HTMLPanel>
+</ui:UiBinder> 

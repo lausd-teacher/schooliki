@@ -28,8 +28,8 @@ public class DB<T> implements Serializable {
 		factory().register(RosterConfig.class);
 		factory().register(RosterCodeGenerator.class);
 		factory().register(SeatingChart.class);
-		factory().register(ClassTime.class);
-		factory().register(ClassTimeConfig.class);
+		factory().register(Routine.class);
+		factory().register(RoutineConfig.class);
 		factory().register(StationManager.class);
 		factory().register(Incident.class);
 		factory().register(AssignedGradedWork.class);

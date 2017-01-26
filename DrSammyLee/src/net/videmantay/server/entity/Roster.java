@@ -1,32 +1,15 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
-import org.joda.time.DateTime;
-
-import net.videmantay.rest.dto.RosterDTO;
-import net.videmantay.server.validation.ValidDateFormat;
 import net.videmantay.server.validation.ValidDateRange;
-import net.videmantay.shared.GradeLevel;
-
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.OnLoad;
-import com.googlecode.objectify.annotation.Serialize;
 
 @Cache
 @Entity

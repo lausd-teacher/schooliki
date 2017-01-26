@@ -32,11 +32,9 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
 
-import net.videmantay.rest.dto.ClassTimeDTO;
-import net.videmantay.rest.dto.ScheduleDTO;
 import net.videmantay.server.entity.AppUser;
-import net.videmantay.server.entity.ClassTime;
-import net.videmantay.server.entity.ClassTimeConfig;
+import net.videmantay.server.entity.Routine;
+import net.videmantay.server.entity.RoutineConfig;
 import net.videmantay.server.entity.Incident;
 import net.videmantay.server.entity.JoinRequest;
 import net.videmantay.server.entity.Roster;
@@ -66,7 +64,7 @@ public class RosterService {
 
 	DB<StudentIncident> studentIncidentDB = new DB<StudentIncident>(StudentIncident.class);
 
-	DB<ClassTime> classTimeDB = new DB<ClassTime>(ClassTime.class);
+	DB<Routine> classTimeDB = new DB<Routine>(Routine.class);
 
 	DB<StudentRoll> studentRollDB = new DB<StudentRoll>(StudentRoll.class);
 
@@ -238,14 +236,14 @@ public class RosterService {
 				incidents.add(incident);
 				config.incidentKeys.addAll(db().save().entities(incidents).now().keySet());
 				
-				ClassTime defaultTime = new ClassTime();
+				Routine defaultTime = new Routine();
 				defaultTime.setDefault(true);
 				defaultTime.setDescript("Routines refer to a set of procedures, groups, and stations that help students transition form one task to the next." +
 							" \" Carpet Time\" , \"Author's Chair\", \"Gallery Walks\" are all example of routines.");
 				defaultTime.title = "Class Routine";
 				defaultTime.setDefault(true);
 				defaultTime.id = db().save().entity(defaultTime).now().getId();
-				ClassTimeConfig ctConfig = new ClassTimeConfig();
+				RoutineConfig ctConfig = new RoutineConfig();
 				ctConfig.id = defaultTime.id;
 				SeatingChart seatingChart = new SeatingChart();
 				seatingChart.id = defaultTime.id;
@@ -323,7 +321,7 @@ public class RosterService {
 				}
 
 				if (config.classtimeKeys != null && config.classtimeKeys.size() > 0) {
-					Collection<ClassTime> classtimes = db().load().keys(config.classtimeKeys).values();
+					Collection<Routine> classtimes = db().load().keys(config.classtimeKeys).values();
 					if (classtimes != null) {
 						config.classtimes.addAll(classtimes);
 
@@ -331,7 +329,7 @@ public class RosterService {
 						if (config.classtimes.size() >= 1) {
 							Long ctId = null;
 							boolean noMatch = true;
-							for (ClassTime ct : config.classtimes) {
+							for (Routine ct : config.classtimes) {
 								if (ct.isDefault) {
 									ctId = ct.getId();
 									noMatch = false;
@@ -341,7 +339,7 @@ public class RosterService {
 							if (noMatch) {
 								ctId = config.classtimes.iterator().next().id;
 							}
-							config.defaultTime = db().load().type(ClassTimeConfig.class).id(ctId).now();
+							config.defaultTime = db().load().type(RoutineConfig.class).id(ctId).now();
 						} // end check if has classtimes;
 
 					}
@@ -572,13 +570,10 @@ public class RosterService {
 
 		if (result != null) {
 
-			List<ClassTime> classTimeList = ofy().load().type(ClassTime.class).filter("rosterId", id).list();
-			List<ClassTimeDTO> classTimeDTOList = new ArrayList<ClassTimeDTO>();
-			for (ClassTime classTime : classTimeList) {
-				ClassTimeDTO dto = new ClassTimeDTO(classTime);
-				classTimeDTOList.add(dto);
-			}
-			return Response.ok().entity(classTimeDTOList).build();
+			List<Routine> routineList = ofy().load().type(Routine.class).filter("rosterId", id).list();
+			
+			
+			return Response.ok().entity(routineList).build();
 		}
 
 		return Response.status(Status.NOT_FOUND).build();
@@ -593,9 +588,9 @@ public class RosterService {
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
-			ClassTime classTime = ofy().load().key(Key.create(ClassTime.class, classtimeId)).now();
-			if (classTime != null)
-				return Response.ok().entity(classTime).build();
+			Routine routine = ofy().load().key(Key.create(Routine.class, classtimeId)).now();
+			if (routine != null)
+				return Response.ok().entity(routine).build();
 			else
 				Response.status(Status.NOT_FOUND).build();
 
@@ -607,14 +602,14 @@ public class RosterService {
 	@POST
 	@Path("/{id}/classtime")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createClassTime(@PathParam("id") Long id, ClassTime classTime, ClassTimeConfig config) {
+	public Response createClassTime(@PathParam("id") Long id, Routine routine, RoutineConfig config) {
 
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
 
-			classTime.setRosterId(id);
-			Long newId = classTimeDB.save(classTime).getId();
+			routine.setRosterId(id);
+			Long newId = classTimeDB.save(routine).getId();
 			config.id = newId;
 			db().save().entity(config);
 			return Response.ok().entity(newId).build();
@@ -641,7 +636,7 @@ public class RosterService {
 	@Path("/{id}/classtime/{classtimeId}/seatingChart")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response saveSeatingChart(@PathParam("id") Long id,ClassTimeConfig config,
+	public Response saveSeatingChart(@PathParam("id") Long id,RoutineConfig config,
 			SeatingChart seatingChart) {
 		// TODO: set up checks
 		db().save().entity(seatingChart);
@@ -653,17 +648,15 @@ public class RosterService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSchedule(@PathParam("id") Long id) {
 
-		Key<Roster> parent = Key.create(Roster.class, id);
-		Schedule scheduleDB = db().load().type(Schedule.class).ancestor(parent).first().now();
+		Key<Schedule> sKey = Key.create(Schedule.class, id);
+		Schedule scheduleDB = db().load().key(sKey).now();
 		// in case of null create new
 		if (scheduleDB == null) {
 			scheduleDB = new Schedule();
-			scheduleDB.parent = parent;
 			scheduleDB.id = db().save().entity(scheduleDB).now().getId();
-
 		}
-		ScheduleDTO retrieve = new ScheduleDTO(scheduleDB);
-		return Response.ok().entity(retrieve).build();
+		
+		return Response.ok().entity(scheduleDB).build();
 
 	}
 
@@ -671,15 +664,14 @@ public class RosterService {
 	@Path("/{id}/schedule")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveSchedule(@PathParam("id") Long id, ScheduleDTO schedule) {
+	public Response saveSchedule(@PathParam("id") Long id, Schedule schedule) {
 		// do validation here
-		Schedule update = Schedule.fromDTO(schedule);
+		
 
 		// create key to persist the entity
-		Key<Roster> parent = Key.create(Roster.class, id);
-		Key<Schedule> sKey = Key.create(parent, Schedule.class, schedule.id);
+		Key<Schedule> sKey = Key.create(Schedule.class, schedule.id);
 
-		update.parent = parent;
+	
 		// 1. try and retrieve
 		if (schedule.id != null) {
 

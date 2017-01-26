@@ -13,10 +13,10 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import gwt.material.design.client.ui.MaterialLoader;
-import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
-import net.videmantay.roster.classtime.json.ClassTimeJson;
 import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.routine.json.RoutineConfigJson;
+import net.videmantay.roster.routine.json.RoutineJson;
 import net.videmantay.roster.views.ClassroomMain;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -122,21 +122,34 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 							RosterConfigJson rcj =  JsonUtils.safeEval((String)this.arguments(0)).cast();
 							if(rcj != null){
 							utils.setStudents(rcj.getStudents());
+							
 							if(rcj.getClassTimes() == null || rcj.getClassTimes().length() < 1){
-								ClassTimeJson classtime = ClassTimeJson.createObject().cast();
+								RoutineJson classtime = RoutineJson.createObject().cast();
 								classtime.setDescript("This is the default classtime. "+
 								"Classtime is a way to help teachers transition from one activity to the next" +
 								"i.e  'Carpet Time' , 'Reading Buddies'  , 'Lab'");
 								classtime.setTitle("Default Time");
 								classtime.setRosterId(utils.getCurrentRoster().getId());
 								classtime.setIsDefault(true);
-								JsArray<ClassTimeJson> times = JsArray.createArray().cast();
+								JsArray<RoutineJson> times = JsArray.createArray().cast();
 								times.push(classtime);
 								utils.setClassTimes(times);
 								utils.setSelectedClassTime(classtime);
+							}else{
+								utils.setClassTimes(rcj.getClassTimes());
+								for(int i=0; i < rcj.getClassTimes().length(); i++){
+									if(utils.getClassTimes().get(i).getIsDefault()){
+										utils.setSelectedClassTime(utils.getClassTimes().get(i));
+										break;
+									}
+								}
+								//if selected class time not chosen
+								if(utils.getSelectedClassTime() == null){
+									utils.setSelectedClassTime(utils.getClassTimes().get(0));
+								}
 							}
 							if(rcj.getDefaultTime() == null){
-								ClassTimeConfigJson dtime = ClassTimeConfigJson.createObject().cast();
+								RoutineConfigJson dtime = RoutineConfigJson.createObject().cast();
 								utils.setClasstimeConfig(dtime);
 							}else{
 							utils.setClasstimeConfig(rcj.getDefaultTime());

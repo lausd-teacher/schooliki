@@ -8,10 +8,11 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.ui.RootPanel;
-import net.videmantay.roster.classtime.json.ClassTimeConfigJson;
-import net.videmantay.roster.classtime.json.ClassTimeJson;
-import net.videmantay.roster.classtime.json.SeatingChartJson;
+
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.routine.json.RoutineConfigJson;
+import net.videmantay.roster.routine.json.RoutineJson;
+import net.videmantay.roster.routine.json.SeatingChartJson;
 import net.videmantay.roster.views.ClassroomMain;
 import net.videmantay.roster.views.RosterMain;
 import net.videmantay.student.json.InfoJson;
@@ -28,13 +29,13 @@ public class RosterUtils {
 	
 	private  RosterJson currentRoster;
 	private  JsArray<RosterJson> rosterList;
-	private  ClassTimeJson selectedClassTime;
-	private ClassTimeConfigJson classtimeConfig;
-	private JsArray<ClassTimeJson> classTimes;
+	private  RoutineJson selectedClassTime;
+	private RoutineConfigJson classtimeConfig;
+	private JsArray<RoutineJson> classTimes;
 	private  boolean isEditMode = false;
 	private  boolean isRollMode = false;
 	private  JsArray<RosterStudentJson> students;
-	private ClassTimeConfigJson defaultTime;
+	private RoutineConfigJson defaultTime;
 	private SeatingChartJson seatingChart;
 	
 	
@@ -79,7 +80,7 @@ public class RosterUtils {
 		return currentRoster;
 	}
 	
-	public  void setSelectedClassTime(ClassTimeJson sct) {
+	public  void setSelectedClassTime(RoutineJson sct) {
 		if(selectedClassTime == sct){
 			return;
 		}
@@ -92,7 +93,7 @@ public class RosterUtils {
 		.done(new Function(){
 			@Override
 			public void f(){
-				ClassTimeConfigJson ctc =  JsonUtils.safeEval((String)this.arguments(0)).cast();
+				RoutineConfigJson ctc =  JsonUtils.safeEval((String)this.arguments(0)).cast();
 				//fire ctc change event
 				$(body).trigger(RosterEvent.updateClassTimeConfig, ctc);
 			}
@@ -101,23 +102,23 @@ public class RosterUtils {
 		
 	}
 	
-	public  ClassTimeJson getSelectedClassTime() {
+	public  RoutineJson getSelectedClassTime() {
 		return selectedClassTime;
 	}
 	
-	public JsArray<ClassTimeJson> getClassTimes(){
+	public JsArray<RoutineJson> getClassTimes(){
 		return classTimes;
 	}
 	
-	public void setClassTimes(JsArray<ClassTimeJson> times){
+	public void setClassTimes(JsArray<RoutineJson> times){
 		this.classTimes = times;
 	}
 	
-	public ClassTimeConfigJson getClasstimeConfig(){
+	public RoutineConfigJson getClasstimeConfig(){
 		return this.classtimeConfig;
 	}
 	
-	public void setClasstimeConfig(ClassTimeConfigJson classConfig){
+	public void setClasstimeConfig(RoutineConfigJson classConfig){
 		this.classtimeConfig = classConfig;
 	}
 	

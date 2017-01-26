@@ -27,7 +27,7 @@ import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
 import net.videmantay.roster.HasClassroomDashboardView;
 import net.videmantay.roster.RosterUtils;
-import net.videmantay.roster.views.classtime.SeatingChartPanel;
+import net.videmantay.roster.views.routine.SeatingChartPanel;
 
 public class ClassroomDashboardPanel extends Composite
 {

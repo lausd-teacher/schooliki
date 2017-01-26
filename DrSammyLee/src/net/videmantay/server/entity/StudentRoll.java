@@ -6,8 +6,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
-import net.videmantay.rest.dto.IncidentTypeDTO;
-import net.videmantay.rest.dto.StudentRollDTO;
 
 @Entity
 public class StudentRoll {
