@@ -19,7 +19,31 @@ public class RosterConfigJson extends JavaScriptObject {
 			return this.classtimes;
 	}-*/;
 	
-	public final native RoutineConfigJson getDefaultTime()/*-{
+	public final native Long getDefaultTimeId()/*-{
 		return this.defaultTime;
 	}-*/;
+	
+	public final native RoutineConfigJson getDefaultTime()/*-{
+			return this.defaultTime;
+	}-*/;
+	
+	public final native RosterConfigJson setDefaultTimeId(Long defaultId)/*-{
+			this.defaultTime = defaultId;
+			return this;
+	}-*/;
+	
+	public final native RosterConfigJson setDefaultTime(RoutineConfigJson defaultTime)/*-{
+	this.defaultTime = defaultTime;
+	return this;
+}-*/;
+	
+	public final native RosterConfigJson setClassTimes(JsArray<RoutineJson> times)/*-{
+	this.classtimes = times;
+	return this;
+}-*/;
+	
+	public final native RosterConfigJson setStudents(JsArray<RosterStudentJson> students)/*-{
+	this.students = students;
+	return this;
+}-*/;
 }

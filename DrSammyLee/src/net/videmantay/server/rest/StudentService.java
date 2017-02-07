@@ -1,4 +1,4 @@
-package net.videmantay.rest;
+package net.videmantay.server.rest;
 
 public class StudentService {
 

@@ -45,6 +45,8 @@ public class Roster implements Serializable{
 	public String folderUrl;
 	
 	public String calendarUrl;
+
+	public String joinCode;
 	
 	
 	

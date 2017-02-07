@@ -25,12 +25,10 @@ public class DB<T> implements Serializable {
 		factory().register(RosterDetail.class);
 		factory().register(RosterStudent.class);
 		factory().register(RosterSetting.class);
-		factory().register(RosterConfig.class);
 		factory().register(RosterCodeGenerator.class);
 		factory().register(SeatingChart.class);
 		factory().register(Routine.class);
 		factory().register(RoutineConfig.class);
-		factory().register(StationManager.class);
 		factory().register(Incident.class);
 		factory().register(AssignedGradedWork.class);
 		factory().register(GoogleCalendarEvent.class);

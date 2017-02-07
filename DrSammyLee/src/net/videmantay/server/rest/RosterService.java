@@ -1,4 +1,4 @@
-package net.videmantay.rest;
+package net.videmantay.server.rest;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 import static net.videmantay.server.util.DB.db;
@@ -33,6 +33,7 @@ import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
 
 import net.videmantay.server.entity.AppUser;
+import net.videmantay.server.entity.FullRoutine;
 import net.videmantay.server.entity.Routine;
 import net.videmantay.server.entity.RoutineConfig;
 import net.videmantay.server.entity.Incident;
@@ -124,8 +125,8 @@ public class RosterService {
 									// created
 				roster.setId(id);
 				RosterDetail detail = new RosterDetail();
-				RosterConfig config = new RosterConfig();
-				config.id = id;
+				
+				
 				detail.setId(roster.getId());
 				detail.setGradeLevel(roster.gradeLevels);
 				detail.setTitle(roster.getTitle());
@@ -136,7 +137,7 @@ public class RosterService {
 				if (codeGen == null) {
 					codeGen = new RosterCodeGenerator();
 				}
-				config.joinCode = codeGen.assignCode(id);
+				roster.joinCode = codeGen.assignCode(id);
 				db().save().entity(codeGen);
 				TeacherInfo teacherInfo = new TeacherInfo();
 				AppUser appUser = db().load().type(AppUser.class).filter("email", subject.getPrincipal().toString())
@@ -234,9 +235,10 @@ public class RosterService {
 				incident.setPoints(-5);
 				incident.setImageUrl("/img/9.png");
 				incidents.add(incident);
-				config.incidentKeys.addAll(db().save().entities(incidents).now().keySet());
+				db().save().entities(incidents);
 				
 				Routine defaultTime = new Routine();
+				defaultTime.rosterId = id;
 				defaultTime.setDefault(true);
 				defaultTime.setDescript("Routines refer to a set of procedures, groups, and stations that help students transition form one task to the next." +
 							" \" Carpet Time\" , \"Author's Chair\", \"Gallery Walks\" are all example of routines.");
@@ -247,8 +249,7 @@ public class RosterService {
 				ctConfig.id = defaultTime.id;
 				SeatingChart seatingChart = new SeatingChart();
 				seatingChart.id = defaultTime.id;
-				config.classtimes.add(defaultTime);
-				db().save().entities(detail, config,seatingChart, ctConfig);
+				db().save().entities(detail,seatingChart, ctConfig);
 
 			} // end if first save
 			return Response.status(Status.CREATED).entity(roster).build();
@@ -266,16 +267,16 @@ public class RosterService {
 		if (result != null) {
 			// deleting a roster is a huge ordeal probably
 			// best for taskque
+			// also clear up the code for someone else to use
+						RosterCodeGenerator codeGen = db().load()
+								.key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
+						codeGen.relinquishCode(result.joinCode);
+						db().save().entity(codeGen);
 			rosterDB.delete(result);
 			// get rosterDetail
 			RosterDetail details = db().load().key(Key.create(RosterDetail.class, id)).now();
 			final RosterConfig config = db().load().key(Key.create(RosterConfig.class, id)).now();
-			// also clear up the code for someone else to use
-			RosterCodeGenerator codeGen = db().load()
-					.key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN)).now();
-			codeGen.relinquishCode(config.joinCode);
-			db().save().entity(codeGen);
-
+		
 			// delete everything associate with details
 			db().delete().entities(result, details);
 			// load all student related entities
@@ -303,15 +304,12 @@ public class RosterService {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRosterConfig(@PathParam("id") final Long id) {
+	public Response getRoster(@PathParam("id") final Long id) {
 		// must load the students
 		/// class times
 		// and default classtime
-		final RosterConfig config = db().load().key(Key.create(RosterConfig.class, id)).now();
-		db().transactNew(new VoidWork() {
-
-			@Override
-			public void vrun() {
+		final RosterConfig config = new RosterConfig();
+		
 
 				Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
 				rosterStudents.addAll(
@@ -319,41 +317,26 @@ public class RosterService {
 				if (rosterStudents != null) {
 					config.students.addAll(rosterStudents);
 				}
-
-				if (config.classtimeKeys != null && config.classtimeKeys.size() > 0) {
-					Collection<Routine> classtimes = db().load().keys(config.classtimeKeys).values();
-					if (classtimes != null) {
-						config.classtimes.addAll(classtimes);
-
-						// if you have any classtimes load the default///
-						if (config.classtimes.size() >= 1) {
-							Long ctId = null;
-							boolean noMatch = true;
-							for (Routine ct : config.classtimes) {
-								if (ct.isDefault) {
-									ctId = ct.getId();
-									noMatch = false;
-									break;
-								}
-							}
-							if (noMatch) {
-								ctId = config.classtimes.iterator().next().id;
-							}
-							config.defaultTime = db().load().type(RoutineConfig.class).id(ctId).now();
-						} // end check if has classtimes;
-
+				
+				//get routines for roster
+				config.classtimes.addAll(db().load().type(Routine.class).filter("rosterId", id).list());
+				//now cycle and find default
+				if(config.classtimes.size() > 0){
+				for(Routine r: config.classtimes){
+					if(r.isDefault){
+						config.defaultTime = db().load().key(Key.create(RoutineConfig.class, r.id)).now();
+						break;
 					}
 				}
-
-				if (config.incidentKeys != null && config.incidentKeys.size() > 0) {
-					Collection<Incident> incidents = db().load().keys(config.incidentKeys).values();
-					if (incidents != null) {
-						config.incidents.addAll(incidents);
-					}
+				
+				if(config.defaultTime == null){
+					Long configId = config.classtimes.iterator().next().id;
+					config.defaultTime = db().load().key(Key.create(RoutineConfig.class, configId)).now();
 				}
+				}
+				
+				 config.incidents.addAll(db().load().type(Incident.class).filter("rosterId", id).list());
 
-			}
-		});
 		return Response.ok().entity(config).build();
 	}
 
@@ -363,7 +346,7 @@ public class RosterService {
 		// get generator
 		RosterCodeGenerator codeGen = db().load().key(Key.create(RosterCodeGenerator.class, RosterCodeGenerator.KEYGEN))
 				.now();
-		RosterConfig config = db().load().key(Key.create(RosterConfig.class, id)).now();
+		Roster config = db().load().key(Key.create(Roster.class, id)).now();
 		codeGen.relinquishCode(config.joinCode);
 		config.joinCode = codeGen.assignCode(id);
 		db().save().entities(config, codeGen);
@@ -588,30 +571,29 @@ public class RosterService {
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
-			Routine routine = ofy().load().key(Key.create(Routine.class, classtimeId)).now();
-			if (routine != null)
-				return Response.ok().entity(routine).build();
-			else
-				Response.status(Status.NOT_FOUND).build();
-
-		}
+				Routine routine = ofy().load().key(Key.create(Routine.class, classtimeId)).now();
+				RoutineConfig config = ofy().load().key(Key.create(RoutineConfig.class,classtimeId)).now();
+			
+				return Response.ok().entity(new FullRoutine(routine,config)).build();
+		}else{
 
 		return Response.status(Status.NOT_FOUND).build();
+		}
 	}
 
 	@POST
-	@Path("/{id}/classtime")
+	@Path("/{id}/classtime/{subId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createClassTime(@PathParam("id") Long id, Routine routine, RoutineConfig config) {
+	public Response createClassTime(@PathParam("id") Long id, FullRoutine fullRoutine) {
 
 		Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
 
 		if (result != null) {
 
-			routine.setRosterId(id);
-			Long newId = classTimeDB.save(routine).getId();
-			config.id = newId;
-			db().save().entity(config);
+			fullRoutine.routine.setRosterId(id);
+			Long newId = classTimeDB.save(fullRoutine.routine).getId();
+			fullRoutine.routineConfig.id = newId;
+			db().save().entity(fullRoutine.routineConfig);
 			return Response.ok().entity(newId).build();
 		}
 
@@ -619,7 +601,7 @@ public class RosterService {
 	}
 
 	@GET
-	@Path("/{id}/classtime/{classtimeId}/seatingChart")
+	@Path("/{id}/classtime/{classtimeId}/seatingchart")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSeatingChart(@PathParam("id") Long id, @PathParam("classtimeId") Long classtimeId) {
 		// TODO:check for roster blah blah
@@ -633,7 +615,7 @@ public class RosterService {
 	}
 
 	@POST
-	@Path("/{id}/classtime/{classtimeId}/seatingChart")
+	@Path("/{id}/classtime/{classtimeId}/seatingchart")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveSeatingChart(@PathParam("id") Long id,RoutineConfig config,

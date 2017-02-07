@@ -12,7 +12,6 @@ import com.googlecode.objectify.annotation.Parent;
 
 import net.videmantay.shared.GradeLevel;
 
-@Cache
 @Entity
 public class RosterDetail implements Serializable {
 
@@ -31,7 +30,7 @@ public class RosterDetail implements Serializable {
 	public TeacherInfo teacherInfo;
 	
 	public List<String> gradeLevel;
-	
+
 	public Long getId() {
 		return id;
 	}

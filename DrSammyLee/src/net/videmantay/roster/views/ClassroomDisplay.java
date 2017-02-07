@@ -132,6 +132,11 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 	@Override
 	public void drawGrid(){
 		JsArray<RosterStudentJson> studs = utils.getStudents();
+		if(studs == null ||studs.length() < 1){
+			showEmptyGrid();
+			console.log("Show empty students");
+			return;
+		}
 		console.log("drawing classroom grid");
 		classroomGrid.clear();
 		MaterialRow row = new MaterialRow();
@@ -160,8 +165,7 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 	
 	public void showEmptyGrid(){
 		HTMLPanel empty = new HTMLPanel("<h3>Your student list appears to be empty...</h3>"+
-                "<p>To manager you students just open the side menu"+
-              "and click on students<p><p><a href='#students'>Just click here</a></p>");
+                "<p>To manager your students just click the plus button");
 			empty.setStylePrimaryName("emptyClassroom");
 			$(empty).css($$("margin:2em, color:DimGray"));
 			classroomGrid.clear();
@@ -231,28 +235,6 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 		
 	}
 
-
-	@Override
-	public void arrangeFurniture() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void arrangeStudents() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void manageStations() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	@Override
 	public void doneCheckHW() {
 		// TODO Auto-generated method stub
@@ -314,27 +296,6 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 		// TODO Auto-generated method stub
 		
 	}
-
-
-	@Override
-	public void doneArrangeFurniture() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void doneArrangeStudents() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void doneManageStations() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void onLoad(){
@@ -342,6 +303,18 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 			@Override
 			public void run(){home();}
 		}.schedule(2000);
+	}
+
+	@Override
+	public boolean isEditing() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void stopEditing() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

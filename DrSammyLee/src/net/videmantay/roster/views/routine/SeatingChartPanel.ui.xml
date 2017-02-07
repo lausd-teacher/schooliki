@@ -3,37 +3,21 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+	<ui:style>
+		.scStudentTools{
+		margin:0.5em;
+		padding-right:1em;
+		overflow-x:hidden;
+		float:left;
+		height:100%;
+	}
+	</ui:style>
 	<g:HTMLPanel ui:field="seatingChart" styleName="seatingChart">
-		<h:Div ui:field="toolsPanel" addStyleNames="toolsPanel">
-		<m:MaterialPanel   ui:field="studentTools" addStyleNames="studentTools">
-		<m:MaterialLabel text="StudentList" />
-		<m:MaterialCollection  ui:field="studentList" />
-		</m:MaterialPanel>
-			<m:MaterialPanel ui:field="furnitureTools" addStyleNames="furnitureTools">
-				<m:MaterialLabel text="Furniture" />
-				<m:MaterialCollection ><!--  -->
-					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage m:id="singleDeskIcon" addStyleNames="furnitureIcon" url="../img/singleDesk.png" caption="Single Desk"/>
-					</m:MaterialCollectionItem>
-					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage m:id="doubleDeskIcon" addStyleNames="furnitureIcon" url="../img/doubleDesk.png" caption="Double Desk"/>
-					</m:MaterialCollectionItem>
-					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage m:id="kidneyTableIcon" caption="Kidney Table"/>
-					</m:MaterialCollectionItem>
-					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage m:id="carpetSmIcon" caption="Small Carpet"/>
-					</m:MaterialCollectionItem>
-					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage m:id="carptetBgIcon" caption="Big Carpet"/>
-					</m:MaterialCollectionItem>
-				</m:MaterialCollection>
-			</m:MaterialPanel>
-			<m:MaterialPanel ui:field="sectionTools" >
-			<!-- circle, square, carpet, kidney table -->
-			</m:MaterialPanel>
+		<h:Div addStyleNames="{style.scStudentTools}">
+		<m:MaterialLabel text=" Students - No seat Assigned" />
+		<m:MaterialCollection  ui:field="studentList"  addStyleNames="scStudentList" />
+		<m:MaterialAnchorButton type="FLOATING" iconSize="SMALL" iconType='ADD' backgroundColor="amber darken-1" textColor="white" />
 		</h:Div>
-		<h:Div ui:field="floorPlan" addStyleNames="floorPlan">
-		</h:Div>
+		<h:Div ui:field="floorPlan" addStyleNames="floorPlan"></h:Div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -66,5 +66,7 @@ public class RoutineJson extends JavaScriptObject {
 	public final native void setProcedures(JsArrayString proc)/*-{
 		this.procedures = proc;
 	}-*/;
+	
+	
 
 }

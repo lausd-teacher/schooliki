@@ -2,12 +2,14 @@ package net.videmantay.server.entity;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class Incident {
 	
 	@Id
     public Long id;
+	@Index
 	public Long rosterId;
 		
 	public String name;

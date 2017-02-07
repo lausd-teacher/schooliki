@@ -1,0 +1,70 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:ma="urn:import:gwt.material.design.addins.client">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+	<m:MaterialRow>
+		<m:MaterialColumn ui:field="studentProfCol"> 
+		<m:MaterialCard>
+			<m:MaterialCardContent>
+			<m:MaterialPanel ui:field="studentProfPanel"> 
+				<m:MaterialImage ui:field="studentImage" />
+				<m:MaterialLabel ui:field="studentName" />
+				<m:MaterialLabel ui:field="studentGrade" />
+				<m:html.Hr />
+				<m:MaterialLabel ui:field="studentSummary" />
+			</m:MaterialPanel>
+			</m:MaterialCardContent>
+			</m:MaterialCard>
+			<m:MaterialColumn ui:field="mainCol"> 
+			<m:MaterialCollection> 
+				<m:MaterialCollectionItem>
+					<m:MaterialCard ui:field="gradesCard">
+						<m:MaterialCardTitle title="Grades"/>
+						<m:MaterialCardContent ui:field="gradesCardContent">
+						<!-- show lastest 10? -->
+						</m:MaterialCardContent>
+					</m:MaterialCard>
+				</m:MaterialCollectionItem>
+				<m:MaterialCollectionItem>
+					<m:MaterialCard ui:field="incidentsCard">
+					<!-- show latest 10 -->
+						<m:MaterialCardTitle text="Behavior Incidents"/>
+						<m:MaterialCardContent ui:field="incidentsCardContent">
+						</m:MaterialCardContent>
+					</m:MaterialCard>
+				</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem>
+					<m:MaterialCard ui:field="goalsCard">
+						<m:MaterialCardTitle text="Goals" />
+						<!-- show overall met in percent -->
+						<m:MaterialCardContent ui:field="goalsCardContent">
+						</m:MaterialCardContent>
+					</m:MaterialCard>
+				</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem>
+					<m:MaterialCard ui:field="booksCard">
+						<m:MaterialCardTitle text="Books" />
+						<!-- show overall met in percent -->
+						<m:MaterialCardContent ui:field="booksCardContent">
+						</m:MaterialCardContent>
+					</m:MaterialCard>
+				</m:MaterialCollectionItem>
+				<m:MaterialCollectionItem>
+					<m:MaterialCard ui:field="jobsCard">
+					<!-- show only current jobs -->
+						<m:MaterialCardTitle text="Jobs"/>
+						<m:MaterialCardContent ui:field="jobsCardContent">
+						</m:MaterialCardContent>
+					</m:MaterialCard>
+				</m:MaterialCollectionItem>
+			</m:MaterialCollection>
+			</m:MaterialColumn>
+		</m:MaterialColumn>
+	</m:MaterialRow>
+	</g:HTMLPanel>
+</ui:UiBinder> 

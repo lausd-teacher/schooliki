@@ -8,6 +8,7 @@ import com.google.gwt.core.client.JsArrayNumber;
 import com.google.gwt.core.client.JsArrayString;
 
 import net.videmantay.shared.GroupingType;
+import net.videmantay.student.json.EventJson;
 
 public class GroupJson extends JavaScriptObject {
 
@@ -76,4 +77,20 @@ public class GroupJson extends JavaScriptObject {
 	public final native void setStudents(JsArrayNumber students) /*-{
 		this.students = students;
 	}-*/;
+	
+	public final native JsArray<GroupRoleJson> getRoles()/*-{
+		return this.roles;
+	}-*/;
+	
+	public final native void setRoles(JsArray<GroupRoleJson> roles)/*-{
+		this.roles = roles;
+	}-*/;
+	
+	public final native JsArray<EventJson> getTasks()/*-{
+	return this.tasks;
+}-*/;
+
+public final native void setTasks(JsArray<EventJson> tasks)/*-{
+	this.tasks = tasks;
+}-*/;
 }

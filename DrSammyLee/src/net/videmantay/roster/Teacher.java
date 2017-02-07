@@ -44,11 +44,8 @@ private final  HistoryMapper mapper;
 				console.log(rosters);
 				 //hide the loader
 				hideLoader();
-				expose();
 				History.newItem("roster");
-				History.fireCurrentHistoryState();
-					
-					
+				History.fireCurrentHistoryState();	
 			}
 		});
 	}//end module load//////
@@ -58,26 +55,4 @@ private final  HistoryMapper mapper;
 	    loader.style.visibility="hidden";
 	}-*/;
 	
-	//need to expose certain methods to outside js
-	private void expose(){
-		//get window to set props
-		Properties wnd = window.cast();
-		
-		//first function to set classtime for lessonPlan
-		//the object selectedClassTime is exposed in the factory
-		wnd.setFunction("setSelectedClassTime", new Function(){
-			@Override
-			public void f(){
-				RoutineJson classTime = JsonUtils.safeEval((String)this.getArgument(0)).cast();
-				utils.setSelectedClassTime(classTime);
-				console.log(utils.getSelectedClassTime() + "called from external JS");
-			}
-		});
-		
-		
-	}//end expose
-	
-
-	
-
 }

@@ -8,7 +8,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Serialize;
 
-
 public class StationManager implements Serializable{
 	public String stationDuration;
 	public String transitionTime;

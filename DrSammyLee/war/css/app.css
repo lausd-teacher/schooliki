@@ -106,20 +106,24 @@ div.item-student.ui-selecting { background: #FECA40;
 		height:10em !important;
 	}
 	
+	
 	/* All Seating chart styles -----------------------*/
 	.seatingChart{
-		border:3px groove Green;
-		width:100%;
-		height:665px;
-		display:flex;
-		flex-direction: row;
-		position:absolute;
+		width:1090px;
+		height:650px;
+		display:block;
+		position:relative;
+		margin-left:auto;
+		margin-right:auto;
+		margin-bottom:1em;
 	}
 	.floorPlan{
-		width:60%;
+		width:80%;
 		height:100%;
-		border:1px solid Teal;
+		float:right;
 		background-image:url('../img/classFloor.svg');
+		border-radius:5%;
+		border:0.1em dotted Brown;
 	}
 		
 	.furniturePanel{

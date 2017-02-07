@@ -1,10 +1,11 @@
 package net.videmantay.roster.views;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
@@ -13,18 +14,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.constants.TextAlign;
-import gwt.material.design.client.events.SideNavClosedEvent;
-import gwt.material.design.client.events.SideNavClosedEvent.SideNavClosedHandler;
 import gwt.material.design.client.events.SideNavClosingEvent;
 import gwt.material.design.client.events.SideNavClosingEvent.SideNavClosingHandler;
 import gwt.material.design.client.ui.MaterialContainer;
-import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialNavBar;
@@ -33,19 +30,16 @@ import gwt.material.design.client.ui.MaterialSideNav;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
-import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.routine.json.RoutineConfigJson;
-import net.videmantay.roster.routine.json.RoutineJson;
 import net.videmantay.roster.routine.json.SeatingChartJson;
+import net.videmantay.roster.routine.json.FullRoutineJson;
 import net.videmantay.student.json.InfoJson;
-import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.routine.SeatingChartPanel;
 
 import static com.google.gwt.query.client.GQuery.*;
 
-import com.google.api.client.googleapis.util.Utils;
+import com.google.common.primitives.Longs;
 
 public class ClassroomMain extends Composite{
 
@@ -126,7 +120,6 @@ public class ClassroomMain extends Composite{
 				utils.setSeatingChart(seatingChart);
 				SeatingChartPanel chartPanel = new SeatingChartPanel(utils);
 				dashboard.setDisplayInTab1(chartPanel);
-				dashboard.seatingChartEditIcon.setVisible(true);
 				MaterialLoader.showLoading(false);
 				
 			}
@@ -145,7 +138,7 @@ public class ClassroomMain extends Composite{
 			public void onSuccess() {
 				//load from Ajax
 				Ajax
-				.get(RosterUrl.seatingchart(utils.getCurrentRoster().getId(), utils.getSelectedClassTime().getId()))
+				.get(RosterUrl.seatingchart(utils.getCurrentRoster().getId(), utils.getSelectedClassTime().getRoutine().getId()))
 				.done(gridFunc);
 				
 			}};
@@ -163,7 +156,25 @@ public class ClassroomMain extends Composite{
 				
 			}};
 			
+		SelectionHandler<Widget> routineSelection = new SelectionHandler<Widget>(){
+
+			@Override
+			public void onSelection(SelectionEvent<Widget> event) {
+				String value = ((MaterialLink)event.getSelectedItem()).getDataAttribute("routineId");
+				Long routineId = Longs.tryParse(value);
+				if(routineId == utils.getSelectedClassTime().getRoutine().getId()){
+					return;
+				}
 		
+				for(int i = 0 ; i < utils.getClassTimes().length(); i++){
+					if(routineId == utils.getClassTimes().get(i).getId()){
+						FullRoutineJson sct = FullRoutineJson.createObject().cast();
+						sct.setRoutine(utils.getClassTimes().get(i));
+						utils.setSelectedClassTime(sct);
+					}
+				}
+		
+			}};
 ///the constructor//////////
 	public ClassroomMain(RosterUtils ru) {
 		this.utils = ru;	
@@ -239,46 +250,55 @@ public class ClassroomMain extends Composite{
 				//seating chart edit icon click
 				dashboard.gridSwitch.addValueChangeHandler(gridSwitchHandler);
 				
+				//add ondropdown handler
+				dashboard.classtimeDrop.addSelectionHandler(routineSelection);
+				dashboard.classtimeDrop2.addSelectionHandler(routineSelection);
+				
 				//set up classtime buttons and links
-				dashboard.classtimeBtn.setText(utils.getSelectedClassTime().getTitle());
-				dashboard.classroomtimeBar.setText(utils.getSelectedClassTime().getTitle());
-			
-			for(int i = 0; i < utils.getClassTimes().length(); i++){
-				MaterialLink link = new MaterialLink();
-				MaterialLink link2 = new MaterialLink();
-				link.setText(utils.getClassTimes().get(i).getTitle());
-				link.setTextAlign(TextAlign.CENTER);
-				link.setFontSize("1.1em");
-				link.setTextColor("red");
-				link.setPadding(10);
-				link.setId(utils.getClassTimes().get(i).getId() + "");
+				if(utils.getSelectedClassTime().getRoutine() != null){
+				dashboard.classtimeBtn.setText(utils.getSelectedClassTime().getRoutine().getTitle());
+				dashboard.classroomtimeBar.setText(utils.getSelectedClassTime().getRoutine().getTitle());
 				
-				
-				link2.setText(utils.getClassTimes().get(i).getTitle());
-				link2.setTextAlign(TextAlign.CENTER);
-				link2.setFontSize("1.1em");
-				link2.setTextColor("red");
-				link2.setPadding(5);
-				link2.setId(utils.getClassTimes().get(i).getId() + "");
-				
-				if(utils.getClassTimes().get(i).getIsDefault()){
-					dashboard.classtimeBtn.setText(utils.getClassTimes().get(i).getTitle());
-					dashboard.classroomtimeBar.setText(utils.getClassTimes().get(i).getTitle());
-					dashboard.classtimeDrop.insert(link, 0);
-					dashboard.classtimeDrop2.insert(link2,0);
-					continue;
-				}
-				dashboard.classtimeDrop.insert(link, dashboard.classtimeDrop.getItems().size()-1);
-				dashboard.classtimeDrop2.insert(link2, dashboard.classtimeDrop2.getItems().size()-1);
-			}
-			
-			//set up gridswitch click
-			
-				ClassroomDisplay display =new ClassroomDisplay(utils);
-				
-				dashboard.setDisplayInTab1(display);
-				display.drawGrid();
+				for(int i = 0; i < utils.getClassTimes().length(); i++){
+					MaterialLink link = new MaterialLink();
+					MaterialLink link2 = new MaterialLink();
+					link.setText(utils.getClassTimes().get(i).getTitle());
+					link.setTextAlign(TextAlign.CENTER);
+					link.setFontSize("1.1em");
+					link.setTextColor("red");
+					link.setId(utils.getClassTimes().get(i).getId() + "");
+					link.setPadding(15);
 					
+					
+					link2.setText(utils.getClassTimes().get(i).getTitle());
+					link2.setTextAlign(TextAlign.CENTER);
+					link2.setFontSize("1.1em");
+					link2.setTextColor("red");
+					link2.setId(utils.getClassTimes().get(i).getId() + "");
+					link2.setPadding(15);
+					
+					if(utils.getClassTimes().get(i).getIsDefault()){
+						dashboard.classtimeBtn.setText(utils.getClassTimes().get(i).getTitle());
+						dashboard.classroomtimeBar.setText(utils.getClassTimes().get(i).getTitle());
+						dashboard.classtimeDrop.insert(link, 0);
+						dashboard.classtimeDrop2.insert(link2,0);
+						continue;
+					}
+					dashboard.classtimeDrop.insert(link, dashboard.classtimeDrop.getItems().size()-1);
+					dashboard.classtimeDrop2.insert(link2, dashboard.classtimeDrop2.getItems().size()-1);
+					
+					
+				}
+					//set up gridswitch click
+					ClassroomDisplay display =new ClassroomDisplay(utils);
+
+					dashboard.setDisplayInTab1(display);
+					display.drawGrid();
+				
+				}else{
+					dashboard.classtimeBtn.setText("Loading...");
+					dashboard.classroomtimeBar.setText("Loading...");
+				}		
 			
 	}
 	
@@ -353,13 +373,13 @@ public class ClassroomMain extends Composite{
 	}
 	
 	public void seatingchart(){
-		if(utils.getSeatingChart() == null || utils.getSeatingChart().getId() != utils.getSelectedClassTime().getId()){
+		if(utils.getSeatingChart() == null || utils.getSeatingChart().getId() != utils.getSelectedClassTime().getRoutine().getId()){
 			MaterialLoader.showLoading(true);
 			GWT.runAsync(getNewSeatingChart);
 			}else{
 				SeatingChartPanel chartPanel = new SeatingChartPanel(utils);
 				dashboard.setDisplayInTab1(chartPanel);
-				dashboard.seatingChartEditIcon.setVisible(true);
+				chartPanel.drawGrid();
 			}//end if seatinchart is null or equat to classtime
 	}
 	

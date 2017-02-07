@@ -17,6 +17,10 @@ public class StationJson extends JavaScriptObject {
 		return this.title;
 	}-*/;
 	
+	public final native String getDescription()/*-{
+		return this.description;
+	}-*/;
+	
 	public final native String getType()/*-{
 		return this.type;
 	}-*/;
@@ -64,6 +68,11 @@ public class StationJson extends JavaScriptObject {
 			this.title = name;
 			return this;
 	}-*/;
+	
+	public final native StationJson setDescription(String name)/*-{
+	this.description = name;
+	return this;
+}-*/;
 	
 	public final native StationJson setOffset(JavaScriptObject offset)/*-{
 			this.offset = offset;

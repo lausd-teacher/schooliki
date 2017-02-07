@@ -93,6 +93,10 @@ public class RosterJson extends JavaScriptObject {
 		this.color = color;
 	}-*/;
 	
+	public final native String getJoinCode()/*-{
+			return this.joinCode;
+	}-*/;
+	
 	public final void copy(RosterJson copy){
 		
 		this.setColor(copy.getColor());

@@ -7,9 +7,10 @@
 	</ui:style>
 	<g:HTMLPanel>
 	<m:MaterialPanel textColor="grey" textAlign="LEFT" marginLeft="30.5">
+	<m:MaterialLabel text="Routines" />
 	<m:MaterialLabel text="Manage your class routines, including procedures, groups, seating and stations"></m:MaterialLabel>
 	</m:MaterialPanel>
-	<m:MaterialRow ui:field="classTimeGrid" paddingRight="10" paddingLeft="10"></m:MaterialRow>
+	<m:MaterialRow ui:field="routineGrid" paddingRight="10" paddingLeft="10"></m:MaterialRow>
 	<m:MaterialFAB>
 		<m:MaterialAnchorButton ui:field="createBtn" type="FLOATING" size="LARGE" iconType="ADD" backgroundColor="yellow darken-4"/>
 	</m:MaterialFAB>

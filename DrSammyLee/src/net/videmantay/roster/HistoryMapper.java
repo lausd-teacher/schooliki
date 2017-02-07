@@ -17,6 +17,7 @@ import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.routine.json.RoutineConfigJson;
 import net.videmantay.roster.routine.json.RoutineJson;
+import net.videmantay.roster.routine.json.FullRoutineJson;
 import net.videmantay.roster.views.ClassroomMain;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -119,41 +120,24 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 					.done(new Function(){
 						@Override
 						public void f(){
+							console.log("Ajax call to get roster object returned is: ");
 							RosterConfigJson rcj =  JsonUtils.safeEval((String)this.arguments(0)).cast();
+							console.log(rcj);
 							if(rcj != null){
 							utils.setStudents(rcj.getStudents());
 							
-							if(rcj.getClassTimes() == null || rcj.getClassTimes().length() < 1){
-								RoutineJson classtime = RoutineJson.createObject().cast();
-								classtime.setDescript("This is the default classtime. "+
-								"Classtime is a way to help teachers transition from one activity to the next" +
-								"i.e  'Carpet Time' , 'Reading Buddies'  , 'Lab'");
-								classtime.setTitle("Default Time");
-								classtime.setRosterId(utils.getCurrentRoster().getId());
-								classtime.setIsDefault(true);
-								JsArray<RoutineJson> times = JsArray.createArray().cast();
-								times.push(classtime);
-								utils.setClassTimes(times);
-								utils.setSelectedClassTime(classtime);
-							}else{
+							
 								utils.setClassTimes(rcj.getClassTimes());
+								
 								for(int i=0; i < rcj.getClassTimes().length(); i++){
 									if(utils.getClassTimes().get(i).getIsDefault()){
-										utils.setSelectedClassTime(utils.getClassTimes().get(i));
+										FullRoutineJson sr = FullRoutineJson.createObject().cast();
+										sr.setRoutine(utils.getClassTimes().get(i));
+										sr.setRoutineConfig(rcj.getDefaultTime());
+										utils.setSelectedClassTime(sr);
 										break;
 									}
 								}
-								//if selected class time not chosen
-								if(utils.getSelectedClassTime() == null){
-									utils.setSelectedClassTime(utils.getClassTimes().get(0));
-								}
-							}
-							if(rcj.getDefaultTime() == null){
-								RoutineConfigJson dtime = RoutineConfigJson.createObject().cast();
-								utils.setClasstimeConfig(dtime);
-							}else{
-							utils.setClasstimeConfig(rcj.getDefaultTime());
-							}
 							//now that everything is in place we init the classmain
 							utils.setClassroomPage(new ClassroomMain(utils));
 							utils.showClassroomPage();

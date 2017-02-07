@@ -5,4 +5,4 @@
  * @author LAUSD
  *
  */
-package net.videmantay.student.goal;
+package net.videmantay.student.json;

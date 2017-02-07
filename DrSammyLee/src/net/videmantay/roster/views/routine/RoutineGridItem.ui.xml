@@ -19,12 +19,25 @@
 					<m:MaterialCollapsibleHeader>
 					<m:MaterialRow> 
 						<m:MaterialColumn>
-							<m:MaterialLink iconType="" text="Procedures"/>
-							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
+							<m:MaterialLink iconType="LIST" text="Procedures" float="LEFT"/>
+							<m:MaterialBadge float="RIGHT" ui:field="procedureBadge"></m:MaterialBadge>
 						</m:MaterialColumn>
 					</m:MaterialRow>
 					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody> 
+					<m:MaterialCollapsibleBody ui:field="procedureCollapseBody"> 
+						
+					</m:MaterialCollapsibleBody>
+				</m:MaterialCollapsibleItem>
+				<m:MaterialCollapsibleItem> 
+					<m:MaterialCollapsibleHeader>
+					<m:MaterialRow> 
+						<m:MaterialColumn>
+							<m:MaterialLink iconType="GROUP" text="Groups" float="LEFT"/>
+							<m:MaterialBadge float="RIGHT" ui:field="groupsBadge"></m:MaterialBadge>
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					</m:MaterialCollapsibleHeader>
+					<m:MaterialCollapsibleBody ui:field="groupsCollapseBody"> 
 						<!-- so this is somehting to thin what he has -->
 					</m:MaterialCollapsibleBody>
 				</m:MaterialCollapsibleItem>
@@ -32,12 +45,12 @@
 					<m:MaterialCollapsibleHeader>
 					<m:MaterialRow> 
 						<m:MaterialColumn>
-							<m:MaterialLink iconType="" text="Groups"/>
-							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
+							<m:MaterialLink iconType="GROUP_WORK" text="Stations" float="LEFT"/>
+							<m:MaterialBadge float="RIGHT" ui:field="stationBadge"></m:MaterialBadge>
 						</m:MaterialColumn>
 					</m:MaterialRow>
 					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody> 
+					<m:MaterialCollapsibleBody ui:field="stationCollapseBody"> 
 						<!-- so this is somehting to thin what he has -->
 					</m:MaterialCollapsibleBody>
 				</m:MaterialCollapsibleItem>
@@ -45,25 +58,11 @@
 					<m:MaterialCollapsibleHeader>
 					<m:MaterialRow> 
 						<m:MaterialColumn>
-							<m:MaterialLink iconType="" text="Routines"/>
-							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
+							<m:MaterialLink iconType="" text="Seating" float="LEFT"/>
 						</m:MaterialColumn>
 					</m:MaterialRow>
 					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody> 
-						<!-- so this is somehting to thin what he has -->
-					</m:MaterialCollapsibleBody>
-				</m:MaterialCollapsibleItem>
-				<m:MaterialCollapsibleItem> 
-					<m:MaterialCollapsibleHeader>
-					<m:MaterialRow> 
-						<m:MaterialColumn>
-							<m:MaterialLink iconType="" text="Procedures"/>
-							<m:MaterialBadge float="RIGHT"></m:MaterialBadge>
-						</m:MaterialColumn>
-					</m:MaterialRow>
-					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody> 
+					<m:MaterialCollapsibleBody ui:field="seatingCollapseBody"> 
 						<!-- so this is somehting to thin what he has -->
 					</m:MaterialCollapsibleBody>
 				</m:MaterialCollapsibleItem>

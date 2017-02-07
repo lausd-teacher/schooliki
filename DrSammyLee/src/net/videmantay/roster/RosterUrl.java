@@ -9,7 +9,6 @@ package net.videmantay.roster;
 	 private final static String classtime = "/classtime/";
 	 private final static String schedule = "/schedule/";
 	 private final static String seatingChart = "/seatingchart/";
-	 private final static String classtimeconfig = "/classtimeconfig";
 	 private final static String rosterconfig = "/rosterconfig";
 	 private final static String search = "student/search/";
 	 
@@ -48,12 +47,8 @@ package net.videmantay.roster;
 	
 	public final static String classtime(Long id){return roster + id + classtime;}
 	public final static String classtime(Long id, Long classtimeId){return roster+ id+ classtime + classtimeId;}
-	
-	public final static String classtimeconfig(Long id){return roster + id + classtimeconfig;}
-	public final static String classtimeconfig(Long id, Long classtimeId){return roster+id+classtime+classtimeId+classtimeconfig;}
-	
+
 	public final static String seatingchart(Long id, Long classtimeId){return roster + id +classtime + classtimeId + seatingChart;}
-	
-	
+
 	public final static String schedule(Long id){return roster + id + schedule;}
 }

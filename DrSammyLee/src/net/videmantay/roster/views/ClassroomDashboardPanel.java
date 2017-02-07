@@ -4,15 +4,11 @@ import static com.google.gwt.query.client.GQuery.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
@@ -55,9 +51,6 @@ public class ClassroomDashboardPanel extends Composite
 	
 	@UiField
 	public MaterialIcon randomIcon;
-	
-	@UiField
-	public MaterialIcon seatingChartEditIcon;
 	
 	@UiField
 	public HTMLPanel tab1Main;
@@ -136,11 +129,14 @@ public class ClassroomDashboardPanel extends Composite
 		utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		
+		
 	}
 	
 	public void showDoneBar(){
 		toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+		
 	}
 	public void showToolBar(){
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
@@ -152,10 +148,6 @@ public class ClassroomDashboardPanel extends Composite
 		toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		rollToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
 	}
-
-	
-	
-	
 
 	public State getState() {
 		return this.state;
@@ -169,12 +161,8 @@ public class ClassroomDashboardPanel extends Composite
 		tab1Main.clear();
 		if(display instanceof SeatingChartPanel){
 			tab1Main.add(display);
-		    seatingChartEditIcon.setVisible(true);
-		
 		}else if(display instanceof ClassroomDisplay){
-			tab1Main.add(display);
-			seatingChartEditIcon.setVisible(false);
-		
+			tab1Main.add(display);		
 		}
 			
 	}
@@ -198,7 +186,6 @@ public class ClassroomDashboardPanel extends Composite
     	});
     }
 
-
-
+ 
 	
 }

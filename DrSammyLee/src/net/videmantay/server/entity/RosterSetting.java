@@ -1,21 +1,17 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
-@Cache
 @Entity
 public class RosterSetting implements Serializable{
 	
@@ -36,8 +32,6 @@ public class RosterSetting implements Serializable{
 	public Set<String> taskNames = new HashSet<>();
 	
 	public Set<String> calendarNames = new HashSet<>();
-	
-	public Boolean includeContacts = false;
 	
 	public RosterSetting(){
 		defaultSetting();

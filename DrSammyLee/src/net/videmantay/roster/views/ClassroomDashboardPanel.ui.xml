@@ -8,6 +8,10 @@
 		padding: 2em;
 		border: 0px;
 	}
+	.dashboardToolBtns{
+		position:relative !important;
+		top:-0.45em !important;
+	}
 	</ui:style>
 	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab" textColor="red" height="2.5em">
@@ -30,7 +34,7 @@
 				width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar"
 				text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN"
 				iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime2"></m:MaterialAnchorButton>
-			<m:MaterialDropDown activator="classtime2"
+			<m:MaterialDropDown activator="classtime2" belowOrigin="true"
 				ui:field="classtimeDrop2">
 				<m:MaterialLink addStyleNames="manageClassTimeLink"
 					ui:field="classDropDownManageLink2" text="Manage..."
@@ -44,11 +48,11 @@
 					text="Class Time" fontSize="1.10em" marginRight="5.0" textAlign="CENTER"
 					backgroundColor="red darken-3" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM"
 					iconPosition="RIGHT" activates="classtime" />
-				<m:MaterialDropDown activator="classtime"
+				<m:MaterialDropDown activator="classtime" belowOrigin="true"
 					ui:field="classtimeDrop">
 					<m:MaterialLink addStyleNames="manageClassTimeLink"
 						ui:field="classDropDownManageLink" text="Manage..."
-						backgroundColor="grey lighten-1" />
+						backgroundColor="grey lighten-3" />
 				</m:MaterialDropDown>
 				<m:MaterialColumn grid="l3" hideOn="HIDE_ON_MED_DOWN"
 					float="LEFT" centerOn="CENTER_ON_SMALL">
@@ -63,18 +67,9 @@
 							<m:MaterialLabel text="Seating Chart"
 								paddingLeft="7.5" />
 						</m:MaterialColumn>
-						<m:MaterialColumn>
-							<m:MaterialIcon ui:field="seatingChartEditIcon"
-								iconType="EDIT" />
-						</m:MaterialColumn>
 					</m:MaterialRow>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="s12 m6 l6">
-					<m:MaterialColumn grid="s2 m2 l2">
-						<m:MaterialPanel paddingTop="12">
-							<m:MaterialLabel text="Check: " hideOn="HIDE_ON_SMALL"/>
-						</m:MaterialPanel>
-					</m:MaterialColumn>
+				<m:MaterialColumn  addStyleNames="{style.dashboardToolBtns}" grid="s12 m6 l6" height="100%">
 					<m:MaterialColumn grid="s1 m1 l1">
 						<m:MaterialPanel paddingTop="12">
 							<g:HTMLPanel>
@@ -98,6 +93,16 @@
 					<m:MaterialColumn grid="s1 m1 l1">
 						<m:MaterialPanel paddingTop="12">
 							<g:HTMLPanel>
+								<m:MaterialTooltip text="Procedures">
+									<m:MaterialIcon ui:field="proceduresIcon" iconType="VIEW_LIST"
+										iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1 m1 l1">
+						<m:MaterialPanel paddingTop="12">
+							<g:HTMLPanel>
 								<m:MaterialTooltip text="Groups">
 									<m:MaterialIcon ui:field="groupsIcon" iconType="GROUP_WORK"
 										iconSize="SMALL" />
@@ -105,13 +110,18 @@
 							</g:HTMLPanel>
 						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<!--This starts selects tools -->
-					<m:MaterialColumn grid="s2 m2 l2">
-						<m:MaterialPanel paddingTop="12" marginLeft="20">
-							<m:MaterialLabel text="Select: " textColor="deep-orange darken-3" hideOn="HIDE_ON_SMALL"/>
+					<m:MaterialColumn grid="s1 m1 l1" marginRight="20">
+						<m:MaterialPanel paddingTop="12">
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Stations">
+									<m:MaterialIcon ui:field="stationsIcon" iconType="WIDGETS"
+										iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
 						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1" marginRight="10">
+					<!--This starts selects tools -->
+					<m:MaterialColumn grid="s1 m1 l1" marginLeft="20">
 						<m:MaterialPanel paddingTop="12">
 							<g:HTMLPanel>
 								<m:MaterialTooltip text="Multiple">
@@ -192,10 +202,9 @@
 			</g:HTMLPanel>
 		</div>
 		<div id="tab3">
-			<svg viewBox="0 0 150 200" style="width:200px; height:300px;">
-				<use xlink:href="../img/allIcons.svg#rocket" />
-			</svg>
+			
 		</div>
+	
 		<m:MaterialModal type="FIXED_FOOTER" ui:field="modal" >
 			<m:MaterialModalContent>
 				<g:HTMLPanel>

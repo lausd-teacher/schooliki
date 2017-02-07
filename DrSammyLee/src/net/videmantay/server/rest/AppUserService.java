@@ -1,4 +1,4 @@
-package net.videmantay.rest;
+package net.videmantay.server.rest;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;

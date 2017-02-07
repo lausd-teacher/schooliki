@@ -9,10 +9,13 @@ import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.ui.RootPanel;
 
+import gwt.material.design.client.ui.MaterialLoader;
+import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.routine.json.RoutineConfigJson;
 import net.videmantay.roster.routine.json.RoutineJson;
 import net.videmantay.roster.routine.json.SeatingChartJson;
+import net.videmantay.roster.routine.json.FullRoutineJson;
 import net.videmantay.roster.views.ClassroomMain;
 import net.videmantay.roster.views.RosterMain;
 import net.videmantay.student.json.InfoJson;
@@ -29,13 +32,11 @@ public class RosterUtils {
 	
 	private  RosterJson currentRoster;
 	private  JsArray<RosterJson> rosterList;
-	private  RoutineJson selectedClassTime;
-	private RoutineConfigJson classtimeConfig;
+	private FullRoutineJson selectedClassTime;
 	private JsArray<RoutineJson> classTimes;
 	private  boolean isEditMode = false;
 	private  boolean isRollMode = false;
 	private  JsArray<RosterStudentJson> students;
-	private RoutineConfigJson defaultTime;
 	private SeatingChartJson seatingChart;
 	
 	
@@ -66,8 +67,6 @@ public class RosterUtils {
 	public   void setCurrentRoster(final RosterJson current) {
 		console.log("current roster is set");
 		console.log(current);
-		//make a copy of the roster /// geeze loise
-		//this.currentRoster = JsonUtils.safeEval(JsonUtils.stringify(current)).cast();
 		this.currentRoster = current;
 		//set rosterId to window;
 		Properties wnd = window.cast();
@@ -80,29 +79,33 @@ public class RosterUtils {
 		return currentRoster;
 	}
 	
-	public  void setSelectedClassTime(RoutineJson sct) {
-		if(selectedClassTime == sct){
+	public  void setSelectedClassTime(final FullRoutineJson sct) {
+		if(this.selectedClassTime == null){
+			this.selectedClassTime = sct;
 			return;
 		}
-		selectedClassTime = sct;
-		$(window).prop("selectedClassTime", selectedClassTime);
+		if(this.selectedClassTime != null && this.selectedClassTime.getRoutine() != null 
+				&& this.selectedClassTime.getRoutine().getId() != null
+				&& this.selectedClassTime.getRoutine().getId() == sct.getRoutine().getId()){
+			return;
+		}
 		// must get the config from server and added it to then window as well
 		//if this is just a temporary classtime just skip ajax call
-		if(selectedClassTime.getId() != null){
-		Ajax.get(RosterUrl.classtimeconfig(currentRoster.getId(), selectedClassTime.getId()))
+		MaterialLoader.showLoading(true);
+		Ajax.get(RosterUrl.classtime(currentRoster.getId(), selectedClassTime.getRoutine().getId()))
 		.done(new Function(){
 			@Override
 			public void f(){
-				RoutineConfigJson ctc =  JsonUtils.safeEval((String)this.arguments(0)).cast();
-				//fire ctc change event
+				FullRoutineJson ctc =  JsonUtils.safeEval((String)this.arguments(0)).cast();
+				selectedClassTime = ctc;
 				$(body).trigger(RosterEvent.updateClassTimeConfig, ctc);
 			}
 		});
-		}//end if no id
+
 		
 	}
 	
-	public  RoutineJson getSelectedClassTime() {
+	public  FullRoutineJson getSelectedClassTime() {
 		return selectedClassTime;
 	}
 	
@@ -113,15 +116,6 @@ public class RosterUtils {
 	public void setClassTimes(JsArray<RoutineJson> times){
 		this.classTimes = times;
 	}
-	
-	public RoutineConfigJson getClasstimeConfig(){
-		return this.classtimeConfig;
-	}
-	
-	public void setClasstimeConfig(RoutineConfigJson classConfig){
-		this.classtimeConfig = classConfig;
-	}
-	
 	
 	public  void showLandingPage(){
 		
