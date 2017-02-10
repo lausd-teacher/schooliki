@@ -385,21 +385,29 @@ public class RosterService {
 		log.info("create student called with data of : " + joinRequests.iterator().next().email);
 
 		// cheking if roster exists and student exists
-		RosterDetail details = ofy().load().key(Key.create(RosterDetail.class, id)).now();
+		Key<RosterDetail> rosKey = Key.create(RosterDetail.class, id);
+		
+		RosterDetail details = ofy().load().key(rosKey).now();
 		List<RosterStudent> students = new ArrayList<>();
 		// User user = UserServiceFactory.getUserService().getCurrentUser();
 		if (details != null) {
-			List<RosterStudent> studentsCheck = db().load().type(RosterStudent.class).ancestor(details).list();
 			for (JoinRequest jr : joinRequests) {
 				if (jr.status.name().equalsIgnoreCase("accepted")) {
+					Key<RosterStudent> stuKey = Key.create(rosKey, RosterStudent.class, jr.email);
 					// check that it doesn't exist in roster
+					RosterStudent stuCheck = db().load().key(stuKey).now();
+					if(stuCheck != null){
+						continue;
+					}
 					AppUser appUser = db().load().type(AppUser.class).filter("email", jr.email).first().now();
 					RosterStudent stu = new RosterStudent(id, appUser);
 					students.add(stu);
 				} // endif
 			} // end for
-
-			return Response.ok().entity(students).build();
+			//save it to the db
+			ArrayList<RosterStudent> sendMe = new ArrayList<>();
+			 sendMe.addAll(db().save().entities(students).now().values());
+			return Response.ok().entity(sendMe).build();
 
 		} // end if
 

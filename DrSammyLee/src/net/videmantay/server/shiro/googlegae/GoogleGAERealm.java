@@ -22,7 +22,6 @@ package net.videmantay.server.shiro.googlegae;
 
 import net.videmantay.server.GoogleUtils;
 import net.videmantay.server.entity.AppUser;
-import net.videmantay.server.shiro.gae.MemcacheManager;
 import net.videmantay.server.util.DB;
 
 import org.apache.shiro.authc.AuthenticationException;

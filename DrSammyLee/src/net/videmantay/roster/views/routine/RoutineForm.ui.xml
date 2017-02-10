@@ -41,7 +41,7 @@
 		<m:MaterialPanel m:id="groups-routineTab" ></m:MaterialPanel>
 		<m:MaterialPanel m:id="stations-routineTab"></m:MaterialPanel>
 		<m:MaterialPanel m:id="seatingChart-routineTab" hideOn="HIDE_ON_MED_DOWN">
-			
+		
 		</m:MaterialPanel>
 	</g:HTMLPanel>
 		</m:MaterialCardContent>

@@ -1,6 +1,6 @@
 // Copyright (c) 2013 Cilogi. All Rights Reserved.
 //
-// File:        RegistrationDAO.java  (09/07/13)
+// File:        BaseDAO.java  (26/02/13)
 // Author:      tim
 //
 // Copyright in the whole and every part of this source file belongs to
@@ -18,16 +18,39 @@
 //
 
 
-package net.videmantay.server.shiro.gae;
+package net.videmantay.server.shiro.googlegae;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.googlecode.objectify.Key;
 
+import java.util.logging.Logger;
 
-public class RegistrationDAO extends BaseDAO<RegistrationString> {
-    static final Logger LOG = LoggerFactory.getLogger(RegistrationDAO.class);
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
-    public RegistrationDAO() {
-        super(RegistrationString.class);
+public class BaseDAO<T> {
+    static final Logger LOG = Logger.getLogger(BaseDAO.class.getName());
+
+    private final Class clazz;
+
+    public BaseDAO(Class clazz) {
+        this.clazz = clazz;
     }
+
+    @SuppressWarnings({"unchecked"})
+    public T get(String id) {
+        if (id == null || "".equals(id)) {
+            return null;
+        }
+        T db = (T)ofy().load().key(Key.create(clazz, id)).now();
+        return db;
+    }
+
+    public void put(T object) {
+        ofy().save().entity(object).now();
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void delete(String id) {
+        ofy().delete().key(Key.create(clazz, id));
+    }
+
 }

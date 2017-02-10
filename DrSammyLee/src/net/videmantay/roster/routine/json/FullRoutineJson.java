@@ -22,7 +22,7 @@ public class FullRoutineJson extends JavaScriptObject {
 	return this;
 }-*/;
 	
-	public void copy(FullRoutineJson data){
+	public final void copy(FullRoutineJson data){
 		this.setRoutine(data.getRoutine());
 		this.setRoutineConfig(data.getRoutineConfig());
 	}

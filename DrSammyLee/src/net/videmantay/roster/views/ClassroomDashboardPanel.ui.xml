@@ -67,90 +67,65 @@
 							<m:MaterialLabel text="Seating Chart"
 								paddingLeft="7.5" />
 						</m:MaterialColumn>
+						<m:MaterialColumn grid="s1 m1 l1">
+				<m:MaterialTooltip text="Edit">
+				<m:MaterialIcon ui:field="editIcon" iconType="EDIT" marginTop="10"></m:MaterialIcon>
+				</m:MaterialTooltip>
+				</m:MaterialColumn>
 					</m:MaterialRow>
 				</m:MaterialColumn>
 				<m:MaterialColumn  addStyleNames="{style.dashboardToolBtns}" grid="s12 m6 l6" height="100%">
+				<m:MaterialRow>
 					<m:MaterialColumn grid="s1 m1 l1">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
 								<m:MaterialTooltip text="Roll">
-									<m:MaterialIcon ui:field="rollIcon" iconType="ASSIGNMENT_IND"
+									<m:MaterialIcon ui:field="rollIcon" iconType="ASSIGNMENT_IND" margin="10"
 										iconSize="SMALL" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s1 m1 l1">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
 								<m:MaterialTooltip text="Homework">
-									<m:MaterialIcon ui:field="hwIcon" iconType="ASSIGNMENT"
+									<m:MaterialIcon ui:field="hwIcon" iconType="ASSIGNMENT" margin="10"
 										iconSize="SMALL" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s1 m1 l1">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
 								<m:MaterialTooltip text="Procedures">
-									<m:MaterialIcon ui:field="proceduresIcon" iconType="VIEW_LIST"
+									<m:MaterialIcon ui:field="proceduresIcon" iconType="VIEW_LIST" margin="10"
 										iconSize="SMALL" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s1 m1 l1">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
 								<m:MaterialTooltip text="Groups">
-									<m:MaterialIcon ui:field="groupsIcon" iconType="GROUP_WORK"
+									<m:MaterialIcon ui:field="groupsIcon" iconType="GROUP_WORK" margin="10"
 										iconSize="SMALL" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1" marginRight="20">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
+					<m:MaterialColumn grid="s1 m1 l1"  margin="10" >
 								<m:MaterialTooltip text="Stations">
-									<m:MaterialIcon ui:field="stationsIcon" iconType="WIDGETS"
+									<m:MaterialIcon ui:field="stationsIcon" iconType="WIDGETS" 
 										iconSize="SMALL" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
 					<!--This starts selects tools -->
-					<m:MaterialColumn grid="s1 m1 l1" marginLeft="20">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
+					<m:MaterialColumn grid="s1 m1 l1" marginTop="10" marginRight="5">
 								<m:MaterialTooltip text="Multiple">
 									<m:MaterialIcon ui:field="multipleIcon"
 										iconType="GROUP_ADD" iconSize="SMALL" textColor="deep-orange darken-3" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1" marginRight="10">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
+					<m:MaterialColumn grid="s1 m1 l1" marginTop="10" marginRight="5">
 								<m:MaterialTooltip text="Random">
 									<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE"
 										iconSize="SMALL" textColor="deep-orange darken-3" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1" marginRight="10">
-						<m:MaterialPanel paddingTop="12">
-							<g:HTMLPanel>
+					<m:MaterialColumn grid="s1 m1 l1" marginTop="10">
 								<m:MaterialTooltip text="Select All">
 									<m:MaterialIcon ui:field="selectAllIcon"
 										iconType="SELECT_ALL" iconSize="SMALL" textColor="deep-orange darken-3" />
 								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
 					</m:MaterialColumn>
+					</m:MaterialRow>
 				</m:MaterialColumn>
 			</m:MaterialRow>
 			<m:MaterialRow ui:field="doneToolbar" backgroundColor="deep-orange darken-3">

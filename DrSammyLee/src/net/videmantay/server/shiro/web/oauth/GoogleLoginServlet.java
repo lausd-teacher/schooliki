@@ -24,8 +24,8 @@ import static net.videmantay.server.util.DB.*;
 
 import net.videmantay.server.GoogleUtils;
 import net.videmantay.server.entity.AppUser;
-import net.videmantay.shared.UserRoles;
 import net.videmantay.server.shiro.googlegae.GoogleGAEAuthenticationToken;
+import net.videmantay.shared.UserRoles;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.plus.Plus;
@@ -40,10 +40,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
-import org.slf4j.event.Level;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

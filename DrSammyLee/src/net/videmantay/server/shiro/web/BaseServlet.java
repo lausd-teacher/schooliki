@@ -20,8 +20,6 @@ package net.videmantay.server.shiro.web;
 //effectively secure at all times.
 //
 
-import net.videmantay.server.shiro.gae.GaeUser;
-import net.videmantay.server.shiro.gae.GaeUserDAO;
 import net.videmantay.server.util.MimeTypes;
 import net.videmantay.server.util.doc.CreateDoc;
 import com.google.common.base.Preconditions;
@@ -55,13 +53,6 @@ public class BaseServlet extends HttpServlet implements ParameterNames, MimeType
  protected final int HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
 
  private CreateDoc create;
-
- protected GaeUserDAO daoProvider;
-
- protected BaseServlet(GaeUserDAO daoProvider) {
-     this.daoProvider = daoProvider;
- }
-
  
  protected void setCreate(CreateDoc create) {
      this.create = create;
@@ -157,17 +148,6 @@ public class BaseServlet extends HttpServlet implements ParameterNames, MimeType
      return subject.hasRole("admin");
  }
 
- @SuppressWarnings({"unchecked"})
- protected GaeUser getCurrentGaeUser() {
-     Subject subject = SecurityUtils.getSubject();
-     String email = (String)subject.getPrincipal();
-     if (email == null) {
-         return null;
-     } else {
-         GaeUserDAO dao = daoProvider;
-         return dao.findUser(email);
-     }
- }
 
 
 }

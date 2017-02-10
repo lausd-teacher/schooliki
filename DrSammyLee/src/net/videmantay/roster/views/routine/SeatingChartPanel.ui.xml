@@ -5,19 +5,48 @@
 	xmlns:h="urn:import:gwt.material.design.client.ui.html">
 	<ui:style>
 		.scStudentTools{
-		margin:0.5em;
-		padding-right:1em;
 		overflow-x:hidden;
-		float:left;
 		height:100%;
+		width: 9em;
+		position: relative;
+		
+	}
+	.scStudentList{
+		overflow-y:scroll;
+		height:75%;
+	}
+	.seatingChart{
+		width:1090px;
+		height:650px;
+		display:block;
+		position:relative;
+		margin-left:auto;
+		margin-right:auto;
+		margin-bottom:1em;
+	}
+	.floorPlan{
+		height:650px;
+		background-image:url('../img/classFloor.svg');
+		border-radius:5%;
+		border:0.1em dotted Brown;
+		position:relative;
+		left:3.75em;
 	}
 	</ui:style>
-	<g:HTMLPanel ui:field="seatingChart" styleName="seatingChart">
+	<g:HTMLPanel ui:field="seatingChart" styleName="{style.seatingChart}">
+	<m:MaterialRow>
+	<m:MaterialColumn grid="l1">
 		<h:Div addStyleNames="{style.scStudentTools}">
-		<m:MaterialLabel text=" Students - No seat Assigned" />
+		<g:HTMLPanel>
+			<div class="red-text text-darken-2"><span sytle="font-size:1.5em;left:0%; position:relative">Students</span>
+			<span class="material-icons" style="position:relative;top:10px;left:40px">add</span></div>
+		</g:HTMLPanel>
 		<m:MaterialCollection  ui:field="studentList"  addStyleNames="scStudentList" />
-		<m:MaterialAnchorButton type="FLOATING" iconSize="SMALL" iconType='ADD' backgroundColor="amber darken-1" textColor="white" />
 		</h:Div>
-		<h:Div ui:field="floorPlan" addStyleNames="floorPlan"></h:Div>
+	</m:MaterialColumn>
+	<m:MaterialColumn grid="l10">
+		<h:Div ui:field="floorPlan" addStyleNames="{style.floorPlan}"></h:Div>
+	</m:MaterialColumn>
+	</m:MaterialRow>
 	</g:HTMLPanel>
 </ui:UiBinder> 

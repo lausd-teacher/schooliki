@@ -6,6 +6,8 @@ import com.google.gwt.core.client.JsArray;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class GroupRoleJson extends JavaScriptObject{
+	
+	protected GroupRoleJson(){}
 	public final native JsArray<RosterStudentJson> getStudents()/*-{
 		return this.students;
 	}-*/;

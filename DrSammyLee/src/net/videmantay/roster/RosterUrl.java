@@ -9,13 +9,12 @@ package net.videmantay.roster;
 	 private final static String classtime = "/classtime/";
 	 private final static String schedule = "/schedule/";
 	 private final static String seatingChart = "/seatingchart/";
-	 private final static String rosterconfig = "/rosterconfig";
 	 private final static String search = "student/search/";
 	 
 	public final static String roster(){return roster;}
 	public final static String roster(String id){return roster + id;}
 	
-	public final static String rosterconfig(Long id){return roster +id + rosterconfig;}
+	
 	
 	public final static String student(Long id){return roster + id + student;}
 	public final static String  student(Long id, String studentId){return roster + id + student + studentId;}

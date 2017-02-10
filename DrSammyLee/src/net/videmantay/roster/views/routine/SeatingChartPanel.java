@@ -57,7 +57,6 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	}
 
 	private SeatingChartJson data;
-	private SeatingChartJson originalData;
 	private boolean isEditing = false;
 	
 	
@@ -95,16 +94,6 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	public void setSeatingChart(SeatingChartJson seatingChart){
 		data = seatingChart;
 		drawGrid();
-	}
-	
-	private SeatingChartJson copySeatingChart( SeatingChartJson original){
-		SeatingChartJson copy = SeatingChartJson.createObject().cast();
-		copy = SeatingChartJson.createObject().cast();
-		copy.setDescript(original.getDescript());
-		copy.setFurniture(original.getFurniture());
-		copy.setId(original.getId());
-		copy.setTitle(original.getTitle());
-		return copy;
 	}
 	
 	@Override
@@ -182,7 +171,9 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 				//place the rest in side
 				for(RosterStudentPanel rsp : stuPanels){
 				MaterialCollectionItem mci =new MaterialCollectionItem();
+				rsp.gridStyle();
 				mci.add(rsp);
+				mci.setPadding(5);
 				studentList.add(mci);
 				}//end for
 				console.log("Here is the student collection ");
@@ -322,7 +313,6 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	@Override
 	public void stopEditing(){
 		setIsEditing(false);
-		home();
 	}
 
 	@Override
