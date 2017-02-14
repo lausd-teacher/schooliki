@@ -312,7 +312,24 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 	}
 
 	@Override
-	public void stopEditing() {
+	public void doneEditing() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void edit(){
+		
+	}
+
+	@Override
+	public State getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setState(State state) {
 		// TODO Auto-generated method stub
 		
 	}

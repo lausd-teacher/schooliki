@@ -24,13 +24,15 @@ public interface HasClassroomDashboardView extends IsWidget {
 	
 	public void drawGrid();
 	
+	public void edit();
+	
+	public void doneEditing();
+	
 	public void groups();
 	
 	public void home();
 	
 	public boolean isEditing();
-	
-	public void stopEditing();
 	
 	public void multipleSelect();
 	
@@ -44,5 +46,9 @@ public interface HasClassroomDashboardView extends IsWidget {
 	
 	public void unHome();
 	
+	public State getState();
 	
+	public void setState(State state);
+	//enum for state
+	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATION_EDIT};
 }

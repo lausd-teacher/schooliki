@@ -146,13 +146,23 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				dashboard.editIcon.setVisible(event.getValue());
 				console.log("gridswitch clicked and the value is " + dashboard.gridSwitch.getValue());
-				if(dashboard.gridSwitch.getValue()){
+				if(event.getValue()){
 				//so depending on the value
 					seatingchart();
 				}else{
 					showDashboard();
 				}
+				
+			}};
+			
+		ClickHandler displayEditIconHandler = new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				dashboard.toolbar.setVisible(false);
+				dashboard.getDisplay().edit();
 				
 			}};
 			
@@ -233,6 +243,8 @@ public class ClassroomMain extends Composite{
 					sideNav.hide();
 					History.newItem("c/" + roster.getId() +"/t");
 				}});
+			
+			
 		
 	}//end constructor
 	
@@ -249,6 +261,8 @@ public class ClassroomMain extends Composite{
 				
 				//seating chart edit icon click
 				dashboard.gridSwitch.addValueChangeHandler(gridSwitchHandler);
+				//seating chart edit icon click
+				dashboard.editIcon.addClickHandler(this.displayEditIconHandler);
 				
 				//add ondropdown handler
 				dashboard.classtimeDrop.addSelectionHandler(routineSelection);

@@ -4,6 +4,8 @@ import static com.google.gwt.query.client.GQuery.*;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -51,6 +53,9 @@ public class ClassroomDashboardPanel extends Composite
 	
 	@UiField
 	public MaterialIcon randomIcon;
+	
+	@UiField
+	public MaterialIcon editIcon;
 	
 	@UiField
 	public HTMLPanel tab1Main;
@@ -113,18 +118,14 @@ public class ClassroomDashboardPanel extends Composite
 	public HTMLPanel calendarContainer;
 	
 	
-	private State state = State.DASHBOARD;
+	
 	
 	private HasClassroomDashboardView display;
 	final RosterUtils utils;
 
 	@UiField
 	MaterialModal modal;
-
-	//enum for state
-	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
-	
-	
+		
 	public ClassroomDashboardPanel(RosterUtils ru) {
 		utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
@@ -149,22 +150,11 @@ public class ClassroomDashboardPanel extends Composite
 		rollToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
 	}
 
-	public State getState() {
-		return this.state;
-	}
-	
-	public void setState(State state) {
-		this.state = state;
-	}
 	
 	public void setDisplayInTab1(HasClassroomDashboardView display){
-		tab1Main.clear();
-		if(display instanceof SeatingChartPanel){
-			tab1Main.add(display);
-		}else if(display instanceof ClassroomDisplay){
-			tab1Main.add(display);		
-		}
-			
+			tab1Main.clear();
+			this.display = display;
+			tab1Main.add(display);			
 	}
 	
 	public HasClassroomDashboardView getDisplay(){
@@ -184,7 +174,9 @@ public class ClassroomDashboardPanel extends Composite
     			modal.openModal();
     		}
     	});
-    }
+    	
+    
+    }//end onload
 
  
 	
