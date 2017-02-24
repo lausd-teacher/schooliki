@@ -11,7 +11,7 @@ public class FurnitureUtils {
 							+"<td><div class='seat pos1'></div></td><td><div class='seat pos2'></div></td></tr>"
 							+"</table></div>");
 		html.setStylePrimaryName("desk-wrapper");
-		html.setSize("7.2em", "3.6em");
+		html.setSize("8em", "4em");
 		return html;
 		
 	}
@@ -21,7 +21,7 @@ public class FurnitureUtils {
 				+"<td><div class='seat pos1'></div></td></tr>"
 				+"</table></div>");
 		html.setStylePrimaryName("desk-wrapper");
-		html.setSize("3.6em", "3.6em");
+		html.setSize("4em", "4em");
 		return html;
 	}
 	

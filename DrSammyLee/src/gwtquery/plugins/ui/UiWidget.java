@@ -6,6 +6,8 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
+import gwtquery.plugins.ui.utilities.BoundingBox;
+
 /**
  * An abstract base class for all JQuery UI widgets.
  * 
@@ -90,7 +92,6 @@ public abstract class UiWidget<T extends UiWidget<?, ?>, O extends WidgetOptions
   this.@gwtquery.plugins.ui.UiWidget::ui = this.@gwtquery.plugins.ui.UiWidget::ui.on(name, function(event, ui){
   		event.stopImmediatePropagation();
     	event.preventDefault();
-  	  console.log(ui);
   	  f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
   });
   

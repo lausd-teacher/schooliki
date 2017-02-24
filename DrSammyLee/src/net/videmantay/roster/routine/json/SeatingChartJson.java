@@ -39,4 +39,11 @@ public class SeatingChartJson extends JavaScriptObject {
 			this.furniture = furniture;
 	}-*/;
 	
+	public final void copy(SeatingChartJson data){
+		this.setId(data.getId());
+		this.setTitle(data.getTitle());
+		this.setDescript(data.getDescript());
+		this.setFurniture(data.getFurniture());
+	}
+	
 }

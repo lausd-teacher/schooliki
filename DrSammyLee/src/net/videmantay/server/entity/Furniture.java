@@ -19,6 +19,8 @@ public class Furniture implements Serializable {
 	public String iconUrl;
 	public String backgroundColor;
 	public StudentSeat[] seats;
+	public Double trueTop;
+	public Double trueLeft;
 	
 	
 	

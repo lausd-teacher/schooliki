@@ -17,6 +17,13 @@ public class FurnitureJson extends JavaScriptObject {
 	public final native void setTop(String top)/*-{
 			this.top = top;
 		}-*/;
+	public final native double getTrueTop()/*-{
+	return this.trueTop;
+}-*/;
+
+public final native void setTrueTop(double top)/*-{
+		this.trueTop = top;
+}-*/;
 	
 	public final native String getLeft()/*-{
 			return this.left;
@@ -25,6 +32,14 @@ public class FurnitureJson extends JavaScriptObject {
 	public final native void setLeft(String left)/*-{
 			this.left = left;
 		}-*/;
+	
+	public final native double getTrueLeft()/*-{
+		return this.trueLeft;
+	}-*/;
+	
+	public final native void setTrueLeft(double left)/*-{
+	this.trueLeft = left;
+}-*/;
 	
 	public final native String getTransform()/*-{
 			return this.transform;

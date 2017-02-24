@@ -4,6 +4,7 @@
    	height:100%;
    	width:100%;
    	background-color:WhiteSmoke;
+   	position:absolute;
    }
    
    	/* full calenar stuff ---------------------*/
@@ -131,9 +132,7 @@ div.item-student.ui-selecting { background: #FECA40;
 	  text-align:center;
 	}
 	
-	.floorplan-hover{
-		background-color:Teal;
-}
+
 	/* SeatingChart - Desk style */
 	.desk{
 		position:absolute;
@@ -169,7 +168,7 @@ div.item-student.ui-selecting { background: #FECA40;
 	.doubledesk{
 	width:7.2em;
 	height:3.6em;
-	background-image:url('img/doubleDesk.png');
+	background-image:url('../img/doubleDesk.png');
 	background-size:100%;
 	background-repeat:no-repeat;
 }
@@ -177,7 +176,7 @@ div.item-student.ui-selecting { background: #FECA40;
 .singledesk{
 	width:3.6em;
 	height:3.6em;
-	background-image:url('img/singleDesk.png');
+	background-image:url('../img/singleDesk.png');
 	background-size:100%;
 	background-repeat:no-repeat;
 }
@@ -186,6 +185,7 @@ div.item-student.ui-selecting { background: #FECA40;
 	width:3.6em;
 	height:4em;
 	margin:0px;
+	position:relative;
 }
 
 .seat-over{
@@ -224,66 +224,47 @@ div.item-student.ui-selecting { background: #FECA40;
 	/* rosterStudent style ------------------------------*/
 	
 	.rosterStudent{
-		width:4.75em;
-		height:6em;
 		position:relative;
 		font-size:0.75em;
 		padding:0.5em;
 		padding-top:0.15em;
 	}
-	div.rosterStudent.ui-draggable.ui-draggable-handle{
+	
+		.rosterStudent.chart{
 		position:relative;
-		top:0px;
+		min-width:3.95em;
+		min-height:7.9em;
+		display:block;
+	} 
+	
+	.rosterStudent.chart.ui-draggable.ui-draggable-handle{
+		position:relative;
 		border:0.01em solid Gray;
 		border-radius:15%;
 		box-shadow:2px 2px 2px Gray;
-		background-color: rgb(245,245,220);
-	}
-	li > div.rosterStudent.ui-draggable.ui-draggable-handle{
-		position:relative;
-		top:0px;
-		border:0.01em solid Gray;
-		border-radius:15%;
-		box-shadow:2px 2px 2px Gray;
-		background-color: rgb(245,245,220);
+		background-color: transparent;
 	}
 	.rosterStudent.grid{
+		position:relative;
 		top:0px;
 		width:10em;
 		min-height:11em;
 	}
-	.seatingChartImageDiv{
-		background-size:contain;
-		background-repeat:no-repeat;
-		background-position:center;
-	}
 	
-	.rosterStudent .studentHead{
-		width:100%;
-		height:4em;
-		
-		
-	}
-	
-	.rosterStudent .studentBody {
-		width:100%;
-		height:100%;
-		
-	}
-	
-	
-	.rosterStudent .studentHead > div.counterRotate{
+	 div.counterRotate.studentHead{
 		width:100%;
 		height:100%;
 		background-size:contain;
 		background-repeat:no-repeat;
-		background-position:center;
-		
-		
+		background-position:center;	
+	}
+	div.counterRotate.studentBody {
+			display:block;
+			width:100%;
+			height:100%;
 	}
 	
-	
-	.rosterStudent .studentBody .studentName span{
+	div.counterRotate.studentBody >span.material-label.studentName{
 		overflow:hidden;
 		text-overflow:ellipsis;
 		white-space:no-wrap;
@@ -292,17 +273,23 @@ div.item-student.ui-selecting { background: #FECA40;
 		float:left;
 	}
 	
-	.studentBadge{
+	.seatingChartImageDiv{
+		background-size:contain;
+		background-repeat:no-repeat;
+		background-position:center;
+	}
+	
+	.statusBadge{
 		border:2px solid White;
 		box-shadow:1px 1px 2px Gray;
-		width:3em !important;
-		height:3.5em !important;
+		width:4em !important;
+		height:4em !important;
 	}
-	.studentBadgeLeft{
-		left:-10px;
+	.statusBadgeLeft{
+		left:-15%;
 	}
-	.studentBadgeRight{
-		right:-10px !important;
+	.statusBadgeRight{
+		right:-15% !important;
 	}
 	
 	/* end roste student style *********************************************/

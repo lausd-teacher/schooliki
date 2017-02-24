@@ -91,15 +91,18 @@ public class RosterStudentPanel extends Composite {
 	}
 	
 	public void gridStyle(){
-		$(statusBadge).addClass("studentBadge", "studentBadgeLeft");
-		$(extraStatusBadge).addClass("studentBadge", "studentBadgeRight");
+		clearStyle();
 		 $(rosterStudentPanel).addClass("grid", "card", "card-content");
+		 $(badgeRow).css("display", "block");
 	}
 	
-	private void clearStyle(){
-		$(rosterStudentPanel).removeClass("grid", "card", "card-content");
-		$(statusBadge).removeClass("studentBadge", "studentBadgeLeft");
-		$(extraStatusBadge).removeClass("studentBadge", "studentBadgeRight");
+	public void clearStyle(){
+		$(rosterStudentPanel).removeClass("grid", "chart", "sideNav", "card", "card-content");
+	}
+	public void chartStyle(){
+		clearStyle();
+		$(rosterStudentPanel).addClass("chart");
+		$(badgeRow).css("display", "none");
 	}
 	
 

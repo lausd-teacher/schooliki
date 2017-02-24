@@ -7,9 +7,9 @@
 	.scStudentTools {
 		overflow-x: hidden;
 		height: 100%;
-		width: 11em;
+		width: 10em;
 		position: relative;
-		left: -2.25em;
+		left: -2em;
 	}
 	
 	.scStudentList {
@@ -27,15 +27,23 @@
 		margin-right: auto;
 		margin-bottom: 1em;
 	}
+	.stationLayer {
+		height: 700px;
+		background-color:transparent;
+		position: relative;
+		left:-0.75em;
+		margin-bottom:0.5em;
+		display:none;
+	}
 	
 	.floorPlan {
-		height: 650px;
+		height: 700px;
 		background-image: url('../img/classFloor.svg');
 		border-radius: 5%;
 		border: 0.1em dotted Brown;
 		position: relative;
 		left:-0.75em;
-		margin-bottom:1em;
+		margin-bottom:0.5em;
 	}
 	
 	.seatingChartToolbar {
@@ -62,6 +70,9 @@
 				</m:MaterialDropDown>
 				</m:MaterialColumn>
 					<m:MaterialColumn grid="s1">
+						<m:MaterialAnchorButton ui:field="addBtn"  iconType="ADD"/>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
 						<m:MaterialAnchorButton ui:field="colorPicker" />
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s1">
@@ -82,7 +93,10 @@
 		</m:MaterialRow>
 		<m:MaterialRow>
 			<m:MaterialColumn grid="l10">
-				<h:Div ui:field="floorPlan" addStyleNames="{style.floorPlan}"></h:Div>
+				<g:HTMLPanel ui:field="floorPlanWrapper">
+				<div ui:field="stationLayer" class="{style.stationLayer}"></div>
+				<div ui:field="floorPlan" class="{style.floorPlan}"></div>
+				</g:HTMLPanel>
 			</m:MaterialColumn>
 			<m:MaterialColumn grid="l2">
 				<g:HTMLPanel addStyleNames="{style.scStudentTools}">
@@ -97,11 +111,10 @@
 									<m:MaterialCollapsibleHeader>
 										<m:MaterialLink  iconType="SCHOOL" />
 									</m:MaterialCollapsibleHeader>
-									<m:MaterialCollapsibleBody>
-										<g:HTMLPanel>
+									<m:MaterialCollapsibleBody ui:field="studentCollapseBody">
+										<g:HTMLPanel ui:field="editStudentEmptyMessage">
 											<h5>No Students to show</h5>
 										</g:HTMLPanel>
-										<m:MaterialCollection ui:field="editStudentList"></m:MaterialCollection>
 									</m:MaterialCollapsibleBody>
 								</m:MaterialCollapsibleItem>
 								<m:MaterialCollapsibleItem m:id="groupCollapseItem" addStyleNames="editCollapseItem" ui:field="groupCollapseItem"> 
@@ -121,10 +134,10 @@
 									<m:MaterialCollapsibleBody>
 										<m:MaterialCollection>
 											<m:MaterialCollectionItem>
-												<m:MaterialImage url="../img/doubleDesk.png" />
+												<m:MaterialImage url="../img/doubleDesk.png" addStyleNames="furnitureIcon" m:id="doubleDeskIcon"/>
 											</m:MaterialCollectionItem>
 											<m:MaterialCollectionItem>
-												<m:MaterialImage url="../img/singleDesk.png" />
+												<m:MaterialImage url="../img/singleDesk.png" addStyleNames="furnitureIcon"  m:id="singleDeskIcon"/>
 											</m:MaterialCollectionItem>
 										</m:MaterialCollection>
 									</m:MaterialCollapsibleBody>
@@ -145,9 +158,5 @@
 				</g:HTMLPanel>
 			</m:MaterialColumn>
 		</m:MaterialRow>
-		<m:MaterialFAB>
-			<m:MaterialAnchorButton iconType="ADD" type="FLOATING"
-				ui:field="addStudent" />
-		</m:MaterialFAB>
 	</g:HTMLPanel>
 </ui:UiBinder> 

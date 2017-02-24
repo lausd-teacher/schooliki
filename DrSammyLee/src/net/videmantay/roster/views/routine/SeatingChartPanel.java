@@ -5,6 +5,9 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -13,6 +16,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.EasingCurve;
 
 import static com.google.gwt.query.client.GQuery.*;
 import static gwtquery.plugins.ui.Ui.Ui;
@@ -22,6 +26,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -30,6 +35,7 @@ import gwt.material.design.client.events.ClearActiveEvent;
 import gwt.material.design.client.events.ClearActiveEvent.ClearActiveHandler;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
+import gwt.material.design.client.ui.MaterialCollapsibleBody;
 import gwt.material.design.client.ui.MaterialCollapsibleItem;
 import gwt.material.design.client.ui.MaterialCollection;
 import gwt.material.design.client.ui.MaterialCollectionItem;
@@ -46,6 +52,8 @@ import gwtquery.plugins.ui.interactions.CursorAt;
 import gwtquery.plugins.ui.interactions.Draggable;
 import gwtquery.plugins.ui.interactions.Droppable;
 import gwtquery.plugins.ui.interactions.Rotatable;
+import gwtquery.plugins.ui.utilities.BoundingBox;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -69,11 +77,17 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	}
 
 	private SeatingChartJson data;
+	private SeatingChartJson oldData = SeatingChartJson.createObject().cast();
 	private boolean isEditing = false;
+	//use arrayList to make editing easier;
+	private ArrayList<FurnitureJson> tempFurnitureList;
+	//save draggableParent for refernce
+	private GQuery $dragParent;
+	
 	State state = State.DASHBOARD;
 	
 	@UiField
-	Div floorPlan;
+	DivElement floorPlan;
 	
 	@UiField
 	MaterialCollection studentList;
@@ -100,7 +114,13 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	MaterialCollapsible editCollapsible;
 	
 	@UiField
+	HTMLPanel editStudentEmptyMessage;
+	
+	@UiField
 	MaterialCollapsibleItem studentCollapseItem;
+	
+	@UiField
+	MaterialCollapsibleBody studentCollapseBody;
 	
 	@UiField
 	MaterialCollapsibleItem groupCollapseItem;
@@ -111,12 +131,8 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	@UiField
 	MaterialCollapsibleItem stationCollapseItem;
 	
-	
-
 	private final RosterUtils utils;
-	
-	@UiField
-	MaterialCollection editStudentList;
+
 	SelectionHandler<Widget> handler = new SelectionHandler<Widget>(){
 
 		@Override
@@ -135,9 +151,9 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		}};
 		
 	ClickHandler clickHandler = new ClickHandler(){
-
 		@Override
 		public void onClick(ClickEvent event) {
+			done();
 		new Timer(){
 			@Override 
 			public void run(){
@@ -152,21 +168,21 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 				stateSelectBtn.setIconType(IconType.GROUP_WORK);groups();break;
 				case"furnitureCollapseItem":stateSelectBtn.setText("Furniture"); 
 				stateSelectBtn.setIconType(IconType.EVENT_SEAT); arrangeFurniture();break;
-				case"stationCollapseItem":stateSelectBtn.setText("Students");
+				case"stationCollapseItem":stateSelectBtn.setText("Stations");
 				stateSelectBtn.setIconType(IconType.WIDGETS);manageStations();break;
 				}
 			}
 		}.schedule(300);
 		
-		}};
-	private ArrayList<FurnitureJson> tempFurnitureList;
-	private final Stack<Action> stack = new Stack<Action>();
-	
-	
-	
+		}};	
 	public SeatingChartPanel(RosterUtils ru) {
 		utils = ru;	
 		data = ru.getSeatingChart();
+		oldData.setDescript(data.getDescript());
+		oldData.setFurniture(data.getFurniture());
+		oldData.setId(data.getId());
+		oldData.setTitle(data.getTitle());
+		
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
@@ -193,7 +209,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	
 	@Override
 	public void drawGrid(){
-		floorPlan.clear();
+		floorPlan.removeAllChildren();
 		studentList.clear();
 		console.log("Roster students is ");
 		
@@ -202,9 +218,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		for(int i =0; i < utils.getStudents().length(); i++){
 			//might as well setup the studentList here too
 			RosterStudentPanel sp =new RosterStudentPanel(utils.getStudents().get(i));
-			
-			MaterialLink link = new MaterialLink();
-			link.add(sp);
+			sp.chartStyle();
 			stuPanels.add(sp);
 		}
 		console.log("We've cycled through students here is array of panels ");
@@ -218,7 +232,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 			console.log(data.getFurniture().get(i).getKind());
 			//Gquery only operates on DOM so make and place 
 			HTMLPanel furniturePanel = FurnitureUtils.byKind(data.getFurniture().get(i).getKind());
-			floorPlan.add(furniturePanel);
+			floorPlan.appendChild(furniturePanel.getElement());
 			
 			final FurnitureJson furniture = data.getFurniture().get(i);
 			
@@ -242,6 +256,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 						//iterate through students for equal ids
 						//then pop to make iterations shorter
 						for(RosterStudentPanel rsp : stuPanels){
+							rsp.chartStyle();
 							console.log("student element id is " + rsp.getElement().getId());
 							if(rsp.getElement().getId().equalsIgnoreCase(studentSeats.get(j).getRosterStudent())){
 								console.log("studentId is equals rosterstudent seat called ");
@@ -266,7 +281,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 				//place the rest in side
 				for(RosterStudentPanel rsp : stuPanels){
 				MaterialCollectionItem mci =new MaterialCollectionItem();
-				rsp.gridStyle();
+				rsp.chartStyle();
 				mci.add(rsp);
 				mci.setPadding(5);
 				studentList.add(mci);
@@ -415,7 +430,11 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		$(homeTools).css("display", "none");
 		editTools.getStyle().setDisplay(Display.BLOCK);
 		this.setIsEditing(true);
-	
+		if(studentList.getWidgetCount() >= 1){
+			studentList.removeFromParent();
+			studentCollapseBody.clear();
+			studentCollapseBody.add(studentList);
+		}
 	}
 	
 	public void setIsEditing(boolean isEditing){
@@ -434,6 +453,8 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	}
 
 	public  void arrangeStudents(){
+		//set state to student edit
+		state = State.STUDENT_EDIT;
 		//make students draggable
 		//constraint to seatingchart
 		Draggable.Options dragOpts = Draggable.Options.create();
@@ -444,6 +465,8 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 			@Override
 			public void f(){
 				$(this).css("opacity", "0.3");
+				$dragParent = $(this).parent();
+				console.log("drag parent is " + $dragParent.html());
 			}
 		})
 		.stop(new Function(){
@@ -467,60 +490,64 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		//what happens once students are dropped
 		Droppable.Options dropOpts = Droppable.Options.create();
 		dropOpts.accept(".rosterStudent").greedy(true).hoverClass("seat-over");
+		//make seat droppable event target is seaat
 		$("td > div.seat", floorPlan).as(Ui).droppable(dropOpts)
 			.on("drop", new Function(){
 				@Override
 				public boolean f(Event e, Object...o){
 					DroppableUi ui =(DroppableUi)o[0];
-				//once dropped student
-					console.log(ui.draggable().get());
-					//clean up data of seat incase of parent seat
-					if($(ui.draggable().get()).parent().hasClass("seat")){
-					StudentSeatJson sSeat = 	$(ui.draggable().get()).parent().data("seat", StudentSeatJson.class);
-						if(sSeat != null){
-						sSeat.setRosterStudent("");
-						}//inner if
-					}//outer if
-					
-					
-					
-					final GQuery $seatPanel = $(e.getEventTarget());
-					
+					//once drop the draggable the target as parent how to get previous parent?
+					GQuery $dropSeat = $(e.getEventTarget());
+					GQuery $draggable = $(ui.draggable().get());
 					//if the seatPanel has a student swap
-					GQuery $studentCheck = $seatPanel.find(".rosterStudent");
-					if($studentCheck.length() > 0){
-						$studentCheck.detach();
-						GQuery $parent = $(ui.draggable().get()).parent();
-						$parent.append($studentCheck);
-						if($parent.hasClass("seat")){
-							StudentSeatJson sSeat = 	$parent.data("seat", StudentSeatJson.class);
-							if(sSeat == null){
-								sSeat = StudentSeatJson.createObject().cast();
-									if($parent.hasClass("pos2")){
-										sSeat.setSeatNum(2);
-									}else{
-									sSeat.setSeatNum(1);
-									}
-									$parent.data("seat",sSeat);
-								}// if seat null
-							sSeat.setRosterStudent($studentCheck.id());
-							double rotateDegree = $parent.closest(".desk-wrapper").data("desk",FurnitureJson.class).getRotate();
-							$studentCheck.find("div.counterRotate").css("transform", "rotate("+(-rotateDegree)+"rad)");
-							}// if parent has class seat
-						else{
-							$studentCheck.find("div.counterRotate").css("transform", "rotate("+0+"rad)");
+					final GQuery $rosStudent = $dropSeat.find(".rosterStudent");
+					if($rosStudent.length() > 0){
+						if($dragParent.is("li")){
+							$rosStudent.animate($$("{left: '+=75em' , opacity: 0}"),1000, EasingCurve.easeInSine, 
+									new Function(){
+								@Override
+								public void f(){
+									$rosStudent.appendTo($dragParent);
+									$rosStudent.css($$("opacity:1;position:relative;left:0px"));
+									
+									
+								}
+							});
 						}
-						}//outer if
+						
+							if($dragParent.hasClass("seat")){
+							GQuery $pWrapper = $dropSeat.closest("div.desk-wrapper");
+							final GQuery $cloneWrap = $("<div id='clone'></div>")
+									.css($$("overflow:visible;width:4em;height:8em;position:absolute;left:"
+							+ $pWrapper.left()  +"px;top:" + $pWrapper.top() +"px")).appendTo(floorPlan);
+							floorPlan.appendChild($cloneWrap.get(0));
+							console.log($cloneWrap);
+							$rosStudent.appendTo($cloneWrap);
+							$cloneWrap.animate($$("left:'+=" +($dragParent.offset().left -$pWrapper.offset().left)
+									+"',top:'+=" +($dragParent.offset().top-$pWrapper.offset().top)+"'"), 350, EasingCurve.easeIn, 
+							new Function(){
+								@Override
+								public void f(){
+									$cloneWrap.remove();
+									$rosStudent.appendTo($dragParent);
+								}
+							});
+						}
+					}
+						
+					
 					
 					
 					//now detach and append to new seat
-					$(ui.draggable().get()).css("opacity","1");
-					$(ui.draggable().get()).detach();
-					$seatPanel.append(ui.draggable().get());
+					$draggable.css("opacity","1");
+				
+					
+					$draggable.appendTo($dropSeat.get(0));
+					//remove former paren
 					//actual seat
-					StudentSeatJson stuSeat = $seatPanel.data("seat", StudentSeatJson.class);
+					StudentSeatJson stuSeat = $dropSeat.data("seat", StudentSeatJson.class);
 					//parent desk
-					FurnitureJson furJ =  $seatPanel.closest(".desk-wrapper").data("desk", FurnitureJson.class);
+					FurnitureJson furJ =  $dropSeat.closest("div.desk-wrapper").data("desk", FurnitureJson.class);
 					if(stuSeat == null){
 					
 						//find pos class of target  until positions match
@@ -546,7 +573,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	};
 	
 	public void doneArrangeStudents(){
-		MaterialLoader.showLoading(true, floorPlan);
+		MaterialLoader.showLoading(true);
 		SeatingChartJson seatingChart = window.getPropertyJSO("seatingChart").cast();
 		//iterate through the seats and update data
 		$(".seat").each(new Function(){
@@ -568,13 +595,13 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		prop.set("seatingChart", JsonUtils.stringify(data));
 		prop.set("roster", utils.getCurrentRoster().getId());
 		Ajax.post(RosterUrl.seatingchart(utils.getCurrentRoster().getId(), utils.getSelectedClassTime().getRoutine().getId()), prop);
-		drawGrid();
-		MaterialLoader.showLoading(false,floorPlan);
+		MaterialLoader.showLoading(false);
 	};
 	
 	
 	
 	public  void arrangeFurniture(){
+		state = State.FURNITURE_EDIT;
 		tempFurnitureList = new ArrayList<FurnitureJson>();
 		if(data.getFurniture().length() > 0){
 		for(int i = 0; i < data.getFurniture().length(); i++){
@@ -596,7 +623,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		
 		Droppable.Options dropOpts = Droppable.Options.create();
 		dropOpts.accept(".furnitureIcon").greedy(true);
-		$(floorPlan.getElement()).as(Ui).droppable(dropOpts).on(Droppable.Event.drop, new Function(){
+		$(floorPlan).as(Ui).droppable(dropOpts).on(Droppable.Event.drop, new Function(){
 			@Override
 			public boolean f(Event e,Object...ui){
 				e.stopPropagation();
@@ -616,23 +643,23 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 			String left = e.getClientX()  - floorPlan.getAbsoluteLeft()+ body.getScrollLeft()+"px";
 			String top = e.getClientY() - floorPlan.getAbsoluteTop()+ body.getScrollTop() + "px";
 			//added to browser
-			floorPlan.add(drop);
-			$(drop).css("left",left);
-			$(drop).css("top",top );
+			floorPlan.appendChild(drop.getElement());
+			GQuery $drop = $(drop);
+			$drop.css("left",left);
+			$drop.css("top",top );
+			
+			
 			//push to temp list
-			desk.setLeft($(drop).css("left"));
-			desk.setTop($(drop).css("top"));
+			desk.setLeft($drop.css("left"));
+			desk.setTop($drop.css("top"));
 			tempFurnitureList.add(desk);
 			
 			//push data to desk
-			$(drop).data("desk", desk);
+			$drop.data("desk", desk);
 			
 			console.log("The furniture list array");
 			console.log(tempFurnitureList);
-			makeDragRotateDelete($(drop));
-			
-			//stack.push(new FurnitureAddAction(drop,(JsArray<FurnitureJson>) tempFurnitureList));
-			console.log(stack);
+			makeDragRotateDelete($drop);
 				return true;
 			}
 		});
@@ -653,12 +680,13 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		Draggable.Options dragOpt3 =Draggable.Options.create();
 		CursorAt cursorAt = CursorAt.create();
 		cursorAt.setTop((int) Math.floor($this.height()/2)).setLeft((int)Math.floor($this.width()/2));
-		dragOpt3.containment(floorPlan.getElement()).cursorAt(cursorAt)
+		dragOpt3.containment(floorPlan).cursorAt(cursorAt)
 		.stop(new Function(){
 			@Override
 			public boolean f(Event e, Object...o){
 				thisDesk.setTop($this.css("top"));
 				thisDesk.setLeft($this.css("left"));
+				//get true left
 				console.log(thisDesk);
 				return true;
 			}
@@ -671,8 +699,9 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 			@Override
 			public boolean f(Event e, Object...o){
 				RotatableUi ui = (RotatableUi)o[0];
+				GQuery $desk = $this.find(".desk");
 				thisDesk.setRotate(ui.angle().current());
-				thisDesk.setTransform($this.find(".desk").css("transform"));
+				thisDesk.setTransform($desk.css("transform"));
 				console.log(thisDesk);
 				return true;
 			}
@@ -725,9 +754,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		
 		finalList = null;
 		tempFurnitureList = null;
-		
-		$(editStudentList).hide();
-		
+			
 		console.log("This is the data sent by done arrage furniture: " +  JsonUtils.stringify(data));
 		Properties prop = Properties.create();
 		prop.set("seatingChart", JsonUtils.stringify(data));
@@ -747,9 +774,8 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 			GQuery $rosStu = $desk.find(".rosterStudent");
 			if($rosStu.length() > 0){
 				for(int i = 0; i < $rosStu.length(); i++){
-				MaterialLink link = new MaterialLink();
-				$(link.getElement()).append($rosStu.get(i));
-				editStudentList.add(link);
+				MaterialCollectionItem link = new MaterialCollectionItem();
+				link.add($rosStu.widget());
 				}//end for
 			}//end if
 	
