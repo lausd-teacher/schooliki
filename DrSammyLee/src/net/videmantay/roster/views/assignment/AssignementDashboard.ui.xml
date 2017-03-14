@@ -7,11 +7,11 @@
 	</ui:style>
 	<g:HTMLPanel>
 	<m:MaterialTab textColor="red"  height="2.5em" >
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Assignements"  waves="RED"/></m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab2" text="Calendar"  waves="RED"/></m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#assingmnet-tab1" text="Assignements"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#assignment-tab2" text="Calendar"  waves="RED"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#assignement-tab3" text="Reports"  waves="RED"/></m:MaterialTabItem>
 	</m:MaterialTab>
-	<div  id="tab1">
+	<div  id="assignment-tab1">
 	   <g:HTMLPanel >
 	      <m:MaterialRow height="3em" backgroundColor="yellow darken-1" textColor="red darken-3" paddingLeft="10" centerOn="CENTER_ON_SMALL">
 				<m:MaterialColumn textAlign="LEFT" grid="s6 m4 l3"> 
@@ -29,16 +29,16 @@
 					<m:MaterialSearch ui:field="assignmentSearch"/>
 				</m:MaterialColumn>
 			</m:MaterialRow>
-			<g:HTMLPanel ui:field="assignementsTabContent">
+			<g:HTMLPanel ui:field="assignmentsTabContent">
 			
 			</g:HTMLPanel>
 	   </g:HTMLPanel>	
 	</div>
-	<div  id="tab2">
+	<div  id="assignment-tab2">
       <g:HTMLPanel>
 	  </g:HTMLPanel>	
 	</div>
-	<div  id="tab3">
+	<div  id="assignment-tab3">
 	  <g:HTMLPanel>
 	  </g:HTMLPanel>	
 	</div>

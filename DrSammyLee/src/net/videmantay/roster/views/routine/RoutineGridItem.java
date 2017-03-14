@@ -4,14 +4,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialBadge;
 import gwt.material.design.client.ui.MaterialCardTitle;
 import gwt.material.design.client.ui.MaterialLabel;
-import gwt.material.design.client.ui.html.Label;
-import net.videmantay.roster.routine.json.RoutineJson;
+
+import static com.google.gwt.query.client.GQuery.*;
+
+import net.videmantay.roster.routine.json.FullRoutineJson;
 
 public class RoutineGridItem extends Composite {
 
@@ -20,32 +22,52 @@ public class RoutineGridItem extends Composite {
 	interface RoutineGridItemUiBinder extends UiBinder<Widget, RoutineGridItem> {
 	}
 
+	@UiField
+	public HTMLPanel routineItem;
+	
+	@UiField
+	public MaterialCardTitle title;
+	
+	@UiField
+	public MaterialLabel description; 
+	
+	@UiField
+	public MaterialBadge procedureBadge;
+	
+	@UiField
+	public MaterialBadge groupsBadge;
+	
+	@UiField
+	public MaterialBadge stationBadge;
+	
+	
 	public RoutineGridItem() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	
-	private  RoutineJson classTime;
+	private  FullRoutineJson routine;
 
 	
-	public void setClassTime(RoutineJson classTime){
-		this.classTime = classTime;
+	public void setData(FullRoutineJson routine){
+		this.routine = routine;
+		$(routineItem).data("routine", this.routine);
 		draw();
 	}
 	
 	private void draw(){
-	/*	title.setText(classTime.getTitle());
-		description.setText(classTime.getDescript());
+		title.setText(routine.getRoutine().getTitle());
+		description.setText(routine.getRoutine().getDescript());
 		String groupNumText = "0";
-		if(classTime.getGroups() != null){
-			groupNumText=classTime.getGroups().length() + "";
+		if(routine.getRoutine().getGroup() != null){
+			groupNumText=routine.getRoutine().getGroup().length() + "";
 		}
-		groupNum.setText(groupNumText);
+		groupsBadge.setText(groupNumText);
 		
 		String procedNumText = "0";
-		if(classTime.getProcedures() != null){
-			procedNumText=classTime.getProcedures().length() + "";
+		if(routine.getRoutine().getProcedures() != null){
+			procedNumText=routine.getRoutine().getProcedures().length() + "";
 		}
-		procedureNum.setText(procedNumText);*/
+		procedureBadge.setText(procedNumText);
 	}
 }

@@ -7,8 +7,17 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
+	<div class="editStationPanel">
+		<div ui:field="colorIcon" />
 		<m:MaterialTextBox ui:field="title" />
 		<m:MaterialTextArea ui:field="description" />
-		 <ma:autocomplete.MaterialAutoComplete placeholder="Students" ui:field="students"/>
+		 <ma:autocomplete.MaterialAutoComplete placeholder="group name" ui:field="group"/>
+	</div>
+	<div class="stationPanelActive">
+		<m:MaterialButton ui:field="stTitleBtn" iconType="INFO" iconPosition="RIGHT"/>
+		<m:MaterialDropDown ui:field="stDescript" />
+		<m:MaterialPanel ui:field="stGroupPanel" />
+		
+	</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

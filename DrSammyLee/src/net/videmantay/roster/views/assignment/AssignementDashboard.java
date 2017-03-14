@@ -15,11 +15,11 @@ public class AssignementDashboard extends Composite {
 	}
 	
 	@UiField
-	HTMLPanel assignementsTabContent;
+	HTMLPanel assignmentsTabContent;
 
 	public AssignementDashboard(GradedWorkMain gradedWork) {
 		initWidget(uiBinder.createAndBindUi(this));
-		assignementsTabContent.add(gradedWork);
+		assignmentsTabContent.add(gradedWork);
 	}
 
 }

@@ -51,7 +51,9 @@ import gwtquery.plugins.ui.RotatableUi;
 import gwtquery.plugins.ui.interactions.CursorAt;
 import gwtquery.plugins.ui.interactions.Draggable;
 import gwtquery.plugins.ui.interactions.Droppable;
+import gwtquery.plugins.ui.interactions.Resizable;
 import gwtquery.plugins.ui.interactions.Rotatable;
+import gwtquery.plugins.ui.interactions.Selectable;
 import gwtquery.plugins.ui.utilities.BoundingBox;
 
 import java.util.ArrayList;
@@ -127,6 +129,9 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	
 	@UiField
 	MaterialCollapsibleItem furnitureCollapseItem;
+	
+	@UiField
+	DivElement stationLayer;
 	
 	@UiField
 	MaterialCollapsibleItem stationCollapseItem;
@@ -309,11 +314,22 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		
 	}
 
+	//this is to show groups not manage them
 	@Override
 	public void groups() {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//this is two show stations not edit
+		public void stations(){
+			
+		}
+		
+// this shows procedures not edit them
+		public void procedures(){
+			
+		}
 
 	@Override
 	public void takeRoll() {
@@ -424,6 +440,7 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 		return isEditing;
 	}
 	
+	
 	@Override
 	public void edit(){
 		seatingChartToolbar.getElement().getStyle().setDisplay(Display.BLOCK);
@@ -530,6 +547,26 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 								public void f(){
 									$cloneWrap.remove();
 									$rosStudent.appendTo($dragParent);
+									
+									StudentSeatJson stuSeat = $dragParent.data("seat", StudentSeatJson.class);
+									//parent desk
+									FurnitureJson furJ =  $dragParent.closest("div.desk-wrapper").data("desk", FurnitureJson.class);
+									if(stuSeat == null){
+									
+										//find pos class of target  until positions match
+										//more practically 2 will be the highest number revie when we revise desks.
+											if($dragParent.hasClass("pos1")){
+												stuSeat = furJ.getSeatByNum(1);
+											}else{
+												stuSeat = furJ.getSeatByNum(2);
+											}//end if-else
+											
+											$dragParent.data("seat", stuSeat);
+										
+									}
+									stuSeat.setRosterStudent($rosStudent.id());
+									$rosStudent.find("div.counterRotate").css("transform", "rotate("+(-furJ.getRotate())+"rad)");
+									
 								}
 							});
 						}
@@ -784,7 +821,47 @@ public class SeatingChartPanel extends Composite implements HasClassroomDashboar
 	}
 
 	public void manageStations() {
-		// TODO Auto-generated method stub
+	final GQuery $stations =	$(stationLayer);
+	
+	Function stClick = new Function(){};
+	//drag opts just get x and y on stop
+	final Function dragStop = new Function(){
+		@Override
+		public boolean f(Event e, Object...o){
+			
+			
+			return true;
+		}
+	};
+	
+	final Draggable.Options stDragOpt = Draggable.Options.create();
+	stDragOpt.stop(dragStop).containment(floorPlan);
+	
+	//resize opts
+	//just get width and height
+	final Function resizeStop = new Function(){};
+	
+	final Resizable.Options stResizeOpt = Resizable.Options.create();
+	stResizeOpt.containment(floorPlan).stop(resizeStop);
+	
+	//make stations draggable and resizable
+	$("div.station").as(Ui).draggable().resizable();
+	Function stationCreate = new Function(){
+		@Override
+		public boolean f(Event e){
+			String left = e.getClientX()  - stationLayer.getAbsoluteLeft()+ body.getScrollLeft()+"px";
+			String top = e.getClientY() - stationLayer.getAbsoluteTop()+ body.getScrollTop() + "px";
+			//added to browser
+			final GQuery $drop = $stations.html("<div></div");
+			$drop.css("left",left);
+			$drop.css("top",top );
+			$drop.css("width", "150px").css("height", "150px");
+			$drop.as(Ui).resizable().draggable();
+			return true;
+		}
+	};
+	$stations.click();
+	
 		
 	}
 

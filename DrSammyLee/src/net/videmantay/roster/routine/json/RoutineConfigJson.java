@@ -30,4 +30,6 @@ public class RoutineConfigJson extends JavaScriptObject {
 	public final native void setId(Long id)/*-{
 			this.id = id;
 	}-*/;
+	
+	
 }

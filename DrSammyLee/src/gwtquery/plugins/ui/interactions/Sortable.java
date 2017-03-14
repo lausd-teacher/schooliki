@@ -1,5 +1,8 @@
 package gwtquery.plugins.ui.interactions;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.query.client.Function;
+
 import gwtquery.plugins.ui.Ui;
 import gwtquery.plugins.ui.UiPlugin;
 import gwtquery.plugins.ui.UiWidget;
@@ -24,11 +27,25 @@ public class Sortable extends UiWidget<Sortable, Sortable.Options> {
     /*-{
       return {};
     }-*/;
-
-    // TODO: implement options
+ 
+    public static native final Options containment(String s)/*-{
+  		this["containment"] = s;
+  		return this;
+  	}-*/;
+    
+    public static native final Options change(Function f)/*-{
+    	this["change"] = function(event, ui){
+   		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+   	}
+   		return this;
+    }-*/;
   }
 
-  // TODO: expose events
+ //EVENTS
+  public static class Event extends JavaScriptObject{
+	  protected Event(){}
+	  public final static String change = "sortchange";
+  }
 
   /**
    * Used to register the plugin.

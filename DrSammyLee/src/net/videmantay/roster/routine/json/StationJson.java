@@ -128,7 +128,18 @@ public class StationJson extends JavaScriptObject {
 		this.studentIds = studentIds;
 	}-*/;
 	
-	
+	public final StationJson copy(){
+		StationJson copy = StationJson.createObject().cast();
+		copy.setColor(this.getColor());
+		copy.setTitle(this.getTitle());
+		copy.setDescription(this.getDescription());
+		copy.setHeight(this.getHeight());
+		copy.setNum(this.getNumber());
+		copy.setWidth(this.getWidth());
+		copy.setX(this.getX());
+		copy.setY(this.getY());
+		return copy;
+	}
 	
 	
 }

@@ -39,11 +39,13 @@
 	.floorPlan {
 		height: 700px;
 		background-image: url('../img/classFloor.svg');
+		background-color:White;
 		border-radius: 5%;
 		border: 0.1em dotted Brown;
 		position: relative;
 		left:-0.75em;
 		margin-bottom:0.5em;
+		box-shadow:2px  2px 5px DimGray;
 	}
 	
 	.seatingChartToolbar {

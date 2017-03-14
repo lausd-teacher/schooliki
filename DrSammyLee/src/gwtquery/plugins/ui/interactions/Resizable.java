@@ -1,9 +1,16 @@
 package gwtquery.plugins.ui.interactions;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayInteger;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
+
 import gwtquery.plugins.ui.Ui;
 import gwtquery.plugins.ui.UiPlugin;
 import gwtquery.plugins.ui.UiWidget;
 import gwtquery.plugins.ui.WidgetOptions;
+import gwtquery.plugins.ui.interactions.Draggable.Options;
 
 /**
  * Implements jQuery-UI's Resizable
@@ -25,10 +32,49 @@ public class Resizable extends UiWidget<Resizable, Resizable.Options> {
       return {};
     }-*/;
 
-    // TODO: implement options
+    public native final Options containment(String containment)
+    /*-{
+      this["containment"] = containment;
+      return this;
+    }-*/;
+
+    public native final Options containment(Element containment)
+    /*-{
+      this["containment"] = containment;
+      return this;
+    }-*/;
+
+    public native final Options containment(JsArrayInteger containment)
+    /*-{
+      this["containment"] = containment;
+      return this;
+    }-*/;
+
+    public final Options containment(GQuery gquery) {
+      this.containment(gquery.get(0));
+      return this;
+    }
+    
+    
+    ///Events//////////
+    public final native Options stop(Function f)/*-{
+   	this["stop"] = function(event, ui){
+   		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+   	}
+   		return this;
+   }-*/;
   }
 
-  // TODO: expose events
+  public static class Event extends JavaScriptObject {
+
+	    public static final String start = "resizestart";
+
+	    public static final String stop = "resizestop";
+
+	    protected Event() {
+
+	    }
+	  }
 
   /**
    * Used to register the plugin.

@@ -13,6 +13,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
@@ -76,23 +77,41 @@ public class RoutineForm extends Composite {
 	@UiField
 	public MaterialCheckBox  isDefault;
 	
-	private final FullRoutineJson originalData;
+	@UiField
+	HTMLPanel procedureListPanel;
+	
+	private  FullRoutineJson originalData;
 	private FullRoutineJson copyData;
+	private SeatingChartJson seatingChart;
+	private  final RosterUtils utils;
 	
-	private final RosterUtils utils;
-	
-	public RoutineForm(RosterUtils ru, FullRoutineJson frj, SeatingChartJson scj) {
-		utils = ru;
-		originalData = frj;
-		copyData = FullRoutineJson.createObject().cast();
-		copyData.copy(frj);
-		console.log("Routine Form constructor");
+	public RoutineForm(RosterUtils ru){
+		this.utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
 	}
+	public void setData(FullRoutineJson frj) {
+		if(frj == null){
+			frj = FullRoutineJson.create();
+			frj.getRoutine().setRosterId(utils.getCurrentRoster().getId());
+		}
+		originalData = frj;
+		copyData = FullRoutineJson.createObject().cast();
+		copyData.copy(originalData);
+		title.setText(copyData.getRoutine().getTitle());
+		description.setText(copyData.getRoutine().getDescript());
+		console.log("Routine Form constructor");
 	
+	}
 	
-
-	public RoutineJson getFormData(){
+	public void setSeatingChart(SeatingChartJson scj){
+		this.seatingChart =scj;
+	}
+	
+	public SeatingChartJson getSeatingChart(){
+		return this.seatingChart;
+	}
+	
+	public RoutineJson getData(){
 		RoutineJson formData = JavaScriptObject.createObject().cast();
 		
 		formData.setDescript(description.getText());
@@ -102,7 +121,7 @@ public class RoutineForm extends Composite {
 		return formData;
 	}
 	
-	
+
 	public MaterialTextBox getClassTimeTitle() {
 		return this.title;
 	}
@@ -111,7 +130,18 @@ public class RoutineForm extends Composite {
 	public MaterialTextArea getDescription() {
 		return this.description;
 	}
+	
+	public void cancel(){
+		
+	}
+	
+	public void submit(){
+		
+	}
 
+	private void clear(){
+		
+	}
 
 	
 }

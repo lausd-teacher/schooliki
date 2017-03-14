@@ -35,6 +35,8 @@ import net.videmantay.roster.routine.json.SeatingChartJson;
 import net.videmantay.roster.routine.json.FullRoutineJson;
 import net.videmantay.student.json.InfoJson;
 import net.videmantay.roster.views.UserProfilePanel;
+import net.videmantay.roster.views.assignment.GradedWorkMain;
+import net.videmantay.roster.views.routine.RoutineMain;
 import net.videmantay.roster.views.routine.SeatingChartPanel;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -71,7 +73,7 @@ public class ClassroomMain extends Composite{
 	public MaterialLink goalLink;
 	
 	@UiField
-	public MaterialLink classTimeLink;
+	public MaterialLink routineLink;
 	
 	@UiField
 	public MaterialLink lessonPlanLink;
@@ -234,14 +236,15 @@ public class ClassroomMain extends Composite{
 					History.newItem("c/" + utils.getCurrentRoster().getId()+"/i");
 				}});
 			
-			classTimeLink.addClickHandler(new ClickHandler(){
+			routineLink.addClickHandler(new ClickHandler(){
 
 				@Override
 				public void onClick(ClickEvent event) {
 					event.preventDefault();
 					event.stopPropagation();
 					sideNav.hide();
-					History.newItem("c/" + roster.getId() +"/t");
+					//History.newItem("c/" + roster.getId() +"/t");
+					routine();
 				}});
 			
 			
@@ -318,7 +321,7 @@ public class ClassroomMain extends Composite{
 	
 	
 	//classtime list
-	public void classtime(){
+	public void routine(){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override
@@ -330,12 +333,13 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
-				
+				//add classtimeMain to this main panel
+				mainPanel.clear();
+				mainPanel.add(new RoutineMain(utils));
 			}});
 	}
 	//specific classtime
-	public void classtime(String id){
+	public void routine(String id){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override
@@ -352,7 +356,7 @@ public class ClassroomMain extends Composite{
 			}});
 	}
 	
-	public void classtimeGroup(){
+	public void routineGroup(){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override
@@ -369,7 +373,7 @@ public class ClassroomMain extends Composite{
 			}});
 	}
 	
-	public void classtimeProcedures(){
+	public void routineProcedures(){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override

@@ -26,5 +26,13 @@ public class FullRoutineJson extends JavaScriptObject {
 		this.setRoutine(data.getRoutine());
 		this.setRoutineConfig(data.getRoutineConfig());
 	}
+	
+	public static final FullRoutineJson create(){
+		FullRoutineJson frj = FullRoutineJson.createObject().cast();
+		frj.setRoutine(RoutineJson.create());
+		RoutineConfigJson rcj =RoutineConfigJson.createObject().cast();
+		frj.setRoutineConfig(rcj);
+		return frj;
+	}
 
 }

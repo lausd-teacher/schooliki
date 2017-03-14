@@ -7,13 +7,13 @@
 			border-right:1px solid Silver;
 		}
 	</ui:style>
-	<g:HTMLPanel>
-		<m:MaterialCard hoverable="true" width="450" height="300">
+	<g:HTMLPanel addStyleNames="routineItem" ui:field="routineItem">
+		<m:MaterialCard hoverable="true" backgroundColor="white">
 			<m:MaterialCardContent>
-			<m:MaterialAnchorButton iconType="DELETE" type="FLAT" float="RIGHT" hoverable="true" padding="1" textColor="red darken-2"/>
-			<m:MaterialAnchorButton iconType="EDIT" float="RIGHT" type="FLAT" hoverable="true" padding="1" textColor="deep-orange darken-1"/>
-			<m:MaterialCardTitle ui:field="title"/>
-			<m:MaterialLabel ui:field="description"></m:MaterialLabel>
+			<m:MaterialAnchorButton addStyleNames="routineItem-delete" iconType="DELETE" type="FLAT" float="RIGHT" hoverable="true" padding="1" textColor="red darken-2"/>
+			<m:MaterialAnchorButton  addStyleNames="routineItem-edit" iconType="EDIT" float="RIGHT" type="FLAT" hoverable="true" padding="1" textColor="deep-orange darken-1"/>
+			<m:MaterialCardTitle ui:field="title" text="Your Seat"/>
+			<m:MaterialLabel ui:field="description" text="Students should be in their own seats, ready to be productive"></m:MaterialLabel>
 			<m:MaterialCollapsible>
 				<m:MaterialCollapsibleItem> 
 					<m:MaterialCollapsibleHeader>
@@ -25,14 +25,13 @@
 					</m:MaterialRow>
 					</m:MaterialCollapsibleHeader>
 					<m:MaterialCollapsibleBody ui:field="procedureCollapseBody"> 
-						
 					</m:MaterialCollapsibleBody>
 				</m:MaterialCollapsibleItem>
 				<m:MaterialCollapsibleItem> 
 					<m:MaterialCollapsibleHeader>
 					<m:MaterialRow> 
 						<m:MaterialColumn>
-							<m:MaterialLink iconType="GROUP" text="Groups" float="LEFT"/>
+							<m:MaterialLink iconType="GROUP_WORK"  text="Groups" float="LEFT"/>
 							<m:MaterialBadge float="RIGHT" ui:field="groupsBadge"></m:MaterialBadge>
 						</m:MaterialColumn>
 					</m:MaterialRow>
@@ -45,7 +44,7 @@
 					<m:MaterialCollapsibleHeader>
 					<m:MaterialRow> 
 						<m:MaterialColumn>
-							<m:MaterialLink iconType="GROUP_WORK" text="Stations" float="LEFT"/>
+							<m:MaterialLink iconType="WIDGETS" text="Stations" float="LEFT"/>
 							<m:MaterialBadge float="RIGHT" ui:field="stationBadge"></m:MaterialBadge>
 						</m:MaterialColumn>
 					</m:MaterialRow>
@@ -58,7 +57,7 @@
 					<m:MaterialCollapsibleHeader>
 					<m:MaterialRow> 
 						<m:MaterialColumn>
-							<m:MaterialLink iconType="" text="Seating" float="LEFT"/>
+							<m:MaterialLink iconType="EVENT_SEAT" text="Seating" float="LEFT"/>
 						</m:MaterialColumn>
 					</m:MaterialRow>
 					</m:MaterialCollapsibleHeader>

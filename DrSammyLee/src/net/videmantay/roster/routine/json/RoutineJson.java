@@ -8,8 +8,6 @@ public class RoutineJson extends JavaScriptObject {
 
 	protected RoutineJson(){}
 	
-	
-
 	public final native Long getId()/*-{
 		return this.id;
 	}-*/;
@@ -67,6 +65,11 @@ public class RoutineJson extends JavaScriptObject {
 		this.procedures = proc;
 	}-*/;
 	
-	
+	public final static RoutineJson create(){
+		RoutineJson rj = RoutineJson.createObject().cast();
+		rj.setTitle("Class Routine");
+		rj.setDescript("This is where you would create class routines, shuch as 'Carpet Time', 'IWT', or simply 'Your Seats'");
+		return rj;
+	}
 
 }

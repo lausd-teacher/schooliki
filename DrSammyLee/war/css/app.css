@@ -239,11 +239,18 @@ div.item-student.ui-selecting { background: #FECA40;
 	
 	.rosterStudent.chart.ui-draggable.ui-draggable-handle{
 		position:relative;
+		width:7em;
+		height:9em;
 		border:0.01em solid Gray;
 		border-radius:15%;
 		box-shadow:2px 2px 2px Gray;
 		background-color: transparent;
 	}
+	.rosterStudent.chart.ui-draggable.ui-draggable-handle.ui-draggable-dragging{
+		border-style:none;
+		box-shadow:none;
+	}
+	
 	.rosterStudent.grid{
 		position:relative;
 		top:0px;
@@ -360,6 +367,9 @@ div.item-student.ui-selecting { background: #FECA40;
 	}
 	
 	/* Classroom Main */
+	.classroom{
+		background-color:WhiteSmoke;
+	}
 	.classroomNav{
 		background-image:url("../img/sammyOwlTemplate.svg");
 	}

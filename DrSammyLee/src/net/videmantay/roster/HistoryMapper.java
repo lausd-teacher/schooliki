@@ -31,7 +31,7 @@ import java.util.List;
  * parse the history token so that it is more restful
  * go by size to limit possibilites size of 1
  *    roster (default -more)/ allCalendars/profile/ allSettings/
- *   size of two size two or more con only mean roster so do roster
+ *   size of two size two or more can only mean roster so do roster
  *   	view - +cal | +chart
  *   'c' - classroom (roster) /must follow c/{id}/(possible)view
  *   ________________________________________________________________
@@ -177,40 +177,11 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 		if(historyToken.getToken().size() >= 2){
 			doClassroomPage();
 		}//end if  2 or more/////
+		
 		return;
 	}
 		
-		/*if(request.size() >=3){
-			//all views will start with a plus sign
-			if(request.get(2).startsWith("+")){
-			//TODO:	RosterUtils.getClassroomPage().dashboardChart();
-			//or RosterUtils.getClassroomPage().dashboardChal();
-					if(request.get(2).equalsIgnoreCase("+cal")){
-					
-					}else{
-						
-					}
-					
-			}else{// no plus it another page and not a view
-				switch(request.get(2)){
-				case "a": break;
-				case "g": break;
-				case "i": break;
-				case "j": break;
-				case "l": break;
-				case "s": break;
-				
-				}//end switch
-			}//end else its another page /////////////
-		}//end if 3 or more //////
 		
-		if(request.size() >= 5){
-			//check for view
-			if(request.get(4).startsWith("+")){//it's a view
-				
-			}
-		}*/
-
 	public void doDefault(){
 		History.replaceItem("roster");
 		utils.showLandingPage();

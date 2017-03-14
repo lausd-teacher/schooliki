@@ -7,27 +7,11 @@
 	<m:MaterialCard height="100%" ui:field="routineFormCard">
 	<m:MaterialCardContent>
 	<g:HTMLPanel>
-	<div>
-	<table>
-		<tr colspan="5">
-			<td>
-		<p>Routines are procedures for transitioning students from one task to the next.<br/>
-		<i>'Carpet Time' , 'Author's Chair'  and even 'Gallery Walk' ".</i> </p>
-		</td>
-		<td> 
-			<i class="material-icons">lightbulb_outline</i>
-		</td>
-		</tr>
-		</table>
-		</div>
-		<m:MaterialTitle title="Routine" />
-		</g:HTMLPanel>
-	<g:HTMLPanel>
 	<m:MaterialTab >
-		 <m:MaterialTabItem ><m:MaterialAnchorButton type="FLAT" href="#info-routineTab" text="Info"/></m:MaterialTabItem>
-		<m:MaterialTabItem ><m:MaterialAnchorButton type="FLAT" href="#procedures-routineTab" text="Procedures"/></m:MaterialTabItem>
-		<m:MaterialTabItem ><m:MaterialAnchorButton type="FLAT" href="#groups-routineTab" text="Groups"/></m:MaterialTabItem>
-		<m:MaterialTabItem hideOn="HIDE_ON_MED_DOWN"><m:MaterialAnchorButton type="FLAT" href="#routines-routineTab" text="Routines" /> </m:MaterialTabItem>
+		 <m:MaterialTabItem ><m:MaterialAnchorButton type="FLAT" href="#info-routineTab" text="Info" iconType="INFO"/></m:MaterialTabItem>
+		<m:MaterialTabItem ><m:MaterialAnchorButton type="FLAT" href="#procedures-routineTab" text="Procedures" iconType="LIST"/></m:MaterialTabItem>
+		<m:MaterialTabItem ><m:MaterialAnchorButton type="FLAT" href="#groups-routineTab" text="Groups" iconType="GROUP_WORK"/></m:MaterialTabItem>
+		<m:MaterialTabItem hideOn="HIDE_ON_MED_DOWN"><m:MaterialAnchorButton type="FLAT" href="#routines-routineTab" text="Stations" iconType="WIDGETS"/> </m:MaterialTabItem>
 		<!--  <m:MaterialTabItem><m:MaterialAnchorButton type="FLAT" href="#seating-routineTab" text="Seating Chart" /> </m:MaterialTabItem>-->
 	</m:MaterialTab>
 		<m:MaterialPanel m:id="info-routineTab" >
@@ -36,7 +20,18 @@
 			<m:MaterialCheckBox  ui:field="isDefault" text="Default" />
 		</m:MaterialPanel>
 		<m:MaterialPanel m:id="procedures-routineTab">
-		<ma:richeditor.MaterialRichEditor placeholder="you can type procedure content here"></ma:richeditor.MaterialRichEditor>
+		<g:HTMLPanel ui:field="procedureListPanel">
+		<m:MaterialCard>
+			<m:MaterialCardAction>
+				<m:MaterialBadge ui:field="procedureNumBadge" />
+				<m:MaterialAnchorButton ui:field="deleteProcBtn" />
+				<m:MaterialAnchorButton ui:field="doneProcBtn" />
+			</m:MaterialCardAction>
+			<m:MaterialCardContent>
+				<ma:richeditor.MaterialRichEditor placeholder="you can type procedure content here"></ma:richeditor.MaterialRichEditor>
+			</m:MaterialCardContent>
+		</m:MaterialCard>
+		</g:HTMLPanel>
 		</m:MaterialPanel>
 		<m:MaterialPanel m:id="groups-routineTab" ></m:MaterialPanel>
 		<m:MaterialPanel m:id="stations-routineTab"></m:MaterialPanel>
