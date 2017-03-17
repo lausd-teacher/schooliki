@@ -70,16 +70,7 @@ public class ClassroomMain extends Composite{
 	public MaterialLink incidentLink;
 	
 	@UiField
-	public MaterialLink goalLink;
-	
-	@UiField
 	public MaterialLink routineLink;
-	
-	@UiField
-	public MaterialLink lessonPlanLink;
-	
-	@UiField
-	public MaterialLink jobLink;
 	
 	@UiField
 	public MaterialNavBar navBar;
@@ -213,7 +204,8 @@ public class ClassroomMain extends Composite{
 				@Override
 				public void onClick(ClickEvent event) {
 					sideNav.hide();
-					History.newItem("c/" + utils.getCurrentRoster().getId());	
+					//History.newItem("c/" + utils.getCurrentRoster().getId());	
+					showDashboard();
 				}});
 			
 			assignmentLink.addClickHandler( new ClickHandler(){

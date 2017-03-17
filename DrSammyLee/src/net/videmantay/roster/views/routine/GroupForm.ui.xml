@@ -5,7 +5,49 @@
 	<g:HTMLPanel>
 	<m:MaterialCard>
 		<m:MaterialCardContent>
-			<m:MaterialCardTitle />
+			<m:MaterialRow ui:field="toolingRow" > 
+				<m:MaterialColumn ui:field="groupTypeCol"> 
+				<m:html.Div>
+					<m:html.Span>
+						<m:MaterialLabel text="Group Type" />
+					</m:html.Span>
+					<m:html.Span>
+						<m:MaterialListBox> 
+							<m:html.Option ui:field="customOpt" />
+							<m:html.Option ui:field="rti2Opt" />
+							<m:html.Option ui:field="eldLevelOpt" />
+							<m:html.Option ui:field="nameOpt" />
+						</m:MaterialListBox>
+					</m:html.Span>
+				</m:html.Div>
+				</m:MaterialColumn>
+				<m:MaterialColumn ui:field="paramCol"> 
+					<m:MaterialRow ui:field="rti2ParamRow">
+						<MaterialColumn ui:field="rti2SubjectCol">
+							<m:MaterialLabel />
+							<m:MaterialListBox>
+								<m:html.Option text="All Subjects" />
+								<m:html.Option text="Reading" />
+								<m:html.Option text="Writing" />
+								<m:html.Option text="Math" />
+							</m:MaterialListBox>
+						</MaterialColumn>
+						<MaterialColumn ui:field="rti2TestCol">
+							<m:MaterialLabel />
+							<m:MaterialListBox>
+								<m:html.Option text="Latest Test" />
+								<m:html.OPtion text="Specific Test" />
+							</m:MaterialListBox>
+							<m:MaterialSearch ui:field="rti2Search"></m:MaterialSearch>
+						</MaterialColumn>
+					</m:MaterialRow>
+					<m:MaterialRow ui:field="nameParamRow">
+						<m:MaterialColumn> 
+							<m:MaterialSwitch ui:field="nameSwitch"></m:MaterialSwitch>
+						</m:MaterialColumn>
+					</m:MaterialRow>
+				</m:MaterialColumn>
+			</m:MaterialRow>
 			<m:MaterialRow><!--  -->
 				<m:MaterialColumn ui:field="studentSection" grid="s12 m4 l2">
 					<m:MaterialPanel ui:field="studentPanel" />

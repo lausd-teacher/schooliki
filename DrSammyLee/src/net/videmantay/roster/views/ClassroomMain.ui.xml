@@ -13,13 +13,12 @@
 				<v:UserProfilePanel ui:field="profilePanel"></v:UserProfilePanel>
 				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" textColor="red darken-4"/>
 				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange darken-4" iconType="ASSIGNMENT" />
-				<m:MaterialLink ui:field="lessonPlanLink" text="Lesson Plans" textColor="amber darken-3"
-					iconType="LIBRARY_BOOKS" />
 				<m:MaterialLink ui:field="incidentLink" text="Incidents" textColor="deep-orange darken-2"
 					iconType="FEEDBACK" />
+				<!-- We'll be handing these other links in the next iteration 
 				<m:MaterialLink ui:field="goalLink" text="Goals" textColor="amber darken-4" iconType="MOOD" />
 				<m:MaterialLink ui:field="jobLink" text="Jobs" textColor="orange darken-4" iconType="BUSINESS_CENTER" />
-				<m:MaterialLink ui:field="bookLink" text="Books" textColor="red darken-2" iconType="LOCAL_LIBRARY" />
+				<m:MaterialLink ui:field="bookLink" text="Books" textColor="red darken-2" iconType="LOCAL_LIBRARY" /> -->
 				<m:MaterialLink ui:field="routineLink" text="Routines" textColor="red darken-4" iconType="SCHEDULE" />
 				<m:MaterialLink ui:field="formLink" text="Forms" textColor="deep-orange darken-4" iconType="INBOX" />
 				<m:MaterialLink ui:field="logoutLink" text="Logout" iconType="INPUT" />

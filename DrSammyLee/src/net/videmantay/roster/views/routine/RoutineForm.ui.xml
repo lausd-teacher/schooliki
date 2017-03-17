@@ -21,16 +21,7 @@
 		</m:MaterialPanel>
 		<m:MaterialPanel m:id="procedures-routineTab">
 		<g:HTMLPanel ui:field="procedureListPanel">
-		<m:MaterialCard>
-			<m:MaterialCardAction>
-				<m:MaterialBadge ui:field="procedureNumBadge" />
-				<m:MaterialAnchorButton ui:field="deleteProcBtn" />
-				<m:MaterialAnchorButton ui:field="doneProcBtn" />
-			</m:MaterialCardAction>
-			<m:MaterialCardContent>
-				<ma:richeditor.MaterialRichEditor placeholder="you can type procedure content here"></ma:richeditor.MaterialRichEditor>
-			</m:MaterialCardContent>
-		</m:MaterialCard>
+			<ma:richeditor.MaterialRichEditor placeholder="you can type procedure content here"></ma:richeditor.MaterialRichEditor>
 		</g:HTMLPanel>
 		</m:MaterialPanel>
 		<m:MaterialPanel m:id="groups-routineTab" ></m:MaterialPanel>

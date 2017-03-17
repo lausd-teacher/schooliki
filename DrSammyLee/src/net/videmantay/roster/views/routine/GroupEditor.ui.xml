@@ -6,13 +6,14 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-	<m:MaterialCard>
-		<m:MaterialCardContent>
-			<m:MaterialCardTitle ui:field="title" />
-			<m:MaterialLabel ui:field="description" />
-			<m:MaterialImage />
-			<m:html.Hr />
-			<m:MaterialPanel ui:field="studentSection" />
+	<m:MaterialCard> 
+		<m:MaterialCardContent> 
+			<g:HTMLPanel> 
+				<div style="" ui:field="studentListPanel"></div>
+				<div style="" ui:field="groupPanel">
+					
+				</div>
+			</g:HTMLPanel>
 		</m:MaterialCardContent>
 	</m:MaterialCard>
 	</g:HTMLPanel>
