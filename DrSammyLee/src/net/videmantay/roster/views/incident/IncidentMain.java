@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialFAB;
 import gwt.material.design.client.ui.MaterialRow;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.IncidentTypeJson;
 import net.videmantay.roster.views.components.IncidentCard;
 import net.videmantay.roster.views.draganddrop.SelectionManager;
@@ -31,14 +32,11 @@ public class IncidentMain extends Composite {
 	@UiField
 	MaterialFAB addIncidentFAB;
 	
-	@UiField
-	MaterialRow incidentTypeContainer;
-	
-	
 	IncidentForm incidentForm = new IncidentForm();
+	private final RosterUtils utils;
 	
-	
-	public IncidentMain() {
+	public IncidentMain(RosterUtils ru) {
+		utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
 		container.add(incidentForm);
 	}
@@ -61,10 +59,6 @@ public class IncidentMain extends Composite {
 			MaterialColumn column = new MaterialColumn();
 			column.add(card);
 			
-			incidentTypeContainer.add(column);
-			//always select the first incident
-			if(i == 0)
-				 SelectionManager.selectIncidentCard(card.getContainer());
 		}
 		
 		
@@ -76,8 +70,7 @@ public class IncidentMain extends Composite {
 		
 		MaterialColumn column = new MaterialColumn();
 		column.add(card);
-		
-		incidentTypeContainer.add(column);
+	
 		
 	}
 	
@@ -90,13 +83,5 @@ public class IncidentMain extends Composite {
 	}
 
 
-	public MaterialRow getIncidentContainer() {
-		return this.incidentTypeContainer;
-	}
-
-
-	public interface Presenter{
-		void addIncidentFABButtonClickEvent();	
-	}
 
 }

@@ -23,6 +23,7 @@ import net.videmantay.student.json.RosterStudentJson;
 
 public class RosterUtils {
 
+	public final String USER_IMG = "img/user.svg";
 	private  final RootPanel root = RootPanel.get();
 	private   final RosterMain landingPage;
 	private  ClassroomMain classroomPage;

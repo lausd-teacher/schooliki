@@ -369,10 +369,17 @@ div.item-student.ui-selecting { background: #FECA40;
 	/* Classroom Main */
 	.classroom{
 		background-color:WhiteSmoke;
+		height:100%;
+		width:100%;
 	}
 	.classroomNav{
 		background-image:url("../img/sammyOwlTemplate.svg");
 	}
+	
+	.classroom-main{ 
+		background-color:WhiteSmoke;
+	}
+	
 	
 		.profilePad{
 	    width: 50%;

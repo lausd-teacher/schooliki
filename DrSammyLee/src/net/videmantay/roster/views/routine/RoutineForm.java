@@ -14,6 +14,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.OListElement;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
@@ -78,8 +79,8 @@ public class RoutineForm extends Composite {
 	public MaterialCheckBox  isDefault;
 	
 	@UiField
-	HTMLPanel procedureListPanel;
-	
+	public OListElement procedureOrderList;
+		
 	private  FullRoutineJson originalData;
 	private FullRoutineJson copyData;
 	private SeatingChartJson seatingChart;
@@ -105,7 +106,7 @@ public class RoutineForm extends Composite {
 	
 	public void setSeatingChart(SeatingChartJson scj){
 		this.seatingChart =scj;
-	}
+	} 
 	
 	public SeatingChartJson getSeatingChart(){
 		return this.seatingChart;

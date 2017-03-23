@@ -7,14 +7,10 @@
 	
 	</ui:style>
 	<g:HTMLPanel ui:field="container">
-		<m:MaterialTitle title="Manage classroom expectations by creating positive and negative incidents" description="Incidents are events you want to encourage like 'Turned in Homework', 'Shared with a friend'" />
-		<m:MaterialContainer>
-		   <m:MaterialRow ui:field="incidentTypeContainer">
-		   
-		   </m:MaterialRow>
-		</m:MaterialContainer>
+		<m:MaterialTitle title="Incidents" description="Manage classroom expectations. Incidents are events you want to encourage like 'Turned in Homework', or discourage like 'Talking Out of Turn'" />
+			<v:IncidentIconGrid></v:IncidentIconGrid>
 		<m:MaterialFAB ui:field="addIncidentFAB">
-			<m:MaterialAnchorButton type="RAISED" iconType="ADD"/>
+			<m:MaterialAnchorButton type="FLOATING" iconType="ADD"/>
 		</m:MaterialFAB>
 
 	</g:HTMLPanel>

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCheckBox;
+import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialDoubleBox;
 import gwt.material.design.client.ui.MaterialInput;
@@ -27,6 +28,7 @@ import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTextArea;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.GradedWorkJson;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
@@ -41,66 +43,68 @@ public class GradedWorkForm extends Composite {
 	private String url = "";
 
 	@UiField
-	MaterialModal modal;
+	public MaterialModal modal;
 
 	@UiField
-	HTMLPanel form;
+	public HTMLPanel form;
 
 	@UiField
-	MaterialInput title;
+	public MaterialInput title;
 
 	@UiField
-	MaterialTextArea description;
+	public MaterialTextArea description;
 
 	@UiField
-	MaterialListBox lang;
+	public MaterialListBox lang;
 
 	@UiField
-	MaterialListBox subject;
+	public MaterialListBox subject;
 
 	@UiField
-	MaterialListBox type;
+	public MaterialListBox type;
 
 	@UiField
-	MaterialDatePicker dueDate;
+	public MaterialDatePicker dueDate;
 
 	@UiField
-	MaterialDatePicker assignedDate;
+	public MaterialDatePicker assignedDate;
 
 	@UiField
-	MaterialDoubleBox pointsPossible;
+	public MaterialDoubleBox pointsPossible;
 
 	@UiField
-	MaterialCheckBox selectAllBox;
+	public MaterialCheckBox selectAllBox;
 
 	@UiField
-	MaterialRow assignToGrid;
+	public MaterialRow assignToGrid;
 
 	@UiField
-	MaterialButton okBtn;
+	public MaterialButton okBtn;
 
 	@UiField
-	MaterialButton cancelBtn;
+	public MaterialButton cancelBtn;
+	
+	private final RosterUtils utils;
 
 	interface GradedWorkFormUiBinder extends UiBinder<Widget, GradedWorkForm> {
 	}
 
-	public GradedWorkForm() {
-
+	public GradedWorkForm(RosterUtils ru) {
+			this.utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
 		form.getElement().setId("assignmentForm");
 
-		// RosterJson roster = (RosterJson)
-		// window.getPropertyJSO("roster").cast();
-		// for(int i = 0; i <roster.getRosterStudents().length(); i++){
-		// AssignToGridItem item = new AssignToGridItem();
-		// item.setStudent(roster.getRosterStudents().get(i));
-		// MaterialColumn col = new MaterialColumn();
-		// col.setGrid("s2");
-		// col.add(item);
-		// assignToGrid.add(col);
-		// assignToGrid.setVisible(false);
-		// }
+		if(utils.getStudents() != null){
+		 for(int i = 0; i <utils.getStudents().length(); i++){
+		 AssignToGridItem item = new AssignToGridItem();
+		 item.setStudent(utils.getStudents().get(i));
+		 MaterialColumn col = new MaterialColumn();
+		 col.setGrid("s2");
+		 col.add(item);
+		 assignToGrid.add(col);
+		 assignToGrid.setVisible(false);
+		 }
+		}
 		selectAllBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 			@Override
@@ -227,21 +231,6 @@ public class GradedWorkForm extends Composite {
 			}
 		};
 
-	}
-
-	public MaterialButton getOkBtn() {
-		return this.okBtn;
-	}
-
-	public MaterialButton getCancelBtn() {
-		return this.cancelBtn;
-	}
-
-	public interface Presenter {
-
-		void gradedWorkFromOkButtonClickEvent();
-
-		void gradedWorkFromCancelButtonClickEvent();
 	}
 
 }

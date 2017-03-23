@@ -8,22 +8,18 @@
 			<m:MaterialRow ui:field="toolingRow" > 
 				<m:MaterialColumn ui:field="groupTypeCol"> 
 				<m:html.Div>
-					<m:html.Span>
 						<m:MaterialLabel text="Group Type" />
-					</m:html.Span>
-					<m:html.Span>
 						<m:MaterialListBox> 
-							<m:html.Option ui:field="customOpt" />
-							<m:html.Option ui:field="rti2Opt" />
-							<m:html.Option ui:field="eldLevelOpt" />
-							<m:html.Option ui:field="nameOpt" />
+							<m:html.Option ui:field="customOpt" text="Custom"/>
+							<m:html.Option ui:field="rti2Opt" text="RTI2" />
+							<m:html.Option ui:field="eldLevelOpt"  text="ELD Level"/>
+							<m:html.Option ui:field="nameOpt" text="Name" />
 						</m:MaterialListBox>
-					</m:html.Span>
 				</m:html.Div>
 				</m:MaterialColumn>
 				<m:MaterialColumn ui:field="paramCol"> 
 					<m:MaterialRow ui:field="rti2ParamRow">
-						<MaterialColumn ui:field="rti2SubjectCol">
+						<m:MaterialColumn ui:field="rti2SubjectCol">
 							<m:MaterialLabel />
 							<m:MaterialListBox>
 								<m:html.Option text="All Subjects" />
@@ -31,29 +27,38 @@
 								<m:html.Option text="Writing" />
 								<m:html.Option text="Math" />
 							</m:MaterialListBox>
-						</MaterialColumn>
-						<MaterialColumn ui:field="rti2TestCol">
+						</m:MaterialColumn>
+						<m:MaterialColumn ui:field="rti2TestCol">
 							<m:MaterialLabel />
 							<m:MaterialListBox>
 								<m:html.Option text="Latest Test" />
-								<m:html.OPtion text="Specific Test" />
+								<m:html.Option text="Specific Test" />
 							</m:MaterialListBox>
 							<m:MaterialSearch ui:field="rti2Search"></m:MaterialSearch>
-						</MaterialColumn>
+						</m:MaterialColumn>
 					</m:MaterialRow>
 					<m:MaterialRow ui:field="nameParamRow">
 						<m:MaterialColumn> 
-							<m:MaterialSwitch ui:field="nameSwitch"></m:MaterialSwitch>
+							<m:MaterialSwitch ui:field="nameSwitch" onLabel="First" offLabel="Last"></m:MaterialSwitch>
 						</m:MaterialColumn>
 					</m:MaterialRow>
 				</m:MaterialColumn>
 			</m:MaterialRow>
+			<m:html.Hr />
 			<m:MaterialRow><!--  -->
 				<m:MaterialColumn ui:field="studentSection" grid="s12 m4 l2">
-					<m:MaterialPanel ui:field="studentPanel" />
+					<m:MaterialCard> 
+						<m:MaterialCardContent> 
+							<m:MaterialPanel ui:field="studentPanel" />
+						</m:MaterialCardContent>
+					</m:MaterialCard>
 				</m:MaterialColumn>
 				<m:MaterialColumn ui:field="groupSection" grid="s12 m8 l6">
-					<m:MaterialPanel ui:field="groupPanel" />
+					<m:MaterialCard> 
+						<m:MaterialCardContent> 
+							<m:MaterialPanel ui:field="groupPanel" />
+						</m:MaterialCardContent>
+					</m:MaterialCard>
 				</m:MaterialColumn>
 			</m:MaterialRow>
 		</m:MaterialCardContent>

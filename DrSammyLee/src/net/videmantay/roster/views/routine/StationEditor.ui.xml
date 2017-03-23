@@ -5,5 +5,8 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
+		<h4>Station fixed locations in the classroom used for centers or rotating groups</h4>
+		<!-- drawing the scheduler first row is for station titles, and planned duration-->
+		<!--  first coloum is the iteration number -->
 	</g:HTMLPanel>
 </ui:UiBinder> 

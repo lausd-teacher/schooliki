@@ -35,7 +35,8 @@ import net.videmantay.roster.routine.json.SeatingChartJson;
 import net.videmantay.roster.routine.json.FullRoutineJson;
 import net.videmantay.student.json.InfoJson;
 import net.videmantay.roster.views.UserProfilePanel;
-import net.videmantay.roster.views.assignment.GradedWorkMain;
+import net.videmantay.roster.views.assignment.AssignmentMain;
+import net.videmantay.roster.views.incident.IncidentMain;
 import net.videmantay.roster.views.routine.RoutineMain;
 import net.videmantay.roster.views.routine.SeatingChartPanel;
 
@@ -215,7 +216,8 @@ public class ClassroomMain extends Composite{
 					event.preventDefault();
 					event.stopPropagation();
 					sideNav.hide();
-					History.newItem("c/" + utils.getCurrentRoster().getId() +"/a");
+					//History.newItem("c/" + utils.getCurrentRoster().getId() +"/a");
+					assignment();
 				}});
 			
 			incidentLink.addClickHandler( new ClickHandler(){
@@ -225,7 +227,9 @@ public class ClassroomMain extends Composite{
 					event.preventDefault();
 					event.stopPropagation();
 					sideNav.hide();
-					History.newItem("c/" + utils.getCurrentRoster().getId()+"/i");
+					//History.newItem("c/" + utils.getCurrentRoster().getId()+"/i");
+					incident();
+					
 				}});
 			
 			routineLink.addClickHandler(new ClickHandler(){
@@ -398,7 +402,20 @@ public class ClassroomMain extends Composite{
 	}
 	//list assignments
 	public void assignment(){
-		
+		GWT.runAsync(new RunAsyncCallback(){
+
+			@Override
+			public void onFailure(Throwable reason) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess() {
+				mainPanel.clear();
+				mainPanel.add(new AssignmentMain(utils));
+				
+			}});
 	}
 	//specific assignment
 	public void assignment(String id){
@@ -429,7 +446,8 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
+				mainPanel.clear();
+				mainPanel.add(new IncidentMain(utils));
 				
 			}});
 	}

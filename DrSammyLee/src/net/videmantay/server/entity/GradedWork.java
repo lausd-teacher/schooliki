@@ -1,6 +1,7 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
@@ -26,6 +27,8 @@ public class GradedWork extends Assignment implements Serializable{
 	public Boolean finishedGrading = false;
 	
 	public Long rubric;
+	
+	public ArrayList<Long> assignedTo= new ArrayList<Long>();
 	
 	
 	public GradedWorkType getGradedWorkType() {
