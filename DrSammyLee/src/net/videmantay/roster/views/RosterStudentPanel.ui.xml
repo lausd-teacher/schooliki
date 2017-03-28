@@ -1,27 +1,31 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
-	 
+
 	</ui:style>
 	<g:HTMLPanel addStyleNames="rosterStudent" ui:field="rosterStudentPanel">
-	<div class="counterRotate studentHead">
-		<div ui:field="badgeRow"  class="badgetRow" width="100%">
-			<m:MaterialBadge ui:field="statusBadge" addStyleNames="statusBadge statusBadgeLeft" backgroundColor="green lighten-1" textColor="white" 
-			text="99" visible="true" circle="true" />
-			<m:MaterialBadge ui:field="extraStatusBadge" addStyleNames="statusBadge statusBadgeRight" visible="true" 
-			backgroundColor="red lighten-1"  textColor="white" circle="true" text="0" float="RIGHT"/> 
-		</div>
-		<div ui:field="checkRow">
-			<m:MaterialCheckBox ui:field="checkBox" visible="false"/>
-		</div>
-	      	<m:MaterialImage ui:field="studentImage" circle="true"/>
-	  </div><!-- end counter rotate head -->
-	  <div class="counterRotate studentBody">
-			<m:MaterialLabel addStyleNames="studentName firstName" ui:field="firstName"></m:MaterialLabel>
-			<m:MaterialLabel addStyleNames="studentName lastName" ui:field="lastName" />
-			<g:HTMLPanel ui:field="honorsPanel" visible="false"/>
-	</div><!-- end counterRotate studentBody -->
-	   </g:HTMLPanel>
+		<div class="counterRotate studentHead">
+			<div ui:field="badgeRow" class="badgetRow" width="100%">
+				<m:MaterialBadge ui:field="statusBadge"
+					addStyleNames="statusBadge statusBadgeLeft" backgroundColor="green lighten-1"
+					textColor="white" text="99" visible="true" circle="true" />
+				<m:MaterialBadge ui:field="extraStatusBadge"
+					addStyleNames="statusBadge statusBadgeRight" visible="true"
+					backgroundColor="red lighten-1" textColor="white" circle="true"
+					text="0" float="RIGHT" />
+			</div>
+			<div ui:field="checkRow">
+				<m:MaterialCheckBox ui:field="checkBox" visible="false" />
+			</div>
+			<m:MaterialImage ui:field="studentImage" circle="true" />
+		</div><!-- end counter rotate head -->
+		<div class="counterRotate studentBody">
+			<m:MaterialLabel addStyleNames="studentName firstName"
+				ui:field="firstName"></m:MaterialLabel>
+			<m:MaterialLabel addStyleNames="studentName lastName"
+				ui:field="lastName" />
+			<g:HTMLPanel ui:field="honorsPanel" visible="false" />
+		</div><!-- end counterRotate studentBody -->
+	</g:HTMLPanel>
 </ui:UiBinder> 

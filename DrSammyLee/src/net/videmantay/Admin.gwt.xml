@@ -6,9 +6,9 @@
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeRed" />
 	<inherits name="com.google.common.base.Base" />
 	<source path="admin" />
-	<source path="student"/>
+	<source path="student" />
 	<source path="shared" />
-	
+
 	<inherits name='com.google.gwt.place.Place' />
 	<inherits name='com.google.gwt.activity.Activity' />
 
@@ -16,5 +16,5 @@
 		<when-type-is class="net.videmantay.admin.ClientFactory" />
 	</replace-with>
 	<entry-point class="net.videmantay.admin.Admin"></entry-point>
-	<set-property name="user.agent" value="safari"/>
+	<set-property name="user.agent" value="safari" />
 </module>

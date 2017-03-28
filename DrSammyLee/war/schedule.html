@@ -3,110 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
-    <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
+<link rel="stylesheet" media="print"
+	href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css" />
 <style>
-	 body{
-   	overflow:hidden;
-   	height:100%;
-   	width:100%;
-   	position:absolute;
-   	color:DimGray;
-   	font-family:"Roboto", "San Serif";
-   }
-   body> div.container{
-   	height:95%;
-   	width:95%;
-   }
-	.fc-widget-header{
-		font-size:1.25em;
-		font-family: ;
-		color:DarkRed;
-	}
-	.fc-widget-content{
-		font-size:0.99em;
-	}
-	
-	input[type=text]{
-		font-size:1.1em;
-		font-style:Roboto, Verdana;
-		color:White;
-	}
+body {
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	color: DimGray;
+	font-family: "Roboto", "San Serif";
+}
+
+body>div.container {
+	height: 95%;
+	width: 95%;
+}
+
+.fc-widget-header {
+	font-size: 1.25em;
+	font-family:;
+	color: DarkRed;
+}
+
+.fc-widget-content {
+	font-size: 0.99em;
+}
+
+input[type=text] {
+	font-size: 1.1em;
+	font-style: Roboto, Verdana;
+	color: White;
+}
 </style>
 </head>
 <body>
 	<div class="container">
 		<div class="row valign-wrapper">
-		<div  class="col s12 m8 l8 valign">
-		<h2 class="title" >Schedule</h2>
+			<div class="col s12 m8 l8 valign">
+				<h2 class="title">Schedule</h2>
+			</div>
+			<div class="col s12 m4 l4 valign">
+				<div id="updateScheduleBtn" style="color: white"
+					class="waves-effect waves-light btn disabled red darken-2 right">Update</div>
+			</div>
 		</div>
-		<div class="col s12 m4 l4 valign">
-			<div id="updateScheduleBtn" style="color:white"class="waves-effect waves-light btn disabled red darken-2 right">Update</div>
+		<hr />
+		<div id="scheduleCal">
+			<!-- This is the fullcalendar wrapper -->
 		</div>
-		</div>
-		<hr/>
-		<div id="scheduleCal"><!-- This is the fullcalendar wrapper --></div>
-		
+
 		<!--  Page Loader  -->
-		 <div id="scheduleLoader" class="preloader-wrapper big">
-    		<div class="spinner-layer spinner-blue-only">
-      		<div class="circle-clipper left">
-        	<div class="circle"></div>
-      		</div><div class="gap-patch">
-        	<div class="circle"></div>
-      		</div>
-      		<div class="circle-clipper right">
-        		<div class="circle"></div>
-      		</div>
-    		</div>
-  		</div><!--  end loader -->
-  		
-  		<!--  Schedule Modal Form -->
+		<div id="scheduleLoader" class="preloader-wrapper big">
+			<div class="spinner-layer spinner-blue-only">
+				<div class="circle-clipper left">
+					<div class="circle"></div>
+				</div>
+				<div class="gap-patch">
+					<div class="circle"></div>
+				</div>
+				<div class="circle-clipper right">
+					<div class="circle"></div>
+				</div>
+			</div>
+		</div>
+		<!--  end loader -->
+
+		<!--  Schedule Modal Form -->
 		<!-- Modal Structure -->
-	<div id="modalManager" class="modal modal-fixed-footer" style="height:200px">
-	<!--  first content  in modal -->
-  <div id="scheduleModal" >
-    <form id="scheduleForm" style="height:100%; background-color:Gray; font-size: 1.5em; padding:1.5em">
-    <div class="row">
-    	<div class='col s8 m8 l8'>
-    	<input id="scheduleTitleInput" type="text" placeholder="title" />
-    	</div>
-    	&nbsp;&nbsp;
-    	<div class='col s4 m4 l4'>
- 		
-    	<input id="scheduleColorInput" type="color" />
-    	</div>
-    </div>
-    </form>
-    <div class="modal-footer">
-      <a  id="okScheduleBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Ok</a>
-      <a  id="cancelScheduleBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
-    </div>
-    </div>
-    <!--  second content in modal -->
-    <div id="itemDeleteModal" style="padding:1.1em">
-     	<h3>This event will be deleted</h3>
-     	<h6>You will not be able to undo!</h6>
-    <div class="modal-footer">
-      <a  id="okDeleteItemBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Ok</a>
-      <a  id="cancelDeleteItemBtn" href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
-    </div>
-  </div>
-  </div>
-     
-  
-	</div><!--  end container -->
+		<div id="modalManager" class="modal modal-fixed-footer"
+			style="height: 200px">
+			<!--  first content  in modal -->
+			<div id="scheduleModal">
+				<form id="scheduleForm"
+					style="height: 100%; background-color: Gray; font-size: 1.5em; padding: 1.5em">
+					<div class="row">
+						<div class='col s8 m8 l8'>
+							<input id="scheduleTitleInput" type="text" placeholder="title" />
+						</div>
+						&nbsp;&nbsp;
+						<div class='col s4 m4 l4'>
+
+							<input id="scheduleColorInput" type="color" />
+						</div>
+					</div>
+				</form>
+				<div class="modal-footer">
+					<a id="okScheduleBtn" href="#!"
+						class="modal-action modal-close waves-effect waves-green btn-flat ">Ok</a>
+					<a id="cancelScheduleBtn" href="#!"
+						class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+				</div>
+			</div>
+			<!--  second content in modal -->
+			<div id="itemDeleteModal" style="padding: 1.1em">
+				<h3>This event will be deleted</h3>
+				<h6>You will not be able to undo!</h6>
+				<div class="modal-footer">
+					<a id="okDeleteItemBtn" href="#!"
+						class="modal-action modal-close waves-effect waves-green btn-flat ">Ok</a>
+					<a id="cancelDeleteItemBtn" href="#!"
+						class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<!--  end container -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		crossorigin="anonymous"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
 	<script>
 	var newItem;//reference to same item for saving
 				//that way we don't keep adding to the stack;

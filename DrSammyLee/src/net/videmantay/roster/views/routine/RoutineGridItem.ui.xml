@@ -1,71 +1,79 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
 		.leftCol{
-			border-right:1px solid Silver;
+		border-right:1px solid Silver;
 		}
 	</ui:style>
 	<g:HTMLPanel addStyleNames="routineItem" ui:field="routineItem">
 		<m:MaterialCard hoverable="true" backgroundColor="white">
 			<m:MaterialCardContent>
-			<m:MaterialAnchorButton addStyleNames="routineItem-delete" iconType="DELETE" type="FLAT" float="RIGHT" hoverable="true" padding="1" textColor="red darken-2"/>
-			<m:MaterialAnchorButton  addStyleNames="routineItem-edit" iconType="EDIT" float="RIGHT" type="FLAT" hoverable="true" padding="1" textColor="deep-orange darken-1"/>
-			<m:MaterialCardTitle ui:field="title" text="Your Seat"/>
-			<m:MaterialLabel ui:field="description" text="Students should be in their own seats, ready to be productive"></m:MaterialLabel>
-			<m:MaterialCollapsible>
-				<m:MaterialCollapsibleItem> 
-					<m:MaterialCollapsibleHeader>
-					<m:MaterialRow> 
-						<m:MaterialColumn>
-							<m:MaterialLink iconType="LIST" text="Procedures" float="LEFT"/>
-							<m:MaterialBadge float="RIGHT" ui:field="procedureBadge"></m:MaterialBadge>
-						</m:MaterialColumn>
-					</m:MaterialRow>
-					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody ui:field="procedureCollapseBody"> 
-					</m:MaterialCollapsibleBody>
-				</m:MaterialCollapsibleItem>
-				<m:MaterialCollapsibleItem> 
-					<m:MaterialCollapsibleHeader>
-					<m:MaterialRow> 
-						<m:MaterialColumn>
-							<m:MaterialLink iconType="GROUP_WORK"  text="Groups" float="LEFT"/>
-							<m:MaterialBadge float="RIGHT" ui:field="groupsBadge"></m:MaterialBadge>
-						</m:MaterialColumn>
-					</m:MaterialRow>
-					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody ui:field="groupsCollapseBody"> 
-						<!-- so this is somehting to thin what he has -->
-					</m:MaterialCollapsibleBody>
-				</m:MaterialCollapsibleItem>
-				<m:MaterialCollapsibleItem> 
-					<m:MaterialCollapsibleHeader>
-					<m:MaterialRow> 
-						<m:MaterialColumn>
-							<m:MaterialLink iconType="WIDGETS" text="Stations" float="LEFT"/>
-							<m:MaterialBadge float="RIGHT" ui:field="stationBadge"></m:MaterialBadge>
-						</m:MaterialColumn>
-					</m:MaterialRow>
-					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody ui:field="stationCollapseBody"> 
-						<!-- so this is somehting to thin what he has -->
-					</m:MaterialCollapsibleBody>
-				</m:MaterialCollapsibleItem>
-				<m:MaterialCollapsibleItem> 
-					<m:MaterialCollapsibleHeader>
-					<m:MaterialRow> 
-						<m:MaterialColumn>
-							<m:MaterialLink iconType="EVENT_SEAT" text="Seating" float="LEFT"/>
-						</m:MaterialColumn>
-					</m:MaterialRow>
-					</m:MaterialCollapsibleHeader>
-					<m:MaterialCollapsibleBody ui:field="seatingCollapseBody"> 
-						<!-- so this is somehting to thin what he has -->
-					</m:MaterialCollapsibleBody>
-				</m:MaterialCollapsibleItem>
-			</m:MaterialCollapsible>
+				<m:MaterialAnchorButton addStyleNames="routineItem-delete"
+					iconType="DELETE" type="FLAT" float="RIGHT" hoverable="true"
+					padding="1" textColor="red darken-2" />
+				<m:MaterialAnchorButton addStyleNames="routineItem-edit"
+					iconType="EDIT" float="RIGHT" type="FLAT" hoverable="true" padding="1"
+					textColor="deep-orange darken-1" />
+				<m:MaterialCardTitle ui:field="title" text="Your Seat" />
+				<m:MaterialLabel ui:field="description"
+					text="Students should be in their own seats, ready to be productive"></m:MaterialLabel>
+				<m:MaterialCollapsible>
+					<m:MaterialCollapsibleItem>
+						<m:MaterialCollapsibleHeader>
+							<m:MaterialRow>
+								<m:MaterialColumn>
+									<m:MaterialLink iconType="LIST" text="Procedures"
+										float="LEFT" />
+									<m:MaterialBadge float="RIGHT" ui:field="procedureBadge"></m:MaterialBadge>
+								</m:MaterialColumn>
+							</m:MaterialRow>
+						</m:MaterialCollapsibleHeader>
+						<m:MaterialCollapsibleBody ui:field="procedureCollapseBody">
+						</m:MaterialCollapsibleBody>
+					</m:MaterialCollapsibleItem>
+					<m:MaterialCollapsibleItem>
+						<m:MaterialCollapsibleHeader>
+							<m:MaterialRow>
+								<m:MaterialColumn>
+									<m:MaterialLink iconType="GROUP_WORK" text="Groups"
+										float="LEFT" />
+									<m:MaterialBadge float="RIGHT" ui:field="groupsBadge"></m:MaterialBadge>
+								</m:MaterialColumn>
+							</m:MaterialRow>
+						</m:MaterialCollapsibleHeader>
+						<m:MaterialCollapsibleBody ui:field="groupsCollapseBody">
+							<!-- so this is somehting to thin what he has -->
+						</m:MaterialCollapsibleBody>
+					</m:MaterialCollapsibleItem>
+					<m:MaterialCollapsibleItem>
+						<m:MaterialCollapsibleHeader>
+							<m:MaterialRow>
+								<m:MaterialColumn>
+									<m:MaterialLink iconType="WIDGETS" text="Stations"
+										float="LEFT" />
+									<m:MaterialBadge float="RIGHT" ui:field="stationBadge"></m:MaterialBadge>
+								</m:MaterialColumn>
+							</m:MaterialRow>
+						</m:MaterialCollapsibleHeader>
+						<m:MaterialCollapsibleBody ui:field="stationCollapseBody">
+							<!-- so this is somehting to thin what he has -->
+						</m:MaterialCollapsibleBody>
+					</m:MaterialCollapsibleItem>
+					<m:MaterialCollapsibleItem>
+						<m:MaterialCollapsibleHeader>
+							<m:MaterialRow>
+								<m:MaterialColumn>
+									<m:MaterialLink iconType="EVENT_SEAT" text="Seating"
+										float="LEFT" />
+								</m:MaterialColumn>
+							</m:MaterialRow>
+						</m:MaterialCollapsibleHeader>
+						<m:MaterialCollapsibleBody ui:field="seatingCollapseBody">
+							<!-- so this is somehting to thin what he has -->
+						</m:MaterialCollapsibleBody>
+					</m:MaterialCollapsibleItem>
+				</m:MaterialCollapsible>
 			</m:MaterialCardContent>
 		</m:MaterialCard>
 	</g:HTMLPanel>

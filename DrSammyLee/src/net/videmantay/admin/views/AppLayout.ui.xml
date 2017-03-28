@@ -4,22 +4,23 @@
 	xmlns:h="urn:import:gwt.material.design.client.ui.html">
 
 	<ui:style>
-	.label {
+		.label {
 		margin: 24px;
-	}
-	
-	.profile {
+		}
+
+		.profile {
 		border: 1px solid Crimson;
 		padding: 2em;
 		font-family: Verdana;
-	}
+		}
 	</ui:style>
 	<g:HTMLPanel>
 		<header>
 			<!-- NavBar -->
 			<m:MaterialNavBar ui:field="navBar" activates="sideNav"
 				backgroundColor="red darken-4">
-			   <m:MaterialNavBrand ui:field="navBartitle" text="Dr. Sammy Lee Admin App" />
+				<m:MaterialNavBrand ui:field="navBartitle"
+					text="Dr. Sammy Lee Admin App" />
 				<m:MaterialNavSection float="RIGHT">
 					<m:MaterialTooltip text="Notifications" position="BOTTOM">
 						<m:MaterialLink iconType="NOTIFICATIONS"
@@ -27,7 +28,7 @@
 					</m:MaterialTooltip>
 				</m:MaterialNavSection>
 			</m:MaterialNavBar>
-			
+
 			<!-- SideNav -->
 			<m:MaterialSideNav type="PUSH" m:id="sideNav"
 				ui:field="sideNav" closeOnClick="true">

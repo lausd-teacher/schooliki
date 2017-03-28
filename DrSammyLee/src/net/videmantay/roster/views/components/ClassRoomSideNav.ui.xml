@@ -1,13 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html" xmlns:vr="urn:import:net.videmantay.roster.views">
 	<ui:style>
-	
+
 	</ui:style>
 	<g:HTMLPanel>
-	<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD"
+		<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD"
 			text="Dashboard" textColor="red darken-4" />
 		<m:MaterialLink ui:field="assignmentLink" text="Assignments"
 			textColor="orange darken-4" iconType="ASSIGNMENT" />

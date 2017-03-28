@@ -4,21 +4,21 @@
 	xmlns:h="urn:import:gwt.material.design.client.ui.html" xmlns:o="urn:import:gwt.material.design.addins.client.overlay"
 	xmlns:v="urn:import:net.videmantay.roster.views.routine">
 	<ui:style>
-	.scStudentTools {
+		.scStudentTools {
 		overflow-x: hidden;
 		height: 100%;
 		width: 10em;
 		position: relative;
 		left: -2em;
-	}
-	
-	.scStudentList {
+		}
+
+		.scStudentList {
 		overflow-y: scroll;
 		height: 75%;
 		width:100%;
-	}
-	
-	.seatingChart {
+		}
+
+		.seatingChart {
 		width: 1090px;
 		height: 650px;
 		display: block;
@@ -26,17 +26,17 @@
 		margin-left: auto;
 		margin-right: auto;
 		margin-bottom: 1em;
-	}
-	.stationLayer {
+		}
+		.stationLayer {
 		height: 700px;
 		background-color:transparent;
 		position: relative;
 		left:-0.75em;
 		margin-bottom:0.5em;
 		display:none;
-	}
-	
-	.floorPlan {
+		}
+
+		.floorPlan {
 		height: 700px;
 		background-image: url('../img/classFloor.svg');
 		background-color:White;
@@ -45,48 +45,59 @@
 		position: relative;
 		left:-0.75em;
 		margin-bottom:0.5em;
-		box-shadow:2px  2px 5px DimGray;
-	}
-	
-	.seatingChartToolbar {
+		box-shadow:2px 2px
+		5px DimGray;
+		}
+
+		.seatingChartToolbar {
 		display: none;
 		position: relative;
-	}
-	
-	.editTools {
+		}
+
+		.editTools {
 		display: none;
 		position: relative;
-	}
+		}
 	</ui:style>
 	<g:HTMLPanel ui:field="seatingChart" styleName="{style.seatingChart}">
 		<m:MaterialRow ui:field="seatingChartToolbar"
 			backgroundColor="red lighten-1" addStyleNames="{style.seatingChartToolbar}">
 			<m:MaterialColumn grid="s2">
-				<m:MaterialButton text="Furniture" ui:field="stateSelectBtn" activates="scStateSelect" 
-				iconType="EVENT_SEAT"  iconPosition="RIGHT" width="170px"/>
-				<m:MaterialDropDown ui:field="scDropDown" activator="scStateSelect">
-					<m:MaterialLink text="Students" iconType="SCHOOL" iconPosition="RIGHT"/>
-					<m:MaterialLink text="Groups" iconType="GROUP_WORK" iconPosition="RIGHT"/>
-					<m:MaterialLink text="Furniture" iconType="EVENT_SEAT"  iconPosition="RIGHT"/>
-					<m:MaterialLink text="Stations" iconType="WIDGETS" iconPosition="RIGHT"/>
+				<m:MaterialButton text="Furniture" ui:field="stateSelectBtn"
+					activates="scStateSelect" iconType="EVENT_SEAT" iconPosition="RIGHT"
+					width="170px" />
+				<m:MaterialDropDown ui:field="scDropDown"
+					activator="scStateSelect">
+					<m:MaterialLink text="Students" iconType="SCHOOL"
+						iconPosition="RIGHT" />
+					<m:MaterialLink text="Groups" iconType="GROUP_WORK"
+						iconPosition="RIGHT" />
+					<m:MaterialLink text="Furniture" iconType="EVENT_SEAT"
+						iconPosition="RIGHT" />
+					<m:MaterialLink text="Stations" iconType="WIDGETS"
+						iconPosition="RIGHT" />
 				</m:MaterialDropDown>
-				</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialAnchorButton ui:field="addBtn"  iconType="ADD"/>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialAnchorButton ui:field="colorPicker" />
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialAnchorButton ui:field="undoBtn" iconType="REPLY"/>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialAnchorButton ui:field="deleteBtn" iconType="DELETE"/>
-					</m:MaterialColumn>
-				<!-- This cancel button must be accessible to classroomdashboard -->
-				<m:MaterialColumn grid="s1">
-				<m:MaterialAnchorButton ui:field="cancelBtn" iconType="CLOSE"/>
-				</m:MaterialColumn>
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s1">
+				<m:MaterialAnchorButton ui:field="addBtn"
+					iconType="ADD" />
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s1">
+				<m:MaterialAnchorButton ui:field="colorPicker" />
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s1">
+				<m:MaterialAnchorButton ui:field="undoBtn"
+					iconType="REPLY" />
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s1">
+				<m:MaterialAnchorButton ui:field="deleteBtn"
+					iconType="DELETE" />
+			</m:MaterialColumn>
+			<!-- This cancel button must be accessible to classroomdashboard -->
+			<m:MaterialColumn grid="s1">
+				<m:MaterialAnchorButton ui:field="cancelBtn"
+					iconType="CLOSE" />
+			</m:MaterialColumn>
 			<m:MaterialColumn grid="s1">
 				<!-- This done button must be accessible to classroomdashboard -->
 				<m:MaterialAnchorButton ui:field="doneBtn"
@@ -96,8 +107,8 @@
 		<m:MaterialRow>
 			<m:MaterialColumn grid="l10">
 				<g:HTMLPanel ui:field="floorPlanWrapper">
-				<div ui:field="stationLayer" class="{style.stationLayer}"></div>
-				<div ui:field="floorPlan" class="{style.floorPlan}"></div>
+					<div ui:field="stationLayer" class="{style.stationLayer}"></div>
+					<div ui:field="floorPlan" class="{style.floorPlan}"></div>
 				</g:HTMLPanel>
 			</m:MaterialColumn>
 			<m:MaterialColumn grid="l2">
@@ -108,54 +119,60 @@
 							addStyleNames="scStudentList" />
 					</div>
 					<div ui:field="editTools" class="{style.editTools}">
-							<m:MaterialCollapsible ui:field="editCollapsible">
-								<m:MaterialCollapsibleItem m:id="studentCollapseItem" addStyleNames="editCollapseItem" ui:field="studentCollapseItem">
-									<m:MaterialCollapsibleHeader>
-										<m:MaterialLink  iconType="SCHOOL" />
-									</m:MaterialCollapsibleHeader>
-									<m:MaterialCollapsibleBody ui:field="studentCollapseBody">
-										<g:HTMLPanel ui:field="editStudentEmptyMessage">
-											<h5>No Students to show</h5>
-										</g:HTMLPanel>
-									</m:MaterialCollapsibleBody>
-								</m:MaterialCollapsibleItem>
-								<m:MaterialCollapsibleItem m:id="groupCollapseItem" addStyleNames="editCollapseItem" ui:field="groupCollapseItem"> 
-									<m:MaterialCollapsibleHeader> 
-										<m:MaterialLink iconType="GROUP_WORK" />
-									</m:MaterialCollapsibleHeader>
-									<m:MaterialCollapsibleBody> 
-										<g:HTMLPanel>
-											<h5>No groups created </h5>
-										</g:HTMLPanel>
-									</m:MaterialCollapsibleBody>
-								</m:MaterialCollapsibleItem>
-								<m:MaterialCollapsibleItem m:id="furnitureCollapseItem" addStyleNames="editCollapseItem" ui:field="furnitureCollapseItem">
-									<m:MaterialCollapsibleHeader>
-										<m:MaterialLink iconType="EVENT_SEAT"/>
-									</m:MaterialCollapsibleHeader>
-									<m:MaterialCollapsibleBody>
-										<m:MaterialCollection>
-											<m:MaterialCollectionItem>
-												<m:MaterialImage url="../img/doubleDesk.png" addStyleNames="furnitureIcon" m:id="doubleDeskIcon"/>
-											</m:MaterialCollectionItem>
-											<m:MaterialCollectionItem>
-												<m:MaterialImage url="../img/singleDesk.png" addStyleNames="furnitureIcon"  m:id="singleDeskIcon"/>
-											</m:MaterialCollectionItem>
-										</m:MaterialCollection>
-									</m:MaterialCollapsibleBody>
-								</m:MaterialCollapsibleItem>
-								<m:MaterialCollapsibleItem m:id="stationCollapseItem" addStyleNames="editCollapseItem" ui:field="stationCollapseItem">
-									<m:MaterialCollapsibleHeader>
-										<m:MaterialLink iconType="WIDGETS"/>
-									</m:MaterialCollapsibleHeader>
-									<m:MaterialCollapsibleBody>
-										<g:HTMLPanel>
-											<h5>No stations created</h5>
-										</g:HTMLPanel>
-										<m:MaterialCollection></m:MaterialCollection>
-									</m:MaterialCollapsibleBody>
-								</m:MaterialCollapsibleItem>
-							</m:MaterialCollapsible>
+						<m:MaterialCollapsible ui:field="editCollapsible">
+							<m:MaterialCollapsibleItem m:id="studentCollapseItem"
+								addStyleNames="editCollapseItem" ui:field="studentCollapseItem">
+								<m:MaterialCollapsibleHeader>
+									<m:MaterialLink iconType="SCHOOL" />
+								</m:MaterialCollapsibleHeader>
+								<m:MaterialCollapsibleBody ui:field="studentCollapseBody">
+									<g:HTMLPanel ui:field="editStudentEmptyMessage">
+										<h5>No Students to show</h5>
+									</g:HTMLPanel>
+								</m:MaterialCollapsibleBody>
+							</m:MaterialCollapsibleItem>
+							<m:MaterialCollapsibleItem m:id="groupCollapseItem"
+								addStyleNames="editCollapseItem" ui:field="groupCollapseItem">
+								<m:MaterialCollapsibleHeader>
+									<m:MaterialLink iconType="GROUP_WORK" />
+								</m:MaterialCollapsibleHeader>
+								<m:MaterialCollapsibleBody>
+									<g:HTMLPanel>
+										<h5>No groups created </h5>
+									</g:HTMLPanel>
+								</m:MaterialCollapsibleBody>
+							</m:MaterialCollapsibleItem>
+							<m:MaterialCollapsibleItem m:id="furnitureCollapseItem"
+								addStyleNames="editCollapseItem" ui:field="furnitureCollapseItem">
+								<m:MaterialCollapsibleHeader>
+									<m:MaterialLink iconType="EVENT_SEAT" />
+								</m:MaterialCollapsibleHeader>
+								<m:MaterialCollapsibleBody>
+									<m:MaterialCollection>
+										<m:MaterialCollectionItem>
+											<m:MaterialImage url="../img/doubleDesk.png"
+												addStyleNames="furnitureIcon" m:id="doubleDeskIcon" />
+										</m:MaterialCollectionItem>
+										<m:MaterialCollectionItem>
+											<m:MaterialImage url="../img/singleDesk.png"
+												addStyleNames="furnitureIcon" m:id="singleDeskIcon" />
+										</m:MaterialCollectionItem>
+									</m:MaterialCollection>
+								</m:MaterialCollapsibleBody>
+							</m:MaterialCollapsibleItem>
+							<m:MaterialCollapsibleItem m:id="stationCollapseItem"
+								addStyleNames="editCollapseItem" ui:field="stationCollapseItem">
+								<m:MaterialCollapsibleHeader>
+									<m:MaterialLink iconType="WIDGETS" />
+								</m:MaterialCollapsibleHeader>
+								<m:MaterialCollapsibleBody>
+									<g:HTMLPanel>
+										<h5>No stations created</h5>
+									</g:HTMLPanel>
+									<m:MaterialCollection></m:MaterialCollection>
+								</m:MaterialCollapsibleBody>
+							</m:MaterialCollapsibleItem>
+						</m:MaterialCollapsible>
 					</div>
 				</g:HTMLPanel>
 			</m:MaterialColumn>

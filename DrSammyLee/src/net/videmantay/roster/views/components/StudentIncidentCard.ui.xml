@@ -1,26 +1,26 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
-	
+
 	</ui:style>
 	<g:HTMLPanel>
-		<m:MaterialCard ui:field="container" backgroundColor="WHITE" axis="HORIZONTAL">
-		<m:MaterialCardImage>
-	   
-	      <m:MaterialImage ui:field="incidentImage"></m:MaterialImage>
-	   
-	   </m:MaterialCardImage>
-	   <m:MaterialCardContent>
-	   <m:MaterialLabel ui:field="studentName" fontSize="1.5em">
-	   
-	   </m:MaterialLabel> 
-	   <m:MaterialLabel ui:field="incidentName"></m:MaterialLabel> 
-	   </m:MaterialCardContent>
-	     
-	   
-	   
-	</m:MaterialCard>
+		<m:MaterialCard ui:field="container" backgroundColor="WHITE"
+			axis="HORIZONTAL">
+			<m:MaterialCardImage>
+
+				<m:MaterialImage ui:field="incidentImage"></m:MaterialImage>
+
+			</m:MaterialCardImage>
+			<m:MaterialCardContent>
+				<m:MaterialLabel ui:field="studentName" fontSize="1.5em">
+
+				</m:MaterialLabel>
+				<m:MaterialLabel ui:field="incidentName"></m:MaterialLabel>
+			</m:MaterialCardContent>
+
+
+
+		</m:MaterialCard>
 	</g:HTMLPanel>
 </ui:UiBinder> 

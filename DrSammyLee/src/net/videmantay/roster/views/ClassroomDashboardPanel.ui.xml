@@ -4,14 +4,14 @@
 	xmlns:h="urn:import:gwt.material.design.client.ui.html" xmlns:v="urn:import:net.videmantay.roster.views"
 	xmlns:xlink="http://www.w3.org/1999/xlink">
 	<ui:style>
-	.framePadding {
+		.framePadding {
 		padding: 2em;
 		border: 0px;
-	}
-	.dashboardToolBtns{
+		}
+		.dashboardToolBtns{
 		position:relative !important;
 		top:-0.45em !important;
-	}
+		}
 	</ui:style>
 	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab" textColor="red" height="2.5em">
@@ -34,8 +34,8 @@
 				width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar"
 				text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN"
 				iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime2"></m:MaterialAnchorButton>
-			<m:MaterialDropDown activator="classtime2" belowOrigin="true"
-				ui:field="classtimeDrop2">
+			<m:MaterialDropDown activator="classtime2"
+				belowOrigin="true" ui:field="classtimeDrop2">
 				<m:MaterialLink addStyleNames="manageClassTimeLink"
 					ui:field="classDropDownManageLink2" text="Manage..."
 					backgroundColor="grey lighten-1" />
@@ -48,8 +48,8 @@
 					text="Class Time" fontSize="1.10em" marginRight="5.0" textAlign="CENTER"
 					backgroundColor="red darken-3" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM"
 					iconPosition="RIGHT" activates="classtime" />
-				<m:MaterialDropDown activator="classtime" belowOrigin="true"
-					ui:field="classtimeDrop">
+				<m:MaterialDropDown activator="classtime"
+					belowOrigin="true" ui:field="classtimeDrop">
 					<m:MaterialLink addStyleNames="manageClassTimeLink"
 						ui:field="classDropDownManageLink" text="Manage..."
 						backgroundColor="grey lighten-3" />
@@ -68,63 +68,67 @@
 								paddingLeft="7.5" />
 						</m:MaterialColumn>
 						<m:MaterialColumn grid="s1 m1 l1">
-				<m:MaterialTooltip text="Edit">
-				<m:MaterialIcon ui:field="editIcon" iconType="EDIT" marginTop="10" visible="false"></m:MaterialIcon>
-				</m:MaterialTooltip>
-				</m:MaterialColumn>
+							<m:MaterialTooltip text="Edit">
+								<m:MaterialIcon ui:field="editIcon" iconType="EDIT"
+									marginTop="10" visible="false"></m:MaterialIcon>
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
 					</m:MaterialRow>
 				</m:MaterialColumn>
-				<m:MaterialColumn  addStyleNames="{style.dashboardToolBtns}" grid="s12 m6 l6" height="100%">
-				<m:MaterialRow>
-					<m:MaterialColumn grid="s1 m1 l1">
-								<m:MaterialTooltip text="Roll">
-									<m:MaterialIcon ui:field="rollIcon" iconType="ASSIGNMENT_IND" margin="10"
-										iconSize="SMALL" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1">
-								<m:MaterialTooltip text="Homework">
-									<m:MaterialIcon ui:field="hwIcon" iconType="ASSIGNMENT" margin="10"
-										iconSize="SMALL" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1">
-								<m:MaterialTooltip text="Procedures">
-									<m:MaterialIcon ui:field="proceduresIcon" iconType="VIEW_LIST" margin="10"
-										iconSize="SMALL" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1">
-								<m:MaterialTooltip text="Groups">
-									<m:MaterialIcon ui:field="groupsIcon" iconType="GROUP_WORK" margin="10"
-										iconSize="SMALL" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1"  margin="10" >
-								<m:MaterialTooltip text="Stations">
-									<m:MaterialIcon ui:field="stationsIcon" iconType="WIDGETS" 
-										iconSize="SMALL" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
-					<!--This starts selects tools -->
-					<m:MaterialColumn grid="s1 m1 l1" marginTop="10" marginRight="5">
-								<m:MaterialTooltip text="Multiple">
-									<m:MaterialIcon ui:field="multipleIcon"
-										iconType="GROUP_ADD" iconSize="SMALL" textColor="deep-orange darken-3" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1" marginTop="10" marginRight="5">
-								<m:MaterialTooltip text="Random">
-									<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE"
-										iconSize="SMALL" textColor="deep-orange darken-3" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1 m1 l1" marginTop="10">
-								<m:MaterialTooltip text="Select All">
-									<m:MaterialIcon ui:field="selectAllIcon"
-										iconType="SELECT_ALL" iconSize="SMALL" textColor="deep-orange darken-3" />
-								</m:MaterialTooltip>
-					</m:MaterialColumn>
+				<m:MaterialColumn addStyleNames="{style.dashboardToolBtns}"
+					grid="s12 m6 l6" height="100%">
+					<m:MaterialRow>
+						<m:MaterialColumn grid="s1 m1 l1">
+							<m:MaterialTooltip text="Roll">
+								<m:MaterialIcon ui:field="rollIcon" iconType="ASSIGNMENT_IND"
+									margin="10" iconSize="SMALL" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
+						<m:MaterialColumn grid="s1 m1 l1">
+							<m:MaterialTooltip text="Homework">
+								<m:MaterialIcon ui:field="hwIcon" iconType="ASSIGNMENT"
+									margin="10" iconSize="SMALL" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
+						<m:MaterialColumn grid="s1 m1 l1">
+							<m:MaterialTooltip text="Procedures">
+								<m:MaterialIcon ui:field="proceduresIcon"
+									iconType="VIEW_LIST" margin="10" iconSize="SMALL" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
+						<m:MaterialColumn grid="s1 m1 l1">
+							<m:MaterialTooltip text="Groups">
+								<m:MaterialIcon ui:field="groupsIcon" iconType="GROUP_WORK"
+									margin="10" iconSize="SMALL" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
+						<m:MaterialColumn grid="s1 m1 l1" margin="10">
+							<m:MaterialTooltip text="Stations">
+								<m:MaterialIcon ui:field="stationsIcon" iconType="WIDGETS"
+									iconSize="SMALL" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
+						<!--This starts selects tools -->
+						<m:MaterialColumn grid="s1 m1 l1" marginTop="10"
+							marginRight="5">
+							<m:MaterialTooltip text="Multiple">
+								<m:MaterialIcon ui:field="multipleIcon" iconType="GROUP_ADD"
+									iconSize="SMALL" textColor="deep-orange darken-3" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
+						<m:MaterialColumn grid="s1 m1 l1" marginTop="10"
+							marginRight="5">
+							<m:MaterialTooltip text="Random">
+								<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE"
+									iconSize="SMALL" textColor="deep-orange darken-3" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
+						<m:MaterialColumn grid="s1 m1 l1" marginTop="10">
+							<m:MaterialTooltip text="Select All">
+								<m:MaterialIcon ui:field="selectAllIcon"
+									iconType="SELECT_ALL" iconSize="SMALL" textColor="deep-orange darken-3" />
+							</m:MaterialTooltip>
+						</m:MaterialColumn>
 					</m:MaterialRow>
 				</m:MaterialColumn>
 			</m:MaterialRow>
@@ -177,21 +181,21 @@
 			</g:HTMLPanel>
 		</div>
 		<div id="tab3">
-			
+
 		</div>
-	
-		<m:MaterialModal type="FIXED_FOOTER" ui:field="modal" >
+
+		<m:MaterialModal type="FIXED_FOOTER" ui:field="modal">
 			<m:MaterialModalContent>
 				<g:HTMLPanel>
-				<m:MaterialRow><!--  -->
-					<m:MaterialColumn grid="s6"> 
-						<m:MaterialLabel text="Studen name here" />
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s6">
-						<m:MaterialIcon iconType="CLOSE" iconPosition="RIGHT" />
-					</m:MaterialColumn>
-				</m:MaterialRow>
-				<m:html.Hr/>
+					<m:MaterialRow><!-- -->
+						<m:MaterialColumn grid="s6">
+							<m:MaterialLabel text="Studen name here" />
+						</m:MaterialColumn>
+						<m:MaterialColumn grid="s6">
+							<m:MaterialIcon iconType="CLOSE" iconPosition="RIGHT" />
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					<m:html.Hr />
 					<m:MaterialTab backgroundColor="BLUE">
 						<m:MaterialTabItem waves="YELLOW" grid="l4">
 							<m:MaterialLink text="Superb Decision" href="#taba"

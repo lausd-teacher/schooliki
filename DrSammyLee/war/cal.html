@@ -1,55 +1,64 @@
 <!doctype html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
-    <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-   <title>calendar</title>
-   <style>
-     /*body should have fixed width now scroll */
-   body{
-   	overflow:hidden;
-   	height:100%;
-   	width:100%;
-   	position:absolute;
-   	color:DimGray;
-   	font-family:"Roboto", "San Serif";
-   }
-   body> div.container{
-   	height:95%;
-   	width:95%;
-   }
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css">
+<link rel="stylesheet" media="print"
+	href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<title>calendar</title>
+<style>
+/*body should have fixed width now scroll */
+body {
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	color: DimGray;
+	font-family: "Roboto", "San Serif";
+}
 
-   h2{
-   	text-align:center;
-   	font-size:1.75em;
-   }
-   </style>
-  </head>
+body>div.container {
+	height: 95%;
+	width: 95%;
+}
 
-  <body>
-   <div class="container">
-   <br>
- 	<section id="scheduleLegend">
- 		<b>schedule:&nbsp;</b></label>
- 		<span id="emptySchedule">You haven't created a schedule yet.  </span><a href="schedule.html">Let's get started!</a>
- 	</section>
-  <hr/>
-  	<br/>
-			<div id="lessonPlans"></div>
-	</div><!-- end container -->
-<script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
-   <script>
+h2 {
+	text-align: center;
+	font-size: 1.75em;
+}
+</style>
+</head>
+
+<body>
+	<div class="container">
+		<br>
+		<section id="scheduleLegend">
+			<b>schedule:&nbsp;</b></label> <span id="emptySchedule">You haven't
+				created a schedule yet. </span><a href="schedule.html">Let's get
+				started!</a>
+		</section>
+		<hr />
+		<br />
+		<div id="lessonPlans"></div>
+	</div>
+	<!-- end container -->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		crossorigin="anonymous"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
+	<script>
    
    //what we need here is the calendar events from google
    var eventListJson;
@@ -78,6 +87,6 @@
    //show only week agenda or day  agenda with only days in the heading
    //title can go from weekly schedule to daily schedule according to the view			
    </script>
-   
-  </body>
+
+</body>
 </html>

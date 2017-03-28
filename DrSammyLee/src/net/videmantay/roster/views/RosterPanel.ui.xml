@@ -1,18 +1,20 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
 		.title{
 		border-bottom: 1px solid White;
 		}
 	</ui:style>
-	<m:MaterialCard ui:field="card" backgroundColor="red darken-2"   textColor="white">
-		<m:MaterialCardTitle padding="5.0" textAlign="LEFT" ui:field="cardTitle" fontSize="1.75em" 
-		   addStyleNames="{style.title}" iconType="MORE_VERT" iconPosition="RIGHT" iconSize="SMALL" />
-		 <m:MaterialLabel ui:field="rosDate" padding="2" />
-		 <m:MaterialLabel ui:field="rosRoom"  padding="2"/>
-		<m:MaterialCardContent ui:field="cardContent" backgroundColor="white" textColor="red darken-2" fontSize="1.1em">
+	<m:MaterialCard ui:field="card" backgroundColor="red darken-2"
+		textColor="white">
+		<m:MaterialCardTitle padding="5.0" textAlign="LEFT"
+			ui:field="cardTitle" fontSize="1.75em" addStyleNames="{style.title}"
+			iconType="MORE_VERT" iconPosition="RIGHT" iconSize="SMALL" />
+		<m:MaterialLabel ui:field="rosDate" padding="2" />
+		<m:MaterialLabel ui:field="rosRoom" padding="2" />
+		<m:MaterialCardContent ui:field="cardContent"
+			backgroundColor="white" textColor="red darken-2" fontSize="1.1em">
 			<m:MaterialLabel ui:field="cardDescript"></m:MaterialLabel>
 		</m:MaterialCardContent>
 	</m:MaterialCard>

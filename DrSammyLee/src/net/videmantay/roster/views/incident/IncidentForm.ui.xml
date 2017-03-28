@@ -4,23 +4,24 @@
 	<m:MaterialModal ui:field="modal">
 		<m:MaterialModalContent>
 			<g:HTMLPanel ui:field="formContainer">
-			
-			<m:MaterialLabel text="Icon:" />
-			<g:HTMLPanel ui:field="iconInputContainer">
-			    
-		     </g:HTMLPanel>
-			
-			   <m:MaterialLabel text="Name:" />
-				<m:MaterialInput ui:field="nameInput" type="TEXT" required="true"/>
-				
+
+				<m:MaterialLabel text="Icon:" />
+				<g:HTMLPanel ui:field="iconInputContainer">
+
+				</g:HTMLPanel>
+
+				<m:MaterialLabel text="Name:" />
+				<m:MaterialInput ui:field="nameInput" type="TEXT"
+					required="true" />
+
 				<m:html.Label styleName="errorLabel" text="You must include a name"
 					textColor="red lighten-1" />
-					
+
 				<m:MaterialChip ui:field="valueLabel" text="Points:" />
 				<m:MaterialIntegerBox ui:field="valueInput" />
 				<m:html.Label styleName="errorLabel" text="You must include points"
 					textColor="red lighten-1" />
-				</g:HTMLPanel>
+			</g:HTMLPanel>
 		</m:MaterialModalContent>
 		<m:MaterialModalFooter>
 			<m:MaterialRow ui:field="doneCancelRow">
@@ -28,7 +29,7 @@
 					<m:MaterialButton ui:field="doneBtn" text="ADD" />
 				</m:MaterialColumn>
 				<m:MaterialColumn>
-					<m:MaterialButton ui:field="cancelBtn" text="CANCEL"/>
+					<m:MaterialButton ui:field="cancelBtn" text="CANCEL" />
 				</m:MaterialColumn>
 			</m:MaterialRow>
 		</m:MaterialModalFooter>

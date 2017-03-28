@@ -4,15 +4,15 @@
 	<inherits name="com.google.gwt.user.theme.chrome.Chrome" />
 	<inherits name="com.google.gwt.query.Query" />
 	<inherits name="com.google.common.collect.Collect" />
-	<inherits name="gwtquery.plugins.Ui"/>
-	 <inherits name="com.floreysoft.gwt.picker.Picker"/>
+	<inherits name="gwtquery.plugins.Ui" />
+	<inherits name="com.floreysoft.gwt.picker.Picker" />
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeRed" />
-	<inherits name="gwt.material.design.addins.GwtMaterialAddins"/>
+	<inherits name="gwt.material.design.addins.GwtMaterialAddins" />
 	<inherits name="com.googlecode.gwt.charts.Charts" />
 	<inherits name="com.google.gwt.json.JSON" />
 	<source path="roster" />
 	<source path="student" />
 	<source path="shared" />
 	<entry-point class="net.videmantay.roster.Teacher"></entry-point>
-	<set-property name="user.agent" value="safari"/>
+	<set-property name="user.agent" value="safari" />
 </module>

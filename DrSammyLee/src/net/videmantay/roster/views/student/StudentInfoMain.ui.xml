@@ -1,18 +1,23 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:v="urn:import:net.videmantay.roster.views.student">
 	<g:HTMLPanel>
-	<m:MaterialTab>
-		<m:MaterialTabItem> <m:MaterialLink text="Student Info" href="#stuInfoTab" /></m:MaterialTabItem>
-		<m:MaterialTabItem> <m:MaterialLink text="Calendar" href="#stuInfoCalTab" /></m:MaterialTabItem>
-		<m:MaterialTabItem> <m:MaterialLink text="Reports" href="#stuInfoReportTab" /></m:MaterialTabItem>	
-	</m:MaterialTab>
-	<div id="stuInfoTab">
+		<m:MaterialTab>
+			<m:MaterialTabItem>
+				<m:MaterialLink text="Student Info" href="#stuInfoTab" />
+			</m:MaterialTabItem>
+			<m:MaterialTabItem>
+				<m:MaterialLink text="Calendar" href="#stuInfoCalTab" />
+			</m:MaterialTabItem>
+			<m:MaterialTabItem>
+				<m:MaterialLink text="Reports" href="#stuInfoReportTab" />
+			</m:MaterialTabItem>
+		</m:MaterialTab>
+		<div id="stuInfoTab">
 			<v:StudentPage ui:field="studentPage" />
 		</div>
-	<div id="stuInfoCalTab"></div>
-	<div id="stuInfoReportTab"></div>
+		<div id="stuInfoCalTab"></div>
+		<div id="stuInfoReportTab"></div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

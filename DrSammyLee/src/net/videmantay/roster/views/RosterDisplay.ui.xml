@@ -1,28 +1,29 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:v="urn:import:net.videmantay.roster.views">
 	<g:HTMLPanel>
-		<m:MaterialLabel text="Rosters" textColor="grey"  padding="1" marginLeft="70" fontSize="2em"/>
+		<m:MaterialLabel text="Rosters" textColor="grey"
+			padding="1" marginLeft="70" fontSize="2em" />
 		<m:MaterialContainer ui:field="rosterContainer">
 		</m:MaterialContainer>
-		<v:RosterForm ui:field="rosterForm"/>
-	<!-- FAB -->
+		<v:RosterForm ui:field="rosterForm" />
+		<!-- FAB -->
 		<m:MaterialFAB>
-				<m:MaterialButton ui:field="fab" type="FLOATING"
-					backgroundColor="amber" iconType="ADD" size="LARGE" />
+			<m:MaterialButton ui:field="fab" type="FLOATING"
+				backgroundColor="amber" iconType="ADD" size="LARGE" />
 		</m:MaterialFAB>
-       	<m:MaterialModal ui:field="deleteRosterModal">
-       		<m:MaterialModalContent padding="5">
-       			<m:MaterialLabel fontSize="2em" text="Delete Roster ?" />
-       			<m:MaterialLabel ui:field="deleteRosterLabel" />
-       			<m:html.Hr/>
-       				<m:MaterialAnchorButton backgroundColor="grey darken-1" textColor="white"  text="Cancel" float="LEFT"
-       				ui:field="cancelBtnDeleteRoster"/>
-       				<m:MaterialAnchorButton backgroundColor="red darken-1" textColor="white"  text="OK"  float="RIGHT"
-       				ui:field="okBtnDeleteRoster" marginBottom="10"/>
-       		</m:MaterialModalContent>
-       	</m:MaterialModal> 
+		<m:MaterialModal ui:field="deleteRosterModal">
+			<m:MaterialModalContent padding="5">
+				<m:MaterialLabel fontSize="2em" text="Delete Roster ?" />
+				<m:MaterialLabel ui:field="deleteRosterLabel" />
+				<m:html.Hr />
+				<m:MaterialAnchorButton backgroundColor="grey darken-1"
+					textColor="white" text="Cancel" float="LEFT" ui:field="cancelBtnDeleteRoster" />
+				<m:MaterialAnchorButton backgroundColor="red darken-1"
+					textColor="white" text="OK" float="RIGHT" ui:field="okBtnDeleteRoster"
+					marginBottom="10" />
+			</m:MaterialModalContent>
+		</m:MaterialModal>
 	</g:HTMLPanel>
 </ui:UiBinder> 

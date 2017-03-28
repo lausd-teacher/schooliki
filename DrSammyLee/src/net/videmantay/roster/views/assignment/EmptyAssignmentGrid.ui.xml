@@ -3,8 +3,11 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel styleName="assignmentGridEmptyPanel">
 		<h3>No assignments yet!</h3>
-		<div>It would seem that you haven't created any assignments as of yet.<br/>
-				It's alright,  You can get started by clicking on the plus button below.
+		<div>
+			It would seem that you haven't created any assignments as of yet.
+			<br />
+			It's alright, You can get started by clicking on the plus button
+			below.
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -2,11 +2,12 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel ui:field="container">
-	   <div style="cursor: pointer;display: inline-block;border-radius: 0.5rem;padding: 0.5rem;">
-	     <img ui:field="incidentIcon" style="width: 5.6rem;height: 5.6rem;">
-	     
-	     
-	     </img>
-	   </div>
+		<div
+			style="cursor: pointer;display: inline-block;border-radius: 0.5rem;padding: 0.5rem;">
+			<img ui:field="incidentIcon" style="width: 5.6rem;height: 5.6rem;">
+
+
+			</img>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 
