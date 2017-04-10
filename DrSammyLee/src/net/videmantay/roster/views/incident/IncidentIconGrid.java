@@ -2,58 +2,69 @@ package net.videmantay.roster.views.incident;
 
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.EasingCurve;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
+import gwt.material.design.client.ui.MaterialCard;
+import gwt.material.design.client.ui.MaterialCardContent;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialRow;
 
 public class IncidentIconGrid  extends Composite{
 
 	
-	private String[] iconList = {"doctor", "happyGirl", "rocket","happyBoy","warningCone","warningSign","scientist","pharmasist"};
-	
+	private final String[] iconList = {"doctor","scientist","pharmacist","xrayMain" ,"happyGirl","happyBoy","goldMedal",
+			"rocket" ,"yellowBeaker", "redBeaker", "happyRainbowCloud" , "sadRainCloud","hardLinedBell", "hornedOwl",
+			"podium", "deskTop", "owlComp",  "mathGirl", "scienceBoy", "restroom", "biohazardWarning", "radioactiveWarning",
+			"brokenglassWarning", "yellowRadioactive","noHW",
+			};
+	public String selectedIcon = iconList[0];
 	public  MaterialRow grid = new MaterialRow();
-	private Function clickFunction = new Function(){
-		@Override
-		public boolean f(Event e){
-			e.stopPropagation();
-			e.preventDefault();
-			
-			
-			GQuery el = $(e).closest("svg");
-			GQuery iconPanel = $("#iconFormIconPanel");
-			iconPanel.html(el.html());
-			iconPanel.data("icon", el.id());
-			return true;
-		}
-	};
+	
 	
 	public IncidentIconGrid(){
 		this.initWidget(grid);
-		for(String s: iconList){
-			MaterialColumn c = new MaterialColumn();
-			c.setGrid("s6 m4 l2");
-			String html = "<svg viewBox='0 0 150 200' class='incidentIcon' style='width:7em; height:8em' id='"
-					+s+"'>"
-					+"<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#" 
-					+ s
-					+"' /></svg>";
-			HTMLPanel icon = new HTMLPanel(html);
-			c.add(icon);
-			grid.add(c);
-		}
+		grid.setId("iconGrid");
+		$(grid).css($$("border:1px solid Silver;height:25em;padding:1em;position:absolute;z-index:5;overflow-y:scroll;"));
 	}
 	
 	@Override
 	public void onLoad(){
-		$(this).click(clickFunction);
+		for(String s: iconList){
+			MaterialColumn c = new MaterialColumn();
+			final MaterialCard card = new MaterialCard();
+			card.setHoverable(true);
+			MaterialCardContent content = new MaterialCardContent();
+			
+			c.setGrid("s6 m4 l3");
+			$(c).css("cursor", "pointer");
+			String html = IncidentImageUtil.imageHTML(s);
+			final HTMLPanel image = new HTMLPanel(html);
+			content.add(image);
+			card.add(content);
+			c.add(card);
+			grid.add(c);
+			c.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					GQuery svg = $(event.getSource().toString()).find("svg");
+					$(body).trigger("incidentIconChange", $(svg).attr("data-incident-image"));
+					$("#iconGrid").hide();
+				}});
+		}
+		$("#iconGrid").hide();
 	}
 	
-	
-	
+	@Override
+	public void onUnload(){
+		$("div > svg.incidentImage").off();
+	}	
 }

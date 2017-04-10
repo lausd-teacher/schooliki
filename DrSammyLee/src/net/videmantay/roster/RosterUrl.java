@@ -14,6 +14,13 @@ package net.videmantay.roster;
 	public final static String roster(){return roster;}
 	public final static String roster(String id){return roster + id;}
 	
+	public final static String incident(Long id){
+		return roster + id + incident;
+	}
+	
+	public final static String incident(Long id, String incidentId){
+		return roster + id + incident + incidentId;
+	}
 	
 	
 	public final static String student(Long id){return roster + id + student;}

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialBadge;
 import gwt.material.design.client.ui.MaterialChip;
 import gwt.material.design.client.ui.MaterialImage;
@@ -28,13 +29,19 @@ public class IncidentItem extends Composite{
 	}
 	
 	@UiField
-	DivElement svgImage;
+	public DivElement svgImage;
 	
 	@UiField
-	MaterialLabel name;
+	public MaterialLabel name;
 	
 	@UiField
-	MaterialChip value;
+	public MaterialChip value;
+	
+	@UiField
+	public MaterialAnchorButton editIncidentBtn;
+	
+	@UiField
+	public MaterialAnchorButton deleteIncidentBtn;
 
 	public IncidentItem() {
 		initWidget(uiBinder.createAndBindUi(this));	
@@ -44,7 +51,6 @@ public class IncidentItem extends Composite{
 	
 	public void setIncident(IncidentJson incident){
 		this.incident = incident;
-		console.log(incident);
 		draw();
 	}
 	
@@ -56,7 +62,7 @@ public class IncidentItem extends Composite{
 	private void draw(){
 		
 		name.setText(incident.getName());
-		if(incident.getValue() < 0){
+		if(incident.getPoints() < 0){
 			//badge color red;
 			value.setBackgroundColor("red");
 		}else{
@@ -64,14 +70,9 @@ public class IncidentItem extends Composite{
 			value.setBackgroundColor("green");
 		}
 		
-		value.setText(""+ incident.getValue());
+		value.setText(""+ incident.getPoints());
 		///set up the badge size and center the text
-		
-		//set up the html
-		String html = "<svg viewBox='0 0 150 200' class='incidentIcon' style='width:7em; height:8em'>"
-				+"<use  xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='../img/allIcons.svg#" 
-				+"' /></svg>";
-		svgImage.setInnerHTML(html);
+		svgImage.setInnerHTML(IncidentImageUtil.imageHTML(incident.getImageUrl()));
 	}
 	
 	@Override

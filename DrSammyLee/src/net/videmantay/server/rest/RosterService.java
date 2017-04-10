@@ -690,5 +690,23 @@ public class RosterService {
 	 * Every roster will always have one schedule so it can never be deleted
 	 * just changed
 	 */
+	
+	@GET
+	@Path("/{id}/incident")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response listIncidents(@PathParam("id") Long id){
+		List<Incident> incidents = db().load().type(Incident.class).filter("rosterId", id).list();
+		return Response.ok().entity(incidents).build();
+	}
+	
+	@POST
+	@Path("/{id}/incident/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateIncident(@PathParam("id") Long id, Incident incident){
+		
+		incident.setId(db().save().entity(incident).now().getId());
+		return Response.ok().entity(incident).build();
+	}
 
 }

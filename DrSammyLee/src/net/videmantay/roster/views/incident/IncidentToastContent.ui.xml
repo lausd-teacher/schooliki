@@ -10,7 +10,6 @@
 		}
 	</ui:style>
 	<g:HTMLPanel ui:field="toastContent" addStyleNames="{style.toastContent}">
-		<m:MaterialImage float="LEFT" left="-10" ui:field="owlImage" />
 		<m:MaterialRow>
 			<m:MaterialColumn grid="s12 m3 l2" textAlign="CENTER">
 				<m:MaterialImage ui:field="studentImage" width="128px"

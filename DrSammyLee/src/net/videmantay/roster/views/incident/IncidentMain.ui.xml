@@ -6,13 +6,28 @@
 
 	</ui:style>
 	<g:HTMLPanel ui:field="container">
+		<m:MaterialPanel ui:field="incidentMainPanel">
 		<m:MaterialTitle title="Incidents"
 			description="Manage classroom expectations. Incidents are events you want to encourage like 'Turned in Homework', or discourage like 'Talking Out of Turn'" />
-		<v:IncidentIconGrid></v:IncidentIconGrid>
+		<m:MaterialTab ui:field="incidentItemPanel"> 
+			<m:MaterialTabItem ui:field="posItemTab"> 
+				<m:MaterialLink href="#posTabContent" text="encourage habit" />
+			</m:MaterialTabItem>
+			<m:MaterialTabItem ui:field="negItemTab"> 
+				<m:MaterialLink href="#negTabContent" text="discourage habit" />
+			</m:MaterialTabItem>
+		</m:MaterialTab>
+		<m:MaterialPanel m:id="posTabContent" ui:field="posTabContent" > 
+			<m:MaterialRow ui:field="posItemRow" />
+		</m:MaterialPanel>
+		<m:MaterialPanel m:id="negTabContent" ui:field="negTabContent" > 
+			<m:MaterialRow ui:field="negItemRow" />
+		</m:MaterialPanel>
 		<m:MaterialFAB ui:field="addIncidentFAB">
 			<m:MaterialAnchorButton type="FLOATING"
-				iconType="ADD" />
+				iconType="ADD" size="LARGE"/>
 		</m:MaterialFAB>
-
+		</m:MaterialPanel>
+		<v:IncidentForm ui:field="incidentForm"></v:IncidentForm>
 	</g:HTMLPanel>
 </ui:UiBinder> 

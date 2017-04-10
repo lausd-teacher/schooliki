@@ -1,30 +1,35 @@
 package net.videmantay.roster.views.incident;
 
-import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.*;
 
+import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.gwt.query.client.plugins.ajax.Ajax.Settings;
+import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.EasingCurve;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Element;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.Promise;
+import com.google.gwt.query.client.Properties;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialButton;
-import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialIntegerBox;
-import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.MaterialModal;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.IncidentJson;
-import net.videmantay.roster.json.IncidentTypeJson;
-import net.videmantay.roster.views.components.IncidentFormIconInput;
-import net.videmantay.roster.views.draganddrop.SelectionManager;
 
 public class IncidentForm extends Composite {
 
@@ -33,44 +38,68 @@ public class IncidentForm extends Composite {
 	interface IncidentFormUiBinder extends UiBinder<Widget, IncidentForm> {
 	}
 
+	@UiField
+	public FormPanel form;
+	
+	@UiField
+	public HTMLPanel formContainer;
 
 	@UiField
-	HTMLPanel formContainer;
-
+	public MaterialModal modal;
+	
 	@UiField
-	MaterialModal modal;
-
-	@UiField
-	HTMLPanel iconInputContainer;
+	public MaterialButton incidentImageBtn;
     
 	@UiField
-    MaterialInput nameInput;
-
-	@UiField
-	MaterialIntegerBox valueInput;
-
-	@UiField
-	MaterialButton doneBtn;
-
-	@UiField
-	MaterialButton cancelBtn;
+    public MaterialInput nameInput;
 	
-	final IncidentFormIconInput incidentFormIconInput = new IncidentFormIconInput();
+	@UiField
+	public MaterialInput imageName;
+
+	@UiField
+	public MaterialIntegerBox valueInput;
+
+	@UiField
+	public MaterialButton doneBtn;
+
+	@UiField
+	public MaterialButton cancelBtn;
 	
 
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
+	private Function iconChangeFunc = new Function(){
+		@Override
+		public boolean f(Event e, Object...o){
+			String iconName = (String)o[0];
+			console.log("incident name is " +iconName);
+			
+			incidentImageBtn.clear();
+			incidentImageBtn.add(new HTML(IncidentImageUtil.imageHTML(iconName)));
+			return true;
+		}
+	};
+
 
 	public IncidentForm() {
 		initWidget(uiBinder.createAndBindUi(this));
-		iconInputContainer.add(incidentFormIconInput);
+		
 		formContainer.getElement().setId("incidentForm");
 		valueInput.setValue(0);
+		incidentImageBtn.add(new HTML(IncidentImageUtil.imageHTML("doctor")));
+		incidentImageBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+			$("#iconGrid").show();
+				console.log("incident Image button clicked");
+				
+			}});
 	}
 	
-	public IncidentTypeJson getFormData(){
-		IncidentTypeJson newIncident = JavaScriptObject.createObject().cast();
+	public IncidentJson getFormData(){
+		IncidentJson newIncident = JavaScriptObject.createObject().cast();
 		newIncident.setName(nameInput.getText());
-		newIncident.setImageUrl(incidentFormIconInput.getSelectedIcon().getSrc());
+		newIncident.setImageUrl(imageName.getValue());
 		
 		if(valueInput.getText().isEmpty() || valueInput.getText() == null )
 		      newIncident.setPoints(0);
@@ -86,6 +115,7 @@ public class IncidentForm extends Composite {
 	public void onLoad() {
 		$("#incidentForm input").blur(getValidationFunction());
 		$(".errorLabel").hide();
+		$(body).on("incidentIconChange", iconChangeFunc);
 	}
 
 
@@ -120,25 +150,13 @@ public class IncidentForm extends Composite {
 
 	}
 	
+	public void cancel(){
+		form.clear();
+	}
 	
-	public MaterialButton getDoneBtn() {
-		return this.doneBtn;
-	}
-
-	public MaterialButton getCancelBtn() {
-		return this.cancelBtn;
-	}
-
-
-
-	public MaterialIntegerBox getValueInput() {
-		return this.valueInput;
-	}
-
-
-
-	public interface Presenter{
-		void doneButtonClickEvent();
-		void cancelButtonClickEvent();
+	public Promise submit(Long id){
+		
+		return Ajax.ajax(Ajax.createSettings().setContentType("application/json")
+				.setData(getFormData()).
 	}
 }

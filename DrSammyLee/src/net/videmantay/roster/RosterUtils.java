@@ -10,6 +10,7 @@ import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import gwt.material.design.client.ui.MaterialLoader;
+import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.routine.json.RoutineConfigJson;
@@ -39,6 +40,7 @@ public class RosterUtils {
 	private  boolean isRollMode = false;
 	private  JsArray<RosterStudentJson> students;
 	private SeatingChartJson seatingChart;
+	private JsArray<IncidentJson> incidents;
 	
 	
 
@@ -169,6 +171,15 @@ public class RosterUtils {
 	
 	public SeatingChartJson getSeatingChart(){
 		return this.seatingChart;
+	}
+	
+	public JsArray<IncidentJson> getIncidents(){
+		
+		return this.incidents;
+	}
+	
+	public void setIncidents(JsArray<IncidentJson> incidents){
+		this.incidents = incidents;
 	}
 	
 	

@@ -1,15 +1,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
-	<m:MaterialModal ui:field="modal">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:v="urn:import:net.videmantay.roster.views.incident">
+	<m:MaterialModal ui:field="modal" type="FIXED_FOOTER">
 		<m:MaterialModalContent>
+		<g:FormPanel ui:field="form">
 			<g:HTMLPanel ui:field="formContainer">
 
 				<m:MaterialLabel text="Icon:" />
-				<g:HTMLPanel ui:field="iconInputContainer">
-
-				</g:HTMLPanel>
-
+				<m:MaterialInput type="TEXT" visible="false" ui:field="imageName" value="doctor"></m:MaterialInput>
+				<m:MaterialButton ui:field="incidentImageBtn" height="150px" width="125px" type="RAISED" backgroundColor="grey lighten-3" activates="incident-grid" >
+				</m:MaterialButton>
+				<v:IncidentIconGrid ui:field="incidentGrid"></v:IncidentIconGrid>
 				<m:MaterialLabel text="Name:" />
 				<m:MaterialInput ui:field="nameInput" type="TEXT"
 					required="true" />
@@ -22,6 +25,7 @@
 				<m:html.Label styleName="errorLabel" text="You must include points"
 					textColor="red lighten-1" />
 			</g:HTMLPanel>
+			</g:FormPanel>
 		</m:MaterialModalContent>
 		<m:MaterialModalFooter>
 			<m:MaterialRow ui:field="doneCancelRow">

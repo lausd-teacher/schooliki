@@ -1,5 +1,6 @@
 package net.videmantay.roster.views;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,6 +13,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
@@ -30,6 +32,7 @@ import gwt.material.design.client.ui.MaterialSideNav;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.RosterUtils;
+import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.routine.json.SeatingChartJson;
 import net.videmantay.roster.routine.json.FullRoutineJson;
@@ -81,6 +84,9 @@ public class ClassroomMain extends Composite{
 	
 	@UiField
 	public HTMLPanel classroom;
+	
+	@UiField
+	public StudentActionModal studentActionModal;
 
 	
 	//needs access to widget children
@@ -182,8 +188,22 @@ public class ClassroomMain extends Composite{
 ///the constructor//////////
 	public ClassroomMain(RosterUtils ru) {
 		this.utils = ru;	
-		console.log("Classroom constructor and utils is: ");
-		console.log(utils);
+		if(utils.getIncidents() == null){
+				//Ajax call
+				Ajax.get("/roster/"+utils.getCurrentRoster().getId() + "/incident").done(new Function(){
+					@Override
+					public void f(){
+						String data = (String)this.arguments(0);
+						JsArray<IncidentJson> incidents = JsonUtils.safeEval(data).cast();
+						utils.setIncidents(incidents);
+						studentActionModal.drawIncidentGrid(incidents);
+					}
+				});
+			
+		}else{
+			utils.setIncidents(utils.getIncidents());
+		}
+		
 		this.initWidget(uiBinder.createAndBindUi(this));
 			//set side nav links/////////
 		profilePanel.addDomHandler(new ClickHandler(){
@@ -876,6 +896,14 @@ public class ClassroomMain extends Composite{
 		navBrand.setText(roster.getTitle());
 		profilePanel.setProfileInfo(info);
 		this.showDashboard();
+		$(body).on("studentAction", new Function(){
+			@Override
+			public boolean f(Event e){
+				e.stopPropagation();
+				studentActionModal.modal.openModal();
+				return true;
+			}
+		});
 		
 	}
 	@Override

@@ -3,15 +3,19 @@ package net.videmantay.roster.views;
 import static com.google.gwt.query.client.GQuery.*;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.IsProperties;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.gwt.charts.client.Properties;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialButton;
@@ -25,7 +29,9 @@ import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
 import net.videmantay.roster.HasClassroomDashboardView;
 import net.videmantay.roster.RosterUtils;
+import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.views.routine.SeatingChartPanel;
+import net.videmantay.student.json.RosterStudentJson;
 
 public class ClassroomDashboardPanel extends Composite
 {
@@ -117,14 +123,11 @@ public class ClassroomDashboardPanel extends Composite
 	@UiField
 	public HTMLPanel calendarContainer;
 	
-	
-	
+
 	
 	private HasClassroomDashboardView display;
 	final RosterUtils utils;
 
-	@UiField
-	MaterialModal modal;
 		
 	public ClassroomDashboardPanel(RosterUtils ru) {
 		utils = ru;
@@ -166,16 +169,10 @@ public class ClassroomDashboardPanel extends Composite
     	     classtimeDrop.add(classDropDownManageLink);
     }
     
+ 
     @Override
     public void onLoad(){
-    	$(body).on("studentAction", new Function(){
-    		@Override
-    		public void f(){
-    			modal.openModal();
-    		}
-    	});
-    	
-    
+ 
     }//end onload
 
  
