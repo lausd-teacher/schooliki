@@ -77,12 +77,7 @@ public class IncidentItem extends Composite{
 	
 	@Override
 	public void onLoad(){
-		$(this.getElement()).click(new Function(){
-			@Override
-			public void f(){
-				$(body).trigger("incidentPicked", incident);
-			}
-		});
+		
 	}
 
 }

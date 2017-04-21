@@ -18,7 +18,7 @@ package net.videmantay.roster;
 		return roster + id + incident;
 	}
 	
-	public final static String incident(Long id, String incidentId){
+	public final static String incident(Long id, Long incidentId){
 		return roster + id + incident + incidentId;
 	}
 	

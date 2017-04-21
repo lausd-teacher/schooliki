@@ -6,12 +6,17 @@ public class IncidentJson extends JavaScriptObject {
 
 	protected IncidentJson(){}
 	
-	public final native String getId() /*-{
+	public final native Long getId() /*-{
 	return this.id;
 }-*/;
-public final native void setId(String id) /*-{
+public final native void setId(Long id) /*-{
 	this.id = id;
 }-*/;
+
+public final native Long getRosterId()/*-{
+	return this.rosterId;
+}-*/;
+
 public final native String getName() /*-{
 	return this.name;
 }-*/;
@@ -31,5 +36,13 @@ public final native int getPoints() /*-{
 public final native void setPoints(int incidentPoints) /*-{
    this.points = incidentPoints;
 }-*/;
+
+public  static IncidentJson create(){
+	IncidentJson incident =IncidentJson.createObject().cast();
+	incident.setImageUrl("");
+	incident.setName("");
+	incident.setPoints(0);
+	return incident;
+}
 	
 }

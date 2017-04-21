@@ -3,18 +3,13 @@ package net.videmantay.roster.views.incident;
 import static com.google.gwt.query.client.GQuery.*;
 
 import com.google.gwt.query.client.plugins.ajax.Ajax;
-import com.google.gwt.query.client.plugins.ajax.Ajax.Settings;
-import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.EasingCurve;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Promise;
-import com.google.gwt.query.client.Properties;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
@@ -29,6 +24,7 @@ import gwt.material.design.client.ui.MaterialInput;
 import gwt.material.design.client.ui.MaterialIntegerBox;
 import gwt.material.design.client.ui.MaterialModal;
 import net.videmantay.roster.RosterUrl;
+import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.IncidentJson;
 
 public class IncidentForm extends Composite {
@@ -67,6 +63,11 @@ public class IncidentForm extends Composite {
 	
 
 	public final IncidentIconGrid iconGrid = new IncidentIconGrid();
+	
+	private final RosterUtils utils;
+	
+	private IncidentJson data = IncidentJson.createObject().cast();
+	
 	private Function iconChangeFunc = new Function(){
 		@Override
 		public boolean f(Event e, Object...o){
@@ -75,14 +76,15 @@ public class IncidentForm extends Composite {
 			
 			incidentImageBtn.clear();
 			incidentImageBtn.add(new HTML(IncidentImageUtil.imageHTML(iconName)));
+			imageName.setValue(iconName);
 			return true;
 		}
 	};
 
 
-	public IncidentForm() {
+	public IncidentForm(RosterUtils ru) {
+		this.utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
-		
 		formContainer.getElement().setId("incidentForm");
 		valueInput.setValue(0);
 		incidentImageBtn.add(new HTML(IncidentImageUtil.imageHTML("doctor")));
@@ -96,17 +98,18 @@ public class IncidentForm extends Composite {
 			}});
 	}
 	
-	public IncidentJson getFormData(){
-		IncidentJson newIncident = JavaScriptObject.createObject().cast();
-		newIncident.setName(nameInput.getText());
-		newIncident.setImageUrl(imageName.getValue());
+	private IncidentJson getFormData(){
+		
+		data.setName(nameInput.getValue());
+		data.setImageUrl(imageName.getValue());
 		
 		if(valueInput.getText().isEmpty() || valueInput.getText() == null )
-		      newIncident.setPoints(0);
+		      data.setPoints(0);
 		else
-			newIncident.setPoints(valueInput.getValue());
+			data.setPoints(valueInput.getValue());
 		
-		return newIncident;
+		reset();
+		return data;
 	}
 	
 	
@@ -151,12 +154,37 @@ public class IncidentForm extends Composite {
 	}
 	
 	public void cancel(){
-		form.clear();
+		modal.closeModal();
+		reset();
 	}
 	
-	public Promise submit(Long id){
-		
-		return Ajax.ajax(Ajax.createSettings().setContentType("application/json")
-				.setData(getFormData()).
+	public Promise submit(){
+		modal.closeModal();
+		return Ajax.ajax(Ajax.createSettings()
+				.setContentType("application/json")
+				.setType("post")
+				.setDataType("json")
+				.setData(getFormData())
+				.setUrl(RosterUrl.incident(utils.getCurrentRoster().getId())));
+	}
+	
+	public void setData(IncidentJson data){
+		if(data == null){
+			data = IncidentJson.create();
+		}else{
+		this.data = data;
+		}
+		//populate the form
+		this.imageName.setValue(data.getImageUrl());
+		this.nameInput.setValue(data.getName());
+		this.valueInput.setValue(data.getPoints());
+		incidentImageBtn.clear();
+		incidentImageBtn.add(new HTML(IncidentImageUtil.imageHTML(data.getImageUrl())));
+	}
+	
+	private void reset(){
+		form.reset();
+		incidentImageBtn.clear();
+		incidentImageBtn.add(new HTML(IncidentImageUtil.imageHTML("doctor")));
 	}
 }

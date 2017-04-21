@@ -4,8 +4,7 @@
 
 	<m:MaterialCard width=" 200xp" height="275px"
 		textAlign="CENTER" backgroundColor="grey lighten-3" margin="5"
-		padding="5">
-		<m:MaterialCardAction height="0.75em"> 
+		padding="5" addStyleNames="incidentItem">
 			<m:MaterialRow>
 			<m:MaterialColumn grid="s6" paddingRight="20" paddingLeft="20">
 			<m:MaterialAnchorButton ui:field="deleteIncidentBtn" type="FLAT" iconType="DELETE"></m:MaterialAnchorButton>
@@ -14,8 +13,8 @@
 			<m:MaterialAnchorButton ui:field="editIncidentBtn" type="FLAT"  iconType="EDIT"></m:MaterialAnchorButton>
 			</m:MaterialColumn>
 			</m:MaterialRow>
-		</m:MaterialCardAction>
-		<m:MaterialCardContent>
+			<m:html.Hr/>
+	<m:MaterialCardContent>
 		<g:HTMLPanel>
 			<div ui:field="svgImage" 
 			style="width:150px; height175px; border:1px solid Silver; border-radius:10%; padding:0.25em;margin-bottom:0.25em" />
@@ -25,4 +24,4 @@
 		</g:HTMLPanel>
 		</m:MaterialCardContent>
 	</m:MaterialCard>
-</ui:UiBinder> 
+</ui:UiBinder>  

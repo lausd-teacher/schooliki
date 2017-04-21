@@ -188,21 +188,7 @@ public class ClassroomMain extends Composite{
 ///the constructor//////////
 	public ClassroomMain(RosterUtils ru) {
 		this.utils = ru;	
-		if(utils.getIncidents() == null){
-				//Ajax call
-				Ajax.get("/roster/"+utils.getCurrentRoster().getId() + "/incident").done(new Function(){
-					@Override
-					public void f(){
-						String data = (String)this.arguments(0);
-						JsArray<IncidentJson> incidents = JsonUtils.safeEval(data).cast();
-						utils.setIncidents(incidents);
-						studentActionModal.drawIncidentGrid(incidents);
-					}
-				});
-			
-		}else{
-			utils.setIncidents(utils.getIncidents());
-		}
+		
 		
 		this.initWidget(uiBinder.createAndBindUi(this));
 			//set side nav links/////////
@@ -904,6 +890,24 @@ public class ClassroomMain extends Composite{
 				return true;
 			}
 		});
+		
+		if(utils.getIncidents() == null){
+			console.log("incident is empty in Classroom main ajax call here");
+				//Ajax call
+				Ajax.get("/roster/"+utils.getCurrentRoster().getId() + "/incident").done(new Function(){
+					@Override
+					public void f(){
+						String data = (String)this.arguments(0);
+						JsArray<IncidentJson> incidents = JsonUtils.safeEval(data).cast();
+						utils.setIncidents(incidents);
+						studentActionModal.drawIncidentGrid(incidents);
+					}
+				});
+			
+		}else{
+		console.log("incident is not null  in roster main incident entity is ");
+		console.log(utils.getIncidents());
+		}
 		
 	}
 	@Override

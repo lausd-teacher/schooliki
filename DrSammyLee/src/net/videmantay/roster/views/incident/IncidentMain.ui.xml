@@ -29,5 +29,22 @@
 		</m:MaterialFAB>
 		</m:MaterialPanel>
 		<v:IncidentForm ui:field="incidentForm"></v:IncidentForm>
+		<m:MaterialModal ui:field='deleteIncidentModal' type="FIXED_FOOTER" height="15em"> 
+			<m:MaterialModalContent> 
+				<g:HTMLPanel> 
+					<h3> Are you sure you want to delete this incident?</h3>
+				</g:HTMLPanel>
+			</m:MaterialModalContent>
+			<m:MaterialModalFooter> 
+				<m:MaterialRow> 
+					<m:MaterialColumn> 
+						<m:MaterialAnchorButton type="RAISED" ui:field="deleteIncidentModalOk" text="OK"/>
+					</m:MaterialColumn>
+					<m:MaterialColumn> 
+						<m:MaterialAnchorButton type="RAISED"  ui:field="deleteIncidentModalCancel" text="Cancel"/>
+					</m:MaterialColumn>
+				</m:MaterialRow>
+			</m:MaterialModalFooter>
+		</m:MaterialModal>
 	</g:HTMLPanel>
 </ui:UiBinder> 

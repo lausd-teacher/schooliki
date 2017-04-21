@@ -5,20 +5,27 @@
 		<m:MaterialCard>
 			<m:MaterialCardContent>
 				<m:MaterialRow ui:field="toolingRow">
-					<m:MaterialColumn ui:field="groupTypeCol">
+					<m:MaterialColumn ui:field="groupTypeCol" grid="s3 m2 l2">
 						<m:html.Div>
-							<m:MaterialLabel text="Group Type" />
-							<m:MaterialListBox>
-								<m:html.Option ui:field="customOpt" text="Custom" />
-								<m:html.Option ui:field="rti2Opt" text="RTI2" />
-								<m:html.Option ui:field="eldLevelOpt" text="ELD Level" />
-								<m:html.Option ui:field="nameOpt" text="Name" />
+							<m:MaterialLabel text="Group Type" truncate="true"/>
+							<m:MaterialListBox ui:field="groupType">
+								<m:html.Option ui:field="customOpt" text="Custom"  value="custom"/>
+								<m:html.Option ui:field="rti2Opt" text="RTI2" value="rti2" />
+								<m:html.Option ui:field="eldLevelOpt" text="ELD Level" value="eldLevel" />
+								<m:html.Option ui:field="nameOpt" text="Name"  value="name"/>
 							</m:MaterialListBox>
 						</m:html.Div>
 					</m:MaterialColumn>
-					<m:MaterialColumn ui:field="paramCol">
-						<m:MaterialRow ui:field="rti2ParamRow">
-							<m:MaterialColumn ui:field="rti2SubjectCol">
+					<m:MaterialColumn ui:field="paramCol" grid="s9 m8 l8">
+						<m:MaterialRow ui:field="criteriaRow" addStyleNames="paramRow"> 
+							<m:MaterialColumn ui:field="criteriaCol" > 
+								<m:html.Br/>
+								<m:MaterialTextBox ui:field="criteriaInput" placeholder="write a criteria"/>
+							</m:MaterialColumn>
+						</m:MaterialRow>
+						<m:MaterialRow ui:field="rti2Row" visible="false" addStyleNames="paramRow" >
+							<m:MaterialColumn ui:field="rti2SubjectCol" grid="s5 m3 l2">
+							<m:html.Br/>
 								<m:MaterialLabel />
 								<m:MaterialListBox>
 									<m:html.Option text="All Subjects" />
@@ -27,38 +34,53 @@
 									<m:html.Option text="Math" />
 								</m:MaterialListBox>
 							</m:MaterialColumn>
-							<m:MaterialColumn ui:field="rti2TestCol">
-								<m:MaterialLabel />
-								<m:MaterialListBox>
-									<m:html.Option text="Latest Test" />
-									<m:html.Option text="Specific Test" />
+							<m:MaterialColumn ui:field="rti2TestCol" grid="s5 m3 l2">
+							<m:html.Br/>
+								<m:MaterialListBox ui:field="testType" float="LEFT">
+									<m:html.Option text="Latest Test" value="latest"/>
+									<m:html.Option text="Specific Test" value="specific"/>
 								</m:MaterialListBox>
-								<m:MaterialSearch ui:field="rti2Search"></m:MaterialSearch>
-							</m:MaterialColumn>
+								</m:MaterialColumn>
+								<m:MaterialColumn ui:field="quantityCol" addStyleNames="testCriteria" grid="s2">
+								<m:html.Br/>
+								<m:MaterialIntegerBox ui:field="rti2TestQuantity" width="30px"  max="10" min="1"  value="1"/>
+								</m:MaterialColumn>
+								<m:MaterialColumn grid="s12 m5 l4" ui:field="searchWrap"  visible="false" addStyleNames="testCriteria"> 
+								<m:html.Br/>
+								<m:MaterialTextBox ui:field="rti2Search" iconType="SEARCH" placeholder="search for assignments..."></m:MaterialTextBox>
+								<m:MaterialPanel ui:field="searchResults" />
+								</m:MaterialColumn>
 						</m:MaterialRow>
-						<m:MaterialRow ui:field="nameParamRow">
-							<m:MaterialColumn>
+						<m:MaterialRow ui:field="nameRow" visible="false" addStyleNames="paramRow">
+							<m:MaterialColumn grid="s7">
+								<m:html.Br/>
+								<m:html.Br/>
 								<m:MaterialSwitch ui:field="nameSwitch"
 									onLabel="First" offLabel="Last"></m:MaterialSwitch>
 							</m:MaterialColumn>
 						</m:MaterialRow>
 					</m:MaterialColumn>
 				</m:MaterialRow>
-				<m:html.Hr />
-				<m:MaterialRow><!-- -->
-					<m:MaterialColumn ui:field="studentSection" grid="s12 m4 l2">
+				<m:MaterialRow ><!-- -->
+					<m:MaterialColumn ui:field="studentSection" grid="s12 m4 l2" >
+					<g:HTMLPanel>
+						<m:MaterialLabel text="Students:" />
 						<m:MaterialCard>
 							<m:MaterialCardContent>
 								<m:MaterialPanel ui:field="studentPanel" />
 							</m:MaterialCardContent>
 						</m:MaterialCard>
+					</g:HTMLPanel>
 					</m:MaterialColumn>
 					<m:MaterialColumn ui:field="groupSection" grid="s12 m8 l6">
+					<g:HTMLPanel>
+						<m:MaterialLabel text="Groups" />
 						<m:MaterialCard>
 							<m:MaterialCardContent>
 								<m:MaterialPanel ui:field="groupPanel" />
 							</m:MaterialCardContent>
 						</m:MaterialCard>
+					</g:HTMLPanel>
 					</m:MaterialColumn>
 				</m:MaterialRow>
 			</m:MaterialCardContent>

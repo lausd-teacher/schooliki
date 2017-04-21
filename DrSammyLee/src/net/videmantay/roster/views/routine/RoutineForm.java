@@ -79,10 +79,9 @@ public class RoutineForm extends Composite {
 	public MaterialCheckBox  isDefault;
 	
 	@UiField
-	public OListElement procedureOrderList;
-		
+	public ProcedureForm procForm;
+			
 	private  FullRoutineJson originalData;
-	private FullRoutineJson copyData;
 	private SeatingChartJson seatingChart;
 	private  final RosterUtils utils;
 	
@@ -96,10 +95,16 @@ public class RoutineForm extends Composite {
 			frj.getRoutine().setRosterId(utils.getCurrentRoster().getId());
 		}
 		originalData = frj;
-		copyData = FullRoutineJson.createObject().cast();
-		copyData.copy(originalData);
-		title.setText(copyData.getRoutine().getTitle());
-		description.setText(copyData.getRoutine().getDescript());
+		title.setText(originalData.getRoutine().getTitle());
+		description.setText(originalData.getRoutine().getDescript());
+		if(frj.getRoutineConfig().getProcedures() != null && frj.getRoutineConfig().getProcedures().length() < 0){
+			for(int i = 0; i <frj.getRoutineConfig().getProcedures().length(); i++){
+				procForm.addProcItem(frj.getRoutineConfig().getProcedures().get(i).getProcedure());
+			}//end for
+		}else{
+				procForm.addProcItem(null);
+			}
+		
 		console.log("Routine Form constructor");
 	
 	}

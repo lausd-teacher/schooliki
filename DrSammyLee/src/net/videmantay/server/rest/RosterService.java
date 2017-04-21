@@ -704,9 +704,28 @@ public class RosterService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateIncident(@PathParam("id") Long id, Incident incident){
-		
+		System.out.print(incident.getId() == null);
+		if(incident.getRosterId() == null){
+			incident.setRosterId(id);
+		}
 		incident.setId(db().save().entity(incident).now().getId());
 		return Response.ok().entity(incident).build();
+	}
+	
+	@DELETE
+	@Path("/{id}/incident/{incidentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response deleteIncident(@PathParam("id")Long id, @PathParam("incidentId") Long incidentId){
+		log.log(Level.INFO, "Delete Incident called");
+		Key<Incident> incidentKey = Key.create(Incident.class, incidentId);
+		log.log(Level.INFO, "Incident key id is " + incidentKey.getId() + " roster id is " + id);
+		Incident incident = db().load().key(incidentKey).now();
+		log.log(Level.INFO, "Incident id from entity is " + incident.getId() + " and roster id is " + incident.getRosterId());
+		
+		db().delete().entity(incident);
+		return Response.ok().entity(incident).build();
+		
 	}
 
 }
