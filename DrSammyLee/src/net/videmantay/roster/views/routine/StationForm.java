@@ -10,22 +10,21 @@ import com.google.gwt.user.client.ui.Widget;
 import gwt.material.design.client.ui.MaterialCollection;
 import net.videmantay.roster.routine.json.StationManagerJson;
 
-public class TimeSlotChart extends Composite {
+public class StationForm extends Composite {
 
-	private static TimeSlotChartUiBinder uiBinder = GWT.create(TimeSlotChartUiBinder.class);
-
-	interface TimeSlotChartUiBinder extends UiBinder<Widget, TimeSlotChart> {
+	
+	interface StationFormtUiBinder extends UiBinder<Widget, StationForm> {
 	}
+	
+	private static StationFormtUiBinder uiBinder = GWT.create(StationFormtUiBinder.class);
 
 	
-	@UiField
-	public MaterialCollection stationCollection;
+
 	
-	@UiField
-	HTMLPanel timeSlotChart;
+	
 	
 
-	public TimeSlotChart() {
+	public StationForm() {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 	}

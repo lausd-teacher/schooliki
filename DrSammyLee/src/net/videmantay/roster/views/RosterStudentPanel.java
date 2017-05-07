@@ -1,27 +1,28 @@
 package net.videmantay.roster.views;
 
-import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.ui.Ui.Ui;
-
+import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.addins.client.timepicker.MaterialTimePicker;
+import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialBadge;
-import gwt.material.design.client.ui.MaterialCard;
+import gwt.material.design.client.ui.MaterialChip;
+import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
-import gwt.material.design.client.ui.MaterialToast;
-import gwtquery.plugins.ui.interactions.Draggable;
+import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.student.json.RosterStudentJson;
+import net.videmantay.student.json.StudentAttendanceJson;
 
 public class RosterStudentPanel extends Composite {
 
@@ -57,16 +58,21 @@ public class RosterStudentPanel extends Composite {
 	@UiField
 	MaterialImage studentImage;
 	
+	@UiField
+	MaterialTimePicker timePicker;
+	
+	@UiField
+	MaterialRow attendanceRow;
+	
+	@UiField
+	MaterialIcon attendanceStatusChip;
+	
 	private final RosterStudentJson rosStudent;
 
 	public RosterStudentPanel(RosterStudentJson student) {
 		rosStudent = student;
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-	
-
-	
-	public void setData(RosterStudentJson student){
+		
 		this.getElement().setId(student.getStudentId());
 		if(student.getFirstName() == null || student.getFirstName().isEmpty()){
 			firstName.setText(student.getStudentId());
@@ -81,13 +87,10 @@ public class RosterStudentPanel extends Composite {
 		}
 	}
 	
-	public RosterStudentJson getValue(){
-		return this.rosStudent;
-	}
+
 	
-	@Override
-	public void onLoad(){
-		setData(rosStudent);
+	public RosterStudentJson getData(){
+		return this.rosStudent;
 	}
 	
 	public void gridStyle(){
@@ -105,5 +108,52 @@ public class RosterStudentPanel extends Composite {
 		$(badgeRow).css("display", "none");
 	}
 	
+	public void attendence(final StudentAttendanceJson attendance){
+		//initialize
+		switch(attendance.getStatus()){
+		case "PRESENT":studentPresent(); break;
+		case "ABSENT":studentAbsent(); break;
+		case "TARDY": studentTardy();break;
+		}
+		badgeRow.getStyle().setDisplay(Display.NONE);
+		checkRow.getStyle().setDisplay(Display.NONE);
+		attendanceRow.setVisible(true);
+		
+		this.addDomHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				switch(attendanceStatusChip.getIcon().getIconType()){
+				case PERSON:studentAbsent(); break;
+				case PERSON_OUTLINE:studentTardy(); break;
+				case ALARM_ON: studentPresent();break;
+				default:studentPresent();
+				}
+				
+			}}, ClickEvent.getType());
+	}
+	
+	
+	private void studentAbsent(){
+		attendanceStatusChip.setBackgroundColor("red");
+		attendanceStatusChip.setIconType(IconType.PERSON_OUTLINE);
+	}
+	
+	private void studentPresent(){
+		timePicker.setVisible(false);
+		attendanceStatusChip.setBackgroundColor("green");
+		attendanceStatusChip.setIconType(IconType.PERSON);
+	}
+	
+	private void studentTardy(){
+		attendanceStatusChip.setBackgroundColor("amber");
+		attendanceStatusChip.setIconType(IconType.ALARM_ON);
+		timePicker.setVisible(true);
+	}
+	
+	@Override
+	public void onLoad(){
+		this.getElement().setId(rosStudent.getStudentId());
+	}
 
 }

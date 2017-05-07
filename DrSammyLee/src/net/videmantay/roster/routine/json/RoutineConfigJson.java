@@ -3,6 +3,8 @@ package net.videmantay.roster.routine.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
+import net.videmantay.roster.json.AttendanceJson;
+
 public class RoutineConfigJson extends JavaScriptObject {
 
 	protected RoutineConfigJson(){}

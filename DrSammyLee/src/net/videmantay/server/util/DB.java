@@ -34,6 +34,8 @@ public class DB<T> implements Serializable {
 		factory().register(GoogleCalendarEvent.class);
 		factory().register(GradedWork.class);
 		factory().register(Schedule.class);
+		factory().register(Attendance.class);
+		factory().register(StudentAttendance.class);
 		factory().register(StudentWork.class);
 		factory().register(StudentJob.class);
 		factory().register(StudentIncident.class);

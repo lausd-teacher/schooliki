@@ -122,11 +122,13 @@ public class HistoryMapper implements ValueChangeHandler<String>{
 						public void f(){
 							console.log("Ajax call to get roster object returned is: ");
 							RosterConfigJson rcj =  JsonUtils.safeEval((String)this.arguments(0)).cast();
+							console.log("History Mapper: received this roste config via ajax-");
 							console.log(rcj);
 							if(rcj != null){
 							utils.setStudents(rcj.getStudents());
-							
-							
+							utils.setCurrentAttendance(rcj.getAttendance());
+							console.log("utils attendance is set:");
+							console.log(utils.getCurrentAttendance());
 								utils.setClassTimes(rcj.getClassTimes());
 								
 								for(int i=0; i < rcj.getClassTimes().length(); i++){

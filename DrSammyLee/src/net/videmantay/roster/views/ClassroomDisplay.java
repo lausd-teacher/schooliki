@@ -31,6 +31,7 @@ import net.videmantay.roster.RosterUtils;
 import net.videmantay.roster.json.JoinRequestJson;
 import net.videmantay.roster.json.JoinStatus;
 import net.videmantay.student.json.RosterStudentJson;
+import net.videmantay.student.json.StudentAttendanceJson;
 
 public class ClassroomDisplay extends Composite implements HasClassroomDashboardView{
 
@@ -176,7 +177,7 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 	
 	@Override
 	public void checkHW() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -190,7 +191,31 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 
 	@Override
 	public void takeRoll() {
-		// TODO Auto-generated method stub
+		List<Widget> rosPanels = $(".rosterStudent", classroomGrid).widgets();
+		console.log(rosPanels);
+		if(!utils.getCurrentAttendance().getCompleted()){
+			JsArray<StudentAttendanceJson> studentAttendance = JsArray.createArray().cast();
+			
+			for( int i =0; i< utils.getStudents().length(); i++){
+				studentAttendance.push(StudentAttendanceJson.today(utils.getStudents().get(i).getStudentId()));
+			}
+			console.log(studentAttendance);
+			//set new studentAttendance
+			utils.getCurrentAttendance().setStudentAttendance(studentAttendance);
+		}
+		
+		//noew the student should be set
+		for(Widget rsp : rosPanels){
+			//cycle through attendance
+			JsArray<StudentAttendanceJson> stuAtt =utils.getCurrentAttendance().getStudentAttendance();
+			for(int i= 0; i < stuAtt.length(); i++){
+				if($(rsp).id().equalsIgnoreCase(stuAtt.get(i).getStudentId())){
+					((RosterStudentPanel)rsp).attendence(stuAtt.get(i));
+						break;
+				}//end if
+			}//end inner for
+		}//end for
+		
 		
 	}
 
@@ -221,8 +246,8 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 		$(".rosterStudent", classroomGrid).click(new Function(){
 			@Override
 			public void f(){
-				MaterialToast.fireToast("click");
-				$(body).trigger("studentAction", $(this).id());
+				//This is handled in Classroom main in onLoad
+				$(body).trigger("studentAction", ((RosterStudentPanel)$(this).widget()).getData());
 				
 			}
 		});
@@ -231,7 +256,7 @@ public class ClassroomDisplay extends Composite implements HasClassroomDashboard
 
 	@Override
 	public void unHome() {
-		// TODO Auto-generated method stub
+		$(".rosterStudent", classroomGrid).off("click");
 		
 	}
 

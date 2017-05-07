@@ -15,4 +15,6 @@ public class RosterConfig  implements Serializable{
 	
 	public RoutineConfig defaultTime;
 	
+	public Attendance attendance;
+	
 }

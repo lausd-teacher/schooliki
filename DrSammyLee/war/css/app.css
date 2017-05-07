@@ -257,13 +257,14 @@ div.toolsPanel {
 .rosterStudent.grid {
 	position: relative;
 	top: 0px;
-	width: 10em;
-	min-height: 11em;
+	width:125px;
+	height:25em;
 }
+
 
 div.counterRotate.studentHead {
 	width: 100%;
-	height: 100%;
+	height: 17em;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -275,14 +276,15 @@ div.counterRotate.studentBody {
 	height: 100%;
 }
 
-div.counterRotate.studentBody>span.material-label.studentName {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: no-wrap;
-	width: 100%;
-	clear: right;
-	float: left;
+.studentName{
+	
+	font-weight:10;
+	font-size:1.1em;
+	margin-left:auto;
+	margin-right:auto;
+	font-family:Roboto, Serif;
 }
+
 
 .seatingChartImageDiv {
 	background-size: contain;
@@ -290,11 +292,14 @@ div.counterRotate.studentBody>span.material-label.studentName {
 	background-position: center;
 }
 
-.statusBadge {
+span.statusBadge.badge.circle {
 	border: 2px solid White;
 	box-shadow: 1px 1px 2px Gray;
-	width: 4em !important;
-	height: 4em !important;
+	position:relative;
+	font-size:1.25em !important;
+	padding:5px !important;
+	font-family:Verdana,Sans;
+	font-weight:bold;
 }
 
 .statusBadgeLeft {
@@ -302,7 +307,7 @@ div.counterRotate.studentBody>span.material-label.studentName {
 }
 
 .statusBadgeRight {
-	right: -15% !important;
+	right: -50% !important;
 }
 
 /* end roste student style *********************************************/
@@ -456,3 +461,20 @@ li.collection-item>input[type=text], li.collection-item>input[type=text]:focus
 	overflow: hidden;
 	padding: 0px !important
 }
+
+/* station form */
+div#stationOverflowWrapper{
+	overflow-x:hidden;
+}
+div#stationCollectionWrapper{
+	min-width:165px;
+	width:370px;
+	overflow-x:scroll;
+}
+
+/*/student action panel items///*/
+.incidentActionItem{
+			border: 1px solid Gray;
+			box-shadow:1px 1px 2px DimGray;
+			height:166px;
+	}

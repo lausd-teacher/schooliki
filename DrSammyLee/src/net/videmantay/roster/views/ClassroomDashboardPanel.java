@@ -2,36 +2,30 @@ package net.videmantay.roster.views;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.IsProperties;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.googlecode.gwt.charts.client.Properties;
-
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
-import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
 import net.videmantay.roster.HasClassroomDashboardView;
 import net.videmantay.roster.RosterUtils;
-import net.videmantay.roster.json.IncidentJson;
-import net.videmantay.roster.views.routine.SeatingChartPanel;
-import net.videmantay.student.json.RosterStudentJson;
+import net.videmantay.student.json.StudentAttendanceJson;
 
 public class ClassroomDashboardPanel extends Composite
 {
@@ -70,7 +64,7 @@ public class ClassroomDashboardPanel extends Composite
 	public MaterialRow toolbar;
 	
 	@UiField
-	public MaterialRow doneToolbar;
+	public MaterialRow hwToolbar;
 	/////////bar vs button essential the same job but bar 
 	//is 100 across the screen and detached from nav panel
 	@UiField
@@ -94,11 +88,8 @@ public class ClassroomDashboardPanel extends Composite
 	public MaterialAnchorButton CancelBtn;
 		
 	@UiField
-	public MaterialButton undoBtn;
+	public MaterialButton hwActivatorBtn;
 	
-	@UiField
-	public MaterialButton redoBtn;
-
 	@UiField
 	public MaterialRow rollToolbar;
 	
@@ -132,18 +123,35 @@ public class ClassroomDashboardPanel extends Composite
 	public ClassroomDashboardPanel(RosterUtils ru) {
 		utils = ru;
 		initWidget(uiBinder.createAndBindUi(this));
-		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		hwToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		
+		//add click to icons
+		hwIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				showDoneBar();
+				
+			}});
+		rollIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				showRollBar();
+				display.unHome();
+				display.takeRoll();
+				
+			}});
 		
 	}
 	
 	public void showDoneBar(){
 		toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
-		doneToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+		hwToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
 		
 	}
 	public void showToolBar(){
-		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		hwToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		rollToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		toolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
 	}

@@ -3,8 +3,10 @@ package net.videmantay.server.rest;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 import static net.videmantay.server.util.DB.db;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +35,7 @@ import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
 
 import net.videmantay.server.entity.AppUser;
+import net.videmantay.server.entity.Attendance;
 import net.videmantay.server.entity.FullRoutine;
 import net.videmantay.server.entity.Routine;
 import net.videmantay.server.entity.RoutineConfig;
@@ -45,6 +48,7 @@ import net.videmantay.server.entity.RosterDetail;
 import net.videmantay.server.entity.RosterStudent;
 import net.videmantay.server.entity.Schedule;
 import net.videmantay.server.entity.SeatingChart;
+import net.videmantay.server.entity.StudentAttendance;
 import net.videmantay.server.entity.StudentIncident;
 import net.videmantay.server.entity.StudentRoll;
 import net.videmantay.server.entity.TeacherInfo;
@@ -88,23 +92,6 @@ public class RosterService {
 
 		return Response.ok().build();
 	}
-
-	/*
-	 * @GET
-	 * 
-	 * @Path("/{id}")
-	 * 
-	 * @Produces(MediaType.APPLICATION_JSON) public Response
-	 * getRoster(@PathParam("id") Long id) {
-	 * 
-	 * Roster result = ofy().load().key(Key.create(Roster.class, id)).now();
-	 * 
-	 * if (result != null) {
-	 * 
-	 * return Response.ok().entity(new RosterDTO(result)).build(); }
-	 * 
-	 * return Response.status(Status.NOT_FOUND).build(); }
-	 */
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -309,8 +296,20 @@ public class RosterService {
 		/// class times
 		// and default classtime
 		final RosterConfig config = new RosterConfig();
-		
-
+			//get todays attendance
+		String today = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+					Attendance attendance = db().load().key(Key.create(Attendance.class, today)).now();
+					if(attendance == null){
+						attendance = new Attendance(id);
+					}
+					List<StudentAttendance> stuAtts;
+					if(attendance.completed){
+						stuAtts = db().load().type(StudentAttendance.class).ancestor(attendance).list();
+					}else{
+						stuAtts  = new ArrayList<>();
+					}
+					attendance.studentAttendance.addAll(stuAtts);
+					config.attendance = attendance;
 				Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
 				rosterStudents.addAll(
 						db().load().type(RosterStudent.class).ancestor(Key.create(RosterDetail.class, id)).list());
@@ -431,6 +430,8 @@ public class RosterService {
 		return Response.ok().entity(students).build();
 
 	}
+	
+	
 
 	@POST
 	@Path("/{id}/student/{studentId}/incident")
@@ -469,7 +470,7 @@ public class RosterService {
 	@Path("/{id}/batch/student/incident")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response batchCreateStudentIncident(@PathParam("id") Long id, List<StudentIncident> stuIncidents) {
+	public Response batchCreateStudentIncident(@PathParam("id") Long id, StudentIncident[] stuIncidents) {
 		// parent key
 		Key<RosterDetail> parent = Key.create(RosterDetail.class, id);
 		// Might as well batch get//
@@ -488,8 +489,15 @@ public class RosterService {
 			for (StudentIncident si : stuIncidents) {
 				if (rs.studentAcctId.equals(si.studentAcct)) {
 					if (si.points < 0) {
+						//null check 
+						if(rs.negPoints == null){
+							rs.negPoints = new Integer(0);
+						}
 						rs.negPoints += si.points;
 					} else {
+						if(rs.posPoints == null){
+							rs.posPoints = new Integer(0);
+						}
 						rs.posPoints += si.points;
 					}
 					break;
@@ -499,11 +507,9 @@ public class RosterService {
 
 		// update the student points
 		db().save().entities(students);
-
-		stuIncidents.clear();
-		stuIncidents.addAll(db().save().entities(stuIncidents).now().values());
-
-		return Response.ok().entity(stuIncidents).build();
+		ArrayList<StudentIncident> newIncidents = new ArrayList<>();
+		newIncidents.addAll(db().save().entities(stuIncidents).now().values());
+		return Response.ok().entity(newIncidents).build();
 	}
 
 	@POST
@@ -727,5 +733,53 @@ public class RosterService {
 		return Response.ok().entity(incident).build();
 		
 	}
+	
+	@GET
+	@Path("/{id}/attendance/{attendanceId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response takeAttendance(@PathParam("id") Long id, @PathParam("attendanceId") String attendanceId){
+		System.out.println("get attendance called , RosterId:" + id + " , AttendanceId:" + attendanceId);
+		Attendance attendance = db().load().key(Key.create(Attendance.class, (id + attendanceId))).now();
+		
+		
+		if(attendance == null){
+			attendance = new Attendance(id);
+		}
+		
+		System.out.println("Attendance: id=" + attendance.id );
+		if(attendance.completed){
+			List<StudentAttendance> dbStuAtt = db().load().type(StudentAttendance.class).ancestor(attendance).list();
+			attendance.studentAttendance.addAll(dbStuAtt);
+		}
+		System.out.println("send entity" + attendance);
+		return Response.ok().entity(attendance).build();
+	}
+	
+	@POST
+	@Path("/{id}/attendance/{attendanceId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_HTML)
+	public Response submitAttendance(@PathParam("id") Long id, Attendance attendance){
+		
+	
+		Key<Attendance> attenKey = Key.create(Attendance.class, attendance.id);
+		for(StudentAttendance sa: attendance.studentAttendance){
+			
+			sa.parent = attenKey;
+		}
+		db().save().entities(attendance, attendance.studentAttendance);
+		return Response.ok().entity("Attendance Saved Successfully").build();
+	}
+	
+	@DELETE
+	@Path("/{id}/attendance/{attendanceId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_HTML)
+	public Response deleteAttendance(@PathParam("id") Long id, Attendance attendance){
+		
+		db().delete().entities(db().load().ancestor(attendance).keys());
+		return Response.ok().entity("Attendance Deleted Successfully").build();
+	}
+	
 
 }

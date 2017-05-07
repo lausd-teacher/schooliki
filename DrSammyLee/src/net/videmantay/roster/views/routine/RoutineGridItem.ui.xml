@@ -30,6 +30,18 @@
 							</m:MaterialRow>
 						</m:MaterialCollapsibleHeader>
 						<m:MaterialCollapsibleBody ui:field="procedureCollapseBody">
+								<g:HTML addStyleNames="emptyRoutineItem"> 
+								<div style="margin-left:auto; margin-right:auto" >
+									<h5>You have not created anyt procedures for this routine</h5>
+											<ol> 
+												<li>Sit attentively</li>
+												<li>Finish you task quietly</li>
+												<li> Raise you hand if you need the teacher's attention</li>
+											</ol>
+									<br/>
+									<p>The above are example of procedures in a routine</p>
+								</div>
+								</g:HTML>
 						</m:MaterialCollapsibleBody>
 					</m:MaterialCollapsibleItem>
 					<m:MaterialCollapsibleItem>
@@ -43,7 +55,11 @@
 							</m:MaterialRow>
 						</m:MaterialCollapsibleHeader>
 						<m:MaterialCollapsibleBody ui:field="groupsCollapseBody">
-							<!-- so this is somehting to thin what he has -->
+							<g:HTML><h4>No Groups created yet.</h4>
+									<p>You can easily create groups by criteria such as
+									ELD Level, RTI2, or by your own</p>
+									<p><a>Just Click Here</a> or the on the add button on the bottom</p>
+							</g:HTML>
 						</m:MaterialCollapsibleBody>
 					</m:MaterialCollapsibleItem>
 					<m:MaterialCollapsibleItem>

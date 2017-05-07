@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<m:MaterialPanel addStyleNames="incidentActionItem" margin="10" padding="5" backgroundColor="white" textAlign="CENTER"> 
+		<m:html.Div ui:field="img" />
+		<m:MaterialLabel ui:field="label" truncate="true" marginBottom="2.5"/>
+		<m:MaterialChip ui:field="value" backgroundColor="green" textColor="white"/>
+	</m:MaterialPanel>
+</ui:UiBinder> 

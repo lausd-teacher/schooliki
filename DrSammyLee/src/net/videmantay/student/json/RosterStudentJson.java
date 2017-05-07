@@ -10,7 +10,7 @@ public class RosterStudentJson extends JavaScriptObject{
 	
 	
 	public final native String getId() /*-{
-		return id;
+		return this.id;
 	}-*/;
 
 	public final native void setId(String id) /*-{

@@ -1,0 +1,53 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:t="urn:import:gwt.material.design.addins.client.timepicker">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialRow>
+		<m:MaterialColumn grid="s3 m2 l2" ui:field="timeslotCol">
+		<m:MaterialCollection ui:field="timeslotCollection"> 
+			<m:MaterialCollectionItem> 
+				<g:HTML><h6>Start Times</h6></g:HTML>
+			</m:MaterialCollectionItem>
+			<m:MaterialCollectionItem> 
+				<t:MaterialTimePicker></t:MaterialTimePicker>
+			</m:MaterialCollectionItem>
+		</m:MaterialCollection>
+		<m:MaterialButton ui:field="addTimeslotBtn" type="FLOATING"  iconType="ALARM" backgroundColor="grey lighten-1"/>
+		</m:MaterialColumn>
+		<m:MaterialColumn  grid="s8 m10 l10" ui:field="stationCol" addStyleNames="stationCol"> 
+				<m:html.Div m:id="stationOverflowWrapper">
+				<m:html.Div m:id="staionCollectionWrapper">
+				<m:MaterialCollection float="LEFT"> 
+					<m:MaterialCollectionItem>  
+						<m:MaterialAnchorButton m:id="station1"
+						 addStyleNames='stationBtn' text="Station 1..." />
+					</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem> 
+						<g:HTML addStyleNames="station1-group round1">
+							<p>Click Here to add students...</p>
+						</g:HTML>
+					</m:MaterialCollectionItem>
+				</m:MaterialCollection>
+				<m:MaterialCollection float="LEFT"> 
+					<m:MaterialCollectionItem>  
+						<m:MaterialAnchorButton m:id="station1" backgroundColor="blue"
+						 addStyleNames='stationBtn' text="Station 2..." />
+					</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem> 
+						<g:HTML addStyleNames="station1-group round1">
+							<p>Click Here to add students...</p>
+						</g:HTML>
+					</m:MaterialCollectionItem>
+				</m:MaterialCollection>
+			</m:html.Div>
+			</m:html.Div>
+			<m:MaterialButton ui:field="addStationBtn" marginLeft="5" backgroundColor="grey lighten-1" iconType="WIDGETS" type="FLOATING"/>
+		</m:MaterialColumn>
+		</m:MaterialRow>
+	</g:HTMLPanel>
+</ui:UiBinder> 

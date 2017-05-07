@@ -1,15 +1,18 @@
 package net.videmantay.roster;
 
 import static com.google.gwt.query.client.GQuery.*;
-
+import java.util.Date;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import gwt.material.design.client.ui.MaterialLoader;
+import net.videmantay.roster.json.AttendanceJson;
 import net.videmantay.roster.json.IncidentJson;
 import net.videmantay.roster.json.RosterConfigJson;
 import net.videmantay.roster.json.RosterJson;
@@ -38,6 +41,7 @@ public class RosterUtils {
 	private JsArray<RoutineJson> classTimes;
 	private  boolean isEditMode = false;
 	private  boolean isRollMode = false;
+	private  AttendanceJson currentAttendance;
 	private  JsArray<RosterStudentJson> students;
 	private SeatingChartJson seatingChart;
 	private JsArray<IncidentJson> incidents;
@@ -182,5 +186,12 @@ public class RosterUtils {
 		this.incidents = incidents;
 	}
 	
+	public AttendanceJson getCurrentAttendance(){
+		return currentAttendance;
+	}
 	
+	public void setCurrentAttendance(AttendanceJson attendance){
+		this.currentAttendance = attendance;
+	}
+		
 }

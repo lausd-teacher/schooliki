@@ -11,13 +11,22 @@
 				<g:HTMLPanel>
 					<m:MaterialRow><!-- -->
 						<m:MaterialColumn grid="s6">
-							<m:MaterialLabel ui:field="studentName" text="Studen name here" />
-						</m:MaterialColumn>
+							<m:MaterialRow>
+								<m:MaterialColumn> 
+									<m:MaterialImage ui:field="studentActionImage" circle="true"/>
+								</m:MaterialColumn>
+								<m:MaterialColumn> 
+								<m:MaterialLabel ui:field="studentName" text="Student's name here" />
+								</m:MaterialColumn>
+							</m:MaterialRow>
+							</m:MaterialColumn>
 						<m:MaterialColumn grid="s6">
-							<m:MaterialIcon ui:field="closeIcon" iconType="CLOSE" iconPosition="RIGHT" />
+							<m:MaterialIcon ui:field="gotoStudentPageIcon" iconType="SEND" iconPosition="RIGHT" />
+							<m:MaterialAnchorButton type="RAISED" text="COMPARE" ui:field="compareBtn"  visible="false"/>
 						</m:MaterialColumn>
 					</m:MaterialRow>
 					<m:html.Hr />
+					<div ui:field="incidentActionPanel">
 					<m:MaterialTab>
 						<m:MaterialTabItem waves="YELLOW" grid="l4">
 							<m:MaterialLink text="Superb Decision" href="#taba"
@@ -28,44 +37,49 @@
 								textColor="WHITE" />
 						</m:MaterialTabItem>
 					</m:MaterialTab>
-					<m:MaterialPanel m:id="taba" ui:field="posIncidents">
-						
+					<m:MaterialPanel m:id="taba" >
+						<m:MaterialRow ui:field="posIncidents">
+						</m:MaterialRow>
 					</m:MaterialPanel>
-					<m:MaterialPanel m:id="tabb" ui:field="negIncidents">
-						
+					<m:MaterialPanel m:id="tabb" >
+						<m:MaterialRow ui:field="negIncidents"></m:MaterialRow>
 					</m:MaterialPanel>
+					</div>
+					<div ui:field="noteActionPanel"></div>
+				<div ui:field="assignmentActionPanel"></div>
+				<div ui:field="formActionPanel"></div>
 				</g:HTMLPanel>
 			</m:MaterialModalContent>
 			<m:MaterialModalFooter>
 				<m:MaterialRow marginBottom="0" paddingLeft="50">
-					<m:MaterialColumn grid="s2 m2 l2">
-						<!-- Quick Assignment (All) -->
+				<!-- 	<m:MaterialColumn grid="s2 m2 l2">
+						
 						<m:MaterialAnchorButton type="FLAT"
 							textColor="orange darken-4" iconType="ASSIGNMENT" ui:field="assignmentQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s2 m2 l2">
-						<!-- Quick Goal (All) -->
+						Quick Goal (All)
 						<m:MaterialAnchorButton type="FLAT"
 							textColor="amber darken-4" iconType="MOOD" ui:field="goalQuickLink"></m:MaterialAnchorButton>
-					</m:MaterialColumn>
+					</m:MaterialColumn> 
 					<m:MaterialColumn grid="s2 m2 l2">
-						<!-- Quick Form (single/multi??) -->
+					
 						<m:MaterialAnchorButton type="FLAT"
 							textColor="deep-orange darken-4" iconType="INBOX" ui:field="formQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s2 m2 l2">
-						<!-- Quick Book (single/multi???) -->
-						<m:MaterialAnchorButton type="FLAT"
-							textColor="red darken-4" iconType="LOCAL_LIBRARY" ui:field="bookQuickLink"></m:MaterialAnchorButton>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s2 m2 l2">
-						<!-- Teacher's Note (This only for single) -->
+					
 						<m:MaterialAnchorButton type="FLAT"
 							textColor="deep-orange darken-2" iconType="NOTE" ui:field="noteQuickLink" />
 					</m:MaterialColumn>
+					
 					<m:MaterialColumn grid="s2 m2 l2">
-						<!-- Show More (This only for single) -->
+						
 						<m:MaterialAnchorButton type="FLAT"
+							textColor="red darken-4" iconType="FEEDBACK" ui:field="incidentQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn> -->
+					<m:MaterialColumn> 
+						<m:MaterialAnchorButton type="FLAT" float="RIGHT"
 							textColor="red darken-2" text="CANCEL" ui:field="cancelStudentActionBtn"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 				</m:MaterialRow>

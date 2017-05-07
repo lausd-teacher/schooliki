@@ -1,0 +1,80 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:ma="urn:import:gwt.material.design.addins.client"
+	xmlns:v="urn:import:net.videmantay.roster.views.routine">
+	<ui:style>
+		.spacer{
+		height:1em;
+		}
+	</ui:style>
+	<g:HTMLPanel ui:field="rotationPanel">
+		<m:MaterialCard>
+		<m:MaterialCardAction>
+		<m:MaterialLabel text="Rotation Chart"></m:MaterialLabel>
+		<m:html.Br/>
+		<m:MaterialRow ui:field="stationTypeRow" fontSize="11px">
+			<m:MaterialColumn grid="m12 l4 s12" backgroundColor="grey" height="7em" textColor="white" padding="10"> 
+			<m:MaterialRow>
+			<m:MaterialColumn>
+				<m:html.Br/>
+				<m:MaterialLabel text="Rotation Type: " />
+			</m:MaterialColumn>
+			<m:MaterialColumn ui:field="stationTypeCol"> 
+						<m:MaterialListBox ui:field="stationType" marginTop="-1" width="125px"> 
+							<m:html.Option text="Groups" value="rotation" />
+							<m:html.Option text="Author's Chair" value="authorsChair" />
+							<m:html.Option text="Reader's Theatre" value="authorsChair" />
+							<m:html.Option text="Jig-saw" value="jigsaw" />
+							<m:html.Option text="Custom" value="custom" />
+						</m:MaterialListBox>
+			</m:MaterialColumn>
+			</m:MaterialRow>
+			</m:MaterialColumn>
+			
+			<m:MaterialColumn ui:field="durationInputCol" grid="m6 l4 s12" height="7em" padding="10" textColor="white" backgroundColor="grey darken-1"> 
+				<m:MaterialRow>
+					<m:MaterialColumn>
+						<m:html.Br/>
+						<m:MaterialLabel text="duration time:" />
+					</m:MaterialColumn>
+					<m:MaterialColumn>
+						<m:MaterialInput ui:field="durationInput" type="NUMBER" width="50px"></m:MaterialInput>
+					</m:MaterialColumn>
+					<m:MaterialColumn> 
+						<m:html.Br/>
+						<m:MaterialLabel text=" : Minutes" />
+					</m:MaterialColumn>
+				</m:MaterialRow>
+			</m:MaterialColumn>
+			
+			<m:MaterialColumn ui:field="transitionInputCol" grid="m6 l4 s12" height="7em" padding="10" textColor="white" backgroundColor="grey darken-2"> 
+				<m:MaterialRow>
+				<m:MaterialColumn>
+						<m:html.Br/>
+						<m:MaterialLabel text="transition time:"/>
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+						<m:MaterialInput  ui:field="transitionInput" type="NUMBER" width="50px"></m:MaterialInput>
+			</m:MaterialColumn>
+			<m:MaterialColumn> 
+				<m:html.Br/>
+				<m:MaterialLabel text=" :Seconds" />
+			</m:MaterialColumn>
+			</m:MaterialRow>
+			</m:MaterialColumn>
+		</m:MaterialRow>
+		<m:html.Div ui:field="groupsLegend"> 
+			<m:MaterialLabel text="Groups:"/>
+		</m:html.Div>
+		<m:html.Hr/>
+		</m:MaterialCardAction>
+		<m:MaterialCardContent>
+			<g:HTMLPanel ui:field="chartWrapper" >
+				<v:StationChart />
+			</g:HTMLPanel>
+		</m:MaterialCardContent>
+		</m:MaterialCard>
+	</g:HTMLPanel>
+</ui:UiBinder> 

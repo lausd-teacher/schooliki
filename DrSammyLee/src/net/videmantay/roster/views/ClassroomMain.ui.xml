@@ -25,8 +25,8 @@
 					textColor="red darken-2" iconType="LOCAL_LIBRARY" /> -->
 				<m:MaterialLink ui:field="routineLink" text="Routines"
 					textColor="red darken-4" iconType="SCHEDULE" />
-				<m:MaterialLink ui:field="formLink" text="Forms"
-					textColor="deep-orange darken-4" iconType="INBOX" />
+				<!-- <m:MaterialLink ui:field="formLink" text="Forms"
+					textColor="deep-orange darken-4" iconType="INBOX" /> -->
 				<m:MaterialLink ui:field="logoutLink" text="Logout"
 					iconType="INPUT" />
 				<m:MaterialLink></m:MaterialLink>

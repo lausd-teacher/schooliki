@@ -81,71 +81,69 @@
 						<m:MaterialColumn grid="s1 m1 l1">
 							<m:MaterialTooltip text="Roll">
 								<m:MaterialIcon ui:field="rollIcon" iconType="ASSIGNMENT_IND"
-									margin="10" iconSize="SMALL" />
+									margin="10"  padding="3" hoverable="true" height="1.25em"/>
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 						<m:MaterialColumn grid="s1 m1 l1">
 							<m:MaterialTooltip text="Homework">
 								<m:MaterialIcon ui:field="hwIcon" iconType="ASSIGNMENT"
-									margin="10" iconSize="SMALL" />
+									margin="10"  padding="3" hoverable="true" height="1.25em"/>
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 						<m:MaterialColumn grid="s1 m1 l1">
 							<m:MaterialTooltip text="Procedures">
 								<m:MaterialIcon ui:field="proceduresIcon"
-									iconType="VIEW_LIST" margin="10" iconSize="SMALL" />
+									iconType="VIEW_LIST" margin="10"  padding="3" hoverable="true" height="1.25em"/>
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 						<m:MaterialColumn grid="s1 m1 l1">
 							<m:MaterialTooltip text="Groups">
 								<m:MaterialIcon ui:field="groupsIcon" iconType="GROUP_WORK"
-									margin="10" iconSize="SMALL" />
+									margin="10" height="1.25em" padding="3" hoverable="true" />
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 						<m:MaterialColumn grid="s1 m1 l1" margin="10">
 							<m:MaterialTooltip text="Stations">
 								<m:MaterialIcon ui:field="stationsIcon" iconType="WIDGETS"
-									iconSize="SMALL" />
+									height="1.25em" padding="3" hoverable="true" />
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 						<!--This starts selects tools -->
 						<m:MaterialColumn grid="s1 m1 l1" marginTop="10"
 							marginRight="5">
 							<m:MaterialTooltip text="Multiple">
-								<m:MaterialIcon ui:field="multipleIcon" iconType="GROUP_ADD"
-									iconSize="SMALL" textColor="deep-orange darken-3" />
+								<m:MaterialIcon ui:field="multipleIcon" iconType="GROUP_ADD" hoverable="true"
+									padding="3" height="1.25em" textColor="deep-orange darken-3" />
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 						<m:MaterialColumn grid="s1 m1 l1" marginTop="10"
 							marginRight="5">
 							<m:MaterialTooltip text="Random">
-								<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE"
-									iconSize="SMALL" textColor="deep-orange darken-3" />
+								<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE" hoverable="true"
+									padding="3" height="1.25em" textColor="deep-orange darken-3" />
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 						<m:MaterialColumn grid="s1 m1 l1" marginTop="10">
 							<m:MaterialTooltip text="Select All">
-								<m:MaterialIcon ui:field="selectAllIcon"
-									iconType="SELECT_ALL" iconSize="SMALL" textColor="deep-orange darken-3" />
+								<m:MaterialIcon ui:field="selectAllIcon" padding="3" hoverable="true"
+									iconType="SELECT_ALL" height="1.25em" textColor="deep-orange darken-3" />
 							</m:MaterialTooltip>
 						</m:MaterialColumn>
 					</m:MaterialRow>
 				</m:MaterialColumn>
 			</m:MaterialRow>
-			<m:MaterialRow ui:field="doneToolbar" backgroundColor="deep-orange darken-3">
+			<m:MaterialRow ui:field="hwToolbar" backgroundColor="deep-orange darken-3">
 				<m:MaterialColumn hideOn="HIDE_ON_SMALL" ui:field="fullDoneToolbar"
 					grid="s12 m12 l12">
+					<m:MaterialColumn> 
+						<m:MaterialButton ui:field="hwActivatorBtn" text="No homework due today." activates="hwDueList"/>
+						<m:MaterialDropDown ui:field="hwDueList" activator="hwDueList">
+							<m:MaterialLink text="No homework due today" />
+						</m:MaterialDropDown>
+					</m:MaterialColumn>
 					<m:MaterialColumn grid="m3">
 						<m:MaterialAnchorButton ui:field="doneBtn"
 							text="DONE" iconType="DONE" backgroundColor="amber darken-4"></m:MaterialAnchorButton>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="m3">
-						<m:MaterialButton ui:field="undoBtn" text="Undo"
-							iconType="UNDO" backgroundColor="orange darken-4" />
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="m3">
-						<m:MaterialButton ui:field="redoBtn" text="redo"
-							iconType="REDO" backgroundColor="orange darken-4" />
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="m3">
 						<m:MaterialAnchorButton ui:field="CancelBtn"

@@ -1,24 +1,39 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	 xmlns:m="urn:import:gwt.material.design.client.ui"
+	 xmlns:t="urn:import:gwt.material.design.addins.client.timepicker">
 	<ui:style>
-
+		.tardy{
+			position:absolute;
+			top:2px;
+			right:2px;
+	}
 	</ui:style>
 	<g:HTMLPanel addStyleNames="rosterStudent" ui:field="rosterStudentPanel">
 		<div class="counterRotate studentHead">
 			<div ui:field="badgeRow" class="badgetRow" width="100%">
 				<m:MaterialBadge ui:field="statusBadge"
-					addStyleNames="statusBadge statusBadgeLeft" backgroundColor="green lighten-1"
-					textColor="white" text="99" visible="true" circle="true" />
+					addStyleNames="statusBadge statusBadgeLeft" backgroundColor="green" 
+					textColor="white" text="0" visible="true" circle="true" />
 				<m:MaterialBadge ui:field="extraStatusBadge"
 					addStyleNames="statusBadge statusBadgeRight" visible="true"
-					backgroundColor="red lighten-1" textColor="white" circle="true"
-					text="0" float="RIGHT" />
+					backgroundColor="red" textColor="white" circle="true"
+					text="0"/>
 			</div>
 			<div ui:field="checkRow">
 				<m:MaterialCheckBox ui:field="checkBox" visible="false" />
 			</div>
-			<m:MaterialImage ui:field="studentImage" circle="true" />
+				<m:MaterialRow ui:field="attendanceRow" visible="false"> 
+					<m:MaterialColumn> 
+						<m:MaterialIcon ui:field="attendanceStatusChip" iconSize="SMALL" padding="2" float="LEFT" marginTop="-5" marginLeft="-24"
+						 circle="true" backgroundColor="green" textColor="white" iconType="PERSON"/>
+						<t:MaterialTimePicker ui:field="timePicker" placeholder="time" margin="0" addStyleNames="{style.tardy}"
+						width="100px" visible="false"></t:MaterialTimePicker>
+					</m:MaterialColumn>
+				</m:MaterialRow>
+		
+			<m:MaterialImage ui:field="studentImage" circle="true"  height="65%" marginLeft="15"/>
 		</div><!-- end counter rotate head -->
 		<div class="counterRotate studentBody">
 			<m:MaterialLabel addStyleNames="studentName firstName"

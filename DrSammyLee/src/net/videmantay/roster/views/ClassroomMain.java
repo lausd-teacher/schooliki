@@ -37,6 +37,8 @@ import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.routine.json.SeatingChartJson;
 import net.videmantay.roster.routine.json.FullRoutineJson;
 import net.videmantay.student.json.InfoJson;
+import net.videmantay.student.json.RosterStudentJson;
+import net.videmantay.student.json.StudentIncidentJson;
 import net.videmantay.roster.views.UserProfilePanel;
 import net.videmantay.roster.views.assignment.AssignmentMain;
 import net.videmantay.roster.views.incident.IncidentMain;
@@ -85,8 +87,8 @@ public class ClassroomMain extends Composite{
 	@UiField
 	public HTMLPanel classroom;
 	
-	@UiField
-	public StudentActionModal studentActionModal;
+	@UiField(provided=true)
+	public StudentActionModal studentActionModal ;
 
 	
 	//needs access to widget children
@@ -130,7 +132,7 @@ public class ClassroomMain extends Composite{
 			@Override
 			public void onFailure(Throwable reason) {
 				MaterialLoader.showLoading(false);
-				MaterialToast.fireToast("Unable to retreive you Seating Chart");
+				MaterialToast.fireToast("Unable to retreive your Seating Chart");
 				
 			}
 
@@ -170,6 +172,13 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSelection(SelectionEvent<Widget> event) {
+				String manageCheck = ((MaterialLink)event.getSelectedItem()).getText();
+				if(manageCheck.equalsIgnoreCase("Manage...")){
+					//goto incident page
+					incident();
+					return;
+					
+				}
 				String value = ((MaterialLink)event.getSelectedItem()).getDataAttribute("routineId");
 				Long routineId = Longs.tryParse(value);
 				if(routineId == utils.getSelectedClassTime().getRoutine().getId()){
@@ -188,7 +197,7 @@ public class ClassroomMain extends Composite{
 ///the constructor//////////
 	public ClassroomMain(RosterUtils ru) {
 		this.utils = ru;	
-		
+		studentActionModal = new StudentActionModal(utils);
 		
 		this.initWidget(uiBinder.createAndBindUi(this));
 			//set side nav links/////////
@@ -233,7 +242,6 @@ public class ClassroomMain extends Composite{
 					event.preventDefault();
 					event.stopPropagation();
 					sideNav.hide();
-					//History.newItem("c/" + utils.getCurrentRoster().getId()+"/i");
 					incident();
 					
 				}});
@@ -882,11 +890,50 @@ public class ClassroomMain extends Composite{
 		navBrand.setText(roster.getTitle());
 		profilePanel.setProfileInfo(info);
 		this.showDashboard();
+		
+		//this action trigged in ClassroomDisplay and SeatingChart
 		$(body).on("studentAction", new Function(){
 			@Override
-			public boolean f(Event e){
+			public boolean f(Event e, Object...o){
 				e.stopPropagation();
+				RosterStudentJson student = (RosterStudentJson)o[0];
+			
+						JsArray<RosterStudentJson> students = JsArray.createArray().cast();
+						students.push(student);
+						studentActionModal.setData(students);
+					
 				studentActionModal.modal.openModal();
+				return true;
+			}
+		});
+		
+		$(body).on("incidentResponse", new Function(){
+			@Override
+			public boolean f(Event e , Object...o){
+				e.stopPropagation();
+				console.log(o[0]);
+				final JsArray<StudentIncidentJson> stuIncs = (JsArray<StudentIncidentJson>) o[0];
+				for(int i = 0; i < stuIncs.length(); i++){
+					for(int j = 0 ; j < utils.getStudents().length();j++){
+						if(utils.getStudents().get(j).getStudentId().equals(stuIncs.get(i))){
+							if(stuIncs.get(i).getPoints() < 0){
+								utils.getStudents().get(j).negPoint( 
+										utils.getStudents().get(j).posPoint() + stuIncs.get(i).getPoints()
+										);
+							}else{
+							utils.getStudents().get(j).negPoint( 
+									utils.getStudents().get(j).negPoint() + stuIncs.get(i).getPoints()
+									);
+							}//end else pos neg
+							break;
+						}//if
+					}//inner for
+				}//for
+		
+			
+						MaterialToast.fireToast(stuIncs.length() + " student were award " + stuIncs.get(0).getPoints());
+						//redrew the grid
+				
 				return true;
 			}
 		});

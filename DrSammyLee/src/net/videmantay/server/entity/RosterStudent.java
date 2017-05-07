@@ -24,8 +24,8 @@ public class RosterStudent implements Serializable {
 	public String firstName;
 	public String lastName;
 	public String imageUrl;
-	public Integer negPoints;
-	public Integer posPoints; 
+	public Integer negPoints =0;
+	public Integer posPoints = 0;
 	 
 	
 	

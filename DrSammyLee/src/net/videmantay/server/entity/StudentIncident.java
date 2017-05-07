@@ -17,7 +17,7 @@ public class StudentIncident implements Serializable {
 	public Long id;
 	
 	@Parent
-	public Key<RosterStudent> parent;
+	public transient Key<RosterStudent> parent;
 	
 	@Index
 	public String studentAcct;
@@ -27,65 +27,12 @@ public class StudentIncident implements Serializable {
 	
 	@Index
 	public String date;
-	
-	public String summary;
 
 	public String imageUrl;
+	
+	public String name;
 
 	public int points;
 	
-	public Long getId() {
-		return this.id;
-	}
-
-
-
-	public Long getIncidentId() {
-		return this.incidentId;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public void setIncidentId(Long incidentId) {
-		this.incidentId = incidentId;
-	}
-
-
-
-	public Key<RosterStudent> getParent() {
-		return parent;
-	}
-
-
-
-	public void setParent(Key<RosterStudent> parent) {
-		this.parent = parent;
-	}
-
-
-
-	public String getStudentAcct() {
-		return studentAcct;
-	}
-
-
-
-	public void setStudentAcct(String studentAcct) {
-		this.studentAcct = studentAcct;
-	}
-
-
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
 	
 }

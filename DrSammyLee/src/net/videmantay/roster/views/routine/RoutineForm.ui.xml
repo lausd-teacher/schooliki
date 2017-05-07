@@ -44,7 +44,7 @@
 					<v:GroupForm ui:field="groupForm" />
 				</m:MaterialPanel>
 				<m:MaterialPanel m:id="stations-routineTab">
-					<v:TimeSlotChart></v:TimeSlotChart>
+					<v:StationForm ui:field="stationEditor" />
 				</m:MaterialPanel>
 				<m:MaterialPanel m:id="seatingChart-routineTab" hideOn="HIDE_ON_MED_DOWN">
 
